@@ -5,6 +5,7 @@ import sha
 
 from django.conf import settings
 from django.db import models
+from django.db import transaction
 from django.template.loader import render_to_string
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -54,7 +55,7 @@ class RegistrationManager(models.Manager):
                 user = profile.user
                 user.is_active = True
                 user.save()
-                profile.activation_key = "ALREADY_ACTIVATED"
+                profile.activation_key = self.model.ACTIVATED
                 profile.save()
                 return user
         return False
@@ -67,6 +68,27 @@ class RegistrationManager(models.Manager):
         ``User``, returning the new ``User``.
         
         To disable the email, call with ``send_email=False``.
+
+        The activation email will make use of two templates:
+
+        ``registration/activation_email_subject.txt``
+            This template will be used for the subject line of the
+            email. It receives one context variable, ``site``, which
+            is the currently-active
+            ``django.contrib.sites.models.Site`` instance. Because it
+            is used as the subject line of an email, this template's
+            output **must** be only a single line of text; output
+            longer than one line will be forcibly joined into only a
+            single line.
+
+        ``registration/activation_email.txt``
+            This template will be used for the body of the email. It
+            will receive three context variables: ``activation_key``
+            will be the user's activation key (for use in constructing
+            a URL to activate the account), ``expiration_days`` will
+            be the number of days for which the key will be valid and
+            ``site`` will be the currently-active
+            ``django.contrib.sites.models.Site`` instance.
         
         To enable creation of a custom user profile along with the
         ``User`` (e.g., the model specified in the
@@ -105,6 +127,7 @@ class RegistrationManager(models.Manager):
             
             send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [new_user.email])
         return new_user
+    create_inactive_user = transaction.commit_on_success(create_inactive_user)
     
     def create_profile(self, user):
         """
@@ -187,6 +210,8 @@ class RegistrationProfile(models.Model):
     ``RegistrationManager``.
     
     """
+    ACTIVATED = u"ALREADY_ACTIVATED"
+    
     user = models.ForeignKey(User, unique=True, verbose_name=_('user'))
     activation_key = models.CharField(_('activation key'), max_length=40)
     
@@ -222,6 +247,6 @@ class RegistrationProfile(models.Model):
         
         """
         expiration_date = datetime.timedelta(days=settings.ACCOUNT_ACTIVATION_DAYS)
-        return self.activation_key == "ALREADY_ACTIVATED" or \
+        return self.activation_key == self.ACTIVATED or \
                (self.user.date_joined + expiration_date <= datetime.datetime.now())
     activation_key_expired.boolean = True
