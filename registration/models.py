@@ -1,4 +1,5 @@
 import datetime
+import hashlib
 import random
 import re
 
@@ -7,7 +8,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db import transaction
 from django.template.loader import render_to_string
-from django.utils.hashcompat import sha_constructor
 from django.utils.translation import ugettext_lazy as _
 
 try:
@@ -97,11 +97,11 @@ class RegistrationManager(models.Manager):
         username and a random salt.
         
         """
-        salt = sha_constructor(str(random.random())).hexdigest()[:5]
+        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
         username = user.username
         if isinstance(username, unicode):
             username = username.encode('utf-8')
-        activation_key = sha_constructor(salt+username).hexdigest()
+        activation_key = hashlib.sha1(salt+username).hexdigest()
         return self.create(user=user,
                            activation_key=activation_key)
         
@@ -146,11 +146,14 @@ class RegistrationManager(models.Manager):
         
         """
         for profile in self.all():
-            if profile.activation_key_expired():
-                user = profile.user
-                if not user.is_active:
-                    user.delete()
-
+            try:
+                if profile.activation_key_expired():
+                    user = profile.user
+                    if not user.is_active:
+                        user.delete()
+                        profile.delete()
+            except User.DoesNotExist:
+                profile.delete()
 
 class RegistrationProfile(models.Model):
     """
