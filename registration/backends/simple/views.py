@@ -15,18 +15,18 @@ class RegistrationView(BaseRegistrationView):
     up and logged in).
     
     """
-    def register(self, request, **cleaned_data):
+    def register(self, **cleaned_data):
         username, email, password = cleaned_data['username'], cleaned_data['email'], cleaned_data['password1']
         User.objects.create_user(username, email, password)
 
         new_user = authenticate(username=username, password=password)
-        login(request, new_user)
+        login(self.request, new_user)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
-                                     request=request)
+                                     request=self.request)
         return new_user
 
-    def registration_allowed(self, request):
+    def registration_allowed(self):
         """
         Indicate whether account registration is currently permitted,
         based on the value of the setting ``REGISTRATION_OPEN``. This
@@ -41,5 +41,5 @@ class RegistrationView(BaseRegistrationView):
         """
         return getattr(settings, 'REGISTRATION_OPEN', True)
 
-    def get_success_url(self, request, user):
+    def get_success_url(self, user):
         return (user.get_absolute_url(), (), {})
