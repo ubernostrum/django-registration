@@ -12,6 +12,11 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 try:
+    commit_on_success = transaction.commit_on_success
+except:
+    commit_on_success = transaction.atomic
+
+try:
     from django.utils.timezone import now as datetime_now
 except ImportError:
     datetime_now = datetime.datetime.now
@@ -90,7 +95,7 @@ class RegistrationManager(models.Manager):
             registration_profile.send_activation_email(site)
 
         return new_user
-    create_inactive_user = transaction.commit_on_success(create_inactive_user)
+    create_inactive_user = commit_on_success(create_inactive_user)
 
     def create_profile(self, user):
         """
