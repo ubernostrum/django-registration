@@ -12,9 +12,10 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 try:
-    commit_on_success = transaction.commit_on_success
-except:
+    # django >= 1.6
     commit_on_success = transaction.atomic
+except:
+    commit_on_success = transaction.commit_on_success
 
 try:
     from django.utils.timezone import now as datetime_now
