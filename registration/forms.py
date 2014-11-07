@@ -8,8 +8,8 @@ you're using a custom model.
 
 """
 
+from registration.utils import get_user_model
 
-from django.contrib.auth.models import User
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -45,7 +45,7 @@ class RegistrationForm(forms.Form):
         in use.
         
         """
-        existing = User.objects.filter(username__iexact=self.cleaned_data['username'])
+        existing = get_user_model().objects.filter(username__iexact=self.cleaned_data['username'])
         if existing.exists():
             raise forms.ValidationError(_("A user with that username already exists."))
         else:
@@ -88,7 +88,7 @@ class RegistrationFormUniqueEmail(RegistrationForm):
         site.
         
         """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
+        if get_user_model().objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(_("This email address is already in use. Please supply a different email address."))
         return self.cleaned_data['email']
 
