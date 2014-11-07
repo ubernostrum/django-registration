@@ -3,7 +3,7 @@ import hashlib
 import re
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from registration.utils import get_user_model
 from django.contrib.sites.models import Site
 from django.core import mail
 from django.core import management
@@ -36,7 +36,7 @@ class RegistrationModelTests(TestCase):
         activation key.
         
         """
-        new_user = User.objects.create_user(**self.user_info)
+        new_user = get_user_model().objects.create_user(**self.user_info)
         profile = RegistrationProfile.objects.create_profile(new_user)
 
         self.assertEqual(RegistrationProfile.objects.count(), 1)
@@ -51,7 +51,7 @@ class RegistrationModelTests(TestCase):
         email.
         
         """
-        new_user = User.objects.create_user(**self.user_info)
+        new_user = get_user_model().objects.create_user(**self.user_info)
         profile = RegistrationProfile.objects.create_profile(new_user)
         profile.send_activation_email(Site.objects.get_current())
         self.assertEqual(len(mail.outbox), 1)
@@ -149,7 +149,7 @@ class RegistrationModelTests(TestCase):
         self.assertFalse(isinstance(activated, User))
         self.assertFalse(activated)
 
-        new_user = User.objects.get(username='alice')
+        new_user = get_user_model().objects.get(username='alice')
         self.assertFalse(new_user.is_active)
 
         profile = RegistrationProfile.objects.get(user=new_user)
@@ -204,7 +204,7 @@ class RegistrationModelTests(TestCase):
 
         RegistrationProfile.objects.delete_expired_users()
         self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertRaises(User.DoesNotExist, User.objects.get, username='bob')
+        self.assertRaises(get_user_model().DoesNotExist, get_user_model().objects.get, username='bob')
 
     def test_management_command(self):
         """
@@ -223,4 +223,4 @@ class RegistrationModelTests(TestCase):
 
         management.call_command('cleanupregistration')
         self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertRaises(User.DoesNotExist, User.objects.get, username='bob')
+        self.assertRaises(get_user_model().DoesNotExist, get_user_model().objects.get, username='bob')

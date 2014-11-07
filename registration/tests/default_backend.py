@@ -1,7 +1,7 @@
 import datetime
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from registration.utils import get_user_model
 from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.urlresolvers import reverse
@@ -100,7 +100,7 @@ class DefaultBackendViewTests(TestCase):
                                       'password2': 'secret'})
         self.assertRedirects(resp, reverse('registration_complete'))
 
-        new_user = User.objects.get(username='bob')
+        new_user = get_user_model().objects.get(username='bob')
 
         self.assertTrue(new_user.check_password('secret'))
         self.assertEqual(new_user.email, 'bob@example.com')
@@ -129,7 +129,7 @@ class DefaultBackendViewTests(TestCase):
                                       'password2': 'secret'})
         self.assertEqual(302, resp.status_code)
 
-        new_user = User.objects.get(username='bob')
+        new_user = get_user_model().objects.get(username='bob')
 
         self.assertTrue(new_user.check_password('secret'))
         self.assertEqual(new_user.email, 'bob@example.com')

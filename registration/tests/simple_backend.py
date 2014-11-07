@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.models import User
+from registration.utils import get_user_model
 from django.core.urlresolvers import reverse
 from django.test import TestCase
 
@@ -61,7 +61,7 @@ class SimpleBackendViewTests(TestCase):
                                       'password1': 'secret',
                                       'password2': 'secret'})
 
-        new_user = User.objects.get(username='bob')
+        new_user = get_user_model().objects.get(username='bob')
         self.assertEqual(302, resp.status_code)
         self.assertTrue(new_user.get_absolute_url() in resp['Location'])
 
