@@ -14,14 +14,15 @@ if root_dir:
 for dirpath, dirnames, filenames in os.walk('registration'):
     # Ignore dirnames that start with '.'
     for i, dirname in enumerate(dirnames):
-        if dirname.startswith('.'): del dirnames[i]
+        if dirname.startswith('.'):
+            del dirnames[i]
     if '__init__.py' in filenames:
         pkg = dirpath.replace(os.path.sep, '.')
         if os.path.altsep:
             pkg = pkg.replace(os.path.altsep, '.')
         packages.append(pkg)
     elif filenames:
-        prefix = dirpath[13:] # Strip "registration/" or "registration\"
+        prefix = dirpath[13:]  # Strip "registration/" or "registration\"
         for f in filenames:
             data_files.append(os.path.join(prefix, f))
 
@@ -32,23 +33,23 @@ setup(name='django-registration',
       author='James Bennett',
       author_email='james@b-list.org',
       url='https://github.com/ubernostrum//ubernostrum/django-registration/',
-      download_url='https://github.com/ubernostrum/django-registration/archive/1.1.tar.gz',
       package_dir={'registration': 'registration'},
       packages=packages,
       package_data={'registration': data_files},
-      classifiers=['Development Status :: 5 - Production/Stable',
-                   'Environment :: Web Environment',
-                   'Framework :: Django',
-                   'Intended Audience :: Developers',
-                   'License :: OSI Approved :: BSD License',
-                   'Operating System :: OS Independent',
-                   'Programming Language :: Python',
-                   'Topic :: Software Development :: Libraries :: Python Modules',
-                   'Programming Language :: Python',
-                   'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 2.6',
-                   'Programming Language :: Python :: 2.7',
-                   'Programming Language :: Python :: 3',
-                   'Programming Language :: Python :: 3.3',
-                   'Topic :: Utilities'],
+      classifiers=[
+          'Development Status :: 5 - Production/Stable',
+          'Environment :: Web Environment',
+          'Framework :: Django',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: BSD License',
+          'Operating System :: OS Independent',
+          'Programming Language :: Python',
+          'Topic :: Software Development :: Libraries :: Python Modules',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.6',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.3',
+          'Topic :: Utilities'],
       )

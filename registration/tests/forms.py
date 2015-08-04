@@ -21,23 +21,31 @@ class RegistrationFormTests(TestCase):
 
         invalid_data_dicts = [
             # Non-alphanumeric username.
-            {'data': {'username': 'foo/bar',
-                      'email': 'foo@example.com',
-                      'password1': 'foo',
-                      'password2': 'foo'},
-            'error': ('username', [u"This value may contain only letters, numbers and @/./+/-/_ characters."])},
+            {'data':
+             {'username': 'foo/bar',
+              'email': 'foo@example.com',
+              'password1': 'foo',
+              'password2': 'foo'},
+             'error':
+             ('username',
+              [u"This value may contain only letters, "
+               "numbers and @/./+/-/_ characters."])},
             # Already-existing username.
-            {'data': {'username': 'alice',
-                      'email': 'alice@example.com',
-                      'password1': 'secret',
-                      'password2': 'secret'},
-            'error': ('username', [u"A user with that username already exists."])},
+            {'data':
+             {'username': 'alice',
+              'email': 'alice@example.com',
+              'password1': 'secret',
+              'password2': 'secret'},
+             'error':
+             ('username', [u"A user with that username already exists."])},
             # Mismatched passwords.
-            {'data': {'username': 'foo',
-                      'email': 'foo@example.com',
-                      'password1': 'foo',
-                      'password2': 'bar'},
-            'error': ('__all__', [u"The two password fields didn't match."])},
+            {'data':
+             {'username': 'foo',
+              'email': 'foo@example.com',
+              'password1': 'foo',
+              'password2': 'bar'},
+             'error':
+             ('__all__', [u"The two password fields didn't match."])},
             ]
 
         for invalid_dict in invalid_data_dicts:
@@ -58,19 +66,21 @@ class RegistrationFormTests(TestCase):
         agreement to the terms of service.
 
         """
-        form = forms.RegistrationFormTermsOfService(data={'username': 'foo',
-                                                          'email': 'foo@example.com',
-                                                          'password1': 'foo',
-                                                          'password2': 'foo'})
+        form = forms.RegistrationFormTermsOfService(
+            data={'username': 'foo',
+                  'email': 'foo@example.com',
+                  'password1': 'foo',
+                  'password2': 'foo'})
         self.assertFalse(form.is_valid())
         self.assertEqual(form.errors['tos'],
                          [u"You must agree to the terms to register"])
 
-        form = forms.RegistrationFormTermsOfService(data={'username': 'foo',
-                                                          'email': 'foo@example.com',
-                                                          'password1': 'foo',
-                                                          'password2': 'foo',
-                                                          'tos': 'on'})
+        form = forms.RegistrationFormTermsOfService(
+            data={'username': 'foo',
+                  'email': 'foo@example.com',
+                  'password1': 'foo',
+                  'password2': 'foo',
+                  'tos': 'on'})
         self.assertTrue(form.is_valid())
 
     def test_registration_form_unique_email(self):
@@ -83,18 +93,22 @@ class RegistrationFormTests(TestCase):
         # aren't permitted.
         User.objects.create_user('alice', 'alice@example.com', 'secret')
 
-        form = forms.RegistrationFormUniqueEmail(data={'username': 'foo',
-                                                       'email': 'alice@example.com',
-                                                       'password1': 'foo',
-                                                       'password2': 'foo'})
+        form = forms.RegistrationFormUniqueEmail(
+            data={'username': 'foo',
+                  'email': 'alice@example.com',
+                  'password1': 'foo',
+                  'password2': 'foo'})
         self.assertFalse(form.is_valid())
-        self.assertEqual(form.errors['email'],
-                         [u"This email address is already in use. Please supply a different email address."])
+        self.assertEqual(
+            form.errors['email'],
+            [u"This email address is already in use. "
+             "Please supply a different email address."])
 
-        form = forms.RegistrationFormUniqueEmail(data={'username': 'foo',
-                                                       'email': 'foo@example.com',
-                                                       'password1': 'foo',
-                                                       'password2': 'foo'})
+        form = forms.RegistrationFormUniqueEmail(
+            data={'username': 'foo',
+                  'email': 'foo@example.com',
+                  'password1': 'foo',
+                  'password2': 'foo'})
         self.assertTrue(form.is_valid())
 
     def test_registration_form_no_free_email(self):
@@ -111,8 +125,10 @@ class RegistrationFormTests(TestCase):
             invalid_data['email'] = u"foo@%s" % domain
             form = forms.RegistrationFormNoFreeEmail(data=invalid_data)
             self.assertFalse(form.is_valid())
-            self.assertEqual(form.errors['email'],
-                             [u"Registration using free email addresses is prohibited. Please supply a different email address."])
+            self.assertEqual(
+                form.errors['email'],
+                [u"Registration using free email addresses is prohibited. "
+                 "Please supply a different email address."])
 
         base_data['email'] = 'foo@example.com'
         form = forms.RegistrationFormNoFreeEmail(data=base_data)

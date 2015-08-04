@@ -14,7 +14,7 @@ from registration.forms import RegistrationForm
 class RegistrationView(FormView):
     """
     Base class for user registration views.
-    
+
     """
     disallowed_url = 'registration_disallowed'
     form_class = RegistrationForm
@@ -26,7 +26,7 @@ class RegistrationView(FormView):
         """
         Check that user signup is allowed before even bothering to
         dispatch or do other processing.
-        
+
         """
         if not self.registration_allowed():
             return redirect(self.disallowed_url)
@@ -35,7 +35,7 @@ class RegistrationView(FormView):
     def form_valid(self, form):
         new_user = self.register(**form.cleaned_data)
         success_url = self.get_success_url(new_user)
-        
+
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it
         # tells us which one it is.
@@ -49,7 +49,7 @@ class RegistrationView(FormView):
         """
         Override this to enable/disable user registration, either
         globally or on a per-request basis.
-        
+
         """
         return True
 
@@ -58,15 +58,15 @@ class RegistrationView(FormView):
         Implement user-registration logic here. Access to both the
         request and the full cleaned_data of the registration form is
         available here.
-        
+
         """
         raise NotImplementedError
-                
+
 
 class ActivationView(TemplateView):
     """
     Base class for user activation views.
-    
+
     """
     http_method_names = ['get']
     template_name = 'registration/activate.html'
@@ -88,7 +88,7 @@ class ActivationView(TemplateView):
     def activate(self, *args, **kwargs):
         """
         Implement account-activation logic here.
-        
+
         """
         raise NotImplementedError
 
