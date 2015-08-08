@@ -104,6 +104,7 @@ class RegistrationManager(models.Manager):
         return self.create(user=user,
                            activation_key=activation_key)
 
+    @transaction.atomic
     def delete_expired_users(self):
         """
         Remove expired instances of ``RegistrationProfile`` and their
@@ -150,8 +151,8 @@ class RegistrationManager(models.Manager):
             if profile.activation_key_expired():
                 user = profile.user
                 if not user.is_active:
-                    user.delete()
                     profile.delete()
+                    user.delete()
 
 
 @python_2_unicode_compatible
