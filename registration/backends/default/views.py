@@ -1,5 +1,6 @@
+from django.apps import apps
 from django.conf import settings
-from django.contrib.sites.models import RequestSite
+from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.models import Site
 
 from registration import signals
@@ -74,7 +75,7 @@ class RegistrationView(BaseRegistrationView):
         username, email, password = (cleaned_data['username'],
                                      cleaned_data['email'],
                                      cleaned_data['password1'])
-        if Site._meta.installed:
+        if apps.is_installed('django.contrib.sites'):
             site = Site.objects.get_current()
         else:
             site = RequestSite(self.request)

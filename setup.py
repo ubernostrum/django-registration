@@ -1,4 +1,4 @@
-from distutils.core import setup
+from setuptools import setup
 import os
 
 from registration import get_version
@@ -36,10 +36,13 @@ setup(name='django-registration',
       package_dir={'registration': 'registration'},
       packages=packages,
       package_data={'registration': data_files},
+      test_suite='registration.runtests.run_tests',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
           'Framework :: Django',
+          'Framework :: Django :: 1.7',
+          'Framework :: Django :: 1.8',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
           'Operating System :: OS Independent',
@@ -47,9 +50,9 @@ setup(name='django-registration',
           'Topic :: Software Development :: Libraries :: Python Modules',
           'Programming Language :: Python',
           'Programming Language :: Python :: 2',
-          'Programming Language :: Python :: 2.6',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3',
           'Programming Language :: Python :: 3.3',
+          'Programming Language :: Python :: 3.4',
           'Topic :: Utilities'],
       )

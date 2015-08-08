@@ -8,9 +8,9 @@ from django.contrib.sites.models import Site
 from django.core import mail
 from django.core import management
 from django.test import TestCase
+from django.utils.six import text_type
 
-from registration.models import RegistrationProfile
-from registration.utils import text_type
+from ..models import RegistrationProfile
 
 
 class RegistrationModelTests(TestCase):

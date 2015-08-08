@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from registration.models import RegistrationProfile
 
 
+@admin.register(RegistrationProfile)
 class RegistrationAdmin(admin.ModelAdmin):
     actions = ['activate_users', 'resend_activation_email']
     list_display = ('user', 'activation_key_expired')
@@ -41,6 +42,3 @@ class RegistrationAdmin(admin.ModelAdmin):
             if not profile.activation_key_expired():
                 profile.send_activation_email(site)
     resend_activation_email.short_description = _("Re-send activation emails")
-
-
-admin.site.register(RegistrationProfile, RegistrationAdmin)

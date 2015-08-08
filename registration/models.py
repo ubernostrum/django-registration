@@ -16,8 +16,6 @@ from django.utils import timezone
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
-User = get_user_model()
-
 
 class RegistrationManager(models.Manager):
     """
@@ -75,6 +73,7 @@ class RegistrationManager(models.Manager):
         user. To disable this, pass ``send_email=False``.
 
         """
+        User = get_user_model()
         new_user = User.objects.create_user(username, email, password)
         new_user.is_active = False
         new_user.save()
@@ -85,7 +84,7 @@ class RegistrationManager(models.Manager):
             registration_profile.send_activation_email(site)
 
         return new_user
-    create_inactive_user = transaction.commit_on_success(create_inactive_user)
+    create_inactive_user = transaction.atomic(create_inactive_user)
 
     def create_profile(self, user):
         """
@@ -145,6 +144,8 @@ class RegistrationManager(models.Manager):
         be deleted.
 
         """
+        User = get_user_model()
+
         for profile in self.all():
             try:
                 if profile.activation_key_expired():
@@ -175,9 +176,8 @@ class RegistrationProfile(models.Model):
     """
     ACTIVATED = u"ALREADY_ACTIVATED"
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             unique=True,
-                             verbose_name=_('user'))
+    user = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                verbose_name=_('user'))
     activation_key = models.CharField(_('activation key'), max_length=40)
 
     objects = RegistrationManager()

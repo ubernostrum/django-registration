@@ -18,7 +18,6 @@ class RegistrationView(FormView):
     """
     disallowed_url = 'registration_disallowed'
     form_class = RegistrationForm
-    http_method_names = ['get', 'post', 'head', 'options', 'trace']
     success_url = None
     template_name = 'registration/registration_form.html'
 
@@ -68,7 +67,6 @@ class ActivationView(TemplateView):
     Base class for user activation views.
 
     """
-    http_method_names = ['get']
     template_name = 'registration/activate.html'
 
     def get(self, *args, **kwargs):

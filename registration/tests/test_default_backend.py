@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import override_settings, TestCase
 
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
@@ -44,22 +44,21 @@ class DefaultBackendViewTests(TestCase):
         if self.old_activation is None:
             settings.ACCOUNT_ACTIVATION_DAYS = self.old_activation
 
-    def test_allow(self):
+    @override_settings(REGISTRATION_OPEN=True)
+    def test_registration_open(self):
         """
-        The setting ``REGISTRATION_OPEN`` appropriately controls
-        whether registration is permitted.
+        ``REGISTRATION_OPEN``, when ``True``, permits registration.
 
         """
-        old_allowed = getattr(settings, 'REGISTRATION_OPEN', True)
-        settings.REGISTRATION_OPEN = True
-
         resp = self.client.get(reverse('registration_register'))
         self.assertEqual(200, resp.status_code)
 
-        settings.REGISTRATION_OPEN = False
+    @override_settings(REGISTRATION_OPEN=False)
+    def test_registration_closed(self):
+        """
+        ``REGISTRATION_OPEN``, when ``False``, disallows registration.
 
-        # Now all attempts to hit the register view should redirect to
-        # the 'registration is closed' message.
+        """
         resp = self.client.get(reverse('registration_register'))
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
@@ -69,8 +68,6 @@ class DefaultBackendViewTests(TestCase):
                                       'password1': 'secret',
                                       'password2': 'secret'})
         self.assertRedirects(resp, reverse('registration_disallowed'))
-
-        settings.REGISTRATION_OPEN = old_allowed
 
     def test_registration_get(self):
         """
@@ -119,26 +116,27 @@ class DefaultBackendViewTests(TestCase):
         be a ``RequestSite`` instance.
 
         """
-        Site._meta.installed = False
+        with self.modify_settings(INSTALLED_APPS={
+            'remove': [
+                'django.contrib.sites'
+            ]}):
+            resp = self.client.post(
+                reverse('registration_register'),
+                data={'username': 'bob',
+                      'email': 'bob@example.com',
+                      'password1': 'secret',
+                      'password2': 'secret'})
+            self.assertEqual(302, resp.status_code)
 
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
-        self.assertEqual(302, resp.status_code)
+            new_user = User.objects.get(username='bob')
 
-        new_user = User.objects.get(username='bob')
+            self.assertTrue(new_user.check_password('secret'))
+            self.assertEqual(new_user.email, 'bob@example.com')
 
-        self.assertTrue(new_user.check_password('secret'))
-        self.assertEqual(new_user.email, 'bob@example.com')
+            self.assertFalse(new_user.is_active)
 
-        self.assertFalse(new_user.is_active)
-
-        self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertEqual(len(mail.outbox), 1)
-
-        Site._meta.installed = True
+            self.assertEqual(RegistrationProfile.objects.count(), 1)
+            self.assertEqual(len(mail.outbox), 1)
 
     def test_registration_failure(self):
         """
