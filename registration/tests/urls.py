@@ -2,81 +2,43 @@
 URLs used in the unit tests for django-registration.
 
 You should not attempt to use these URLs in any sort of real or
-development environment; instead, use
-``registration/backends/default/urls.py``. This URLconf includes those
-URLs, and also adds several additional URLs which serve no purpose
-other than to test that optional keyword arguments are properly
-handled.
+development environment.
 
 """
 
 from django.conf.urls import include, url
-from django.views.generic.simple import direct_to_template
+from django.views.generic.base import TemplateView
 
-from ..views import activate
-from ..views import register
+from registration.backends.default.views import RegistrationView
+from .views import ActivateWithSimpleRedirect
 
 
 urlpatterns = [
-    # Test the 'activate' view with custom template
-    # name.
-    url(r'^activate-with-template-name/(?P<activation_key>\w+)/$',
-        activate,
-        {'template_name': 'registration/test_template_name.html',
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_activate_template_name'),
-    # Test the 'activate' view with
-    # extra_context_argument.
-    url(r'^activate-extra-context/(?P<activation_key>\w+)/$',
-        activate,
-        {'extra_context': {'foo': 'bar', 'callable': lambda: 'called'},
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_activate_extra_context'),
-    # Test the 'activate' view with success_url argument.
-    url(r'^activate-with-success-url/(?P<activation_key>\w+)/$',
-        activate,
-        {'success_url': 'registration_test_custom_success_url',
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_activate_success_url'),
-    # Test the 'register' view with custom template
-    # name.
-    url(r'^register-with-template-name/$',
-        register,
-        {'template_name': 'registration/test_template_name.html',
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_register_template_name'),
-    # Test the'register' view with extra_context
-    # argument.
-    url(r'^register-extra-context/$',
-        register,
-        {'extra_context': {'foo': 'bar', 'callable': lambda: 'called'},
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_register_extra_context'),
-    # Test the 'register' view with custom URL for
-    # closed registration.
-    url(r'^register-with-disallowed-url/$',
-        register,
-        {'disallowed_url': 'registration_test_custom_disallowed',
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_register_disallowed_url'),
-    # Set up a pattern which will correspond to the
-    # custom 'disallowed_url' above.
-    url(r'^custom-disallowed/$',
-        direct_to_template,
-        {'template': 'registration/registration_closed.html'},
-        name='registration_test_custom_disallowed'),
-    # Test the 'register' view with custom redirect
-    # on successful registration.
-    url(r'^register-with-success_url/$',
-        register,
-        {'success_url': 'registration_test_custom_success_url',
-         'backend': 'registration.backends.default.DefaultBackend'},
-        name='registration_test_register_success_url'
-        ),
-    # Pattern for custom redirect set above.
-    url(r'^custom-success/$',
-        direct_to_template,
-        {'template': 'registration/test_template_name.html'},
-        name='registration_test_custom_success_url'),
-    (r'', include('registration.backends.default.urls')),
+    url(r'^$',
+        TemplateView.as_view(
+            template_name='registration/activation_complete.html'),
+        name='simple_activation_redirect'),
+    url(r'^activate/complete/$',
+        TemplateView.as_view(
+            template_name='registration/activation_complete.html'),
+        name='registration_activation_complete'),
+    # Activation keys get matched by \w+ instead of the more specific
+    # [a-fA-F0-9]{40} because a bad activation key should still get to
+    # the view; that way it can return a sensible "invalid key"
+    # message instead of a confusing 404.
+    url(r'^activate/(?P<activation_key>\w+)/$',
+        ActivateWithSimpleRedirect.as_view(),
+        name='registration_activate'),
+    url(r'^register/$',
+        RegistrationView.as_view(),
+        name='registration_register'),
+    url(r'^register/complete/$',
+        TemplateView.as_view(
+            template_name='registration/registration_complete.html'),
+        name='registration_complete'),
+    url(r'^register/closed/$',
+        TemplateView.as_view(
+            template_name='registration/registration_closed.html'),
+        name='registration_disallowed'),
+    url(r'', include('registration.auth_urls')),
 ]
