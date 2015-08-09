@@ -1,5 +1,4 @@
 from django.apps import apps
-from django.conf import settings
 from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.models import Site
 
@@ -86,21 +85,6 @@ class RegistrationView(BaseRegistrationView):
                                      user=new_user,
                                      request=self.request)
         return new_user
-
-    def registration_allowed(self):
-        """
-        Indicate whether account registration is currently permitted,
-        based on the value of the setting ``REGISTRATION_OPEN``. This
-        is determined as follows:
-
-        * If ``REGISTRATION_OPEN`` is not specified in settings, or is
-          set to ``True``, registration is permitted.
-
-        * If ``REGISTRATION_OPEN`` is both specified and set to
-          ``False``, registration is not permitted.
-
-        """
-        return getattr(settings, 'REGISTRATION_OPEN', True)
 
     def get_success_url(self, user):
         """
