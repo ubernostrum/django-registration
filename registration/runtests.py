@@ -26,7 +26,7 @@ SETTINGS_DICT = {
         'django.contrib.sessions',
         'django.contrib.sites',
         'registration',
-     ),
+    ),
     'ROOT_URLCONF': 'registration.backends.default.urls',
     'DATABASES': {
         'default': {

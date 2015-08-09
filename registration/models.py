@@ -145,8 +145,6 @@ class RegistrationManager(models.Manager):
         be deleted.
 
         """
-        User = get_user_model()
-
         for profile in self.all():
             if profile.activation_key_expired():
                 user = profile.user

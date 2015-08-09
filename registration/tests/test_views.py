@@ -1,4 +1,3 @@
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
 
@@ -7,7 +6,7 @@ from ..models import RegistrationProfile
 
 class ActivationViewTests(TestCase):
     urls = 'registration.tests.urls'
-    
+
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
@@ -29,4 +28,3 @@ class ActivationViewTests(TestCase):
             kwargs={'activation_key': profile.activation_key})
         )
         self.assertRedirects(resp, '/')
-
