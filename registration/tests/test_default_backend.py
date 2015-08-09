@@ -23,27 +23,6 @@ class DefaultBackendViewTests(TestCase):
     """
     urls = 'registration.backends.default.urls'
 
-    def setUp(self):
-        """
-        Create an instance of the default backend for use in testing,
-        and set ``ACCOUNT_ACTIVATION_DAYS`` if it's not set already.
-
-        """
-        self.old_activation = getattr(
-            settings, 'ACCOUNT_ACTIVATION_DAYS', None
-        )
-        if self.old_activation is None:
-            settings.ACCOUNT_ACTIVATION_DAYS = 7
-
-    def tearDown(self):
-        """
-        Yank ``ACCOUNT_ACTIVATION_DAYS`` back out if it wasn't
-        originally set.
-
-        """
-        if self.old_activation is None:
-            settings.ACCOUNT_ACTIVATION_DAYS = self.old_activation
-
     @override_settings(REGISTRATION_OPEN=True)
     def test_registration_open(self):
         """
@@ -82,6 +61,7 @@ class DefaultBackendViewTests(TestCase):
         self.assertTrue(isinstance(resp.context['form'],
                         RegistrationForm))
 
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration(self):
         """
         Registration creates a new inactive account and a new profile
@@ -109,6 +89,7 @@ class DefaultBackendViewTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 1)
 
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration_no_sites(self):
         """
         Registration still functions properly when
@@ -152,6 +133,7 @@ class DefaultBackendViewTests(TestCase):
         self.assertFalse(resp.context['form'].is_valid())
         self.assertEqual(0, len(mail.outbox))
 
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -172,6 +154,7 @@ class DefaultBackendViewTests(TestCase):
         )
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_expired(self):
         """
         An expired account can't be activated.

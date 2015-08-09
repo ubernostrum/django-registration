@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import override_settings, TestCase
 
 from registration.forms import RegistrationForm
 
@@ -9,22 +9,21 @@ from registration.forms import RegistrationForm
 class SimpleBackendViewTests(TestCase):
     urls = 'registration.backends.simple.urls'
 
-    def test_allow(self):
+    @override_settings(REGISTRATION_OPEN=True)
+    def test_registration_open(self):
         """
-        The setting ``REGISTRATION_OPEN`` appropriately controls
-        whether registration is permitted.
+        ``REGISTRATION_OPEN``, when ``True``, permits registration.
 
         """
-        old_allowed = getattr(settings, 'REGISTRATION_OPEN', True)
-        settings.REGISTRATION_OPEN = True
-
         resp = self.client.get(reverse('registration_register'))
         self.assertEqual(200, resp.status_code)
 
-        settings.REGISTRATION_OPEN = False
+    @override_settings(REGISTRATION_OPEN=False)
+    def test_registration_closed(self):
+        """
+        ``REGISTRATION_OPEN``, when ``False``, disallows registration.
 
-        # Now all attempts to hit the register view should redirect to
-        # the 'registration is closed' message.
+        """
         resp = self.client.get(reverse('registration_register'))
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
@@ -34,8 +33,6 @@ class SimpleBackendViewTests(TestCase):
                                       'password1': 'secret',
                                       'password2': 'secret'})
         self.assertRedirects(resp, reverse('registration_disallowed'))
-
-        settings.REGISTRATION_OPEN = old_allowed
 
     def test_registration_get(self):
         """
