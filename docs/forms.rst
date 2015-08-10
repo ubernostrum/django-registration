@@ -4,11 +4,12 @@
 Forms for user registration
 ===========================
 
-Several form classes are provided with django-registration, covering
-common cases for gathering account information and implementing common
-constraints for user registration. These forms were designed with
-django-registration's :ref:`default backend <default-backend>` in
-mind, but may also be useful in other situations.
+Several form classes are provided with ``django-registration``,
+covering common cases for gathering account information and
+implementing common constraints for user registration. These forms
+were designed with ``django-registration``'s :ref:`default
+registration workflow <default-workflow>` in mind, but may also be
+useful in other situations.
 
 
 .. class:: RegistrationForm

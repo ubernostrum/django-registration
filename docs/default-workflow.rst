@@ -1,24 +1,25 @@
-.. _default-backend:
+.. _default-workflow:
 .. module:: registration.backends.default
 
-The default backend
-===================
+The default workflow
+====================
 
-A default registration backend` is bundled with django-registration,
-as the module ``registration.backends.default``, and implements a
-simple two-step workflow in which a new user first registers, then
-confirms and activates the new account by following a link sent to the
-email address supplied during registration.
+The default workflow bundled with ``django-registration`` is in the
+module ``registration.backends.default``, and implements a two-step
+process in which a new user first registers, then confirms and
+activates the new account by following a link sent to the email
+address supplied during registration.
 
 
 Default behavior and configuration
 ----------------------------------
 
-To make use of this backend, simply include the URLConf
-``registration.backends.default.urls`` at whatever location you choose
-in your URL hierarchy.
+To make use of this workflow, simply add ``registration`` to your
+``INSTALLED_APPS``, run ``manage.py migrate`` to install its model,
+and include the URLconf ``registration.backends.default.urls`` at
+whatever location you choose in your URL hierarchy.
 
-This backend makes use of the following settings:
+This workflow makes use of the following settings:
 
 ``ACCOUNT_ACTIVATION_DAYS``
     This is the number of days users will have to activate their
@@ -32,43 +33,37 @@ This backend makes use of the following settings:
     is optional, and a default of ``True`` will be assumed if it is
     not supplied.
 
-By default, this backend uses
+By default, this workflow uses
 :class:`registration.forms.RegistrationForm` as its form class for
 user registration; this can be overridden by passing the keyword
-argument ``form_class`` to the :func:`~registration.views.register`
-view.
+argument ``form_class`` to the registration view.
 
 Two views are provided:
 ``registration.backends.default.views.RegistrationView`` and
 ``registration.backends.default.views.ActivationView``. These views
-subclass django-registration's base
+subclass ``django-registration``'s base
 :class:`~registration.views.RegistrationView` and
 :class:`~registration.views.ActivationView`, respectively, and
 implement the two-step registration/activation process.
 
-Upon successful registration -- not activation -- the default redirect
-is to the URL pattern named ``registration_complete``; this can be
-overridden in subclasses by changing
-:attr:`~registration.views.RegistrationView.success_url` or
-implementing
-:meth:`~registration.views.RegistrationView.get_success_url()`
+Upon successful registration -- not activation -- the user will be
+redirected to the URL pattern named ``registration_complete``.
 
-Upon successful activation, the default redirect is to the URL pattern
-named ``registration_activation_complete``; this can be overridden in
-subclasses by implementing
-:meth:`~registration.views.ActivationView.get_success_url()`.
+Upon successful activation, the user will be redirected to the URL
+pattern named ``registration_activation_complete``.
 
 
 How account data is stored for activation
 -----------------------------------------
 
-During registration, a new instance of
-``django.contrib.auth.models.User`` is created to represent the new
-account, with the ``is_active`` field set to ``False``. An email is
-then sent to the email address of the account, containing a link the
-user must click to activate the account; at that point the
-``is_active`` field is set to ``True``, and the user may log in
-normally.
+During registration, a new instance of the user model (by default,
+Django's ``django.contrib.auth.models.User`` -- see :ref:`the custom
+user documentation <custom-user>` for notes on using a different
+model) is created to represent the new account, with the ``is_active``
+field set to ``False``. An email is then sent to the email address of
+the account, containing a link the user must click to activate the
+account; at that point the ``is_active`` field is set to ``True``, and
+the user may log in normally.
 
 Activation is handled by generating and storing an activation key in
 the database, using the following model:
@@ -87,14 +82,13 @@ the database, using the following model:
 
    .. attribute:: user
 
-      A ``ForeignKey`` to ``django.contrib.auth.models.User``,
-      representing the user account for which activation information
-      is being stored.
+      A ``OneToOneField`` to the user model, representing the user
+      account for which activation information is being stored.
 
    .. attribute:: activation_key
 
       A 40-character ``CharField``, storing the activation key for the
-      account. Initially, the activation key is the hexdigest of a
+      account. Initially, the activation key is the hex digest of a
       SHA1 hash; after activation, this is reset to :attr:`ACTIVATED`.
 
    Additionally, one class attribute exists:
@@ -183,13 +177,13 @@ Additionally, :class:`RegistrationProfile` has a custom manager
       :attr:`RegistrationProfile.ACTIVATED` after successful
       activation.
 
-      Returns the ``User`` instance representing the account if
+      Returns the user instance representing the account if
       activation is successful, ``False`` otherwise.
 
       :param activation_key: The activation key to use for the
          activation.
       :type activation_key: string, a 40-character SHA1 hexdigest
-      :rtype: ``User`` or bool
+      :rtype: user or bool
 
    .. method:: delete_expired_users
 
@@ -232,9 +226,9 @@ Additionally, :class:`RegistrationProfile` has a custom manager
          sent to the account (by calling
          :meth:`RegistrationProfile.send_activation_email`). If
          ``False``, no email will be sent (but the account will still
-         be inactive)
+         be inactive).
       :type send_email: bool
-      :rtype: ``User``
+      :rtype: user
 
    .. method:: create_profile(user)
 

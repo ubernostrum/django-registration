@@ -1,14 +1,14 @@
-.. _simple-backend:
+.. _simple-workflow:
 .. module:: registration.backends.simple
 
-The "simple" (one-step) backend
+The "simple" (one-step) workflow
 ===============================
 
-As an alternative to :ref:`the default backend <default-backend>`, and
-an example of writing alternate workflows, django-registration bundles
-a one-step registration system in
-``registration.backend.simple``. This backend's workflow is
-deliberately as simple as possible:
+As an alternative to :ref:`the default registration workflow
+<default-workflow>`, and an example of writing alternate workflows,
+``django-registration`` bundles a one-step registration system in
+``registration.backend.simple``. This workflow is deliberately as
+simple as possible:
 
 1. A user signs up by filling out a registration form.
 
@@ -21,7 +21,7 @@ deliberately as simple as possible:
 Configuration
 -------------
 
-To use this backend, simply include the URLconf
+To use this workflow, simply include the URLconf
 ``registration.backends.simple.urls`` somewhere in your site's own URL
 configuration. For example::
 
@@ -35,12 +35,8 @@ supported:
     registration of new accounts is currently permitted. A default of
     ``True`` will be assumed if this setting is not supplied.
 
-Upon successful registration, the default redirect is to the URL
-specified by the ``get_absolute_url()`` method of the newly-created
-``User`` object; by default, this will be ``/users/<username>/``,
-although it can be overridden by implementing
-:meth:`~registration.views.RegistrationView.get_success_url()` on a
-subclass of ``registration.backends.simple.views.RegistrationView``.
+Upon successful registration, the user will be redirected to the
+site's home page -- the URL ``/``.
 
 The default form class used for account registration will be
 :class:`registration.forms.RegistrationForm`, although this can be
@@ -48,4 +44,5 @@ overridden by supplying a custom URL pattern for the registration view
 and passing the keyword argument ``form_class``, or by subclassing
 ``registration.backends.simple.views.RegistrationView`` and either
 overriding ``form_class`` or implementing
-:meth:`~registration.views.RegistrationView.get_form_class()`.
+:meth:`~registration.views.RegistrationView.get_form_class()`, and
+specifying the custom subclass in your URL patterns.

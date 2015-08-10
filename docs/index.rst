@@ -1,15 +1,11 @@
-.. django-registration documentation master file, created by
-   sphinx-quickstart on Mon Jun 22 02:57:42 2009.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+.. _index:
 
-django-registration |version| documentation
-===========================================
+django-registration |version|
+=============================
 
-This documentation covers the |version| release of
-django-registration, a simple but extensible application providing
+``django-registration`` is a simple, extensible application providing
 user registration functionality for `Django
-<http://www.djangoproject.com>`_-powered websites.
+<https://www.djangoproject.com/>`_-powered Web sites.
 
 Although nearly all aspects of the registration process are
 customizable, out-of-the-box support is provided for two common use
@@ -21,34 +17,32 @@ cases:
 * One-phase registration, where a user signs up and is immediately
   active and logged in.
 
-To get up and running quickly, consult the :ref:`quick-start guide
-<quickstart>`, which describes all the necessary steps to install
-django-registration and configure it for the default workflow. For
-more detailed information, including how to customize the registration
-process (and support for alternate registration systems), read through
-the documentation listed below.
+To get up and running quickly, consult :ref:`the quick-start guide
+<quickstart>`, which describes the steps necessary to configure
+``django-registration`` for the built-in workflows. For more detailed
+information, including how to customize the registration process (and
+support for alternate registration systems), read through the
+documentation listed below.
 
-If you are upgrading from a previous release, please read the
-:ref:`upgrade guide <upgrade>` for information on what's changed.
 
 Contents:
 
 .. toctree::
    :maxdepth: 1
    
+   install
    quickstart
-   release-notes
-   upgrade
-   default-backend
-   simple-backend
+   default-workflow
+   simple-workflow
    forms
    views
    signals
+   custom-user
    faq
 
 .. seealso::
 
    * `Django's authentication documentation
-     <http://docs.djangoproject.com/en/dev/topics/auth/>`_; Django's
+     <https://docs.djangoproject.com/en/1.8/topics/auth/>`_; Django's
      authentication system is used by django-registration's default
      configuration.

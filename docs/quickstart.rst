@@ -3,133 +3,28 @@
 Quick start guide
 =================
 
-Before installing django-registration, you'll need to have a copy of
-`Django <http://www.djangoproject.com>`_ already installed. For the
-|version| release, Django 1.4 or newer is required.
+First you'll need to have Django and ``django-registration``
+installed; for details on that, see :ref:`the installation guide
+<install>`.
 
-For further information, consult the `Django download page
-<http://www.djangoproject.com/download/>`_, which offers convenient
-packaged downloads and installation instructions.
+The next steps will depend on which registration workflow you'd like
+to use.
 
-
-Installing django-registration
-------------------------------
-
-There are several ways to install django-registration:
-
-* Automatically, via a package manager.
-
-* Manually, by downloading a copy of the release package and
-  installing it yourself.
-
-* Manually, by performing a Mercurial checkout of the latest code.
-
-It is also highly recommended that you learn to use `virtualenv
-<http://pypi.python.org/pypi/virtualenv>`_ for development and
-deployment of Python software; ``virtualenv`` provides isolated Python
-environments into which collections of software (e.g., a copy of
-Django, and the necessary settings and applications for deploying a
-site) can be installed, without conflicting with other installed
-software. This makes installation, testing, management and deployment
-far simpler than traditional site-wide installation of Python
-packages.
+Before proceeding, you'll need to ensure ``django.contrib.auth`` has
+been installed (by adding it to ``INSTALLED_APPS``). Also, if you're
+making use of `a custom user model
+<https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#substituting-a-custom-user-model>`_,
+you'll probably want to pause and read :ref:`the custom user
+compatibility guide <custom-user>` before using ``django-registration``.
 
 
-Automatic installation via a package manager
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The default workflow
+--------------------
 
-Several automatic package-installation tools are available for Python;
-the recommended one is `pip <http://pip.openplans.org/>`_.
-
-Using ``pip``, type::
-
-    pip install django-registration
-
-It is also possible that your operating system distributor provides a
-packaged version of django-registration (for example, `Debian
-GNU/Linux <http://debian.org/>`_ provides a package, installable via
-``apt-get-install python-django-registration``). Consult your
-operating system's package list for details, but be aware that
-third-party distributions may be providing older versions of
-django-registration, and so you should consult the documentation which
-comes with your operating system's package.
-
-
-Manual installation from a downloaded package
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you prefer not to use an automated package installer, you can
-download a copy of django-registration and install it manually. The
-latest release package can be downloaded from `django-registration's
-listing on the Python Package Index
-<http://pypi.python.org/pypi/django-registration/>`_.
-
-Once you've downloaded the package, unpack it (on most operating
-systems, simply double-click; alternately, type ``tar zxvf
-django-registration-0.9.tar.gz`` at a command line on Linux, Mac OS X
-or other Unix-like systems). This will create the directory
-``django-registration-0.9``, which contains the ``setup.py``
-installation script. From a command line in that directory, type::
-
-    python setup.py install
-
-Note that on some systems you may need to execute this with
-administrative privileges (e.g., ``sudo python setup.py install``).
-
-
-Manual installation from a Mercurial checkout
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If you'd like to try out the latest in-development code, you can
-obtain it from the django-registration repository, which is hosted at
-`Bitbucket <http://bitbucket.org/>`_ and uses `Mercurial
-<http://www.selenic.com/mercurial/wiki/>`_ for version control. To
-obtain the latest code and documentation, you'll need to have
-Mercurial installed, at which point you can type::
-
-    hg clone http://bitbucket.org/ubernostrum/django-registration/
-
-You can also obtain a copy of a particular release of
-django-registration by specifying the ``-r`` argument to ``hg clone``;
-each release is given a tag of the form ``vX.Y``, where "X.Y" is the
-release number. So, for example, to check out a copy of the |version|
-release, type::
-
-    hg clone -r v|version| http://bitbucket.org/ubernostrum/django-registration/
-
-In either case, this will create a copy of the django-registration
-Mercurial repository on your computer; you can then add the
-``django-registration`` directory inside the checkout your Python
-import path, or use the ``setup.py`` script to install as a package.
-
-
-Basic configuration and use
----------------------------
-
-Once installed, you can add django-registration to any Django-based
-project you're developing. The default setup will enable user
-registration with the following workflow:
-
-1. A user signs up for an account by supplying a username, email
-   address and password.
-
-2. From this information, a new ``User`` object is created, with its
-   ``is_active`` field set to ``False``. Additionally, an activation
-   key is generated and stored, and an email is sent to the user
-   containing a link to click to activate the account.
-
-3. Upon clicking the activation link, the new account is made active
-   (the ``is_active`` field is set to ``True``); after this, the user
-   can log in.
-
-Note that the default workflow requires ``django.contrib.auth`` to be
-installed, and it is recommended that ``django.contrib.sites`` be
-installed as well. You will also need to have a working mail server
-(for sending activation emails), and provide Django with the necessary
-settings to make use of this mail server (consult `Django's
-email-sending documentation
-<http://docs.djangoproject.com/en/dev/topics/email/>`_ for details).
-
+The default registration workflow for ``django-registration`` is a
+two-phase process, where a user signs up, then receives an email with
+an activation link and must click it to activate their account prior
+to being able to log in.
 
 Required settings
 ~~~~~~~~~~~~~~~~~
@@ -141,7 +36,8 @@ your project, and specifying one additional setting:
     This is the number of days users will have to activate their
     accounts after registering. If a user does not activate within
     that period, the account will remain permanently inactive and may
-    be deleted by maintenance scripts provided in django-registration.
+    be deleted by maintenance scripts provided in
+    ``django-registration``.
 
 For example, you might have something like the following in your
 Django settings file::
@@ -155,18 +51,17 @@ Django settings file::
     
     ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
-Once you've done this, run ``manage.py syncdb`` to install the model
-used by the default setup.
+Once you've done this, run ``manage.py migrate`` to install the model
+used by the default workflow.
 
 
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
-The :ref:`default backend <default-backend>` includes a Django
-``URLconf`` which sets up URL patterns for :ref:`the views in
-django-registration <views>`, as well as several useful views in
-``django.contrib.auth`` (e.g., login, logout, password
-change/reset). This ``URLconf`` can be found at
+The default workflow includes a Django ``URLconf`` which sets up URL
+patterns for :ref:`the views in django-registration <views>`, as well
+as several useful views in ``django.contrib.auth`` (e.g., login,
+logout, password change/reset). This ``URLconf`` can be found at
 ``registration.backends.default.urls``, and so can simply be included
 in your project's root URL configuration. For example, to place the
 URLs under the prefix ``/accounts/``, you could add the following to
@@ -183,17 +78,19 @@ Another ``URLConf`` is also provided -- at ``registration.auth_urls``
 those at a different location.
 
 
+.. _default-templates:
+
 Required templates
 ~~~~~~~~~~~~~~~~~~
 
 In the default setup, you will need to create several templates
-required by django-registration, and possibly additional templates
-required by views in ``django.contrib.auth``. The templates requires
-by django-registration are as follows; note that, with the exception
-of the templates used for account activation emails, all of these are
-rendered using a ``RequestContext`` and so will also receive any
-additional variables provided by `context processors
-<http://docs.djangoproject.com/en/dev/ref/templates/api/#id1>`_.
+required by ``django-registration``, and possibly additional templates
+required by views in ``django.contrib.auth``. The templates required
+by ``django-registration`` are as follows; note that, with the
+exception of the templates used for account activation emails, all of
+these are rendered using a ``RequestContext`` and so will also receive
+any additional variables provided by `context processors
+<https://docs.djangoproject.com/en/1.8/ref/templates/api/#id1>`_.
 
 **registration/registration_form.html**
 
@@ -203,7 +100,7 @@ the following context:
 ``form``
     The registration form. This will be an instance of some subclass
     of ``django.forms.Form``; consult `Django's forms documentation
-    <http://docs.djangoproject.com/en/dev/topics/forms/>`_ for
+    <https://docs.djangoproject.com/en/1.8/topics/forms/>`_ for
     information on how to display this in a template.
 
 **registration/registration_complete.html**
@@ -245,9 +142,9 @@ being used. This template has the following context:
     depending on whether ``django.contrib.sites`` is installed, this
     may be an instance of either ``django.contrib.sites.models.Site``
     (if the sites application is installed) or
-    ``django.contrib.sites.models.RequestSite`` (if not). Consult `the
-    documentation for the Django sites framework
-    <http://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_ for
+    ``django.contrib.sites.requests.RequestSite`` (if not). Consult
+    `the documentation for the Django sites framework
+    <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/>`_ for
     details regarding these objects' interfaces.
 
 **registration/activation_email.txt**
@@ -268,9 +165,9 @@ following context:
     depending on whether ``django.contrib.sites`` is installed, this
     may be an instance of either ``django.contrib.sites.models.Site``
     (if the sites application is installed) or
-    ``django.contrib.sites.models.RequestSite`` (if not). Consult `the
-    documentation for the Django sites framework
-    <http://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_ for
+    ``django.contrib.sites.requests.RequestSite`` (if not). Consult
+    `the documentation for the Django sites framework
+    <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/>`_ for
     details regarding these objects' interfaces.
 
 Note that the templates used to generate the account activation email
@@ -283,5 +180,39 @@ To make use of the views from ``django.contrib.auth`` (which are set
 up for you by the default URLconf mentioned above), you will also need
 to create the templates required by those views. Consult `the
 documentation for Django's authentication system
-<http://docs.djangoproject.com/en/dev/topics/auth/>`_ for details
+<https://docs.djangoproject.com/en/1.8/topics/auth/>`_ for details
 regarding these templates.
+
+
+The "simple" workflow
+---------------------
+
+Also included is a simpler, one-step registration workflow, where a
+user signs up and their account is immediately active and logged in.
+
+The simple workflow does not require any models other than those
+provided by Django's own authentication system, so only
+``django.contrib.auth`` needs to be in your ``INSTALLED_APPS``
+setting; though you can add ``registration`` as well, it's unneeded
+and will result in unnecessary models (the models used by the default
+workflow) being installed into your database.
+
+You will need to configure URLs to use the simple workflow; the
+easiest way is to simply ``include()`` the URLconf
+``registration.backends.simple.urls`` in your root URLconf. For
+example, to place the URLs under the prefix ``/accounts/`` in your URL
+structure::
+
+    (r'^accounts/', include('registration.backends.simple.urls')),
+
+Users could then register accounts by visiting the URL
+``/accounts/register/``.
+
+This URLconf will also configure the appropriate URLs for the rest of
+the built-in ``django.contrib.auth`` views (log in, log out, password
+reset, etc.).
+
+Finally, you will need to create one template:
+``registration/registration_form.html``. See :ref:`the default
+workflow's template documentation <default-templates>` for details of
+this template's context.
