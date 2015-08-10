@@ -1,9 +1,12 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
 from registration import signals
 from registration.views import RegistrationView as BaseRegistrationView
+
+
+User = get_user_model()
 
 
 class RegistrationView(BaseRegistrationView):

@@ -9,7 +9,7 @@ you're using a custom model.
 """
 
 
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
@@ -23,6 +23,8 @@ FREE_EMAIL = _("Registration using free email addresses is prohibited. "
 DUPLICATE_USER = _("A user with that username already exists.")
 PASSWORD_MISMATCH = _("The two password fields didn't match.")
 TOS_REQUIRED = _("You must agree to the terms to register")
+
+User = get_user_model()
 
 
 class RegistrationForm(forms.Form):
