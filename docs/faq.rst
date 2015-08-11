@@ -11,6 +11,17 @@ emails and other sources.
 General
 -------
 
+**How can I support social-media and other auth schemes, like Facebook or GitHub?**
+
+    By using `django-allauth
+    <https://pypi.python.org/pypi/django-allauth>`_. No single
+    application can or should provide a universal API for every
+    authentication system ever developed; ``django-registration``
+    sticks to making it easy to implement typical signup workflows
+    using Django's own user model and auth system (with some ability
+    to use custom user models), while apps like ``django-allauth``
+    handle the vagaries of social authentication far more effectively.
+
 **What license is django-registration under?**
 
     ``django-registration`` is offered under a three-clause BSD-style
