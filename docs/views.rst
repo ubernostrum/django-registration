@@ -24,8 +24,22 @@ subclassed to implement whatever workflow is required.
    to most of its methods. Subclasses do need to take this into
    account, and accept the ``request`` argument.
 
-   Useful places to override or customize on a ``RegistrationView``
-   subclass are:
+   One method is required:
+
+   .. method:: register(**cleaned_data)
+
+      Implement your registration logic here. ``cleaned_data`` will be
+      the dictionary of data supplied by the user during the
+      registration process (i.e., the ``cleaned_data`` from a valid
+      instance of :class:`registration.forms.RegistrationForm` or a
+      subclass of it).
+
+      This method should return the newly-registered user instance,
+      and should send the signal
+      :data:`registration.signals.user_registered`.
+
+   Useful optional places to override or customize on a
+   ``RegistrationView`` subclass are:
 
    .. attribute:: disallowed_url
 
@@ -75,13 +89,6 @@ subclassed to implement whatever workflow is required.
       Should return a boolean indicating whether user registration is
       allowed, either in general or for this specific request.
 
-   .. method:: register(request, **cleaned_data)
-
-      Actually perform the business of registering a new
-      user. Receives both the ``HttpRequest`` object and all of the
-      ``cleaned_data`` from the registration form. Should return the
-      new user who was just registered.
-
 
 .. class:: ActivationView
 
@@ -90,6 +97,21 @@ subclassed to implement whatever workflow is required.
    which provides support for a separate account-activation step, in
    workflows which require that.
 
+   One method is required:
+
+   .. method:: activate(*args, **kwargs)
+
+      Implement your activation logic here. You are free to configure
+      your URL patterns to pass any set of positional or keyword
+      arguments to ``ActivationView``, and they will in turn be passed
+      to this method.
+
+      This method should return the newly-activated user instance (if
+      activation was successful), or boolean ``False`` if activation
+      was not successful. If the user account was activated, this
+      method should send the signal
+      :data:`registration.signals.user_activated`.
+
    Useful places to override or customize on an ``ActivationView``
    subclass are:
 
@@ -97,15 +119,6 @@ subclassed to implement whatever workflow is required.
 
       The template to use for user activation. Should be a
       string. Default value is ``registration/activate.html``.
-
-   .. method:: activate(request, *args, **kwargs)
-
-      Actually perform the business of activating a user
-      account. Receives the ``HttpRequest`` object and any positional
-      or keyword arguments passed to the view. Should return the
-      activated user account if activation is successful, or any value
-      which evaluates ``False`` in boolean context if activation is
-      unsuccessful.
 
    .. method:: get_success_url(request, user)
 

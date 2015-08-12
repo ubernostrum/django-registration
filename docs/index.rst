@@ -38,6 +38,7 @@ Contents:
    views
    signals
    custom-user
+   upgrade
    faq
 
 .. seealso::
