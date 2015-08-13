@@ -1,6 +1,4 @@
-from django.contrib.auth import authenticate
-from django.contrib.auth import login
-from django.contrib.auth import get_user_model
+from django.contrib.auth import authenticate, get_user_model, login
 
 from registration import signals
 from registration.views import RegistrationView as BaseRegistrationView
