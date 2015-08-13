@@ -1,6 +1,5 @@
 import datetime
 import hashlib
-import re
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -10,7 +9,7 @@ from django.core import management
 from django.test import TestCase
 from django.utils.six import text_type
 
-from ..models import RegistrationProfile
+from ..models import RegistrationProfile, SHA1_RE
 
 
 class RegistrationModelTests(TestCase):
@@ -43,7 +42,7 @@ class RegistrationModelTests(TestCase):
 
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(profile.user.id, new_user.id)
-        self.assertTrue(re.match('^[a-f0-9]{40}$', profile.activation_key))
+        self.assertTrue(SHA1_RE.match(profile.activation_key))
         self.assertEqual(text_type(profile),
                          "Registration information for alice")
 
