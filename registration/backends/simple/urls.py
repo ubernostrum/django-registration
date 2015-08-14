@@ -20,7 +20,7 @@ your own URL patterns for these views instead.
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
-from registration.backends.simple.views import RegistrationView
+from .views import RegistrationView
 
 
 urlpatterns = [
