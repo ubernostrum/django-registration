@@ -15,9 +15,20 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='RegistrationProfile',
             fields=[
-                ('id', models.AutoField(primary_key=True, serialize=False, auto_created=True, verbose_name='ID')),
-                ('activation_key', models.CharField(verbose_name='activation key', max_length=40)),
-                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, verbose_name='user')),
+                ('id',
+                 models.AutoField(
+                     primary_key=True,
+                     serialize=False,
+                     auto_created=True,
+                     verbose_name='ID')),
+                ('activation_key',
+                 models.CharField(
+                     verbose_name='activation key',
+                     max_length=40)),
+                ('user',
+                 models.OneToOneField(
+                     to=settings.AUTH_USER_MODEL,
+                     verbose_name='user')),
             ],
             options={
                 'verbose_name': 'registration profile',
