@@ -58,14 +58,14 @@ used by the default workflow.
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
-The default workflow includes a Django ``URLconf`` which sets up URL
+The default workflow includes a Django URLconf which sets up URL
 patterns for :ref:`the views in django-registration <views>`, as well
 as several useful views in ``django.contrib.auth`` (e.g., login,
-logout, password change/reset). This ``URLconf`` can be found at
+logout, password change/reset). This URLconf can be found at
 ``registration.backends.default.urls``, and so can simply be included
 in your project's root URL configuration. For example, to place the
 URLs under the prefix ``/accounts/``, you could add the following to
-your project's root ``URLconf``::
+your project's root URLconf::
 
     (r'^accounts/', include('registration.backends.default.urls')),
 
