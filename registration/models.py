@@ -1,3 +1,10 @@
+"""
+Model and manager used by the two-step (sign up, then activate)
+workflow. If you're not using that workflow, you don't need to have
+'registration' in your INSTALLED_APPS.
+
+"""
+
 import datetime
 import hashlib
 import re
