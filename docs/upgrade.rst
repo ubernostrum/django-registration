@@ -6,7 +6,7 @@ Upgrading from previous versions
 
 Prior to |version|, the last widely-deployed release of
 ``django-registration`` was 0.8; a 1.0 release was published, and
-|version| is backwards-compatible with it, but appears not to have
+|version| is backwards-compatible with it, but 1.0 appears not to have
 seen wide adoption. As such, this guide covers the process of
 upgrading from ``django-registration`` 0.8.
 
