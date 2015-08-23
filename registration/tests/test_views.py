@@ -14,13 +14,18 @@ class ActivationViewTests(TestCase):
         simple string URL as the success redirect.
 
         """
+        data = {
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password1': 'secret',
+            'password2': 'secret'
+        }
         resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+                                data=data)
 
-        profile = RegistrationProfile.objects.get(user__username='bob')
+        profile = RegistrationProfile.objects.get(
+            user__username=data['username']
+        )
 
         resp = self.client.get(reverse(
             'registration_activate',
