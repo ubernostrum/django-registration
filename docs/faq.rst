@@ -47,7 +47,33 @@ General
     <https://github.com/ubernostrum/django-registration>. Issues and
     pull requests can both be filed there.
 
+**How secure is django-registration?**
 
+   In the eight-year history of ``django-registration``, there have
+   been no security issues reported which required new releases to
+   remedy. This doesn't mean, though, that ``django-registration`` is
+   perfectly secure: much will depend on ensuring best practices in
+   deployment and server configuration, and there could always be
+   security issues that just haven't been recognized yet.
+
+   ``django-registration`` does, however, try to avoid common security
+   issues:
+
+   * ``django-registration`` |version| only supports versions of
+     Django which were receiving upstream security support at the time
+     of release.
+
+   * ``django-registration`` does not attempt to generate or store
+     passwords, and does not transmit credentials which could be used
+     to log in (the only "credential" ever sent out by
+     ``django-registration`` is an activation key used in the default
+     two-step workflow, and that key can only be used to make an
+     account active; it cannot be used to log in).
+
+   * ``django-registration`` works with Django's own security features
+     where possible, rather than reinventing its own.
+
+   
 Installation and setup
 ----------------------
 
