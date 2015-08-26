@@ -28,6 +28,7 @@ for dirpath, dirnames, filenames in os.walk('registration'):
 
 
 setup(name='django-registration',
+      zip_safe=False,  # eggs are the devil.
       version=get_version().replace(' ', '-'),
       description='An extensible user-registration application for Django',
       author='James Bennett',
