@@ -10,7 +10,7 @@ from registration.views import RegistrationView as BaseRegistrationView
 
 class RegistrationView(BaseRegistrationView):
     """
-    A registration backend which follows a simple workflow:
+    A multi-step user registration workflow:
 
     1. User signs up, inactive account is created.
 
@@ -18,10 +18,10 @@ class RegistrationView(BaseRegistrationView):
 
     3. User clicks activation link, account is now active.
 
-    Using this backend requires that
+    Using this workflow requires that
 
     * ``registration`` be listed in the ``INSTALLED_APPS`` setting
-      (since this backend makes use of models defined in this
+      (since this workflow makes use of models defined in this
       application).
 
     * The setting ``ACCOUNT_ACTIVATION_DAYS`` be supplied, specifying
@@ -32,8 +32,8 @@ class RegistrationView(BaseRegistrationView):
     * The creation of the templates
       ``registration/activation_email_subject.txt`` and
       ``registration/activation_email.txt``, which will be used for
-      the activation email. See the notes for this backends
-      ``register`` method for details regarding these templates.
+      the activation email. See the notes for the ``register`` method
+      for details regarding these templates.
 
     Additionally, registration can be temporarily closed by adding the
     setting ``REGISTRATION_OPEN`` and setting it to
@@ -68,7 +68,7 @@ class RegistrationView(BaseRegistrationView):
         the activation email is sent, the signal
         ``registration.signals.user_registered`` will be sent, with
         the new ``User`` as the keyword argument ``user`` and the
-        class of this backend as the sender.
+        class of this view as the sender.
 
         """
         username, email, password = (cleaned_data['username'],
@@ -104,7 +104,7 @@ class ActivationView(BaseActivationView):
         After successful activation, the signal
         ``registration.signals.user_activated`` will be sent, with the
         newly activated ``User`` as the keyword argument ``user`` and
-        the class of this backend as the sender.
+        the class of this view as the sender.
 
         """
         activation_key = kwargs.get('activation_key')

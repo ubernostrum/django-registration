@@ -9,10 +9,9 @@ User = get_user_model()
 
 class RegistrationView(BaseRegistrationView):
     """
-    A registration backend which implements the simplest possible
-    workflow: a user supplies a username, email address and password
-    (the bare minimum for a useful account), and is immediately signed
-    up and logged in).
+    Registration via the simplest possible workflow: a user supplies a
+    username, email address and password (the bare minimum for a
+    useful account), and is immediately signed up and logged in).
 
     """
     def register(self, **cleaned_data):

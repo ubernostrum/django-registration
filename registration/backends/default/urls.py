@@ -1,6 +1,6 @@
 """
 URLconf for registration and activation, using django-registration's
-default backend.
+default workflow.
 
 If the default behavior of these views is acceptable to you, simply
 use a line like this in your root URLconf to set up the default URLs
