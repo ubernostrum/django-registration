@@ -10,6 +10,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
 
+@override_settings(ROOT_URLCONF='registration.backends.default.urls')
 class DefaultBackendViewTests(TestCase):
     """
     Test the default registration backend.
@@ -20,8 +21,6 @@ class DefaultBackendViewTests(TestCase):
     the default backend.
 
     """
-    urls = 'registration.backends.default.urls'
-
     @override_settings(REGISTRATION_OPEN=True)
     def test_registration_open(self):
         """

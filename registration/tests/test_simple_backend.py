@@ -5,9 +5,8 @@ from django.test import override_settings, TestCase
 from registration.forms import RegistrationForm
 
 
+@override_settings(ROOT_URLCONF='registration.backends.simple.urls')
 class SimpleBackendViewTests(TestCase):
-    urls = 'registration.backends.simple.urls'
-
     @override_settings(REGISTRATION_OPEN=True)
     def test_registration_open(self):
         """

@@ -4,9 +4,8 @@ from django.test import override_settings, TestCase
 from ..models import RegistrationProfile
 
 
+@override_settings(ROOT_URLCONF='registration.tests.urls')
 class ActivationViewTests(TestCase):
-    urls = 'registration.tests.urls'
-
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
