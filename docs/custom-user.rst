@@ -61,7 +61,9 @@ following fields, which are found on Django's default user model:
 Additionally, the default workflow requires that the user model define
 a manager class named ``objects``, and that this manager class provide
 a method ``create_user``, which will create and return a user instance
-from the arguments ``username``, ``email``, and ``password``.
+from the arguments ``username``, ``email``, and ``password``, and
+requires that the user model provide the ``email_user`` method on
+instances.
 
 The simple one-step workflow requires ``username``, ``email`` and
 ``password``, and requires the existence of an ``objects`` manager
