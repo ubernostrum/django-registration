@@ -19,10 +19,10 @@ class RegistrationView(BaseRegistrationView):
     A two-step -- signup, followed by activation -- registration
     workflow.
 
-    This is different from django-registration's default workflow in
-    that the activation key is not stored in the database; instead,
-    the activation key is simply the new account's username, signed
-    using Django's TimestampSigner.
+    This is different from django-registration's model-based
+    activation workflow in that the activation key is not stored in
+    the database; instead, the activation key is simply the new
+    account's username, signed using Django's TimestampSigner.
 
     """
     email_body_template = 'registration/activation_email.txt'
