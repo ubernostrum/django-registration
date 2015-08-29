@@ -10,7 +10,7 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
 
-@override_settings(ROOT_URLCONF='registration.backends.default.urls')
+@override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')
 class DefaultBackendViewTests(TestCase):
     """
     Test the default registration backend.

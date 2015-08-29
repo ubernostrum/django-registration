@@ -4,7 +4,7 @@ built-in backends.
 
 """
 
-from registration.backends.default.views import ActivationView
+from registration.backends.model_activation.views import ActivationView
 
 
 class ActivateWithSimpleRedirect(ActivationView):
