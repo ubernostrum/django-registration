@@ -18,19 +18,20 @@ you'll probably want to pause and read :ref:`the custom user
 compatibility guide <custom-user>` before using ``django-registration``.
 
 
-The default workflow
---------------------
+Configuration
+-------------
 
-The default registration workflow for ``django-registration`` is a
+The recommended registration workflow for ``django-registration`` is a
 two-phase process, where a user signs up, then receives an email with
-an activation link and must click it to activate their account prior
-to being able to log in.
+an activation link (containing a signed activation key generated
+during signup) and must click it to activate their account prior to
+being able to log in.
+
 
 Required settings
 ~~~~~~~~~~~~~~~~~
 
-Begin by adding ``registration`` to the ``INSTALLED_APPS`` setting of
-your project, and specifying one additional setting:
+Begin by adding the following setting to your Django settings file:
 
 ``ACCOUNT_ACTIVATION_DAYS``
     This is the number of days users will have to activate their
@@ -42,32 +43,37 @@ your project, and specifying one additional setting:
 For example, you might have something like the following in your
 Django settings file::
 
-    INSTALLED_APPS = (
-        'django.contrib.auth',
-        'django.contrib.sites',
-        'registration',
-        # ...other installed applications...
-    )
-    
     ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
-Once you've done this, run ``manage.py migrate`` to install the model
-used by the default workflow.
+You'll also need to have ``django.contrib.auth`` in your
+``INSTALLED_APPS`` setting, since all of the registration workflows in
+``django-registration`` make use of it.
+
+.. warning:: You should **not** add ``registration`` to your
+   ``INSTALLED_APPS`` setting if you're following this document. This
+   guide is walking you through setup of the :ref:`the HMAC activation
+   workflow <hmac-workflow>`, and that does not make use of any custom
+   models or other features which require ``registration`` to be in
+   ``INSTALLED_APPS``. Only add ``registration`` to your
+   ``INSTALLED_APPS`` setting if you're using :ref:`the model-based
+   activation workflow <model-workflow>`, or something derived from
+   it.
 
 
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
-The default workflow includes a Django URLconf which sets up URL
-patterns for :ref:`the views in django-registration <views>`, as well
-as several useful views in ``django.contrib.auth`` (e.g., login,
-logout, password change/reset). This URLconf can be found at
-``registration.backends.default.urls``, and so can simply be included
-in your project's root URL configuration. For example, to place the
-URLs under the prefix ``/accounts/``, you could add the following to
-your project's root URLconf::
+Each bundled registration workflow in ``django-registration`` includes
+a Django URLconf which sets up URL patterns for :ref:`the views in
+django-registration <views>`, as well as several useful views in
+``django.contrib.auth`` (e.g., login, logout, password
+change/reset). The URLconf for the recommended two-phase workflow can
+be found at ``registration.backends.hmac.urls``, and so can simply
+be included in your project's root URL configuration. For example, to
+place the URLs under the prefix ``/accounts/``, you could add the
+following to your project's root URLconf::
 
-    (r'^accounts/', include('registration.backends.default.urls')),
+    (r'^accounts/', include('registration.backends.hmac.urls')),
 
 Users would then be able to register by visiting the URL
 ``/accounts/register/``, login (once activated) at
@@ -83,13 +89,13 @@ those at a different location.
 Required templates
 ~~~~~~~~~~~~~~~~~~
 
-In the default setup, you will need to create several templates
-required by ``django-registration``, and possibly additional templates
-required by views in ``django.contrib.auth``. The templates required
-by ``django-registration`` are as follows; note that, with the
-exception of the templates used for account activation emails, all of
-these are rendered using a ``RequestContext`` and so will also receive
-any additional variables provided by `context processors
+Tou will also need to create several templates required by
+``django-registration``, and possibly additional templates required by
+views in ``django.contrib.auth``. The templates required by
+``django-registration`` are as follows; note that, with the exception
+of the templates used for account activation emails, all of these are
+rendered using a ``RequestContext`` and so will also receive any
+additional variables provided by `context processors
 <https://docs.djangoproject.com/en/1.8/ref/templates/api/#id1>`_.
 
 **registration/registration_form.html**
@@ -187,8 +193,9 @@ regarding these templates.
 The "simple" workflow
 ---------------------
 
-Also included is a simpler, one-step registration workflow, where a
-user signs up and their account is immediately active and logged in.
+Also included is a simpler, :ref:`one-step registration workflow
+<simple-workflow>`, where a user signs up and their account is
+immediately active and logged in.
 
 The simple workflow does not require any models other than those
 provided by Django's own authentication system, so only
@@ -213,6 +220,19 @@ the built-in ``django.contrib.auth`` views (log in, log out, password
 reset, etc.).
 
 Finally, you will need to create one template:
-``registration/registration_form.html``. See :ref:`the default
-workflow's template documentation <default-templates>` for details of
-this template's context.
+``registration/registration_form.html``. See the list of templates
+above for details of this template's context.
+
+
+The model-based activation workflow
+-----------------------------------
+
+There is a third workflow bundled with ``django-registration``,
+:ref:`the model-based activation workflow <model-workflow>`. In older
+releases, this was the default workflow, but now :ref:`the HMAC
+activation workflow <hmac-workflow>` (which is what you'll set up if
+you follow the instructions above) is recommended instead.
+
+You can still use the model-based workflow if you wish, or if you need
+it for compatibility with an existing installation of
+``django-registration``.

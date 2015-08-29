@@ -2,10 +2,11 @@
 .. module:: registration.backends.simple
 
 The "simple" (one-step) workflow
-===============================
+================================
 
-As an alternative to :ref:`the default registration workflow
-<default-workflow>`, and an example of writing alternate workflows,
+As an alternative to the :ref:`HMAC <hmac-workflow>` and
+:ref:`model-based <model-workflow>` two-step (registration and
+activation) systems, and an example of writing alternate workflows,
 ``django-registration`` bundles a one-step registration system in
 ``registration.backend.simple``. This workflow is deliberately as
 simple as possible:
@@ -36,7 +37,9 @@ supported:
     ``True`` will be assumed if this setting is not supplied.
 
 Upon successful registration, the user will be redirected to the
-site's home page -- the URL ``/``.
+site's home page -- the URL ``/``. This can be changed by subclassing
+``registration.backends.simple.views.RegistrationView`` and overriding
+the method ``get_success_url()``.
 
 The default form class used for account registration will be
 :class:`registration.forms.RegistrationForm`, although this can be
@@ -46,3 +49,22 @@ and passing the keyword argument ``form_class``, or by subclassing
 overriding ``form_class`` or implementing
 :meth:`~registration.views.RegistrationView.get_form_class()`, and
 specifying the custom subclass in your URL patterns.
+
+
+Templates
+---------
+
+The one-step workflow uses only one custom template:
+
+**registration/registration_form.html**
+
+Used to show the form users will fill out to register. By default, has
+the following context:
+
+``form``
+    The registration form. This will be an instance of some subclass
+    of ``django.forms.Form``; consult `Django's forms documentation
+    <https://docs.djangoproject.com/en/1.8/topics/forms/>`_ for
+    information on how to display this in a template.
+
+

@@ -1,14 +1,23 @@
-.. _default-workflow:
-.. module:: registration.backends.default
+.. _model-workflow:
+.. module:: registration.backends.model_activation
 
-The default workflow
-====================
+The two-step model-based workflow
+=================================
 
-The default workflow bundled with ``django-registration`` is in the
-module ``registration.backends.default``, and implements a two-step
-process in which a new user first registers, then confirms and
-activates the new account by following a link sent to the email
-address supplied during registration.
+This workflow implements a two-step -- registration, followed by
+activation -- process for user signup. It was formerly the default
+registration workflow of ``django-registration``, though for two-step
+(registration and activation) signup, :ref:`the HMAC activation
+workflow <hmac-workflow>` is now recommended.
+
+If you still want to make use of this workflow, however, you can
+follow the instructions below.
+
+Also, note that this workflow was previously found in
+``registration.backends.default``, and imports from that location
+still function in ``django-registration`` |version| but now raise
+deprecation warnings. The correct location going forward is
+``registration.backends.model_activation``.
 
 
 Default behavior and configuration
@@ -16,8 +25,9 @@ Default behavior and configuration
 
 To make use of this workflow, simply add ``registration`` to your
 ``INSTALLED_APPS``, run ``manage.py migrate`` to install its model,
-and include the URLconf ``registration.backends.default.urls`` at
-whatever location you choose in your URL hierarchy.
+and include the URLconf
+``registration.backends.model_activation.urls`` at whatever location
+you choose in your URL hierarchy.
 
 This workflow makes use of the following settings:
 
@@ -39,9 +49,9 @@ user registration; this can be overridden by passing the keyword
 argument ``form_class`` to the registration view.
 
 Two views are provided:
-``registration.backends.default.views.RegistrationView`` and
-``registration.backends.default.views.ActivationView``. These views
-subclass ``django-registration``'s base
+``registration.backends.model_activation.views.RegistrationView`` and
+``registration.backends.model_activation.views.ActivationView``. These
+views subclass ``django-registration``'s base
 :class:`~registration.views.RegistrationView` and
 :class:`~registration.views.ActivationView`, respectively, and
 implement the two-step registration/activation process.
@@ -51,6 +61,11 @@ redirected to the URL pattern named ``registration_complete``.
 
 Upon successful activation, the user will be redirected to the URL
 pattern named ``registration_activation_complete``.
+
+This workflow uses the same templates and contexts as :ref:`the HMAC
+activation workflow <hmac-activation>`, which is covered in :ref:`the
+quick-start guide <quickstart>`. Refer to the quick-start guide for
+documentation on those templates and their contexts.
 
 
 How account data is stored for activation

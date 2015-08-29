@@ -27,23 +27,23 @@ them.
 Using the built-in workflows
 ----------------------------
 
-If you want to use either the :ref:`default two-step
-<default-workflow>` or the :ref:`simpler one-step <simple-workflow>`
-built in to ``django-registration``, there is some accommodation for
-custom user models. The default workflow uses a model with a
-``OneToOneField`` to the user model, and uses the recommended practice
-of referring to it via the ``settings.AUTH_USER_MODEL`` setting. Both
-the default and the simple workflows also avoid importing or directly
-referring to Django's default user model, instead using the
-``get_user_model()`` helper provided in ``django.contrib.auth`` to
-obtain a reference to whatever model has been specified to represent
-users.
+If you want to use one of the registration workflows built in to
+``django-registration``, there is some accommodation for custom user
+models. :ref:`The two-step model workflow <model-workflow>` uses a
+model with a ``OneToOneField`` to the user model, and uses the
+recommended practice of referring to it via the
+``settings.AUTH_USER_MODEL`` setting. All built-in workflows also
+avoid importing or directly referring to Django's default user model,
+instead using the ``get_user_model()`` helper provided in
+``django.contrib.auth`` to obtain a reference to whatever model has
+been specified to represent users.
 
-However, both of these workflows do make some assumptions about the
+However, all of these workflows do make some assumptions about the
 structure of your user model.
 
-The default workflow requires that your user model define the
-following fields, which are found on Django's default user model:
+The two-step workflows (both model-based and :ref:`HMAC-based
+<hmac-workflow>` require that your user model define the following
+fields, which are found on Django's default user model:
 
 * ``username`` -- a ``CharField`` holding the user's username.
 
@@ -55,14 +55,16 @@ following fields, which are found on Django's default user model:
 * ``is_active`` -- a ``BooleanField`` indicating whether the user's
   account is active.
 
+Additionally, the model-based workflow requires this field:
+
 * ``date_joined`` -- a ``DateField`` or ``DateTimeField`` indicating
   when the user joined the site.
 
-Additionally, the default workflow requires that the user model define
-a manager class named ``objects``, and that this manager class provide
-a method ``create_user``, which will create and return a user instance
-from the arguments ``username``, ``email``, and ``password``, and
-requires that the user model provide the ``email_user`` method on
+The model-based and HMAC workflows also require that the user model
+define a manager class named ``objects``, and that this manager class
+provide a method ``create_user``, which will create and return a user
+instance from the arguments ``username``, ``email``, and ``password``,
+and require that the user model provide the ``email_user`` method on
 instances.
 
 The simple one-step workflow requires ``username``, ``email`` and
@@ -71,12 +73,13 @@ defining ``create_user``, as in the default workflow.
 
 If your custom user model cannot meet these API requirements, your
 only option for using ``django-registration`` will be to write your
-own workflow.
+own registration workflow.
 
 If you wish to write your own subclasses of the forms and views from
-the default workflow, but customizing them to an incompatible custom
-user model, also note that you **must not** add ``registration`` to
-your ``INSTALLED_APPS`` setting, as doing so would install the default
-workflow's :class:`~registration.models.RegistrationProfile` model,
-which does make the above-noted assumptions about the structure of
-your user model.
+the model-based workflow, but will be customizing them to an
+incompatible custom user model, also note that you **must not** add
+``registration`` to your ``INSTALLED_APPS`` setting, as doing so would
+install the default workflow's
+:class:`~registration.models.RegistrationProfile` model, which does
+make the above-noted assumptions about the structure of your user
+model.

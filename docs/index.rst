@@ -32,8 +32,9 @@ Contents:
    
    install
    quickstart
-   default-workflow
+   hmac
    simple-workflow
+   model-workflow
    forms
    views
    signals

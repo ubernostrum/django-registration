@@ -71,7 +71,8 @@ General
      account active; it cannot be used to log in).
 
    * ``django-registration`` works with Django's own security features
-     where possible, rather than reinventing its own.
+     (including cryptographic features) where possible, rather than
+     reinventing its own.
 
    
 Installation and setup
@@ -106,6 +107,17 @@ Installation and setup
 
 Configuration
 -------------
+
+**Should I used the model-based or HMAC activation workflow?**
+
+    You're free to choose whichever one you think best fits your
+    needs. However, :ref:`the model-based workflow <model-workflow>`
+    is mostly provided for backwards compatibility with older versions
+    of ``django-registration``; it dates to 2007, and though it is
+    still as functional as ever, :ref:`the HMAC workflow
+    <hmac-workflow>` has less overhead (i.e., no need to install or
+    work with any models) due to being able to take advantage of more
+    modern features in Django.
 
 **Do I need to rewrite the views to change the way they behave?**
 
@@ -150,8 +162,8 @@ Tips and tricks
 
 **How do I re-send an activation email?**
 
-    Assuming you're using :ref:`the default workflow
-    <default-workflow>`, a `custom admin action
+    Assuming you're using :ref:`the model-based workflow
+    <model-workflow>`, a `custom admin action
     <http://docs.djangoproject.com/en/1.8/ref/contrib/admin/actions/>`_
     is provided for this; in the admin for the
     :class:`~registration.models.RegistrationProfile` model, simply
@@ -160,7 +172,10 @@ Tips and tricks
 
 **How do I manually activate a user?**
 
-    In the default workflow, a custom admin action is provided for
+    In the model-based workflow, a custom admin action is provided for
     this. In the admin for the ``RegistrationProfile`` model, click
     the checkbox for the user(s) you'd like to activate, then select
     the "Activate users" action.
+
+    In the HMAC-based workflow, simply toggle the ``is_active`` field
+    of the user in the admin.
