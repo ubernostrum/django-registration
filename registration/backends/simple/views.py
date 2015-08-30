@@ -18,7 +18,12 @@ class RegistrationView(BaseRegistrationView):
         username, email, password = (cleaned_data['username'],
                                      cleaned_data['email'],
                                      cleaned_data['password1'])
-        User.objects.create_user(username, email, password)
+        user_kwargs = {
+            User.USERNAME_FIELD: username,
+            'email': email,
+            'password': password,
+        }
+        User.objects.create_user(**user_kwargs)
 
         new_user = authenticate(username=username, password=password)
         login(self.request, new_user)

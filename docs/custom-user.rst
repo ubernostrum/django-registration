@@ -45,8 +45,6 @@ The two-step workflows (both model-based and :ref:`HMAC-based
 <hmac-workflow>` require that your user model define the following
 fields, which are found on Django's default user model:
 
-* ``username`` -- a ``CharField`` holding the user's username.
-
 * ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
   email address.
 
@@ -54,6 +52,9 @@ fields, which are found on Django's default user model:
 
 * ``is_active`` -- a ``BooleanField`` indicating whether the user's
   account is active.
+
+You also *must* specify the attribute ``USERNAME_FIELD`` on your
+custom user model, and that field must accept string values.
 
 Additionally, the model-based workflow requires this field:
 

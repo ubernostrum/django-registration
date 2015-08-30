@@ -50,7 +50,12 @@ class RegistrationView(BaseRegistrationView):
 
         """
         User = get_user_model()
-        new_user = User.objects.create_user(username, email, password)
+        user_kwargs = {
+            User.USERNAME_FIELD: username,
+            'email': email,
+            'password': password,
+        }
+        new_user = User.objects.create_user(**user_kwargs)
         new_user.is_active = False
         new_user.save()
 
@@ -64,8 +69,11 @@ class RegistrationView(BaseRegistrationView):
         username, signed using TimestampSigner.
 
         """
+        User = get_user_model()
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign(user.username)
+        activation_key = signer.sign(
+            str(getattr(user, User.USERNAME_FIELD))
+        )
 
         if apps.is_installed('django.contrib.sites'):
             site = Site.objects.get_current()
@@ -108,8 +116,11 @@ class ActivationView(BaseActivationView):
             return False
 
         User = get_user_model()
+        lookup_kwargs = {
+            User.USERNAME_FIELD: username
+        }
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(**lookup_kwargs)
         except User.DoesNotExist:
             return False
 

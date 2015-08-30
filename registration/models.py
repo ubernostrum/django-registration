@@ -81,7 +81,12 @@ class RegistrationManager(models.Manager):
 
         """
         User = get_user_model()
-        new_user = User.objects.create_user(username, email, password)
+        user_kwargs = {
+            User.USERNAME_FIELD: username,
+            'email': email,
+            'password': password,
+        }
+        new_user = User.objects.create_user(**user_kwargs)
         new_user.is_active = False
         new_user.save()
 
@@ -103,8 +108,9 @@ class RegistrationManager(models.Manager):
         username and a random salt.
 
         """
-        hash_input = (get_random_string(5) +
-                      user.username).encode('utf-8')
+        User = get_user_model()
+        username = str(getattr(user, User.USERNAME_FIELD))
+        hash_input = (get_random_string(5) + username).encode('utf-8')
         activation_key = hashlib.sha1(hash_input).hexdigest()
         return self.create(user=user,
                            activation_key=activation_key)
