@@ -71,15 +71,13 @@ class RegistrationView(BaseRegistrationView):
         class of this view as the sender.
 
         """
-        username, email, password = (cleaned_data['username'],
-                                     cleaned_data['email'],
-                                     cleaned_data['password1'])
         if apps.is_installed('django.contrib.sites'):
             site = Site.objects.get_current()
         else:
             site = RequestSite(self.request)
         new_user = RegistrationProfile.objects.create_inactive_user(
-            username, email, password, site
+            site=site,
+            **self.get_user_kwargs(**cleaned_data)
         )
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,

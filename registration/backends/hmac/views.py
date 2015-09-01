@@ -29,11 +29,8 @@ class RegistrationView(BaseRegistrationView):
     email_subject_template = 'registration/activation_email_subject.txt'
 
     def register(self, **cleaned_data):
-        username, email, password = (cleaned_data['username'],
-                                     cleaned_data['email'],
-                                     cleaned_data['password1'])
         new_user = self.create_inactive_user(
-            username, email, password
+            **self.get_user_kwargs(**cleaned_data)
         )
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,

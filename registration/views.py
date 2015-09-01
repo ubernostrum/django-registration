@@ -4,6 +4,7 @@ Views which allow users to create and activate accounts.
 """
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
@@ -70,6 +71,24 @@ class RegistrationView(FormView):
 
         """
         raise NotImplementedError
+
+    def get_user_kwargs(self, **cleaned_data):
+        """
+        Given the cleaned_data from the registration form, return from
+        them a dictionary of keyword arguments which can be passed to
+        ``create_user()``. By default, this is a dictionary with
+        values for User.USERNAME_FIELD, email, and password, to match
+        the signature of Django's default User implementation, and
+        assumes the field names of the default RegistrationForm class.
+
+        """
+        User = get_user_model()
+        return {
+            User.USERNAME_FIELD: cleaned_data['username'],
+            'email': cleaned_data['email'],
+            'password': cleaned_data['password1'],
+        }
+
 
 
 class ActivationView(TemplateView):
