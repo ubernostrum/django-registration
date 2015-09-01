@@ -89,6 +89,17 @@ subclassed to implement whatever workflow is required.
       Should return a boolean indicating whether user registration is
       allowed, either in general or for this specific request.
 
+   .. method:: get_user_kwargs(**cleaned_data)
+
+      Given the cleaned_data from the registration form, return from
+      them a dictionary of keyword arguments to be used in
+      user-account creation. By default, this is a dictionary with
+      values for the ``USERNAME_FIELD`` of the user model, along with
+      email and password, to match the signature of Django's default
+      ``User.objects.create_user()`` implementation, and assumes the
+      field names of the default
+      :class:`~registration.forms.RegistrationForm` class.
+
 
 .. class:: ActivationView
 
