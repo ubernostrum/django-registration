@@ -90,7 +90,6 @@ class RegistrationView(FormView):
         }
 
 
-
 class ActivationView(TemplateView):
     """
     Base class for user activation views.
