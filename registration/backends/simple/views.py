@@ -15,8 +15,6 @@ class RegistrationView(BaseRegistrationView):
 
     """
     def register(self, **cleaned_data):
-        User = get_user_model()
-
         user_kwargs = self.get_user_kwargs(**cleaned_data)
         User.objects.create_user(**user_kwargs)
         user_kwargs.pop('email')
