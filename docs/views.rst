@@ -45,8 +45,8 @@ subclassed to implement whatever workflow is required.
 
       The URL to redirect to when registration is disallowed. Should
       be a string, `the name of a URL pattern
-      <https://docs.djangoproject.com/en/1.8/topics/http/urls/#naming-url-patterns>`_. Default
-      value is ``registration_disallowed``.
+      <https://docs.djangoproject.com/en/1.8/topics/http/urls/#naming-url-patterns>`_.
+      Default value is ``registration_disallowed``.
 
    .. attribute:: form_class
 

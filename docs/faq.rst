@@ -66,8 +66,8 @@ General
    * ``django-registration`` does not attempt to generate or store
      passwords, and does not transmit credentials which could be used
      to log in (the only "credential" ever sent out by
-     ``django-registration`` is an activation key used in the default
-     two-step workflow, and that key can only be used to make an
+     ``django-registration`` is an activation key used in the two-step
+     activation workflows, and that key can only be used to make an
      account active; it cannot be used to log in).
 
    * ``django-registration`` works with Django's own security features

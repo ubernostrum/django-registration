@@ -70,7 +70,7 @@ instances.
 
 The simple one-step workflow requires ``username``, ``email`` and
 ``password``, and requires the existence of an ``objects`` manager
-defining ``create_user``, as in the default workflow.
+defining ``create_user``, as in the two-step workflows.
 
 If your custom user model cannot meet these API requirements, your
 only option for using ``django-registration`` will be to write your
