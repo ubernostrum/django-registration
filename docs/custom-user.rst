@@ -42,7 +42,7 @@ However, all of these workflows do make some assumptions about the
 structure of your user model.
 
 The two-step workflows (both model-based and :ref:`HMAC-based
-<hmac-workflow>` require that your user model define the following
+<hmac-workflow>`) require that your user model define the following
 fields, which are found on Django's default user model:
 
 * ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
@@ -68,9 +68,10 @@ instance from the arguments ``username``, ``email``, and ``password``,
 and require that the user model provide the ``email_user`` method on
 instances.
 
-The simple one-step workflow requires ``username``, ``email`` and
-``password``, and requires the existence of an ``objects`` manager
-defining ``create_user``, as in the two-step workflows.
+The simple one-step workflow requires ``USERNAME_FIELD`` to be
+specified (and for that field to accept strings), requires ``email``
+and ``password``, fields, and requires the existence of an ``objects``
+manager defining ``create_user``, as in the two-step workflows.
 
 If your custom user model cannot meet these API requirements, your
 only option for using ``django-registration`` will be to write your

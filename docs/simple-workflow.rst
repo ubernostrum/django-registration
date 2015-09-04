@@ -6,10 +6,9 @@ The "simple" (one-step) workflow
 
 As an alternative to the :ref:`HMAC <hmac-workflow>` and
 :ref:`model-based <model-workflow>` two-step (registration and
-activation) systems, and an example of writing alternate workflows,
-``django-registration`` bundles a one-step registration system in
-``registration.backend.simple``. This workflow is deliberately as
-simple as possible:
+activation) systems, ``django-registration`` bundles a one-step
+registration system in ``registration.backend.simple``. This workflow
+is deliberately as simple as possible:
 
 1. A user signs up by filling out a registration form.
 

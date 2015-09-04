@@ -136,10 +136,10 @@ Configuration
     
 **I don't want to write my own URLconf because I don't want to write patterns for all the auth views!**
 
-    You're in luck, then; django-registration provides a URLconf which
-    *only* contains the patterns for the auth views, and which you can
-    include in your own URLconf anywhere you'd like; it lives at
-    ``registration.auth_urls``.
+    You're in luck, then; ``django-registration`` provides a URLconf
+    which *only* contains the patterns for the auth views, and which
+    you can include in your own URLconf anywhere you'd like; it lives
+    at ``registration.auth_urls``.
 
 **I don't like the names you've given to the URL patterns!**
 

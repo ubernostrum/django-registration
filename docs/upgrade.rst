@@ -57,6 +57,12 @@ class-based views:
 | ``registration.views.activate`` | ``registration.views.ActivationView.as_view()``   |
 +---------------------------------+---------------------------------------------------+
 
+However, if you were using the two-step model-activation backend, you
+should consider referring to
+``registration.backends.model_activation.urls`` instead of
+``registration.backends.default.urls``, as the latter is deprecated
+and support for it will be removed in a future release.
+
 If you were passing custom arguments to the built-in registration
 views, those arguments should continue to work, so long as your
 URLconf is updated to refer to the new class-based views. For details

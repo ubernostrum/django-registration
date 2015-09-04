@@ -63,9 +63,9 @@ Upon successful activation, the user will be redirected to the URL
 pattern named ``registration_activation_complete``.
 
 This workflow uses the same templates and contexts as :ref:`the HMAC
-activation workflow <hmac-activation>`, which is covered in :ref:`the
-quick-start guide <quickstart>`. Refer to the quick-start guide for
-documentation on those templates and their contexts.
+activation workflow <hmac-workflow>`, which is covered in :ref:`the
+quick-start guide <default-templates>`. Refer to the quick-start guide
+for documentation on those templates and their contexts.
 
 
 How account data is stored for activation

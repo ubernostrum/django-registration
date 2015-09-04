@@ -18,13 +18,9 @@ subclassed to implement whatever workflow is required.
    which provides the infrastructure for supporting user registration.
 
    Since it's a subclass of ``FormView``, ``RegistrationView`` has all
-   the usual attributes and methods you can override; however, there
-   is one key difference. In order to support additional
-   customization, ``RegistrationView`` also passes the ``HttpRequest``
-   to most of its methods. Subclasses do need to take this into
-   account, and accept the ``request`` argument.
+   the usual attributes and methods you can override.
 
-   One method is required:
+   When writing your own subclass, one method is required:
 
    .. method:: register(**cleaned_data)
 
@@ -46,7 +42,7 @@ subclassed to implement whatever workflow is required.
       The URL to redirect to when registration is disallowed. Should
       be a string, `the name of a URL pattern
       <https://docs.djangoproject.com/en/1.8/topics/http/urls/#naming-url-patterns>`_.
-      Default value is ``registration_disallowed``.
+      Default value is ``"registration_disallowed"``.
 
    .. attribute:: form_class
 
@@ -70,21 +66,21 @@ subclassed to implement whatever workflow is required.
       string. Default value is
       ``registration/registration_form.html``.
 
-   .. method:: get_form_class(request)
+   .. method:: get_form_class()
 
       Select a form class to use on a per-request basis. If not
       overridden, will use :attr:`~form_class`. Should be the actual
       class object.
 
-   .. method:: get_success_url(request, user)
+   .. method:: get_success_url(user)
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should be a string, the name of a URL
-      pattern, or a 3-tuple of arguments suitable for passing to
-      Django's ``redirect`` shortcut.
+      :attr:`~success_url`. Should be a string name of a URL pattern,
+      or a 3-tuple of arguments suitable for passing to Django's
+      ``redirect`` shortcut.
 
-   .. method:: registration_allowed(request)
+   .. method:: registration_allowed()
 
       Should return a boolean indicating whether user registration is
       allowed, either in general or for this specific request.
@@ -119,9 +115,7 @@ subclassed to implement whatever workflow is required.
 
       This method should return the newly-activated user instance (if
       activation was successful), or boolean ``False`` if activation
-      was not successful. If the user account was activated, this
-      method should send the signal
-      :data:`registration.signals.user_activated`.
+      was not successful.
 
    Useful places to override or customize on an ``ActivationView``
    subclass are:
@@ -131,10 +125,10 @@ subclassed to implement whatever workflow is required.
       The template to use for user activation. Should be a
       string. Default value is ``registration/activate.html``.
 
-   .. method:: get_success_url(request, user)
+   .. method:: get_success_url(user)
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should be a string, the name of a URL
+      :attr:`~success_url`. Should be a string name of a URL
       pattern, or a 3-tuple of arguments suitable for passing to
       Django's ``redirect`` shortcut.

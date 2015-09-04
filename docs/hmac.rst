@@ -28,11 +28,11 @@ the user model (either Django's default
 <custom-user>`), *do not* add ``registration`` to your
 ``INSTALLED_APPS`` setting.
 
-You will need to configure URLs; a default URLconf is provided, which
-you can ``include()`` in your URL configuration; that URLconf is
-``registration.backends.hmac.urls``. For example, to place user
-registration under the URL prefix ``/accounts/``, you could place the
-following in your root URLconf:
+You will need to configure URLs, however. A default URLconf is
+provided, which you can ``include()`` in your URL configuration; that
+URLconf is ``registration.backends.hmac.urls``. For example, to place
+user registration under the URL prefix ``/accounts/``, you could place
+the following in your root URLconf::
 
     ``url(r'^accounts/', include('registration.backends.hmac.urls')),``
 
@@ -143,9 +143,9 @@ is a base62-encoded timestamp of the time the user registered, and
 timestamp.
 
 Django's implementation uses the value of the ``SECRET_KEY`` setting
-as the key for HMAC; additionally, it permits the specification of an
-additional salt value which can be used to "namespace" different uses
-of HMAC across a Django-powered site.
+as the key for HMAC; additionally, it permits the specification of a
+salt value which can be used to "namespace" different uses of HMAC
+across a Django-powered site.
 
 The HMAC activation workflow will use the value (a string) of the
 setting ``REGISTRATION_SALT`` as the salt, defaulting to the string
