@@ -8,24 +8,37 @@ installed; for details on that, see :ref:`the installation guide
 <install>`.
 
 The next steps will depend on which registration workflow you'd like
-to use.
+to use. There are three workflows built in to ``django-registration``;
+one is included largely for backwards compatibility with older
+releases, while the other two are recommended for new
+installations. Those two are:
 
-Before proceeding, you'll need to ensure ``django.contrib.auth`` has
-been installed (by adding it to ``INSTALLED_APPS``). Also, if you're
-making use of `a custom user model
+* :ref:`The HMAC activation workflow <hmac-workflow>`, which
+  implements a two-step process: a user signs up, then is emailed an
+  activation link and must click it to activate the account.
+
+* :ref:`The simple one-step workflow <simple-workflow>`, in which a
+  user simply signs up and their account is immediately active and
+  logged in.
+
+The guide below covers use of these two workflows.
+
+Before proceeding with either of the recommended built-in workflows,
+you'll need to ensure ``django.contrib.auth`` has been installed (by
+adding it to ``INSTALLED_APPS``). Also, if you're making use of `a
+custom user model
 <https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#substituting-a-custom-user-model>`_,
 you'll probably want to pause and read :ref:`the custom user
-compatibility guide <custom-user>` before using ``django-registration``.
+compatibility guide <custom-user>` before using
+``django-registration``.
 
 
-Configuration
--------------
+Configurating the HMAC activation workflow
+------------------------------------------
 
-The recommended registration workflow for ``django-registration`` is a
-two-phase process, where a user signs up, then receives an email with
-an activation link (containing a signed activation key generated
-during signup) and must click it to activate their account prior to
-being able to log in.
+The configuration process for using the HMAC activation workflow is
+straightforward: you'll need to specify a couple of settings, connect
+some URLs and create a few templates.
 
 
 Required settings
@@ -51,10 +64,10 @@ You'll also need to have ``django.contrib.auth`` in your
 
 .. warning:: You should **not** add ``registration`` to your
    ``INSTALLED_APPS`` setting if you're following this document. This
-   guide is walking you through setup of the :ref:`the HMAC activation
-   workflow <hmac-workflow>`, and that does not make use of any custom
-   models or other features which require ``registration`` to be in
-   ``INSTALLED_APPS``. Only add ``registration`` to your
+   section is walking you through setup of the :ref:`the HMAC
+   activation workflow <hmac-workflow>`, and that does not make use of
+   any custom models or other features which require ``registration``
+   to be in ``INSTALLED_APPS``. Only add ``registration`` to your
    ``INSTALLED_APPS`` setting if you're using :ref:`the model-based
    activation workflow <model-workflow>`, or something derived from
    it.
@@ -67,9 +80,9 @@ Each bundled registration workflow in ``django-registration`` includes
 a Django URLconf which sets up URL patterns for :ref:`the views in
 django-registration <views>`, as well as several useful views in
 ``django.contrib.auth`` (e.g., login, logout, password
-change/reset). The URLconf for the recommended two-phase workflow can
-be found at ``registration.backends.hmac.urls``, and so can simply
-be included in your project's root URL configuration. For example, to
+change/reset). The URLconf for the HMAC activation workflow can be
+found at ``registration.backends.hmac.urls``, and so can simply be
+included in your project's root URL configuration. For example, to
 place the URLs under the prefix ``/accounts/``, you could add the
 following to your project's root URLconf::
 
@@ -190,8 +203,8 @@ documentation for Django's authentication system
 regarding these templates.
 
 
-The "simple" workflow
----------------------
+Configuring the the simple one-step workflow
+--------------------------------------------
 
 Also included is a simpler, :ref:`one-step registration workflow
 <simple-workflow>`, where a user signs up and their account is
@@ -200,9 +213,7 @@ immediately active and logged in.
 The simple workflow does not require any models other than those
 provided by Django's own authentication system, so only
 ``django.contrib.auth`` needs to be in your ``INSTALLED_APPS``
-setting; though you can add ``registration`` as well, it's unneeded
-and will result in unnecessary models (the models used by the default
-workflow) being installed into your database.
+setting.
 
 You will need to configure URLs to use the simple workflow; the
 easiest way is to simply ``include()`` the URLconf
@@ -220,19 +231,6 @@ the built-in ``django.contrib.auth`` views (log in, log out, password
 reset, etc.).
 
 Finally, you will need to create one template:
-``registration/registration_form.html``. See the list of templates
-above for details of this template's context.
-
-
-The model-based activation workflow
------------------------------------
-
-There is a third workflow bundled with ``django-registration``,
-:ref:`the model-based activation workflow <model-workflow>`. In older
-releases, this was the default workflow, but now :ref:`the HMAC
-activation workflow <hmac-workflow>` (which is what you'll set up if
-you follow the instructions above) is recommended instead.
-
-You can still use the model-based workflow if you wish, or if you need
-it for compatibility with an existing installation of
-``django-registration``.
+``registration/registration_form.html``. See :ref:`the list of
+templates above <default-templates>` for details of this template's
+context.
