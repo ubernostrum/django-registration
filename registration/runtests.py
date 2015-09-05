@@ -1,10 +1,9 @@
 """
 A standalone test runner script, configuring the minimum settings
-required for django-project-portfolio's tests to execute.
+required for tests to execute.
 
-Re-use at your own risk: many Django applications will require full
-settings and/or templates in order to execute their tests, while
-django-project-portfolio does not.
+Re-use at your own risk: many Django applications will require
+different settings and/or templates to run their tests.
 
 """
 
