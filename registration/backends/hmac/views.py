@@ -65,30 +65,45 @@ class RegistrationView(BaseRegistrationView):
 
         return new_user
 
+    def get_activation_key(self, user):
+        """
+        Generate the activation key which will be emailed to the user.
+
+        """
+        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
+        activation_key = signer.sign(
+            str(getattr(user, user.USERNAME_FIELD))
+        )
+        return activation_key
+
+    def get_email_context(self, activation_key):
+        """
+        Build the template context used for the activation email.
+
+        """
+        if apps.is_installed('django.contrib.sites'):
+            site = Site.objects.get_current()
+        else:
+            site = RequestSite(self.request)
+
+        return {
+            'activation_key': activation_key,
+            'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+            'site': site,
+        }
+
     def send_activation_email(self, user):
         """
         Send the activation email. The activation key is simply the
         username, signed using TimestampSigner.
 
         """
-        User = get_user_model()
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign(
-            str(getattr(user, User.USERNAME_FIELD))
-        )
-
-        if apps.is_installed('django.contrib.sites'):
-            site = Site.objects.get_current()
-        else:
-            site = RequestSite(self.request)
-
-        context = {
-            'activation_key': activation_key,
-            'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-            'site': site,
-        }
+        activation_key = self.get_activation_key(user)
+        context = self.get_email_context(activation_key)
         subject = render_to_string(self.email_subject_template,
                                    context)
+        # Force subject to a single line to avoid header-injection
+        # issues.
         subject = ''.join(subject.splitlines())
         message = render_to_string(self.email_body_template,
                                    context)
@@ -103,32 +118,50 @@ class ActivationView(BaseActivationView):
 
     """
     def activate(self, *args, **kwargs):
-        activation_key = kwargs.get('activation_key')
-        username = None
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
+        username = self.validate_key(kwargs.get('activation_key'))
+        if username is not None:
+            user = self.get_user(username)
+            if user is not None:
+                user.is_active = True
+                user.save()
+                return user
+        return False
 
+    def get_success_url(self, user):
+        return ('registration_activation_complete', (), {})
+
+    def validate_key(self, activation_key):
+        """
+        Verify that the activation key is valid and within the
+        permitted activation time window, returning the username if
+        valid or ``None`` if not.
+
+        """
+        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
         try:
             username = signer.unsign(
                 activation_key,
                 max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400
             )
+            return username
         # SignatureExpired is a subclass of BadSignature, so this will
         # catch either one.
         except signing.BadSignature:
-            return False
+            return None
 
+    def get_user(self, username):
+        """
+        Given the verified username, look up and return the
+        corresponding user account if it exists, or ``None`` if it
+        doesn't.
+
+        """
         User = get_user_model()
         lookup_kwargs = {
             User.USERNAME_FIELD: username
         }
         try:
             user = User.objects.get(**lookup_kwargs)
+            return user
         except User.DoesNotExist:
-            return False
-
-        user.is_active = True
-        user.save()
-        return user
-
-    def get_success_url(self, user):
-        return ('registration_activation_complete', (), {})
+            return None
