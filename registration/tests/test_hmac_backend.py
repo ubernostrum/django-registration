@@ -1,6 +1,7 @@
 import datetime
 import time
 
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core import mail
 from django.core import signing
@@ -207,7 +208,9 @@ class SigningBackendViewTests(TestCase):
         joined_timestamp = (
             user.date_joined.date() - datetime.date(1970, 1, 1)
         ).total_seconds()
-        expired_timestamp = joined_timestamp - (7 * 86400) - 1
+        expired_timestamp = (
+            joined_timestamp - (settings.ACCOUNT_ACTIVATION_DAYS * 86400) - 1
+        )
         _old_time = time.time
         time.time = lambda: expired_timestamp
 
