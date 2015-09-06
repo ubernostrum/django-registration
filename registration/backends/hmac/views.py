@@ -1,3 +1,9 @@
+"""
+A two-step (registration followed by activation) workflow, implemented
+by emailing an HMAC-verified timestamped activation token to the user
+on signup.
+
+"""
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -16,13 +22,12 @@ REGISTRATION_SALT = getattr(settings, 'REGISTRATION_SALT', 'registration')
 
 class RegistrationView(BaseRegistrationView):
     """
-    A two-step -- signup, followed by activation -- registration
-    workflow.
+    Register a new (inactive) user account, generate an activation key
+    and email it to the user.
 
-    This is different from django-registration's model-based
-    activation workflow in that the activation key is not stored in
-    the database; instead, the activation key is simply the new
-    account's username, signed using Django's TimestampSigner.
+    This is different from the model-based activation workflow in that
+    the activation key is simply the username, signed using Django's
+    TimestampSigner, with HMAC verification on activation.
 
     """
     email_body_template = 'registration/activation_email.txt'
@@ -91,13 +96,13 @@ class RegistrationView(BaseRegistrationView):
 
 
 class ActivationView(BaseActivationView):
-    def activate(self, *args, **kwargs):
-        """
-        Attempt to activate the user account, by first checking that
-        the activation key carries a valid timestamp and signature,
-        and then that it corresponds to an actual user account.
+    """
+    Given a valid activation key, activate the user's
+    account. Otherwise, show an error message stating the account
+    couldn't be activated.
 
-        """
+    """
+    def activate(self, *args, **kwargs):
         activation_key = kwargs.get('activation_key')
         username = None
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)

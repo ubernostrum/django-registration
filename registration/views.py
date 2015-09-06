@@ -1,5 +1,5 @@
 """
-Views which allow users to create and activate accounts.
+Base views which allow users to create and activate accounts.
 
 """
 

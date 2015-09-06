@@ -3,6 +3,12 @@ Model and manager used by the two-step (sign up, then activate)
 workflow. If you're not using that workflow, you don't need to have
 'registration' in your INSTALLED_APPS.
 
+This is provided primarily for backwards-compatibility with existing
+installations; new installs of django-registration should look into
+the HMAC activation workflow in registration.backends.hmac, which
+provides a two-step process but requires no models or storage of the
+activation key.
+
 """
 
 import datetime

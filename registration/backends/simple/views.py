@@ -1,3 +1,8 @@
+"""
+A one-step (user signs up and is immediately active and logged in)
+workflow.
+
+"""
 from django.contrib.auth import authenticate, get_user_model, login
 
 from registration import signals
@@ -9,7 +14,7 @@ User = get_user_model()
 
 class RegistrationView(BaseRegistrationView):
     """
-    Registration via the simplest possible workflow: a user supplies a
+    Registration via the simplest possible process: a user supplies a
     username, email address and password (the bare minimum for a
     useful account), and is immediately signed up and logged in).
 
