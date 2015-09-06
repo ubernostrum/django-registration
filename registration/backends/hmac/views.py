@@ -45,18 +45,13 @@ class RegistrationView(BaseRegistrationView):
     def get_success_url(self, user):
         return ('registration_complete', (), {})
 
-    def create_inactive_user(self, username, email, password):
+    def create_inactive_user(self, **user_kwargs):
         """
         Create the inactive user account and send an email containing
         activation instructions.
 
         """
         User = get_user_model()
-        user_kwargs = {
-            User.USERNAME_FIELD: username,
-            'email': email,
-            'password': password,
-        }
         new_user = User.objects.create_user(**user_kwargs)
         new_user.is_active = False
         new_user.save()
