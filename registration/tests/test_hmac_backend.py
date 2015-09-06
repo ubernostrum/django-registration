@@ -152,6 +152,40 @@ class SigningBackendViewTests(TestCase):
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
+    def test_repeat_activation(self):
+        """
+        Once activated, attempting to re-activate an account (even
+        with a valid key) does nothing.
+
+        """
+        resp = self.client.post(reverse('registration_register'),
+                                data={'username': 'bob',
+                                      'email': 'bob@example.com',
+                                      'password1': 'secret',
+                                      'password2': 'secret'})
+
+        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
+        activation_key = signer.sign('bob')
+
+        resp = self.client.get(reverse(
+            'registration_activate',
+            args=(),
+            kwargs={'activation_key': activation_key})
+        )
+        # First activation redirects to success.
+        self.assertRedirects(resp, reverse('registration_activation_complete'))
+
+        resp = self.client.get(reverse(
+            'registration_activate',
+            args=(),
+            kwargs={'activation_key': activation_key})
+        )
+
+        # Second activation fails.
+        self.assertEqual(200, resp.status_code)
+        self.assertTemplateUsed(resp, 'registration/activate.html')
+
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_expired(self):
         """
         An expired account can't be activated.

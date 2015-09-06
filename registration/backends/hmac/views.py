@@ -153,7 +153,8 @@ class ActivationView(BaseActivationView):
         """
         User = get_user_model()
         lookup_kwargs = {
-            User.USERNAME_FIELD: username
+            User.USERNAME_FIELD: username,
+            'is_active': False
         }
         try:
             user = User.objects.get(**lookup_kwargs)
