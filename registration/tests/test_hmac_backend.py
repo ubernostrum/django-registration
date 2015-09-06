@@ -11,7 +11,9 @@ from ..forms import RegistrationForm
 from registration.backends.hmac.views import REGISTRATION_SALT
 
 
-@override_settings(ROOT_URLCONF='registration.backends.hmac.urls')
+@override_settings(ROOT_URLCONF='registration.backends.hmac.urls',
+                   ACCOUNT_ACTIVATION_DAYS=7,
+                   REGISTRATION_OPEN=True)
 class SigningBackendViewTests(TestCase):
     """
     Test the signed-token registration workflow.
@@ -22,7 +24,6 @@ class SigningBackendViewTests(TestCase):
     the default backend.
 
     """
-    @override_settings(REGISTRATION_OPEN=True)
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -60,7 +61,6 @@ class SigningBackendViewTests(TestCase):
         self.assertTrue(isinstance(resp.context['form'],
                         RegistrationForm))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration(self):
         """
         Registration creates a new inactive account and sends an
@@ -85,7 +85,6 @@ class SigningBackendViewTests(TestCase):
         # An activation email was sent.
         self.assertEqual(len(mail.outbox), 1)
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration_no_sites(self):
         """
         Registration still functions properly when
@@ -129,7 +128,6 @@ class SigningBackendViewTests(TestCase):
         self.assertFalse(resp.context['form'].is_valid())
         self.assertEqual(0, len(mail.outbox))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -151,7 +149,6 @@ class SigningBackendViewTests(TestCase):
         )
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_repeat_activation(self):
         """
         Once activated, attempting to re-activate an account (even
@@ -185,7 +182,6 @@ class SigningBackendViewTests(TestCase):
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_expired(self):
         """
         An expired account can't be activated.
@@ -229,7 +225,6 @@ class SigningBackendViewTests(TestCase):
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_nonexistent_activation(self):
         """
         A nonexistent username in an activation key will fail to

@@ -12,6 +12,7 @@ from django.utils.six import text_type
 from ..models import RegistrationProfile, SHA1_RE
 
 
+@override_settings(ACCOUNT_ACTIVATION_DAYS=7)
 class RegistrationModelTests(TestCase):
     """
     Test the model and manager used in the default backend.
@@ -37,7 +38,6 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(text_type(profile),
                          "Registration information for alice")
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_email(self):
         """
         ``RegistrationProfile.send_activation_email`` sends an
@@ -50,7 +50,6 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, [self.user_info['email']])
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_user_creation(self):
         """
         Creating a new user populates the correct data, and sets the
@@ -66,7 +65,6 @@ class RegistrationModelTests(TestCase):
         self.assertTrue(new_user.check_password('swordfish'))
         self.assertFalse(new_user.is_active)
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_user_creation_email(self):
         """
         By default, creating a new user sends an activation email.
@@ -91,7 +89,6 @@ class RegistrationModelTests(TestCase):
         )
         self.assertEqual(len(mail.outbox), 0)
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_unexpired_account(self):
         """
         ``RegistrationProfile.activation_key_expired()`` is ``False``
@@ -105,7 +102,6 @@ class RegistrationModelTests(TestCase):
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertFalse(profile.activation_key_expired())
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_expired_account(self):
         """
         ``RegistrationProfile.activation_key_expired()`` is ``True``
@@ -123,7 +119,6 @@ class RegistrationModelTests(TestCase):
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertTrue(profile.activation_key_expired())
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_valid_activation(self):
         """
         Activating a user within the permitted window makes the
@@ -146,7 +141,6 @@ class RegistrationModelTests(TestCase):
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertEqual(profile.activation_key, RegistrationProfile.ACTIVATED)
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_expired_activation(self):
         """
         Attempting to activate outside the permitted window does not
@@ -186,7 +180,6 @@ class RegistrationModelTests(TestCase):
         """
         self.assertFalse(RegistrationProfile.objects.activate_user('foo'))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_already_activated(self):
         """
         Attempting to re-activate an already-activated account fails.
@@ -217,7 +210,6 @@ class RegistrationModelTests(TestCase):
             RegistrationProfile.objects.activate_user(
                 invalid_key))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_expired_user_deletion(self):
         """
         ``RegistrationProfile.objects.delete_expired_users()`` only
@@ -243,7 +235,6 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertRaises(User.DoesNotExist, User.objects.get, username='bob')
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_management_command(self):
         """
         The ``cleanupregistration`` management command properly

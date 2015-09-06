@@ -10,7 +10,9 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
 
-@override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')
+@override_settings(ROOT_URLCONF='registration.backends.model_activation.urls',
+                   ACCOUNT_ACTIVATION_DAYS=7,
+                   REGISTRATION_OPEN=True)
 class DefaultBackendViewTests(TestCase):
     """
     Test the default registration backend.
@@ -21,7 +23,6 @@ class DefaultBackendViewTests(TestCase):
     the default backend.
 
     """
-    @override_settings(REGISTRATION_OPEN=True)
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -59,7 +60,6 @@ class DefaultBackendViewTests(TestCase):
         self.assertTrue(isinstance(resp.context['form'],
                         RegistrationForm))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration(self):
         """
         Registration creates a new inactive account and a new profile
@@ -87,7 +87,6 @@ class DefaultBackendViewTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(len(mail.outbox), 1)
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_registration_no_sites(self):
         """
         Registration still functions properly when
@@ -132,7 +131,6 @@ class DefaultBackendViewTests(TestCase):
         self.assertFalse(resp.context['form'].is_valid())
         self.assertEqual(0, len(mail.outbox))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -153,7 +151,6 @@ class DefaultBackendViewTests(TestCase):
         )
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
-    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation_expired(self):
         """
         An expired account can't be activated.
