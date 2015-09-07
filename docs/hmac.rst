@@ -114,7 +114,11 @@ requires no persistent storage of the activation key. However, this
 means there is no longer an automated way to differentiate accounts
 which have been purposefully deactivated (for example, as a way to ban
 a user) from accounts which failed to activate within a specified
-window.
+window. Additionally, it is possible a user could, if manually
+deactivated, re-activate their account if still within the activation
+window; for this reason, when using the ``is_active`` field to "ban" a
+user, it is best to also set the user's password to an unusable string
+(i.e., by calling ``set_unusuable_password()`` for that user).
 
 Since the HMAC activation workflow does not use any models, it also
 does not make use of the admin interface and thus does not offer a
