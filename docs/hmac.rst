@@ -68,22 +68,95 @@ By default, this workflow uses
 user registration; this can be overridden by passing the keyword
 argument ``form_class`` to the registration view.
 
-Two views are provided:
-``registration.backends.hmac.views.RegistrationView`` and
-``registration.backends.hmac.views.ActivationView``. These
-views subclass ``django-registration``'s base
-:class:`~registration.views.RegistrationView` and
-:class:`~registration.views.ActivationView`, respectively, and
-implement the two-step registration/activation process.
 
-Upon successful registration -- not activation -- the user will be
-redirected to the URL pattern named ``registration_complete``.
+Views
+-----
 
-Upon successful activation, the user will be redirected to the URL
-pattern named ``registration_activation_complete``.
+.. currentmodule:: registration.backends.hmac.views
 
-For an overview of the templates used in this workflow, and their
-context variables, see :ref:`the quick start guide <quickstart>`.
+Two views are provided to implement the signup/activation
+process. These subclass :ref:`the base views of django-registration
+<views>`, so anything that can be overridden/customized there can
+equally be overridden/customized here. There are some additional
+customization points specific to the HMAC implementation, which are
+listed below.
+
+For an overview of the templates used by these views (other than those
+specified below), and their context variables, see :ref:`the quick
+start guide <quickstart>`.
+
+
+.. class:: RegistrationView
+
+   A subclass of :class:`registration.views.RegistrationView`
+   implementing the signup portion of this workflow.
+
+   Important customization points unique to this class are:
+
+   .. method:: create_inactive_user(**user_kwargs)
+
+      Creates and returns an inactive user account, and calls
+      :meth:`send_activation_email()` to send the email with the
+      activation key. Accepts a dictionary of keyword arguments passed
+      to it from
+      :meth:`~registration.views.RegistrationView.register()`,
+      corresponding to the ``cleaned_data`` of the form used during
+      signup.
+
+   .. method:: get_activation_key(user)
+
+      Given an instance of the user model, generates and returns an
+      activation key (a string) for that user account.
+
+   .. method:: get_email_context(activation_key)
+
+      Returns a dictionary of values to be used as template context
+      when generating the activation email.
+
+   .. method:: send_activation_email(user)
+
+      Given an inactive user account, generates and sends the
+      activation email for that account.
+
+   .. attribute:: email_body_template
+
+      A string specifying the template to use for the body of the
+      activation email. Default is
+      ``"registration/activation_email.txt"``.
+
+   .. attribute:: email_subject_template
+
+      A string specifying the template to use for the subject of the
+      activation email. Default is
+      ``"registration/activation_email_subject.txt"``. Note that to
+      avoid header-injection vulnerabilities, the result of rendering
+      this template will be forced to a single line of text, stripping
+      newline characters.
+
+.. class:: ActivationView
+
+   A subclass of :class:`registration.views.ActivationView`
+   implementing the activation portion of this workflow.
+
+   Important customization points unique to this class are:
+
+   .. method:: get_user(username)
+
+      Given a username (determined by the activation key), look up and
+      return the corresponding instance of the user model. Returns
+      ``None`` if no such instance exists. In the base implementation,
+      will include ``is_active=False`` in the query to avoid
+      re-activation of already-active accounts.
+
+   .. method:: validate_key(activation_key)
+
+      Given the activation key, verifies that it carries a valid
+      signature and a timestamp no older than the number of days
+      specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, and
+      returns the username from the activation key. Returns ``None``
+      if the activation key has an invalid signature or if the
+      timestamp is too old.
+
 
 
 How it works
@@ -117,8 +190,8 @@ a user) from accounts which failed to activate within a specified
 window. Additionally, it is possible a user could, if manually
 deactivated, re-activate their account if still within the activation
 window; for this reason, when using the ``is_active`` field to "ban" a
-user, it is best to also set the user's password to an unusable string
-(i.e., by calling ``set_unusuable_password()`` for that user).
+user, it is best to also set the user's password to an unusable value
+(i.e., by calling ``set_unusable_password()`` for that user).
 
 Since the HMAC activation workflow does not use any models, it also
 does not make use of the admin interface and thus does not offer a
