@@ -221,7 +221,7 @@ easiest way is to simply ``include()`` the URLconf
 example, to place the URLs under the prefix ``/accounts/`` in your URL
 structure::
 
-    (r'^accounts/', include('registration.backends.simple.urls')),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
 
 Users could then register accounts by visiting the URL
 ``/accounts/register/``.

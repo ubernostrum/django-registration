@@ -27,7 +27,9 @@ To make use of this workflow, simply add ``registration`` to your
 ``INSTALLED_APPS``, run ``manage.py migrate`` to install its model,
 and include the URLconf
 ``registration.backends.model_activation.urls`` at whatever location
-you choose in your URL hierarchy.
+you choose in your URL hierarchy. For example::
+
+    url(r'^accounts/', include('registration.backends.model_activation.urls')),
 
 This workflow makes use of the following settings:
 
