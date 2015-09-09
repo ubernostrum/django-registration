@@ -15,11 +15,10 @@ pygments_style = 'sphinx'
 html_static_path = ['_static']
 htmlhelp_basename = 'django-registrationdoc'
 latex_documents = [
-  ('index', 'django-registration.tex', u'django-registration Documentation',
-   u'James Bennett', 'manual'),
+    ('index', 'django-registration.tex', u'django-registration Documentation',
+     u'James Bennett', 'manual'),
 ]
 if not on_rtd:
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'
     html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-
