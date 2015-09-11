@@ -42,6 +42,22 @@ at a different location, you can ``include()`` the URLconf
 ``registration.auth_urls`` to place only the ``django.contrib.auth``
 views at a specific location in your URL hierarchy.
 
+.. warning:: The URL pattern for
+   :class:`~registration.views.backends.hmac.ActivationView` must take
+   care to allow all the possible legal characters of both usernames
+   and Django's HMAC-signed values. The legal characters in a username
+   (in Django's default ``User`` model) are all "word" characters, the
+   dot (``.``), the at-symbol (``@``), the plus sign (``+``) and the
+   hyphen (``-``). The separator indicating the boundaries between the
+   value, the timestamp and the signature is the colon (``:``), and
+   the signature itself may use any character from `the URL-safe
+   base64 alphabet <http://tools.ietf.org/html/rfc4648#section-5>`_.
+
+   The default URL pattern for the activation view in
+   ``registration.backends.hmac.urls`` allows all of these
+   characters. If you intend to change the set of legal characters,
+   you *must* supply your own URL pattern for this view.
+
 This workflow makes use of up to three settings:
 
 ``ACCOUNT_ACTIVATION_DAYS``

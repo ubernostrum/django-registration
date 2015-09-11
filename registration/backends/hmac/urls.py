@@ -17,7 +17,7 @@ urlpatterns = [
             template_name='registration/activation_complete.html'
         ),
         name='registration_activation_complete'),
-    url(r'^activate/(?P<activation_key>[A-Za-z0-9-_:]+)/$',
+    url(r'^activate/(?P<activation_key>[\w.@+-_:]+)/$',
         ActivationView.as_view(),
         name='registration_activate'),
     url(r'^register/$',
