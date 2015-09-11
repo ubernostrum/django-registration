@@ -46,12 +46,13 @@ views at a specific location in your URL hierarchy.
    :class:`~registration.views.backends.hmac.ActivationView` must take
    care to allow all the possible legal characters of both usernames
    and Django's HMAC-signed values. The legal characters in a username
-   (in Django's default ``User`` model) are all "word" characters, the
-   dot (``.``), the at-symbol (``@``), the plus sign (``+``) and the
-   hyphen (``-``). The separator indicating the boundaries between the
-   value, the timestamp and the signature is the colon (``:``), and
-   the signature itself may use any character from `the URL-safe
-   base64 alphabet <http://tools.ietf.org/html/rfc4648#section-5>`_.
+   (in Django's default ``User`` model) are all "word" characters
+   (letters, numbers and underscore), the dot (``.``), the at-symbol
+   (``@``), the plus sign (``+``) and the hyphen (``-``). The
+   separator indicating the boundaries between the value, the
+   timestamp and the signature is the colon (``:``), and the signature
+   itself may use any character from `the URL-safe base64 alphabet
+   <http://tools.ietf.org/html/rfc4648#section-5>`_.
 
    The default URL pattern for the activation view in
    ``registration.backends.hmac.urls`` allows all of these

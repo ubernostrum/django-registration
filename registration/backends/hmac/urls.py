@@ -17,6 +17,10 @@ urlpatterns = [
             template_name='registration/activation_complete.html'
         ),
         name='registration_activation_complete'),
+    # This URL pattern needs to match anything legal in a username and
+    # anything legal in a Django-produced HMAC-signed token. That's
+    # all word characters, the dot, the at-sign, the plus sign, the
+    # hyphen and the colon.
     url(r'^activate/(?P<activation_key>[\w.@+-:]+)/$',
         ActivationView.as_view(),
         name='registration_activate'),
