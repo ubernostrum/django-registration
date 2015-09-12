@@ -2,7 +2,7 @@ import datetime
 import time
 
 from django.conf import settings
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.core import mail
 from django.core import signing
 from django.core.urlresolvers import reverse
@@ -10,6 +10,9 @@ from django.test import override_settings, TestCase
 
 from ..forms import RegistrationForm
 from registration.backends.hmac.views import REGISTRATION_SALT
+
+
+User = get_user_model()
 
 
 @override_settings(ROOT_URLCONF='registration.backends.hmac.urls',
