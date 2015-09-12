@@ -198,21 +198,22 @@ class SigningBackendViewTests(TestCase):
                                'password2': 'secret'})
 
         # We need to create an activation key valid for the username,
-        # but with a timestamp > 7 days in the past. This requires
-        # monkeypatching time.time() to return that timestamp, since
-        # TimestampSigner uses time.time().
+        # but with a timestamp > ACCOUNT_ACTIVATION_DAYS days in the
+        # past. This requires monkeypatching time.time() to return
+        # that timestamp, since TimestampSigner uses time.time().
         #
         # On Python 3.3+ this is much easier because of the
         # timestamp() method of datetime objects, but since
         # django-registration has to run on Python 2.7, we manually
         # calculate it using a timedelta between the signup date and
-        # the UNIX epoch.
+        # the UNIX epoch, and patch time.time() temporarily to return
+        # a date (ACCOUNT_ACTIVATION_DAYS + 1) days in the past.
         user = User.objects.get(username='bob')
         joined_timestamp = (
-            user.date_joined.date() - datetime.date(1970, 1, 1)
+            user.date_joined - datetime.datetime.fromtimestamp(0)
         ).total_seconds()
         expired_timestamp = (
-            joined_timestamp - (settings.ACCOUNT_ACTIVATION_DAYS * 86400) - 1
+            joined_timestamp - (settings.ACCOUNT_ACTIVATION_DAYS + 1) * 86400
         )
         _old_time = time.time
         time.time = lambda: expired_timestamp
