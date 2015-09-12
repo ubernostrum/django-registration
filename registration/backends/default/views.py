@@ -6,5 +6,5 @@ warnings.warn(
     DeprecationWarning
 )
 
-from registration.backends.model_activation import ActivationView
-from registration.backends.model_activation import RegistrationView
+from registration.backends.model_activation.views import ActivationView
+from registration.backends.model_activation.views import RegistrationView
