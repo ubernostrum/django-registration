@@ -42,14 +42,18 @@ class SigningBackendViewTests(TestCase):
         ``REGISTRATION_OPEN``, when ``False``, disallows registration.
 
         """
-        resp = self.client.get(reverse('registration_register'))
+        resp = self.client.get(
+            reverse('registration_register')
+        )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
     def test_registration_get(self):
@@ -60,10 +64,14 @@ class SigningBackendViewTests(TestCase):
         """
         resp = self.client.get(reverse('registration_register'))
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp,
-                                'registration/registration_form.html')
-        self.assertTrue(isinstance(resp.context['form'],
-                        RegistrationForm))
+        self.assertTemplateUsed(
+            resp, 'registration/registration_form.html'
+        )
+        self.assertTrue(
+            isinstance(
+                resp.context['form'], RegistrationForm
+            )
+        )
 
     def test_registration(self):
         """
@@ -71,11 +79,13 @@ class SigningBackendViewTests(TestCase):
         activation email.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
         self.assertRedirects(resp, reverse('registration_complete'))
 
         new_user = User.objects.get(username='bob')
@@ -106,7 +116,8 @@ class SigningBackendViewTests(TestCase):
                 data={'username': 'bob',
                       'email': 'bob@example.com',
                       'password1': 'secret',
-                      'password2': 'secret'})
+                      'password2': 'secret'}
+            )
             self.assertEqual(302, resp.status_code)
 
             new_user = User.objects.get(username='bob')
@@ -123,11 +134,13 @@ class SigningBackendViewTests(TestCase):
         Registering with invalid data fails.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'notsecret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'notsecret'}
+        )
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
         self.assertEqual(0, len(mail.outbox))
@@ -137,19 +150,23 @@ class SigningBackendViewTests(TestCase):
         Activation of an account functions properly.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
 
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
         activation_key = signer.sign('bob')
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': activation_key})
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': activation_key}
+            )
         )
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
@@ -159,27 +176,33 @@ class SigningBackendViewTests(TestCase):
         with a valid key) does nothing.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
 
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
         activation_key = signer.sign('bob')
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': activation_key})
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': activation_key}
+            )
         )
         # First activation redirects to success.
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': activation_key})
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': activation_key}
+            )
         )
 
         # Second activation fails.
@@ -191,11 +214,13 @@ class SigningBackendViewTests(TestCase):
         An expired account can't be activated.
 
         """
-        self.client.post(reverse('registration_register'),
-                         data={'username': 'bob',
-                               'email': 'bob@example.com',
-                               'password1': 'secret',
-                               'password2': 'secret'})
+        self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
 
         # We need to create an activation key valid for the username,
         # but with a timestamp > ACCOUNT_ACTIVATION_DAYS days in the
@@ -224,10 +249,13 @@ class SigningBackendViewTests(TestCase):
         finally:
             time.time = _old_time
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': activation_key}))
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': activation_key}
+            )
+        )
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
@@ -241,10 +269,13 @@ class SigningBackendViewTests(TestCase):
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
         activation_key = signer.sign('parrot')
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': activation_key}))
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': activation_key}
+            )
+        )
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')

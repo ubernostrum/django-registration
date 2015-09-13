@@ -25,11 +25,13 @@ class SimpleBackendViewTests(TestCase):
         resp = self.client.get(reverse('registration_register'))
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
     def test_registration_get(self):
@@ -40,8 +42,9 @@ class SimpleBackendViewTests(TestCase):
         """
         resp = self.client.get(reverse('registration_register'))
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp,
-                                'registration/registration_form.html')
+        self.assertTemplateUsed(
+            resp, 'registration/registration_form.html'
+        )
         self.assertTrue(isinstance(resp.context['form'],
                         RegistrationForm))
 
@@ -50,11 +53,13 @@ class SimpleBackendViewTests(TestCase):
         Registration creates a new account and logs the user in.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'secret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'secret'}
+        )
 
         new_user = User.objects.get(username='bob')
         self.assertEqual(302, resp.status_code)
@@ -75,10 +80,12 @@ class SimpleBackendViewTests(TestCase):
         Registering with invalid data fails.
 
         """
-        resp = self.client.post(reverse('registration_register'),
-                                data={'username': 'bob',
-                                      'email': 'bob@example.com',
-                                      'password1': 'secret',
-                                      'password2': 'notsecret'})
+        resp = self.client.post(
+            reverse('registration_register'),
+            data={'username': 'bob',
+                  'email': 'bob@example.com',
+                  'password1': 'secret',
+                  'password2': 'notsecret'}
+        )
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())

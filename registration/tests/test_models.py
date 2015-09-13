@@ -35,8 +35,10 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         self.assertEqual(profile.user.id, new_user.id)
         self.assertTrue(SHA1_RE.match(profile.activation_key))
-        self.assertEqual(text_type(profile),
-                         "Registration information for alice")
+        self.assertEqual(
+            text_type(profile),
+            "Registration information for alice"
+        )
 
     def test_activation_email(self):
         """
@@ -169,7 +171,8 @@ class RegistrationModelTests(TestCase):
 
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertNotEqual(
-            profile.activation_key, RegistrationProfile.ACTIVATED
+            profile.activation_key,
+            RegistrationProfile.ACTIVATED
         )
 
     def test_activation_invalid_key(self):
@@ -195,7 +198,9 @@ class RegistrationModelTests(TestCase):
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertFalse(
             RegistrationProfile.objects.activate_user(
-                profile.activation_key))
+                profile.activation_key
+            )
+        )
 
     def test_activation_nonexistent_key(self):
         """
@@ -208,7 +213,9 @@ class RegistrationModelTests(TestCase):
         invalid_key = hashlib.sha1('foo'.encode('utf-8')).hexdigest()
         self.assertFalse(
             RegistrationProfile.objects.activate_user(
-                invalid_key))
+                invalid_key
+            )
+        )
 
     def test_expired_user_deletion(self):
         """
@@ -232,8 +239,9 @@ class RegistrationModelTests(TestCase):
         expired_user.save()
 
         RegistrationProfile.objects.delete_expired_users()
-        self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertRaises(User.DoesNotExist, User.objects.get, username='bob')
+        self.assertEqual(1, RegistrationProfile.objects.count())
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(username='bob')
 
     def test_management_command(self):
         """
@@ -258,4 +266,5 @@ class RegistrationModelTests(TestCase):
 
         management.call_command('cleanupregistration')
         self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertRaises(User.DoesNotExist, User.objects.get, username='bob')
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(username='bob')

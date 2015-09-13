@@ -19,16 +19,20 @@ class ActivationViewTests(TestCase):
             'password1': 'secret',
             'password2': 'secret'
         }
-        resp = self.client.post(reverse('registration_register'),
-                                data=data)
+        resp = self.client.post(
+            reverse('registration_register'),
+            data=data
+        )
 
         profile = RegistrationProfile.objects.get(
             user__username=data['username']
         )
 
-        resp = self.client.get(reverse(
-            'registration_activate',
-            args=(),
-            kwargs={'activation_key': profile.activation_key})
+        resp = self.client.get(
+            reverse(
+                'registration_activate',
+                args=(),
+                kwargs={'activation_key': profile.activation_key}
+            )
         )
         self.assertRedirects(resp, '/')
