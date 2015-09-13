@@ -16,10 +16,9 @@ under:
   ``password/reset/confirm/``, ``password/reset/complete/`` and
   ``password/reset/done/``.
 
-The default registration backend already has an ``include()`` for
-these URLs, so under the default setup it is not necessary to manually
-include these views. Other backends may or may not include them;
-consult a specific backend's documentation for details.
+The URLconfs in the built-in registration workflows already have an
+``include()`` for these URLs, so if you're using one of them it is not
+necessary to manually include these views.
 
 """
 
