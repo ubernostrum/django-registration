@@ -15,9 +15,11 @@ from registration.backends.hmac.views import REGISTRATION_SALT
 User = get_user_model()
 
 
-@override_settings(ROOT_URLCONF='registration.backends.hmac.urls',
-                   ACCOUNT_ACTIVATION_DAYS=7,
-                   REGISTRATION_OPEN=True)
+@override_settings(
+    ROOT_URLCONF='registration.backends.hmac.urls',
+    ACCOUNT_ACTIVATION_DAYS=7,
+    REGISTRATION_OPEN=True
+)
 class SigningBackendViewTests(TestCase):
     """
     Test the signed-token registration workflow.

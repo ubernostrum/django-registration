@@ -10,9 +10,11 @@ from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
 
-@override_settings(ROOT_URLCONF='registration.backends.model_activation.urls',
-                   ACCOUNT_ACTIVATION_DAYS=7,
-                   REGISTRATION_OPEN=True)
+@override_settings(
+    ROOT_URLCONF='registration.backends.model_activation.urls',
+    ACCOUNT_ACTIVATION_DAYS=7,
+    REGISTRATION_OPEN=True
+)
 class DefaultBackendViewTests(TestCase):
     """
     Test the default registration backend.
