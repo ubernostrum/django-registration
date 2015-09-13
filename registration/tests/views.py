@@ -1,6 +1,6 @@
 """
-Exercise options of the registration view behavior not covered by the
-built-in backends.
+Viw classes to exercise options of the registration view behavior not
+covered by the built-in workflows.
 
 """
 

@@ -2,7 +2,10 @@ VERSION = (1, 8, 0, 'alpha', 0)
 
 
 def get_version():
-    "Returns a PEP 386-compliant version number from VERSION."
+    """
+    Returns a PEP 386-compliant version number from VERSION.
+
+    """
     assert len(VERSION) == 5
     assert VERSION[3] in ('alpha', 'beta', 'rc', 'final')
 

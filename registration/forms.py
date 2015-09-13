@@ -1,10 +1,11 @@
 """
 Forms and validation code for user registration.
 
-Note that all of these forms assume Django's bundle default ``User``
-model; since it's not possible for a form to anticipate in advance the
-needs of custom user models, you will need to write your own forms if
-you're using a custom model.
+Note that all of these forms assume your user model is similar in
+structure to Django's default User class. If your user model is
+significantly different, you may need to write your own form class;
+see the documentation for notes on custom user models with
+django-registration.
 
 """
 
@@ -35,8 +36,8 @@ class RegistrationForm(forms.Form):
 
     Subclasses should feel free to add any additional validation they
     need, but should avoid defining a ``save()`` method -- the actual
-    saving of collected user data is delegated to the active
-    registration backend.
+    saving of collected user data is delegated to the registration
+    view..
 
     """
     required_css_class = 'required'
