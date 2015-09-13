@@ -15,7 +15,8 @@ from ..models import RegistrationProfile, SHA1_RE
 @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
 class RegistrationModelTests(TestCase):
     """
-    Test the model and manager used in the default backend.
+    Test the model and manager used in the model-based activation
+    workflow.
 
     """
     user_info = {'username': 'alice',
