@@ -4,7 +4,6 @@ workflow.
 
 """
 
-
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 

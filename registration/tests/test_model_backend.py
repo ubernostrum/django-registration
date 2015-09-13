@@ -1,3 +1,8 @@
+"""
+Tests for the model-based activation workflow.
+
+"""
+
 import datetime
 
 from django.conf import settings
@@ -17,11 +22,7 @@ from registration.models import RegistrationProfile
 )
 class ModelActivationViewTests(TestCase):
     """
-    Test the model-based activation workflow.
-
-    Running these tests successfully will require two templates to be
-    created for the sending of activation emails; details on these
-    templates and their contexts may be found in the documentation.
+    Tests for the model-based activation workflow.
 
     """
     def test_registration_open(self):
@@ -214,8 +215,8 @@ class ModelActivationCompatibilityTests(ModelActivationViewTests):
     """
     def test_view_imports(self):
         """
-        Test that importing the views from the old location works, and
-        returns the correct view classes.
+        Importing the views from the old location works, and returns
+        the correct view classes.
 
         """
         from registration.backends.default import views as old_views

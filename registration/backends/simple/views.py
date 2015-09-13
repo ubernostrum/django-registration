@@ -3,6 +3,7 @@ A one-step (user signs up and is immediately active and logged in)
 workflow.
 
 """
+
 from django.contrib.auth import authenticate, get_user_model, login
 
 from registration import signals

@@ -1,3 +1,8 @@
+"""
+Tests for the simple one-step registration workflow.
+
+"""
+
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
@@ -10,6 +15,10 @@ from registration.forms import RegistrationForm
     REGISTRATION_OPEN=True
 )
 class SimpleBackendViewTests(TestCase):
+    """
+    Tests for the simple one-step workflow.
+
+    """
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.

@@ -1,5 +1,5 @@
 """
-Base views which allow users to create and activate accounts.
+Base view classes for all registration workflows.
 
 """
 

@@ -8,6 +8,7 @@ registration.backends.default.urls will raise deprecation warnings,
 and support for it will be removed in a future release.
 
 """
+
 import warnings
 
 warnings.warn(

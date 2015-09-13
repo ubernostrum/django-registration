@@ -1,3 +1,8 @@
+"""
+Tests for django-registration's built-in views.
+
+"""
+
 from django.core.urlresolvers import reverse
 from django.test import override_settings, TestCase
 
@@ -6,6 +11,11 @@ from ..models import RegistrationProfile
 
 @override_settings(ROOT_URLCONF='registration.tests.urls')
 class ActivationViewTests(TestCase):
+    """
+    Tests for aspects of the activation view not currently exercised
+    by any built-in workflow.
+    
+    """
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """

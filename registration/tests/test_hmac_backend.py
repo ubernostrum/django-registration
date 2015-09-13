@@ -1,3 +1,8 @@
+"""
+Tests for the HMAC signed-token registration workflow.
+
+"""
+
 import datetime
 import time
 
@@ -22,12 +27,7 @@ User = get_user_model()
 )
 class SigningBackendViewTests(TestCase):
     """
-    Test the signed-token registration workflow.
-
-    Running these tests successfully will require two templates to be
-    created for the sending of activation emails; details on these
-    templates and their contexts may be found in the documentation for
-    the default backend.
+    Tests for the signed-token registration workflow.
 
     """
     def test_registration_open(self):

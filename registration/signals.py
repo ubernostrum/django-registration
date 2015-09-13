@@ -1,3 +1,8 @@
+"""
+Custom signals sent during the registration and activation processes.
+
+"""
+
 from django.dispatch import Signal
 
 

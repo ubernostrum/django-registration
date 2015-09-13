@@ -1,3 +1,8 @@
+"""
+Exercise django-registration's built-in form classes.
+
+"""
+
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.utils.six import text_type
@@ -65,7 +70,7 @@ class RegistrationFormTests(TestCase):
 
     def test_tos_field(self):
         """
-        The Terms of Service field on RegistrationFormTermsOfService
+        The terms-of-service field on RegistrationFormTermsOfService
         is required.
 
         """

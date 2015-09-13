@@ -4,6 +4,7 @@ by emailing an HMAC-verified timestamped activation token to the user
 on signup.
 
 """
+
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model

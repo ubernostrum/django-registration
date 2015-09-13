@@ -1,3 +1,8 @@
+"""
+Tests for the model and manager in the model-based workflow.
+
+"""
+
 import datetime
 import hashlib
 
@@ -43,8 +48,7 @@ class RegistrationModelTests(TestCase):
 
     def test_activation_email(self):
         """
-        ``RegistrationProfile.send_activation_email`` sends an
-        email.
+        RegistrationProfile.send_activation_email sends an email.
 
         """
         new_user = User.objects.create_user(**self.user_info)
@@ -81,8 +85,8 @@ class RegistrationModelTests(TestCase):
 
     def test_user_creation_no_email(self):
         """
-        Passing ``send_email=False`` when creating a new user will not
-        send an activation email.
+        Passing send_email=False when creating a new user doesn't send
+        an activation email.
 
         """
         RegistrationProfile.objects.create_inactive_user(
@@ -94,8 +98,8 @@ class RegistrationModelTests(TestCase):
 
     def test_unexpired_account(self):
         """
-        ``RegistrationProfile.activation_key_expired()`` is ``False``
-        within the activation window.
+        RegistrationProfile.activation_key_expired() is False within
+        the activation window.
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
@@ -107,8 +111,8 @@ class RegistrationModelTests(TestCase):
 
     def test_expired_account(self):
         """
-        ``RegistrationProfile.activation_key_expired()`` is ``True``
-        outside the activation window.
+        RegistrationProfile.activation_key_expired() is True outside
+        the activation window.
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
@@ -146,7 +150,7 @@ class RegistrationModelTests(TestCase):
 
     def test_expired_activation(self):
         """
-        Attempting to activate outside the permitted window does not
+        Attempting to activate outside the permitted window doesn't
         activate the account.
 
         """
@@ -220,7 +224,7 @@ class RegistrationModelTests(TestCase):
 
     def test_expired_user_deletion(self):
         """
-        ``RegistrationProfile.objects.delete_expired_users()`` only
+        RegistrationProfile.objects.delete_expired_users() only
         deletes inactive users whose activation window has expired.
 
         """
@@ -246,8 +250,8 @@ class RegistrationModelTests(TestCase):
 
     def test_management_command(self):
         """
-        The ``cleanupregistration`` management command properly
-        deletes expired accounts.
+        The cleanupregistration management command properly deletes
+        expired accounts.
 
         """
         RegistrationProfile.objects.create_inactive_user(
