@@ -15,14 +15,13 @@ from registration.models import RegistrationProfile
     ACCOUNT_ACTIVATION_DAYS=7,
     REGISTRATION_OPEN=True
 )
-class DefaultBackendViewTests(TestCase):
+class ModelActivationViewTests(TestCase):
     """
-    Test the default registration backend.
+    Test the model-based activation workflow.
 
     Running these tests successfully will require two templates to be
     created for the sending of activation emails; details on these
-    templates and their contexts may be found in the documentation for
-    the default backend.
+    templates and their contexts may be found in the documentation.
 
     """
     def test_registration_open(self):
