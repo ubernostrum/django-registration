@@ -198,3 +198,35 @@ class ModelActivationViewTests(TestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+
+
+@override_settings(
+    ROOT_URLCONF='registration.backends.default.urls',
+    ACCOUNT_ACTIVATION_DAYS=7,
+    REGISTRATION_OPEN=True
+)
+class ModelActivationCompatibilityTests(ModelActivationViewTests):
+    """
+    Re-run the model-activation workflow tests, but using the
+    'registration.backends.default' import compatibility support, to
+    ensure that it works.
+
+    """
+    def test_view_imports(self):
+        """
+        Test that importing the views from the old location works, and
+        returns the correct view classes.
+
+        """
+        from registration.backends.default import views as old_views
+        from registration.backends.model_activation import views as new_views
+
+        self.assertEqual(
+            old_views.ActivationView.__class__,
+            new_views.ActivationView.__class__
+        )
+
+        self.assertEqual(
+            old_views.RegistrationView.__class__,
+            new_views.RegistrationView.__class__
+        )
