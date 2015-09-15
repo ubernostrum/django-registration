@@ -114,6 +114,9 @@ class ActivationView(BaseActivationView):
 
     """
     def activate(self, *args, **kwargs):
+        # This is safe even if, somehow, there's no activation key,
+        # because unsign() will raise BadException rather than
+        # TypeError on a value of None.
         username = self.validate_key(kwargs.get('activation_key'))
         if username is not None:
             user = self.get_user(username)
