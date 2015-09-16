@@ -2,8 +2,8 @@
 .. module:: registration.signals
 
 
-Custom signals used by django-registration
-==========================================
+Signals used by django-registration
+===================================
 
 Much of ``django-registration``'s customizability comes through the
 ability to write and use different workflows for user

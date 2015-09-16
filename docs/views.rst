@@ -1,8 +1,8 @@
 .. _views:
 .. module:: registration.views
 
-Registration views
-==================
+Base view classes
+=================
 
 In order to allow the utmost flexibility in customizing and supporting
 different workflows, ``django-registration`` makes use of Django's

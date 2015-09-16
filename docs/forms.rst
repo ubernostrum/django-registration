@@ -1,8 +1,8 @@
 .. _forms:
 .. module:: registration.forms
 
-Forms for user registration
-===========================
+Base form classes
+=================
 
 Several form classes are provided with ``django-registration``,
 covering common cases for gathering account information and

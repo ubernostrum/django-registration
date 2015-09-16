@@ -17,7 +17,7 @@ cases:
 * One-phase registration, where a user signs up and is immediately
   active and logged in.
 
-To get up and running quickly, consult :ref:`the quick-start guide
+To get up and running quickly, consult :ref:`the quick start guide
 <quickstart>`, which describes the steps necessary to configure
 ``django-registration`` for the built-in workflows. For more detailed
 information, including how to customize the registration process (and
@@ -25,26 +25,40 @@ support for alternate registration systems), read through the
 documentation listed below.
 
 
-Contents:
-
 .. toctree::
+   :caption: Installation and configuration
    :maxdepth: 1
-   
+
    install
    quickstart
+
+.. toctree::
+   :caption: Built-in registration workflows
+   :maxdepth: 1
+
    hmac
    simple-workflow
    model-workflow
-   forms
+
+.. toctree::
+   :caption: For developers
+   :maxdepth: 1
+
    views
-   signals
+   forms
    custom-user
+   signals
+
+.. toctree::
+   :caption: Other documentation
+   :maxdepth: 1
+
    upgrade
    faq
 
 .. seealso::
 
    * `Django's authentication documentation
-     <https://docs.djangoproject.com/en/1.8/topics/auth/>`_; Django's
+     <https://docs.djangoproject.com/en/1.8/topics/auth/>`_. Django's
      authentication system is used by django-registration's default
      configuration.

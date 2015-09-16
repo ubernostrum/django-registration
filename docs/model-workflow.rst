@@ -1,8 +1,8 @@
 .. _model-workflow:
 .. module:: registration.backends.model_activation
 
-The two-step model-based workflow
-=================================
+The model-based activation workflow
+===================================
 
 This workflow implements a two-step -- registration, followed by
 activation -- process for user signup. It was formerly the default
