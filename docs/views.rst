@@ -40,7 +40,7 @@ subclassed to implement whatever workflow is required.
    .. attribute:: disallowed_url
 
       The URL to redirect to when registration is disallowed. Should
-      be a string, `the name of a URL pattern
+      be a `string name of a URL pattern
       <https://docs.djangoproject.com/en/1.8/topics/http/urls/#naming-url-patterns>`_.
       Default value is ``"registration_disallowed"``.
 
@@ -54,7 +54,7 @@ subclassed to implement whatever workflow is required.
    .. attribute:: success_url
 
       The URL to redirect to after successful registration. Should be
-      a string, the name of a URL pattern, or a 3-tuple of arguments
+      a string name of a URL pattern, or a 3-tuple of arguments
       suitable for passing to Django's `redirect shortcut
       <https://docs.djangoproject.com/en/1.8/topics/http/shortcuts/#redirect>`_. Can
       be overridden on a per-request basis (see below). Default value
