@@ -25,7 +25,7 @@ User = get_user_model()
     ACCOUNT_ACTIVATION_DAYS=7,
     REGISTRATION_OPEN=True
 )
-class SigningBackendViewTests(TestCase):
+class HMACViewTests(TestCase):
     """
     Tests for the signed-token registration workflow.
 
