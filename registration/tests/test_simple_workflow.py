@@ -14,7 +14,7 @@ from registration.forms import RegistrationForm
     ROOT_URLCONF='registration.backends.simple.urls',
     REGISTRATION_OPEN=True
 )
-class SimpleBackendViewTests(TestCase):
+class SimpleWorkflowViewTests(TestCase):
     """
     Tests for the simple one-step workflow.
 
