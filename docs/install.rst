@@ -11,11 +11,9 @@ download page <https://www.djangoproject.com/download/>`_, which
 offers convenient packaged downloads and installation instructions.
 
 The |version| release of ``django-registration`` supports Django 1.7
-and 1.8, on any of Python 2.7, 3.3 or 3.4. Older versions of Django
-and/or Python may work, but are not tested or officially supported. It
-is expected that ``django-registration`` |version| will be compatible
-with Python 3.5 once released (as of the release of
-``django-registration`` |version|, Python 3.5 was in beta testing).
+and 1.8, on any of Python 2.7, 3.3, 3.4 or 3.5. Older versions of
+Django and/or Python may work, but are not tested or officially
+supported.
 
 
 Normal installation
