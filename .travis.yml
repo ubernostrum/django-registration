@@ -1,6 +1,7 @@
 language: python
 sudo: false
 python:
+ - "3.5"
  - "3.4"
  - "3.3"
  - "2.7"
@@ -10,5 +11,9 @@ env:
 install:
  - pip install coverage>=4.0
  - pip install -q Django==$DJANGO_VERSION
+matrix:
+ exclude:
+  - python: "3.5"
+    env: DJANGO_VERSION=1.7.10
 script: coverage run setup.py test
-after_success: coverage report
+after_success: coverage report -m
