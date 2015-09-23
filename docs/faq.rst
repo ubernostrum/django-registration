@@ -84,6 +84,7 @@ Installation and setup
     Full instructions are available in :ref:`the quick start guide <quickstart>`.
 
 **Does django-registration come with any sample templates I can use right away?**
+
     No, for two reasons:
 
     1. Providing default templates with an application is generally
