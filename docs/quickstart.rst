@@ -102,7 +102,7 @@ those at a different location.
 Required templates
 ~~~~~~~~~~~~~~~~~~
 
-Tou will also need to create several templates required by
+You will also need to create several templates required by
 ``django-registration``, and possibly additional templates required by
 views in ``django.contrib.auth``. The templates required by
 ``django-registration`` are as follows; note that, with the exception
