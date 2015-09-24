@@ -14,7 +14,7 @@ class ActivationViewTests(TestCase):
     """
     Tests for aspects of the activation view not currently exercised
     by any built-in workflow.
-    
+
     """
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
