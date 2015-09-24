@@ -25,6 +25,13 @@ class ModelActivationViewTests(TestCase):
     Tests for the model-based activation workflow.
 
     """
+    valid_data = {
+        'username': 'bob',
+        'email': 'bob@example.com',
+        'password1': 'secret',
+        'password2': 'secret',
+    }
+
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -44,10 +51,7 @@ class ModelActivationViewTests(TestCase):
 
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
@@ -78,17 +82,18 @@ class ModelActivationViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
         self.assertRedirects(resp, reverse('registration_complete'))
 
-        new_user = User.objects.get(username='bob')
+        new_user = User.objects.get(username=self.valid_data['username'])
 
-        self.assertTrue(new_user.check_password('secret'))
-        self.assertEqual(new_user.email, 'bob@example.com')
+        self.assertTrue(
+            new_user.check_password(
+                self.valid_data['password1']
+            )
+        )
+        self.assertEqual(new_user.email, self.valid_data['email'])
 
         # New user must not be active.
         self.assertFalse(new_user.is_active)
@@ -106,23 +111,22 @@ class ModelActivationViewTests(TestCase):
 
         """
         with self.modify_settings(INSTALLED_APPS={
-            'remove': [
-                'django.contrib.sites'
-            ]
+            'remove': ['django.contrib.sites']
         }):
             resp = self.client.post(
                 reverse('registration_register'),
-                data={'username': 'bob',
-                      'email': 'bob@example.com',
-                      'password1': 'secret',
-                      'password2': 'secret'}
+                data=self.valid_data
             )
             self.assertEqual(302, resp.status_code)
 
-            new_user = User.objects.get(username='bob')
+            new_user = User.objects.get(username=self.valid_data['username'])
 
-            self.assertTrue(new_user.check_password('secret'))
-            self.assertEqual(new_user.email, 'bob@example.com')
+            self.assertTrue(
+                new_user.check_password(
+                    self.valid_data['password1']
+                )
+            )
+            self.assertEqual(new_user.email, self.valid_data['email'])
 
             self.assertFalse(new_user.is_active)
 
@@ -134,12 +138,11 @@ class ModelActivationViewTests(TestCase):
         Registering with invalid data fails.
 
         """
+        data = self.valid_data.copy()
+        data.update(password2='notsecret')
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'notsecret'}
+            data=data
         )
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
@@ -152,13 +155,12 @@ class ModelActivationViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
-        profile = RegistrationProfile.objects.get(user__username='bob')
+        profile = RegistrationProfile.objects.get(
+            user__username=self.valid_data['username']
+        )
 
         resp = self.client.get(
             reverse(
@@ -176,13 +178,12 @@ class ModelActivationViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
-        profile = RegistrationProfile.objects.get(user__username='bob')
+        profile = RegistrationProfile.objects.get(
+            user__username=self.valid_data['username']
+        )
         user = profile.user
         user.date_joined -= datetime.timedelta(
             days=settings.ACCOUNT_ACTIVATION_DAYS + 1

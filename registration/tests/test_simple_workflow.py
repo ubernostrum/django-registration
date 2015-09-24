@@ -19,6 +19,13 @@ class SimpleWorkflowViewTests(TestCase):
     Tests for the simple one-step workflow.
 
     """
+    valid_data = {
+        'username': 'bob',
+        'email': 'bob@example.com',
+        'password1': 'secret',
+        'password2': 'secret'
+    }
+
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -38,10 +45,7 @@ class SimpleWorkflowViewTests(TestCase):
 
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
@@ -66,18 +70,19 @@ class SimpleWorkflowViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
-        new_user = User.objects.get(username='bob')
+        new_user = User.objects.get(username=self.valid_data['username'])
         self.assertEqual(302, resp.status_code)
         self.assertEqual('http://testserver/', resp['Location'])
 
-        self.assertTrue(new_user.check_password('secret'))
-        self.assertEqual(new_user.email, 'bob@example.com')
+        self.assertTrue(
+            new_user.check_password(
+                self.valid_data['password1']
+            )
+        )
+        self.assertEqual(new_user.email, self.valid_data['email'])
 
         # New user must be active.
         self.assertTrue(new_user.is_active)
@@ -91,12 +96,11 @@ class SimpleWorkflowViewTests(TestCase):
         Registering with invalid data fails.
 
         """
+        data = self.valid_data.copy()
+        data.update(password2='notsecret')
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'notsecret'}
+            data=data
         )
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())

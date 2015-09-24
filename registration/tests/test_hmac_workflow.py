@@ -30,6 +30,13 @@ class HMACViewTests(TestCase):
     Tests for the signed-token registration workflow.
 
     """
+    valid_data = {
+        'username': 'bob',
+        'email': 'bob@example.com',
+        'password1': 'secret',
+        'password2': 'secret',
+    }
+
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -51,10 +58,7 @@ class HMACViewTests(TestCase):
 
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
         self.assertRedirects(resp, reverse('registration_disallowed'))
 
@@ -83,17 +87,18 @@ class HMACViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
         self.assertRedirects(resp, reverse('registration_complete'))
 
-        new_user = User.objects.get(username='bob')
+        new_user = User.objects.get(username=self.valid_data['username'])
 
-        self.assertTrue(new_user.check_password('secret'))
-        self.assertEqual(new_user.email, 'bob@example.com')
+        self.assertTrue(
+            new_user.check_password(
+                self.valid_data['password1']
+            )
+        )
+        self.assertEqual(new_user.email, self.valid_data['email'])
 
         # New user must not be active.
         self.assertFalse(new_user.is_active)
@@ -109,23 +114,22 @@ class HMACViewTests(TestCase):
 
         """
         with self.modify_settings(INSTALLED_APPS={
-            'remove': [
-                'django.contrib.sites'
-            ]
+            'remove': ['django.contrib.sites']
         }):
             resp = self.client.post(
                 reverse('registration_register'),
-                data={'username': 'bob',
-                      'email': 'bob@example.com',
-                      'password1': 'secret',
-                      'password2': 'secret'}
+                data=self.valid_data
             )
             self.assertEqual(302, resp.status_code)
 
-            new_user = User.objects.get(username='bob')
+            new_user = User.objects.get(username=self.valid_data['username'])
 
-            self.assertTrue(new_user.check_password('secret'))
-            self.assertEqual(new_user.email, 'bob@example.com')
+            self.assertTrue(
+                new_user.check_password(
+                    self.valid_data['password1']
+                )
+            )
+            self.assertEqual(new_user.email, self.valid_data['email'])
 
             self.assertFalse(new_user.is_active)
 
@@ -136,12 +140,11 @@ class HMACViewTests(TestCase):
         Registering with invalid data fails.
 
         """
+        data = self.valid_data.copy()
+        data.update(password2='notsecret')
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'notsecret'}
+            data=data
         )
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
@@ -154,14 +157,11 @@ class HMACViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign('bob')
+        activation_key = signer.sign(self.valid_data['username'])
 
         resp = self.client.get(
             reverse(
@@ -180,14 +180,11 @@ class HMACViewTests(TestCase):
         """
         resp = self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
         signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign('bob')
+        activation_key = signer.sign(self.valid_data['username'])
 
         resp = self.client.get(
             reverse(
@@ -218,10 +215,7 @@ class HMACViewTests(TestCase):
         """
         self.client.post(
             reverse('registration_register'),
-            data={'username': 'bob',
-                  'email': 'bob@example.com',
-                  'password1': 'secret',
-                  'password2': 'secret'}
+            data=self.valid_data
         )
 
         # We need to create an activation key valid for the username,
@@ -235,7 +229,7 @@ class HMACViewTests(TestCase):
         # calculate it using a timedelta between the signup date and
         # the UNIX epoch, and patch time.time() temporarily to return
         # a date (ACCOUNT_ACTIVATION_DAYS + 1) days in the past.
-        user = User.objects.get(username='bob')
+        user = User.objects.get(username=self.valid_data['username'])
         joined_timestamp = (
             user.date_joined - datetime.datetime.fromtimestamp(0)
         ).total_seconds()
@@ -247,7 +241,7 @@ class HMACViewTests(TestCase):
 
         try:
             signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-            activation_key = signer.sign('bob')
+            activation_key = signer.sign(self.valid_data['username'])
         finally:
             time.time = _old_time
 
