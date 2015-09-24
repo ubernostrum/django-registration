@@ -5,7 +5,7 @@ Tests for the simple one-step registration workflow.
 
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
-from django.test import override_settings, TestCase
+from django.test import TestCase, override_settings
 
 from registration.forms import RegistrationForm
 

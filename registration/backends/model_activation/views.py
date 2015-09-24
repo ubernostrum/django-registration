@@ -10,8 +10,8 @@ look into the HMAC activation workflow in registration.backends.hmac.
 """
 
 from django.apps import apps
-from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.models import Site
+from django.contrib.sites.requests import RequestSite
 
 from registration import signals
 from registration.models import RegistrationProfile

@@ -8,8 +8,8 @@ on signup.
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.requests import RequestSite
 from django.contrib.sites.models import Site
+from django.contrib.sites.requests import RequestSite
 from django.core import signing
 from django.template.loader import render_to_string
 

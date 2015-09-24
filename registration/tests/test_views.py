@@ -4,7 +4,7 @@ Tests for django-registration's built-in views.
 """
 
 from django.core.urlresolvers import reverse
-from django.test import override_settings, TestCase
+from django.test import TestCase, override_settings
 
 from ..models import RegistrationProfile
 

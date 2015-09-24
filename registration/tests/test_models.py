@@ -9,12 +9,11 @@ import hashlib
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.sites.models import Site
-from django.core import mail
-from django.core import management
-from django.test import override_settings, TestCase
+from django.core import mail, management
+from django.test import TestCase, override_settings
 from django.utils.six import text_type
 
-from ..models import RegistrationProfile, SHA1_RE
+from ..models import SHA1_RE, RegistrationProfile
 
 
 @override_settings(ACCOUNT_ACTIVATION_DAYS=7)

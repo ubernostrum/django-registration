@@ -10,6 +10,7 @@ from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
 from registration.backends.model_activation.views import RegistrationView
+
 from .views import ActivateWithSimpleRedirect
 
 

@@ -11,12 +11,14 @@ and support for it will be removed in a future release.
 
 import warnings
 
+from registration.backends.model_activation import urls as model_urls
+
+
 warnings.warn(
     "registration.backends.default.urls is deprecated; "
     "use registration.backends.model_activation.urls instead.",
     DeprecationWarning
 )
 
-from registration.backends.model_activation import urls as model_urls
 
 urlpatterns = model_urls.urlpatterns

@@ -11,13 +11,15 @@ support for it will be removed in a future release.
 
 import warnings
 
+from registration.backends.model_activation import views as new_location
+
+
 warnings.warn(
     "registration.backends.default.views is deprecated; "
     "use registration.backends.model_activation.views instead.",
     DeprecationWarning
 )
 
-from registration.backends.model_activation import views as new_location
 
 ActivationView = new_location.ActivationView
 RegistrationView = new_location.RegistrationView

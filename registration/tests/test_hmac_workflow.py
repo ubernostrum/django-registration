@@ -8,13 +8,13 @@ import time
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.core import mail
-from django.core import signing
+from django.core import mail, signing
 from django.core.urlresolvers import reverse
-from django.test import override_settings, TestCase
+from django.test import TestCase, override_settings
+
+from registration.backends.hmac.views import REGISTRATION_SALT
 
 from ..forms import RegistrationForm
-from registration.backends.hmac.views import REGISTRATION_SALT
 
 
 User = get_user_model()

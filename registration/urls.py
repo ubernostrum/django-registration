@@ -9,12 +9,14 @@ django-registration 1.9. For new installs, use
 
 import warnings
 
+from registration.backends.model_activation import urls as model_urls
+
+
 warnings.warn(
     "include('registration.urls') is deprecated; use "
     "include('registration.backends.model_activation.urls') instead.",
     DeprecationWarning
 )
 
-from registration.backends.model_activation import urls as model_urls
 
 urlpatterns = model_urls.urlpatterns
