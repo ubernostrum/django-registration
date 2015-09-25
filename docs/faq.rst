@@ -48,6 +48,14 @@ General
     <https://github.com/ubernostrum/django-registration>. Issues and
     pull requests can both be filed there.
 
+    If you'd like to contribute to ``django-registration``, that's
+    great! Just please remember that pull requests should include
+    tests and documentation for any changes made, and that following
+    `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ is
+    mandatory. Pull requests without documentation won't be merged,
+    and PEP 8 style violations or test coverage below 100% are both
+    configured to break the build.
+
 **How secure is django-registration?**
 
    In the eight-year history of ``django-registration``, there have
