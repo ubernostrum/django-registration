@@ -5,7 +5,7 @@ workflow. If you're not using that workflow, you don't need to have
 
 This is provided primarily for backwards-compatibility with existing
 installations; new installs of django-registration should look into
-the HMAC activation workflow in registration.backends.hmac, which
+the HMAC activation workflow in registration.backends.hmac, which also
 provides a two-step process but requires no models or storage of the
 activation key.
 
@@ -40,15 +40,15 @@ class RegistrationManager(models.Manager):
     def activate_user(self, activation_key):
         """
         Validate an activation key and activate the corresponding
-        ``User`` if valid.
+        user if valid.
 
-        If the key is valid and has not expired, return the ``User``
-        after activating.
+        If the key is valid and has not expired, return the user after
+        activating.
 
         If the key is not valid or has expired, return ``False``.
 
-        If the key is valid but the ``User`` is already active,
-        return ``False``.
+        If the key is valid but the user is already active, return
+        ``False``.
 
         To prevent reactivation of an account which has been
         deactivated by site administrators, the activation key is
@@ -76,9 +76,9 @@ class RegistrationManager(models.Manager):
     def create_inactive_user(self, username, email, password,
                              site, send_email=True):
         """
-        Create a new, inactive ``User``, generate a
+        Create a new, inactive user, generate a
         ``RegistrationProfile`` and email its activation key to the
-        ``User``, returning the new ``User``.
+        user, returning the new user.
 
         By default, an activation email will be sent to the new
         user. To disable this, pass ``send_email=False``.
@@ -104,12 +104,12 @@ class RegistrationManager(models.Manager):
 
     def create_profile(self, user):
         """
-        Create a ``RegistrationProfile`` for a given
-        ``User``, and return the ``RegistrationProfile``.
+        Create a ``RegistrationProfile`` for a given user, and return
+        the ``RegistrationProfile``.
 
         The activation key for the ``RegistrationProfile`` will be a
-        SHA1 hash, generated from a combination of the ``User``'s
-        username and a random salt.
+        SHA1 hash, generated from a combination of the user's username
+        and a random salt.
 
         """
         User = get_user_model()
@@ -123,14 +123,14 @@ class RegistrationManager(models.Manager):
     def delete_expired_users(self):
         """
         Remove expired instances of ``RegistrationProfile`` and their
-        associated ``User``s.
+        associated users.
 
         Accounts to be deleted are identified by searching for
         instances of ``RegistrationProfile`` with expired activation
-        keys, and then checking to see if their associated ``User``
+        keys, and then checking to see if their associated user
         instances have the field ``is_active`` set to ``False``; any
-        ``User`` who is both inactive and has an expired activation
-        key will be deleted.
+        user who is both inactive and has an expired activation key
+        will be deleted.
 
         It is recommended that this method be executed regularly as
         part of your routine site maintenance; this application
@@ -153,9 +153,9 @@ class RegistrationManager(models.Manager):
            those accounts will be deleted, the usernames will become
            available for use again.
 
-        If you have a troublesome ``User`` and wish to disable their
+        If you have a troublesome user and wish to disable their
         account while keeping it in the database, simply delete the
-        associated ``RegistrationProfile``; an inactive ``User`` which
+        associated ``RegistrationProfile``; an inactive user which
         does not have an associated ``RegistrationProfile`` will not
         be deleted.
 
@@ -175,9 +175,9 @@ class RegistrationProfile(models.Model):
     user account registration.
 
     Generally, you will not want to interact directly with instances
-    of this model; the provided manager includes methods
-    for creating and activating new accounts, as well as for cleaning
-    out accounts which have never been activated.
+    of this model; the provided manager includes methods for creating
+    and activating new accounts, as well as for cleaning out accounts
+    which have never been activated.
 
     While it is possible to use this model as the value of the
     ``AUTH_PROFILE_MODULE`` setting, it's not recommended that you do
@@ -272,7 +272,8 @@ class RegistrationProfile(models.Model):
                     'site': site}
         subject = render_to_string('registration/activation_email_subject.txt',
                                    ctx_dict)
-        # Email subject *must not* contain newlines
+        # Force subject to a single line to avoid header-injection
+        # issues.
         subject = ''.join(subject.splitlines())
 
         message = render_to_string('registration/activation_email.txt',

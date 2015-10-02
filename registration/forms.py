@@ -57,8 +57,7 @@ class RegistrationForm(forms.Form):
 
     def clean_username(self):
         """
-        Validate that the username is alphanumeric and is not already
-        in use.
+        Validate that the username is not already in use.
 
         """
         existing = User.objects.filter(

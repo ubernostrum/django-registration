@@ -51,7 +51,7 @@ class RegistrationView(FormView):
         Override this to enable/disable user registration, either
         globally or on a per-request basis.
 
-        By default, uses the value of the setting
+        By default, will use the value of the setting
         ``REGISTRATION_OPEN``, as follows:
 
         * If ``REGISTRATION_OPEN`` is not specified in settings, or is
@@ -98,6 +98,12 @@ class ActivationView(TemplateView):
     template_name = 'registration/activate.html'
 
     def get(self, *args, **kwargs):
+        """
+        The base activation logic; subclasses should leave this method
+        alone and implement activate(), which is called from this
+        method.
+
+        """
         activated_user = self.activate(*args, **kwargs)
         if activated_user:
             signals.user_activated.send(sender=self.__class__,
@@ -119,4 +125,14 @@ class ActivationView(TemplateView):
         raise NotImplementedError
 
     def get_success_url(self, user):
+        """
+        Implement this to return the URL (either a 3-tuple for
+        redirect(), or a simple string name of a URL pattern) to
+        redirect to after successful activation.
+
+        This differs from most get_success_url() methods of Django
+        views in that it receives an extra argument: the user whose
+        account was activated.
+
+        """
         raise NotImplementedError

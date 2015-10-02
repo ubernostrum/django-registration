@@ -14,7 +14,7 @@ class RegistrationAdmin(admin.ModelAdmin):
 
     def activate_users(self, request, queryset):
         """
-        Activates the selected users, if they are not alrady
+        Activate the selected users, if they are not alrady
         activated.
 
         """
@@ -24,7 +24,7 @@ class RegistrationAdmin(admin.ModelAdmin):
 
     def resend_activation_email(self, request, queryset):
         """
-        Re-sends activation emails for the selected users.
+        Re-send activation emails for the selected users.
 
         Note that this will *only* send activation emails for users
         who are eligible to activate; emails will not be sent to users
