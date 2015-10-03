@@ -53,9 +53,10 @@ subclassed to implement whatever workflow is required.
 
    .. attribute:: success_url
 
-      The URL to redirect to after successful registration. Should be
-      a string name of a URL pattern, or a 3-tuple of arguments
-      suitable for passing to Django's `redirect shortcut
+      The URL to redirect to after successful registration.  A string
+      containing a (relative) URL, or a string name of a URL pattern,
+      or a 3-tuple of arguments suitable for passing to Django's
+      `redirect shortcut
       <https://docs.djangoproject.com/en/1.8/topics/http/shortcuts/#redirect>`_. Can
       be overridden on a per-request basis (see below). Default value
       is ``None``, so that per-request customization is used instead.
@@ -76,9 +77,10 @@ subclassed to implement whatever workflow is required.
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should be a string name of a URL pattern,
-      or a 3-tuple of arguments suitable for passing to Django's
-      ``redirect`` shortcut.
+      :attr:`~success_url`. Should return a string containing a
+      (relative) URL, or a string name of a URL pattern, or a 3-tuple
+      of arguments suitable for passing to Django's ``redirect``
+      shortcut.
 
    .. method:: registration_allowed()
 
@@ -129,6 +131,7 @@ subclassed to implement whatever workflow is required.
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should be a string name of a URL
-      pattern, or a 3-tuple of arguments suitable for passing to
-      Django's ``redirect`` shortcut.
+      :attr:`~success_url`. Should return a string containing a
+      (relative) URL, or a string name of a URL pattern, or a 3-tuple
+      of arguments suitable for passing to Django's ``redirect``
+      shortcut.
