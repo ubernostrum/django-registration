@@ -44,7 +44,8 @@ urlpatterns = [
         name='auth_password_change_done'),
     url(r'^password/reset/$',
         auth_views.password_reset,
-        {'post_reset_redirect': 'auth_password_reset_done'},
+        {'post_reset_redirect': 'auth_password_reset_done',
+         'email_template_name': 'registration/password_reset_email.txt'},
         name='auth_password_reset'),
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
