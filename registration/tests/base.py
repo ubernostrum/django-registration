@@ -24,7 +24,7 @@ class RegistrationTestCase(TestCase):
     user account and looking up the account after creation.
 
     """
-    user_model = get_user_model()
+    user_model = User
 
     valid_data = {
         User.USERNAME_FIELD: 'alice',
