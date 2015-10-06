@@ -6,148 +6,20 @@ Tests for the model-based activation workflow.
 import datetime
 
 from django.conf import settings
-from django.contrib.auth.models import User
-from django.core import mail
 from django.core.urlresolvers import reverse
-from django.test import TestCase, override_settings
+from django.test import override_settings
 
-from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 
+from .base import ActivationTestCase
 
-@override_settings(
-    ROOT_URLCONF='registration.backends.model_activation.urls',
-    ACCOUNT_ACTIVATION_DAYS=7,
-    REGISTRATION_OPEN=True
-)
-class ModelActivationViewTests(TestCase):
+
+@override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')
+class ModelActivationViewTests(ActivationTestCase):
     """
     Tests for the model-based activation workflow.
 
     """
-    valid_data = {
-        'username': 'bob',
-        'email': 'bob@example.com',
-        'password1': 'secret',
-        'password2': 'secret',
-    }
-
-    def test_registration_open(self):
-        """
-        ``REGISTRATION_OPEN``, when ``True``, permits registration.
-
-        """
-        resp = self.client.get(reverse('registration_register'))
-        self.assertEqual(200, resp.status_code)
-
-    @override_settings(REGISTRATION_OPEN=False)
-    def test_registration_closed(self):
-        """
-        ``REGISTRATION_OPEN``, when ``False``, disallows registration.
-
-        """
-        resp = self.client.get(reverse('registration_register'))
-        self.assertRedirects(resp, reverse('registration_disallowed'))
-
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=self.valid_data
-        )
-        self.assertRedirects(resp, reverse('registration_disallowed'))
-
-    def test_registration_get(self):
-        """
-        HTTP ``GET`` to the registration view uses the appropriate
-        template and populates a registration form into the context.
-
-        """
-        resp = self.client.get(reverse('registration_register'))
-        self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(
-            resp, 'registration/registration_form.html'
-        )
-        self.assertTrue(
-            isinstance(
-                resp.context['form'],
-                RegistrationForm
-            )
-        )
-
-    def test_registration(self):
-        """
-        Registration creates a new inactive account and a new profile
-        with activation key, populates the correct account data and
-        sends an activation email.
-
-        """
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=self.valid_data
-        )
-        self.assertRedirects(resp, reverse('registration_complete'))
-
-        new_user = User.objects.get(username=self.valid_data['username'])
-
-        self.assertTrue(
-            new_user.check_password(
-                self.valid_data['password1']
-            )
-        )
-        self.assertEqual(new_user.email, self.valid_data['email'])
-
-        # New user must not be active.
-        self.assertFalse(new_user.is_active)
-
-        # A registration profile was created, and an activation email
-        # was sent.
-        self.assertEqual(RegistrationProfile.objects.count(), 1)
-        self.assertEqual(len(mail.outbox), 1)
-
-    def test_registration_no_sites(self):
-        """
-        Registration still functions properly when
-        ``django.contrib.sites`` is not installed; the fallback will
-        be a ``RequestSite`` instance.
-
-        """
-        with self.modify_settings(INSTALLED_APPS={
-            'remove': ['django.contrib.sites']
-        }):
-            resp = self.client.post(
-                reverse('registration_register'),
-                data=self.valid_data
-            )
-            self.assertEqual(302, resp.status_code)
-
-            new_user = User.objects.get(username=self.valid_data['username'])
-
-            self.assertTrue(
-                new_user.check_password(
-                    self.valid_data['password1']
-                )
-            )
-            self.assertEqual(new_user.email, self.valid_data['email'])
-
-            self.assertFalse(new_user.is_active)
-
-            self.assertEqual(1, RegistrationProfile.objects.count())
-            self.assertEqual(len(mail.outbox), 1)
-
-    def test_registration_failure(self):
-        """
-        Registering with invalid data fails.
-
-        """
-        data = self.valid_data.copy()
-        data.update(password2='notsecret')
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=data
-        )
-        self.assertEqual(200, resp.status_code)
-        self.assertFalse(resp.context['form'].is_valid())
-        self.assertEqual(0, len(mail.outbox))
-
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -202,11 +74,6 @@ class ModelActivationViewTests(TestCase):
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
 
-@override_settings(
-    ROOT_URLCONF='registration.backends.default.urls',
-    ACCOUNT_ACTIVATION_DAYS=7,
-    REGISTRATION_OPEN=True
-)
 class ModelActivationCompatibilityTests(ModelActivationViewTests):
     """
     Re-run the model-activation workflow tests, but using the

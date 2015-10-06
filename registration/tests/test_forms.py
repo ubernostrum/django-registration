@@ -3,21 +3,17 @@ Exercise django-registration's built-in form classes.
 
 """
 
-from django.contrib.auth.models import User
-from django.test import TestCase
 from django.utils.six import text_type
 
 from .. import forms
+from .base import RegistrationTestCase
 
 
-class RegistrationFormTests(TestCase):
-    valid_data = {
-        'username': 'testuser',
-        'email': 'test@example.com',
-        'password1': 'swordfish',
-        'password2': 'swordfish',
-    }
+class RegistrationFormTests(RegistrationTestCase):
+    """
+    Test the built-in form classes.
 
+    """
     def test_username_format(self):
         """
         Invalid usernames are rejected.
@@ -41,11 +37,11 @@ class RegistrationFormTests(TestCase):
         Existing usernames cannot be re-used.
 
         """
-        User.objects.create(
-            username='testuser',
-            email='test@example.com',
-            password='swordfish'
-        )
+        data = self.valid_data.copy()
+        data.pop('password2')
+        password = data.pop('password1')
+        data['password'] = password
+        self.user_model.objects.create(**data)
 
         form = forms.RegistrationForm(data=self.valid_data.copy())
         self.assertFalse(form.is_valid())
@@ -88,10 +84,10 @@ class RegistrationFormTests(TestCase):
         Email uniqueness is enforced by RegistrationFormUniqueEmail.
 
         """
-        User.objects.create(
-            username='testuser2',
-            email='test@example.com',
-            password='swordfish'
+        self.user_model.objects.create(
+            username='bob',
+            email=self.valid_data['email'],
+            password=self.valid_data['password1']
         )
 
         form = forms.RegistrationFormUniqueEmail(
@@ -104,7 +100,7 @@ class RegistrationFormTests(TestCase):
         )
 
         data = self.valid_data.copy()
-        data.update(email='test2@example.com')
+        data.update(email='bob@example.com')
         form = forms.RegistrationFormUniqueEmail(
             data=data
         )
