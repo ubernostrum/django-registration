@@ -89,8 +89,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
     def test_registration(self):
         """
-        Registration creates a new inactive account and sends an
-        activation email.
+        Registration creates a new account.
 
         """
         resp = self.client.post(
