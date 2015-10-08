@@ -26,7 +26,7 @@ msgstr "endereço de email"
 
 #: forms.py:43
 msgid "password"
-msgstr ""
+msgstr "senha"
 
 #: forms.py:45
 msgid "password (again)"
@@ -62,7 +62,7 @@ msgstr "Este endereço de email já está em uso. Por favor, informe um endereç
 msgid ""
 "Registration using free email addresses is prohibited. Please supply a "
 "different email address."
-msgstr "Registrar-se com contas de email gratuitos está proibido. Por favor, informe um endereço de email diferente."
+msgstr "Registrar-se com contas de email gratuitos é proibido. Por favor, informe um endereço de email diferente."
 
 #: models.py:188
 msgid "user"
@@ -74,8 +74,8 @@ msgstr "chave de ativação"
 
 #: models.py:194
 msgid "registration profile"
-msgstr "profile de registro"
+msgstr "perfil de registro"
 
 #: models.py:195
 msgid "registration profiles"
-msgstr "profiles de registro"
+msgstr "perfis de registro"

@@ -11,6 +11,12 @@ support for `class-based views
 in ``django-registration`` are two base classes which can be
 subclassed to implement whatever workflow is required.
 
+The built-in workflows in ``django-registration`` provide their own
+subclasses of these views, and the documentation for those workflows
+will indicate customization points specific to those subclasses. The
+following reference covers useful attributes and methods of the base
+classes, for use in writing your own custom subclasses.
+
 .. class:: RegistrationView
 
    A subclass of Django's `FormView
