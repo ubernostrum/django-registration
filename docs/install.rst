@@ -9,9 +9,9 @@ Installation guide
    ``django-registration`` |version| is **in development and not yet
    released. The latest released version is still 1.0.** To install
    ``django-registration`` |version|, you will need to follow the
-   instructions in the section "Installing from a source
-   checkout. Attempting to install from the Python Package Index will
-   not work until ``django-registration`` |version| has been released.
+   instructions in the section "Installing from a source checkout."
+   Attempting to install from the Python Package Index will not work
+   until ``django-registration`` |version| has been released.
 
 Before installing ``django-registration``, you'll need to have a copy
 of `Django <https://www.djangoproject.com>`_ already installed. For
