@@ -83,6 +83,32 @@ General
      (including cryptographic features) where possible, rather than
      reinventing its own.
 
+**How do I run the tests?**
+
+    ``django-registration`` makes use of Django's own built-in
+    unit-testing tools, and supports several ways to execute its test
+    suite:
+
+    * Within a Django project, simply invoke ``manage.py test
+      registration``.
+
+    * If you've installed ``django-registration`` (so that it's on
+      your Python import path) and Django, but don't yet have a
+      project created, the file ``registration/runtests.py`` in
+      ``django-registration`` is a standalone script which will
+      configure minimal Django settings and a temporary SQLite
+      database, and run the test suite.
+
+    * If you're working with a git checkout of
+      ``django-registration``, you can invoke ``python setup.py test``
+      within the checkout. Behind the scenes, this simply executes
+      ``registration/runtests.py``.
+
+    Additionally, the ``setup.cfg`` file included in
+    ``django-registration`` provides configuration for
+    [coverage.py](https://aws.amazon.com/public-data-sets/), enabling
+    easy recording and reporting of test coverage.
+
    
 Installation and setup
 ----------------------
