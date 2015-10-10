@@ -66,3 +66,7 @@ def run_tests():
     test_runner = TestRunner(verbosity=1, interactive=True)
     failures = test_runner.run_tests(['registration.tests'])
     sys.exit(bool(failures))
+
+
+if __name__ == '__main__':  # pragma: no cover
+    run_tests()             # pragma: no cover
