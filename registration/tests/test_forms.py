@@ -11,11 +11,11 @@ from .base import RegistrationTestCase
 from django.utils.translation import ugettext_lazy as _
 
 
-if get_version()[:3] == "1.8":
+if get_version()[:3] == "1.8":  # pragma: no cover
     BAD_USERNAME = _("Enter a valid username. "
                      "This value may contain only letters, numbers "
                      "and @/./+/-/_ characters.")
-else:
+else:  # pragma: no cover
     BAD_USERNAME = _("This value may contain only letters, numbers and "
                      "@/./+/-/_ characters.")
 
