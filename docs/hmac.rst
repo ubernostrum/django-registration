@@ -145,10 +145,10 @@ start guide <quickstart>`.
 
       A string specifying the template to use for the subject of the
       activation email. Default is
-      ``"registration/activation_email_subject.txt"``. Note that to
+      ``"registration/activation_email_subject.txt"``. Note that, to
       avoid header-injection vulnerabilities, the result of rendering
-      this template will be forced to a single line of text, stripping
-      newline characters.
+      this template will be forced into a single line of text,
+      stripping newline characters.
 
 .. class:: ActivationView
 

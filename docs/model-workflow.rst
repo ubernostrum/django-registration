@@ -164,7 +164,7 @@ the database, using the following model:
           <http://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
           for details regarding these objects' interfaces.
 
-      Because email subjects must be a single line of text, the
+      Note that, to avoid header-injection vulnerabilities, the
       rendered output of ``registration/activation_email_subject.txt``
       will be forcibly condensed to a single line.
 
