@@ -5,11 +5,9 @@ on signup.
 
 """
 
-from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
-from django.contrib.sites.requests import RequestSite
+from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.template.loader import render_to_string
 
@@ -77,15 +75,10 @@ class RegistrationView(BaseRegistrationView):
         Build the template context used for the activation email.
 
         """
-        if apps.is_installed('django.contrib.sites'):
-            site = Site.objects.get_current()
-        else:
-            site = RequestSite(self.request)
-
         return {
             'activation_key': activation_key,
             'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-            'site': site,
+            'site': get_current_site(self.request),
         }
 
     def send_activation_email(self, user):
