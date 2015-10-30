@@ -13,8 +13,9 @@ workflows in mind, but may also be useful in other situations.
 
 .. class:: RegistrationForm
 
-   A simple form for registering an account. Has the following fields,
-   all of which are required:
+   A simple form for registering an account. This is a subclass of
+   Django's built-in ``UserCreationForm``, and has the following
+   fields, all of which are required:
 
    ``username``
        The username to use for the new account. This is represented as
@@ -35,15 +36,15 @@ workflows in mind, but may also be useful in other situations.
       The password to use for the new account. This represented as a
       password input (``input type="password"`` in the rendered HTML).
 
-   The constraints on usernames and email addresses match those
+   Because this is a subclass of Django's own ``UserCreationForm``,
+   the constraints on usernames and email addresses match those
    enforced by Django's default authentication backend for instances
    of ``django.contrib.auth.models.User``. The repeated entry of the
    password serves to catch typos.
 
-   Because it does not apply to any single field of the form, the
-   validation error for mismatched passwords is attached to the form
-   itself, and so must be accessed via the form's
-   ``non_field_errors()`` method.
+   The validation error for mismatched passwords is attached to the
+   ``password2`` field. This is a backwards-incompatible change from
+   ``django-registration`` 1.0.
 
 
 .. class:: RegistrationFormTermsOfService

@@ -23,10 +23,10 @@ class RegistrationView(BaseRegistrationView):
     activation key, and email it to the user.
 
     """
-    def register(self, **cleaned_data):
+    def register(self, form):
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=get_current_site(self.request),
-            **self.get_user_kwargs(**cleaned_data)
+            form,
+            site=get_current_site(self.request)
         )
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,

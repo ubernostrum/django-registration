@@ -8,11 +8,12 @@ import hashlib
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.sites.models import Site
+from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail, management
-from django.test import TestCase, override_settings
+from django.test import RequestFactory, TestCase, override_settings
 from django.utils.six import text_type
 
+from ..forms import RegistrationForm
 from ..models import SHA1_RE, RegistrationProfile
 
 
@@ -35,6 +36,29 @@ class RegistrationModelTests(TestCase):
     user_lookup_kwargs = {
         User.USERNAME_FIELD: 'alice'
     }
+
+    def get_form(self):
+        """
+        Create and return a RegistrationForm filled with valid data.
+
+        """
+        form = RegistrationForm(
+            data={
+                User.USERNAME_FIELD: 'alice',
+                'password1': 'swordfish',
+                'password2': 'swordfish',
+                'email': 'alice@example.com',
+            }
+        )
+        return form
+
+    def get_site(self):
+        """
+        Return a Site or RequestSite instance for use in registration.
+
+        """
+        factory = RequestFactory()
+        return get_current_site(factory.get('/'))
 
     def test_profile_creation(self):
         """
@@ -63,7 +87,7 @@ class RegistrationModelTests(TestCase):
         """
         new_user = User.objects.create_user(**self.user_info)
         profile = RegistrationProfile.objects.create_profile(new_user)
-        profile.send_activation_email(Site.objects.get_current())
+        profile.send_activation_email(self.get_site())
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].to, [self.user_info['email']])
 
@@ -74,8 +98,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            self.get_form(),
+            site=self.get_site()
         )
         self.assertEqual(
             getattr(new_user, User.USERNAME_FIELD),
@@ -95,8 +119,8 @@ class RegistrationModelTests(TestCase):
 
         """
         RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            self.get_form(),
+            site=self.get_site()
         )
         self.assertEqual(len(mail.outbox), 1)
 
@@ -107,9 +131,9 @@ class RegistrationModelTests(TestCase):
 
         """
         RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
+            form=self.get_form(),
+            site=self.get_site(),
             send_email=False,
-            **self.user_info
         )
         self.assertEqual(len(mail.outbox), 0)
 
@@ -120,8 +144,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            self.get_form(),
+            site=self.get_site()
         )
         profile = RegistrationProfile.objects.get(user=new_user)
         self.assertFalse(profile.activation_key_expired())
@@ -133,8 +157,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            self.get_form(),
+            site=self.get_site()
         )
         new_user.date_joined -= datetime.timedelta(
             days=settings.ACCOUNT_ACTIVATION_DAYS + 1
@@ -150,8 +174,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            form=self.get_form(),
+            site=self.get_site()
         )
         profile = RegistrationProfile.objects.get(user=new_user)
         activated = RegistrationProfile.objects.activate_user(
@@ -172,8 +196,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            form=self.get_form(),
+            site=self.get_site()
         )
         new_user.date_joined -= datetime.timedelta(
             days=settings.ACCOUNT_ACTIVATION_DAYS + 1
@@ -211,8 +235,8 @@ class RegistrationModelTests(TestCase):
 
         """
         new_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            form=self.get_form(),
+            site=self.get_site()
         )
         profile = RegistrationProfile.objects.get(user=new_user)
         RegistrationProfile.objects.activate_user(profile.activation_key)
@@ -246,18 +270,21 @@ class RegistrationModelTests(TestCase):
 
         """
         RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            form=self.get_form(),
+            site=self.get_site()
         )
 
-        expired_data = self.user_info.copy()
-        expired_data.update(**{
-            User.USERNAME_FIELD: 'bob',
-            'email': 'bob@example.com',
-        })
+        expired_form = RegistrationForm(
+            data={
+                User.USERNAME_FIELD: 'bob',
+                'password1': 'swordfish',
+                'password2': 'swordfish',
+                'email': 'bob@example.com',
+            }
+        )
         expired_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **expired_data
+            form=expired_form,
+            site=self.get_site()
         )
         expired_user.date_joined -= datetime.timedelta(
             days=settings.ACCOUNT_ACTIVATION_DAYS + 1
@@ -268,7 +295,7 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(1, RegistrationProfile.objects.count())
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(**{
-                User.USERNAME_FIELD: expired_data[User.USERNAME_FIELD]
+                User.USERNAME_FIELD: 'bob'
             })
 
     def test_management_command(self):
@@ -278,17 +305,20 @@ class RegistrationModelTests(TestCase):
 
         """
         RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **self.user_info
+            form=self.get_form(),
+            site=self.get_site()
         )
-        expired_data = self.user_info.copy()
-        expired_data.update(**{
-            User.USERNAME_FIELD: 'bob',
-            'email': 'bob@example.com',
-        })
+        expired_form = RegistrationForm(
+            data={
+                User.USERNAME_FIELD: 'bob',
+                'password1': 'swordfish',
+                'password2': 'swordfish',
+                'email': 'bob@example.com',
+            }
+        )
         expired_user = RegistrationProfile.objects.create_inactive_user(
-            site=Site.objects.get_current(),
-            **expired_data
+            form=expired_form,
+            site=self.get_site()
         )
         expired_user.date_joined -= datetime.timedelta(
             days=settings.ACCOUNT_ACTIVATION_DAYS + 1
@@ -299,5 +329,5 @@ class RegistrationModelTests(TestCase):
         self.assertEqual(RegistrationProfile.objects.count(), 1)
         with self.assertRaises(User.DoesNotExist):
             User.objects.get(**{
-                User.USERNAME_FIELD: expired_data[User.USERNAME_FIELD]
+                User.USERNAME_FIELD: 'bob'
             })

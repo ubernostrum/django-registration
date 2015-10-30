@@ -14,56 +14,6 @@ class RegistrationFormTests(RegistrationTestCase):
     Test the built-in form classes.
 
     """
-    def test_username_format(self):
-        """
-        Invalid usernames are rejected.
-
-        """
-        bad_usernames = [
-            'user!example', 'valid?',
-        ]
-        for username in bad_usernames:
-            data = self.valid_data.copy()
-            data.update(username=username)
-            form = forms.RegistrationForm(data=data)
-            self.assertFalse(form.is_valid())
-            self.assertEqual(
-                form.errors['username'],
-                [text_type(forms.BAD_USERNAME)]
-            )
-
-    def test_user_uniqueness(self):
-        """
-        Existing usernames cannot be re-used.
-
-        """
-        data = self.valid_data.copy()
-        data.pop('password2')
-        password = data.pop('password1')
-        data['password'] = password
-        self.user_model.objects.create(**data)
-
-        form = forms.RegistrationForm(data=self.valid_data.copy())
-        self.assertFalse(form.is_valid())
-        self.assertEqual(
-            form.errors['username'],
-            [text_type(forms.DUPLICATE_USER)]
-        )
-
-    def test_password_match(self):
-        """
-        Both submitted passwords must match.
-
-        """
-        data = self.valid_data.copy()
-        data.update(password2='swordfishes')
-        form = forms.RegistrationForm(data=data)
-        self.assertFalse(form.is_valid())
-        self.assertEqual(
-            form.errors['__all__'],
-            [text_type(forms.PASSWORD_MISMATCH)]
-        )
-
     def test_tos_field(self):
         """
         The terms-of-service field on RegistrationFormTermsOfService

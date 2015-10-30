@@ -28,13 +28,13 @@ classes, for use in writing your own custom subclasses.
 
    When writing your own subclass, one method is required:
 
-   .. method:: register(**cleaned_data)
+   .. method:: register(form)
 
-      Implement your registration logic here. ``cleaned_data`` will be
-      the dictionary of data supplied by the user during the
-      registration process (i.e., the ``cleaned_data`` from a valid
-      instance of :class:`registration.forms.RegistrationForm` or a
-      subclass of it).
+      Implement your registration logic here. ``form`` will be the
+      (already-validated) form filled out by the user during the
+      registration process (i.e., a valid instance of
+      :class:`registration.forms.RegistrationForm` or a subclass of
+      it).
 
       This method should return the newly-registered user instance,
       and should send the signal
@@ -92,17 +92,6 @@ classes, for use in writing your own custom subclasses.
 
       Should return a boolean indicating whether user registration is
       allowed, either in general or for this specific request.
-
-   .. method:: get_user_kwargs(**cleaned_data)
-
-      Given the cleaned_data from the registration form, return from
-      them a dictionary of keyword arguments to be used in
-      user-account creation. By default, this is a dictionary with
-      values for the ``USERNAME_FIELD`` of the user model, along with
-      email and password, to match the signature of Django's default
-      ``User.objects.create_user()`` implementation, and assumes the
-      field names of the default
-      :class:`~registration.forms.RegistrationForm` class.
 
 
 .. class:: ActivationView

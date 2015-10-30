@@ -32,10 +32,8 @@ class RegistrationView(BaseRegistrationView):
     email_body_template = 'registration/activation_email.txt'
     email_subject_template = 'registration/activation_email_subject.txt'
 
-    def register(self, **cleaned_data):
-        new_user = self.create_inactive_user(
-            **self.get_user_kwargs(**cleaned_data)
-        )
+    def register(self, form):
+        new_user = self.create_inactive_user(form)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
                                      request=self.request)
@@ -44,14 +42,13 @@ class RegistrationView(BaseRegistrationView):
     def get_success_url(self, user):
         return ('registration_complete', (), {})
 
-    def create_inactive_user(self, **user_kwargs):
+    def create_inactive_user(self, form):
         """
         Create the inactive user account and send an email containing
         activation instructions.
 
         """
-        User = get_user_model()
-        new_user = User.objects.create_user(**user_kwargs)
+        new_user = form.save(commit=False)
         new_user.is_active = False
         new_user.save()
 

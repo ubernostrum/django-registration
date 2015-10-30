@@ -20,12 +20,12 @@ class RegistrationView(BaseRegistrationView):
     useful account), and is immediately signed up and logged in).
 
     """
-    def register(self, **cleaned_data):
-        user_kwargs = self.get_user_kwargs(**cleaned_data)
-        User.objects.create_user(**user_kwargs)
-        user_kwargs.pop('email')
-
-        new_user = authenticate(**user_kwargs)
+    def register(self, form):
+        new_user = form.save()
+        new_user = authenticate(
+            username=getattr(new_user, User.USERNAME_FIELD),
+            password=form.cleaned_data['password1']
+        )
         login(self.request, new_user)
         signals.user_registered.send(sender=self.__class__,
                                      user=new_user,
