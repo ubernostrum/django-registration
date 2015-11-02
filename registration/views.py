@@ -62,11 +62,10 @@ class RegistrationView(FormView):
         """
         return getattr(settings, 'REGISTRATION_OPEN', True)
 
-    def register(self, **cleaned_data):
+    def register(self, form):
         """
         Implement user-registration logic here. Access to both the
-        request and the full cleaned_data of the registration form is
-        available here.
+        request and the registration form is available here.
 
         """
         raise NotImplementedError
