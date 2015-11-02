@@ -25,10 +25,13 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
             data=self.valid_data
         )
 
-        new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
-        self.assertEqual(302, resp.status_code)
-        self.assertEqual('http://testserver/', resp['Location'])
+        # fetch_redirect_response=False because the URLConf we're
+        # using in these tests does not define a URL pattern for '/',
+        # so allowing the default behavior would fail the test when
+        # that URL 404s.
+        self.assertRedirects(resp, '/', fetch_redirect_response=False)
 
+        new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
         self.assertTrue(
             new_user.check_password(
                 self.valid_data['password1']
