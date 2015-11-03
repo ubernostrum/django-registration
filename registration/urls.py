@@ -1,8 +1,8 @@
 """
 Backwards-compatible URLconf for existing django-registration
 installs; this allows the standard ``include('registration.urls')`` to
-continue working, but that usage is deprecated and will be removed for
-django-registration 1.9. For new installs, use
+continue working, but that usage is deprecated and will be removed in
+a future release.  For new installs, use
 ``include('registration.backends.model_activation.urls')``.
 
 """
