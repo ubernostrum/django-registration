@@ -18,7 +18,7 @@ for these signals can then add whatever logic is needed.
 
 For general documentation on signals and the Django dispatcher,
 consult `Django's signals documentation
-<http://docs.djangoproject.com/en/1.8/topics/signals/>`_. This
+<http://docs.djangoproject.com/en/stable/topics/signals/>`_. This
 documentation assumes that you are familiar with how signals work and
 the process of writing and connecting functions which will listen for
 signals.

@@ -42,7 +42,9 @@ at a different location, you can ``include()`` the URLconf
 ``registration.auth_urls`` to place only the ``django.contrib.auth``
 views at a specific location in your URL hierarchy.
 
-.. warning:: The URL pattern for
+.. warning:: **URL patterns for activation**
+
+   The URL pattern for
    :class:`~registration.views.backends.hmac.ActivationView` must take
    care to allow all the possible legal characters of both usernames
    and Django's HMAC-signed values. The legal characters in a username
@@ -186,7 +188,7 @@ after which the user can log in.
 
 The activation key is simply the username of the new account, signed
 using `Django's cryptographic signing tools
-<https://docs.djangoproject.com/en/1.8/topics/signing/>`_. The
+<https://docs.djangoproject.com/en/stable/topics/signing/>`_. The
 activation process includes verification of the signature prior to
 activation, as well as verifying that the user is activating within
 the permitted window (as specified in the setting
@@ -206,7 +208,9 @@ window. Additionally, it is possible a user could, if manually
 deactivated, re-activate their account if still within the activation
 window; for this reason, when using the ``is_active`` field to "ban" a
 user, it is best to also set the user's password to an unusable value
-(i.e., by calling ``set_unusable_password()`` for that user).
+(i.e., by calling `set_unusable_password()
+<https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.models.User.set_unusable_password>`_
+for that user).
 
 Since the HMAC activation workflow does not use any models, it also
 does not make use of the admin interface and thus does not offer a

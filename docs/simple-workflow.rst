@@ -6,9 +6,9 @@ The simple one-step workflow
 
 As an alternative to the :ref:`HMAC <hmac-workflow>` and
 :ref:`model-based <model-workflow>` two-step (registration and
-activation) systems, ``django-registration`` bundles a one-step
-registration system in ``registration.backend.simple``. This workflow
-is deliberately as simple as possible:
+activation) workflows, ``django-registration`` bundles a one-step
+registration workflow in ``registration.backends.simple``. This
+workflow is deliberately as simple as possible:
 
 1. A user signs up by filling out a registration form.
 
@@ -61,9 +61,8 @@ Used to show the form users will fill out to register. By default, has
 the following context:
 
 ``form``
-    The registration form. This will be an instance of some subclass
-    of ``django.forms.Form``; consult `Django's forms documentation
-    <https://docs.djangoproject.com/en/1.8/topics/forms/>`_ for
+    The registration form. This will likely be a subclass of
+    :class:`~registration.forms.RegistrationForm`; consult `Django's
+    forms documentation
+    <https://docs.djangoproject.com/en/stable/topics/forms/>`_ for
     information on how to display this in a template.
-
-

@@ -7,7 +7,7 @@ Base view classes
 In order to allow the utmost flexibility in customizing and supporting
 different workflows, ``django-registration`` makes use of Django's
 support for `class-based views
-<https://docs.djangoproject.com/en/1.8/topics/class-based-views/>`_. Included
+<https://docs.djangoproject.com/en/stable/topics/class-based-views/>`_. Included
 in ``django-registration`` are two base classes which can be
 subclassed to implement whatever workflow is required.
 
@@ -20,7 +20,7 @@ classes, for use in writing your own custom subclasses.
 .. class:: RegistrationView
 
    A subclass of Django's `FormView
-   <https://docs.djangoproject.com/en/1.8/ref/class-based-views/generic-editing/#formview>`_,
+   <https://docs.djangoproject.com/en/stable/ref/class-based-views/generic-editing/#formview>`_,
    which provides the infrastructure for supporting user registration.
 
    Since it's a subclass of ``FormView``, ``RegistrationView`` has all
@@ -47,7 +47,7 @@ classes, for use in writing your own custom subclasses.
 
       The URL to redirect to when registration is disallowed. Should
       be a `string name of a URL pattern
-      <https://docs.djangoproject.com/en/1.8/topics/http/urls/#naming-url-patterns>`_.
+      <https://docs.djangoproject.com/en/stable/topics/http/urls/#naming-url-patterns>`_.
       Default value is ``"registration_disallowed"``.
 
    .. attribute:: form_class
@@ -63,7 +63,7 @@ classes, for use in writing your own custom subclasses.
       containing a (relative) URL, or a string name of a URL pattern,
       or a 3-tuple of arguments suitable for passing to Django's
       `redirect shortcut
-      <https://docs.djangoproject.com/en/1.8/topics/http/shortcuts/#redirect>`_. Can
+      <https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#redirect>`_. Can
       be overridden on a per-request basis (see below). Default value
       is ``None``, so that per-request customization is used instead.
 
@@ -97,7 +97,7 @@ classes, for use in writing your own custom subclasses.
 .. class:: ActivationView
 
    A subclass of Django's `TemplateView
-   <https://docs.djangoproject.com/en/1.8/ref/class-based-views/base/#templateview>`_
+   <https://docs.djangoproject.com/en/stable/ref/class-based-views/base/#templateview>`_
    which provides support for a separate account-activation step, in
    workflows which require that.
 

@@ -68,7 +68,7 @@ views, those arguments should continue to work, so long as your
 URLconf is updated to refer to the new class-based views. For details
 of how to pass custom arguments to class-based views, see `the Django
 class-based view documentation
-<https://docs.djangoproject.com/en/1.8/topics/class-based-views/#simple-usage-in-your-urlconf>`_.
+<https://docs.djangoproject.com/en/stable/topics/class-based-views/#simple-usage-in-your-urlconf>`_.
 
 
 Template changes

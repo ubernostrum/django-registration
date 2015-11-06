@@ -64,6 +64,6 @@ documentation listed below.
 .. seealso::
 
    * `Django's authentication documentation
-     <https://docs.djangoproject.com/en/1.8/topics/auth/>`_. Django's
+     <https://docs.djangoproject.com/en/stable/topics/auth/>`_. Django's
      authentication system is used by django-registration's default
      configuration.

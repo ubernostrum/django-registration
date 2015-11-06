@@ -28,7 +28,7 @@ you'll need to ensure ``django.contrib.auth`` has been installed (by
 adding it to ``INSTALLED_APPS`` and running ``manage.py migrate`` to
 install needed database tables). Also, if you're making use of `a
 custom user model
-<https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#substituting-a-custom-user-model>`_,
+<https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
 you'll probably want to pause and read :ref:`the custom user
 compatibility guide <custom-user>` before using
 ``django-registration``.
@@ -109,7 +109,7 @@ views in ``django.contrib.auth``. The templates required by
 of the templates used for account activation emails, all of these are
 rendered using a ``RequestContext`` and so will also receive any
 additional variables provided by `context processors
-<https://docs.djangoproject.com/en/1.8/ref/templates/api/#id1>`_.
+<https://docs.djangoproject.com/en/stable/ref/templates/api/#id1>`_.
 
 **registration/registration_form.html**
 
@@ -120,7 +120,7 @@ the following context:
     The registration form. This will likely be a subclass of
     :class:`~registration.forms.RegistrationForm`; consult `Django's
     forms documentation
-    <https://docs.djangoproject.com/en/1.8/topics/forms/>`_ for
+    <https://docs.djangoproject.com/en/stable/topics/forms/>`_ for
     information on how to display this in a template.
 
 **registration/registration_complete.html**
@@ -164,7 +164,7 @@ being used. This template has the following context:
     (if the sites application is installed) or
     ``django.contrib.sites.requests.RequestSite`` (if not). Consult
     `the documentation for the Django sites framework
-    <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/>`_ for
+    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for
     details regarding these objects' interfaces.
 
 **registration/activation_email.txt**
@@ -187,7 +187,7 @@ following context:
     (if the sites application is installed) or
     ``django.contrib.sites.requests.RequestSite`` (if not). Consult
     `the documentation for the Django sites framework
-    <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/>`_ for
+    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for
     details regarding these objects.
 
 Note that the templates used to generate the account activation email
@@ -200,7 +200,7 @@ To make use of the views from ``django.contrib.auth`` (which are set
 up for you by the default URLconf mentioned above), you will also need
 to create the templates required by those views. Consult `the
 documentation for Django's authentication system
-<https://docs.djangoproject.com/en/1.8/topics/auth/>`_ for details
+<https://docs.djangoproject.com/en/stable/topics/auth/>`_ for details
 regarding these templates.
 
 

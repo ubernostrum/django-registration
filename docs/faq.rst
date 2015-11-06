@@ -161,7 +161,7 @@ Configuration
     class-based view can be changed by passing a different value for
     that attribute in the URLConf. See `Django's class-based view
     documentation
-    <https://docs.djangoproject.com/en/1.8/topics/class-based-views/#simple-usage-in-your-urlconf>`_
+    <https://docs.djangoproject.com/en/stable/topics/class-based-views/#simple-usage-in-your-urlconf>`_
     for examples of this.
 
     For more complex or fine-grained control, you will likely want to
@@ -200,7 +200,7 @@ Tips and tricks
 
     Assuming you're using :ref:`the model-based workflow
     <model-workflow>`, a `custom admin action
-    <http://docs.djangoproject.com/en/1.8/ref/contrib/admin/actions/>`_
+    <http://docs.djangoproject.com/en/stable/ref/contrib/admin/actions/>`_
     is provided for this; in the admin for the
     :class:`~registration.models.RegistrationProfile` model, simply
     click the checkbox for the user(s) you'd like to re-send the email
