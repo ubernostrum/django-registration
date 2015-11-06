@@ -34,7 +34,7 @@ URLconf is ``registration.backends.hmac.urls``. For example, to place
 user registration under the URL prefix ``/accounts/``, you could place
 the following in your root URLconf::
 
-    ``url(r'^accounts/', include('registration.backends.hmac.urls')),``
+    url(r'^accounts/', include('registration.backends.hmac.urls')),
 
 That URLconf also sets up the views from ``django.contrib.auth``
 (login, logout, password reset, etc.), though if you want those views

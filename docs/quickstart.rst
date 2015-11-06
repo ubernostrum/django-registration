@@ -25,7 +25,8 @@ The guide below covers use of these two workflows.
 
 Before proceeding with either of the recommended built-in workflows,
 you'll need to ensure ``django.contrib.auth`` has been installed (by
-adding it to ``INSTALLED_APPS``). Also, if you're making use of `a
+adding it to ``INSTALLED_APPS`` and running ``manage.py migrate`` to
+install needed database tables). Also, if you're making use of `a
 custom user model
 <https://docs.djangoproject.com/en/1.8/topics/auth/customizing/#substituting-a-custom-user-model>`_,
 you'll probably want to pause and read :ref:`the custom user
@@ -33,8 +34,8 @@ compatibility guide <custom-user>` before using
 ``django-registration``.
 
 
-Configurating the HMAC activation workflow
-------------------------------------------
+Configuring the HMAC activation workflow
+----------------------------------------
 
 The configuration process for using the HMAC activation workflow is
 straightforward: you'll need to specify a couple of settings, connect
@@ -49,9 +50,8 @@ Begin by adding the following setting to your Django settings file:
 ``ACCOUNT_ACTIVATION_DAYS``
     This is the number of days users will have to activate their
     accounts after registering. If a user does not activate within
-    that period, the account will remain permanently inactive and may
-    be deleted by maintenance scripts provided in
-    ``django-registration``.
+    that period, the account will remain permanently inactive unless a
+    site administrator manually activates it.
 
 For example, you might have something like the following in your
 Django settings file::
@@ -89,7 +89,7 @@ following to your project's root URLconf::
     url(r'^accounts/', include('registration.backends.hmac.urls')),
 
 Users would then be able to register by visiting the URL
-``/accounts/register/``, login (once activated) at
+``/accounts/register/``, log in (once activated) at
 ``/accounts/login/``, etc.
 
 Another ``URLConf`` is also provided -- at ``registration.auth_urls``
@@ -117,8 +117,9 @@ Used to show the form users will fill out to register. By default, has
 the following context:
 
 ``form``
-    The registration form. This will be an instance of some subclass
-    of ``django.forms.Form``; consult `Django's forms documentation
+    The registration form. This will likely be a subclass of
+    :class:`~registration.forms.RegistrationForm`; consult `Django's
+    forms documentation
     <https://docs.djangoproject.com/en/1.8/topics/forms/>`_ for
     information on how to display this in a template.
 
@@ -187,7 +188,7 @@ following context:
     ``django.contrib.sites.requests.RequestSite`` (if not). Consult
     `the documentation for the Django sites framework
     <https://docs.djangoproject.com/en/1.8/ref/contrib/sites/>`_ for
-    details regarding these objects' interfaces.
+    details regarding these objects.
 
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
