@@ -44,22 +44,19 @@ views at a specific location in your URL hierarchy.
 
 .. warning:: **URL patterns for activation**
 
-   The URL pattern for
-   :class:`~registration.views.backends.hmac.ActivationView` must take
-   care to allow all the possible legal characters of both usernames
-   and Django's HMAC-signed values. The legal characters in a username
-   (in Django's default ``User`` model) are all "word" characters
-   (letters, numbers and underscore), the dot (``.``), the at-symbol
-   (``@``), the plus sign (``+``) and the hyphen (``-``). The
-   separator indicating the boundaries between the value, the
-   timestamp and the signature is the colon (``:``), and the signature
-   itself may use any character from `the URL-safe base64 alphabet
-   <http://tools.ietf.org/html/rfc4648#section-5>`_.
+   Although the actual value used in the activation key is the new
+   user account's username, the URL pattern for
+   :class:`~registration.views.backends.hmac.ActivationView` does not
+   need to match all possible legal characters in a username. The
+   activation key that will be sent to the user (and thus matched in
+   the URL) is produced by ``django.core.signing.dumps()``, which
+   base64-encodes its output. Thus, the only characters this pattern
+   needs to match are those from `the URL-safe base64 alphabet
+   <http://tools.ietf.org/html/rfc4648#section-5>`_, plus the colon
+   ("``:``") which is used as a separator.
 
    The default URL pattern for the activation view in
-   ``registration.backends.hmac.urls`` allows all of these
-   characters. If you intend to change the set of legal characters,
-   you *must* supply your own URL pattern for this view.
+   ``registration.backends.hmac.urls`` handles this for you.
 
 This workflow makes use of up to three settings:
 
@@ -231,12 +228,12 @@ is a value obtained by using Django's cryptographic signing tools.
 
 In particular, the activation key is of the form::
 
-    username:timestamp:signature
+    encoded_username:timestamp:signature
 
-Where ``username`` is the username of the new account, ``timestamp``
-is a base62-encoded timestamp of the time the user registered, and
-``signature`` is a URL-safe base64-encoded HMAC of the username and
-timestamp.
+Where ``encoded_username`` is the username of the new account,
+(URL-safe) base64-encoded, ``timestamp`` is a base62-encoded timestamp
+of the time the user registered, and ``signature`` is a (URL-safe)
+base64-encoded HMAC of the username and timestamp.
 
 Django's implementation uses the value of the ``SECRET_KEY`` setting
 as the key for HMAC; additionally, it permits the specification of a
