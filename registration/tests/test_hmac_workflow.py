@@ -32,8 +32,10 @@ class HMACViewTests(ActivationTestCase):
             data=self.valid_data
         )
 
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign(self.valid_data['username'])
+        activation_key = signing.dumps(
+            obj=self.valid_data['username'],
+            salt=REGISTRATION_SALT
+        )
 
         resp = self.client.get(
             reverse(
@@ -55,8 +57,10 @@ class HMACViewTests(ActivationTestCase):
             data=self.valid_data
         )
 
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign(self.valid_data['username'])
+        activation_key = signing.dumps(
+            obj=self.valid_data['username'],
+            salt=REGISTRATION_SALT
+        )
 
         resp = self.client.get(
             reverse(
@@ -112,8 +116,10 @@ class HMACViewTests(ActivationTestCase):
         time.time = lambda: expired_timestamp
 
         try:
-            signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-            activation_key = signer.sign(self.valid_data['username'])
+            activation_key = signing.dumps(
+                obj=self.valid_data['username'],
+                salt=REGISTRATION_SALT
+            )
         finally:
             time.time = _old_time
 
@@ -134,8 +140,10 @@ class HMACViewTests(ActivationTestCase):
         activate.
 
         """
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign('parrot')
+        activation_key = signing.dumps(
+            obj='parrot',
+            salt=REGISTRATION_SALT
+        )
 
         resp = self.client.get(
             reverse(

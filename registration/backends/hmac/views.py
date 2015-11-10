@@ -61,11 +61,10 @@ class RegistrationView(BaseRegistrationView):
         Generate the activation key which will be emailed to the user.
 
         """
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
-        activation_key = signer.sign(
-            str(getattr(user, user.USERNAME_FIELD))
+        return signing.dumps(
+            obj=getattr(user, user.USERNAME_FIELD),
+            salt=REGISTRATION_SALT,
         )
-        return activation_key
 
     def get_email_context(self, activation_key):
         """
@@ -126,10 +125,10 @@ class ActivationView(BaseActivationView):
         valid or ``None`` if not.
 
         """
-        signer = signing.TimestampSigner(salt=REGISTRATION_SALT)
         try:
-            username = signer.unsign(
+            username = signing.loads(
                 activation_key,
+                salt=REGISTRATION_SALT,
                 max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400
             )
             return username
