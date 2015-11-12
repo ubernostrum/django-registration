@@ -185,12 +185,13 @@ after which the user can log in.
 
 The activation key is simply the username of the new account, signed
 using `Django's cryptographic signing tools
-<https://docs.djangoproject.com/en/stable/topics/signing/>`_. The
-activation process includes verification of the signature prior to
-activation, as well as verifying that the user is activating within
-the permitted window (as specified in the setting
-``ACCOUNT_ACTIVATION_DAYS``, mentioned above), through use of Django's
-``TimestampSigner``.
+<https://docs.djangoproject.com/en/stable/topics/signing/>`_
+(specifically, ``signing.dumps()`` is used, to produce a
+guaranteed-URL-safe value). The activation process includes
+verification of the signature prior to activation, as well as
+verifying that the user is activating within the permitted window (as
+specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, mentioned
+above), through use of Django's ``TimestampSigner``.
 
 
 Comparison to the model-activation workflow
