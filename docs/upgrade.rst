@@ -42,7 +42,7 @@ workflow in ``django-registration`` |version| is:
 URLconf changes
 ---------------
 
-If you were using one of the provided backends in
+If you were using one of the provided workflows in
 ``django-registration`` 0.8 without modification, you will not need to
 make any changes; both ``registration.backends.default.urls`` and
 ``registration.backends.simple.urls`` have been updated in
@@ -57,11 +57,12 @@ class-based views:
 | ``registration.views.activate`` | ``registration.views.ActivationView.as_view()``   |
 +---------------------------------+---------------------------------------------------+
 
-However, if you were using the two-step model-activation backend, you
-should consider referring to
+However, if you were using the two-step model-activation workflow, you
+should begin referring to
 ``registration.backends.model_activation.urls`` instead of
-``registration.backends.default.urls``, as the latter is deprecated
-and support for it will be removed in a future release.
+``registration.backends.default.urls`` or ``registration.urls``, as
+the latter two are deprecated and support for them will be removed in
+a future release.
 
 If you were passing custom arguments to the built-in registration
 views, those arguments should continue to work, so long as your
