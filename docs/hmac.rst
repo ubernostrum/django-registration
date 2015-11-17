@@ -42,7 +42,7 @@ at a different location, you can ``include()`` the URLconf
 ``registration.auth_urls`` to place only the ``django.contrib.auth``
 views at a specific location in your URL hierarchy.
 
-.. warning:: **URL patterns for activation**
+.. note:: **URL patterns for activation**
 
    Although the actual value used in the activation key is the new
    user account's username, the URL pattern for
@@ -60,24 +60,11 @@ views at a specific location in your URL hierarchy.
 
 This workflow makes use of up to three settings:
 
-``ACCOUNT_ACTIVATION_DAYS``
-    This is the number of days users will have to activate their
-    accounts after registering. Failing to activate during that period
-    will leave the account inactive (and possibly subject to
-    deletion). This setting is required, and must be an integer.
+* :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`
 
-``REGISTRATION_OPEN``
-    A boolean (either ``True`` or ``False``) indicating whether
-    registration of new accounts is currently permitted. This setting
-    is optional, and a default of ``True`` will be assumed if it is
-    not supplied.
+* :data:`~django.conf.settings.REGISTRATION_OPEN`
 
-``REGISTRATION_SALT``
-    A string used as an additional "salt" in the process of signing
-    activation keys. This setting is optional, and the string
-    ``"registration"`` will be used if it is not supplied. Changing
-    this setting provides no additional security, and it is used
-    solely as a way of namespacing HMAC usage.
+* :data:`~django.conf.settings.REGISTRATION_SALT`
 
 By default, this workflow uses
 :class:`registration.forms.RegistrationForm` as its form class for

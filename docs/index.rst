@@ -52,6 +52,7 @@ documentation listed below.
    views
    forms
    custom-user
+   settings
    signals
 
 .. toctree::

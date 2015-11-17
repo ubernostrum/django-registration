@@ -33,17 +33,9 @@ you choose in your URL hierarchy. For example::
 
 This workflow makes use of the following settings:
 
-``ACCOUNT_ACTIVATION_DAYS``
-    This is the number of days users will have to activate their
-    accounts after registering. Failing to activate during that period
-    will leave the account inactive (and possibly subject to
-    deletion). This setting is required, and must be an integer.
+* :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`
 
-``REGISTRATION_OPEN``
-    A boolean (either ``True`` or ``False``) indicating whether
-    registration of new accounts is currently permitted. This setting
-    is optional, and a default of ``True`` will be assumed if it is
-    not supplied.
+* :data:`~django.conf.settings.REGISTRATION_OPEN`
 
 By default, this workflow uses
 :class:`registration.forms.RegistrationForm` as its form class for

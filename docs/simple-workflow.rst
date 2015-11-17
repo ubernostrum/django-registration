@@ -23,17 +23,20 @@ Configuration
 
 To use this workflow, simply include the URLconf
 ``registration.backends.simple.urls`` somewhere in your site's own URL
-configuration. For example::
+configuration. For example:
 
-    url(r'^accounts/', include('registration.backends.simple.urls')),
+.. code-block:: python
 
-No additional settings are required, but one optional setting is
-supported:
+   from django.conf.urls import include, url
 
-``REGISTRATION_OPEN``
-    A boolean (either ``True`` or ``False``) indicating whether
-    registration of new accounts is currently permitted. A default of
-    ``True`` will be assumed if this setting is not supplied.
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/', include('registration.backends.simple.urls')),
+       # More URL patterns ...
+   ]
+
+To control whether registration of new accounts is allowed, you can
+specify the setting :data:`~django.conf.settings.REGISTRATION_OPEN`.
 
 Upon successful registration, the user will be redirected to the
 site's home page -- the URL ``/``. This can be changed by subclassing

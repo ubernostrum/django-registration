@@ -47,7 +47,7 @@ Required settings
 
 Begin by adding the following setting to your Django settings file:
 
-``ACCOUNT_ACTIVATION_DAYS``
+:data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`
     This is the number of days users will have to activate their
     accounts after registering. If a user does not activate within
     that period, the account will remain permanently inactive unless a

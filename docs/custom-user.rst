@@ -5,11 +5,12 @@ Custom user models
 
 When ``django-registration`` was first developed, Django's
 authentication system supported only its own built-in user model,
-``django.contrib.auth.models.User``. More recent versions of Django,
-however, have introduced support for `custom user models
-<https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_. It
-is possible to use ``django-registration`` with a custom user model,
-so long as certain factors are accounted for.
+``django.contrib.auth.models.User``. More recent versions of Django
+have introduced support for `custom user models
+<https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_.
+
+It is possible to use ``django-registration`` with a custom user
+model, so long as certain factors are accounted for.
 
 .. warning:: **Using email address as username**
 
@@ -39,12 +40,12 @@ If you want to use one of the registration workflows built in to
 ``django-registration``, there is some accommodation for custom user
 models. :ref:`The two-step model workflow <model-workflow>` uses a
 model with a ``OneToOneField`` to the user model, and uses the
-recommended practice of referring to it via the
-``settings.AUTH_USER_MODEL`` setting. All built-in workflows also
-avoid importing or directly referring to Django's default user model,
-instead using the ``get_user_model()`` helper provided in
-``django.contrib.auth`` to obtain a reference to whatever model has
-been specified to represent users.
+recommended practice of referring to it via the ``AUTH_USER_MODEL``
+setting. All built-in workflows also avoid importing or directly
+referring to Django's default user model, instead using the
+``get_user_model()`` helper provided in ``django.contrib.auth`` to
+obtain a reference to whatever model has been specified to represent
+users.
 
 However, all of these workflows do make some assumptions about the
 structure of your user model.
