@@ -32,9 +32,9 @@ class RegistrationForm(UserCreationForm):
     requires the password to be entered twice to catch typos.
 
     Subclasses should feel free to add any additional validation they
-    need, but should avoid defining a ``save()`` method -- the actual
-    saving of collected user data is delegated to the registration
-    view..
+    need, but should take care when overriding ``save()`` to respect
+    the ``commit=False`` argument, as several registration workflows
+    will make use of it to create inactive user accounts.
 
     """
     class Meta(UserCreationForm.Meta):

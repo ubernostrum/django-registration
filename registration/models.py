@@ -253,7 +253,7 @@ class RegistrationProfile(models.Model):
             An object representing the site on which the user
             registered; depending on whether ``django.contrib.sites``
             is installed, this may be an instance of either
-            ``django.contrib.sites.models.Site`` (if the sites
+            ``django.contrib.sites.requests.Site`` (if the sites
             application is installed) or
             ``django.contrib.sites.models.RequestSite`` (if
             not). Consult the documentation for the Django sites
