@@ -24,8 +24,10 @@ SETTINGS_DICT = {
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.sites',
+        # This is only needed by the model-based activation workflow.
         'registration',
     ),
+    # Test cases will override this liberally.
     'ROOT_URLCONF': 'registration.backends.default.urls',
     'DATABASES': {
         'default': {
