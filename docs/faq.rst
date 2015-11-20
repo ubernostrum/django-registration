@@ -92,15 +92,10 @@ General
 
     * If you've installed ``django-registration`` (so that it's on
       your Python import path) and Django, but don't yet have a
-      project created, the file ``registration/runtests.py`` in
-      ``django-registration`` is a standalone script which will
-      configure minimal Django settings and a temporary SQLite
-      database, and run the test suite.
-
-    * If you're working with a git checkout of
-      ``django-registration``, you can invoke ``python setup.py test``
-      within the checkout. Behind the scenes, this simply executes
-      ``registration/runtests.py``.
+      project created or want to test independently of a project, you
+      can run ``registration/runtests.py``, or you can invoke ``python
+      setup.py test`` (which will simply run
+      ``registration/runtests.py``).
 
     Additionally, the ``setup.cfg`` file included in
     ``django-registration`` provides configuration for
@@ -113,7 +108,9 @@ Installation and setup
 
 **How do I install django-registration?**
 
-    Full instructions are available in :ref:`the quick start guide <quickstart>`.
+    Full instructions are available in :ref:`the installation guide
+    <install>`. For configuration, see :ref:`the quick start guide
+    <quickstart>`.
 
 **Does django-registration come with any sample templates I can use right away?**
 
