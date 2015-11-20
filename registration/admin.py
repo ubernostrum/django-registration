@@ -1,6 +1,15 @@
+"""
+Admin class for the RegistrationProfile model, providing several
+conveniences.
+
+This is only enabled if 'registration' is in your INSTALLED_APPS
+setting, which should only occur if you are using the model-based
+activation backend.
+
+"""
+
 from django.contrib import admin
-from django.contrib.sites.models import Site
-from django.contrib.sites.requests import RequestSite
+from django.contrib.sites.shortcuts import get_current_site
 from django.utils.translation import ugettext_lazy as _
 
 from registration.models import RegistrationProfile
@@ -33,12 +42,9 @@ class RegistrationAdmin(admin.ModelAdmin):
         activated.
 
         """
-        if Site._meta.installed:
-            site = Site.objects.get_current()
-        else:
-            site = RequestSite(request)
-
         for profile in queryset:
             if not profile.activation_key_expired():
-                profile.send_activation_email(site)
+                profile.send_activation_email(
+                    get_current_site(request)
+                )
     resend_activation_email.short_description = _("Re-send activation emails")
