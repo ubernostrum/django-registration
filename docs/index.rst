@@ -3,11 +3,6 @@
 django-registration |version|
 =============================
 
-.. warning::
-
-   ``django-registration`` |version| is **in development and not yet
-   released**. The latest released version is still 1.0.
-
 ``django-registration`` is a simple, extensible application providing
 user registration functionality for `Django
 <https://www.djangoproject.com/>`_-powered Web sites.
