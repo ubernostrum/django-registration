@@ -115,7 +115,7 @@ class RegistrationProfile(models.Model):
     account registration.
 
     """
-    ACTIVATED = u"ALREADY_ACTIVATED"
+    ACTIVATED = "ALREADY_ACTIVATED"
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 verbose_name=_('user'))
