@@ -50,15 +50,6 @@ class RegistrationView(FormView):
         Override this to enable/disable user registration, either
         globally or on a per-request basis.
 
-        By default, will use the value of the setting
-        ``REGISTRATION_OPEN``, as follows:
-
-        * If ``REGISTRATION_OPEN`` is not specified in settings, or is
-          set to ``True``, registration is permitted.
-
-        * If ``REGISTRATION_OPEN`` is both specified and set to
-          ``False``, registration is not permitted.
-
         """
         return getattr(settings, 'REGISTRATION_OPEN', True)
 
