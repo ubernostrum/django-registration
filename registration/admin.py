@@ -4,7 +4,7 @@ conveniences.
 
 This is only enabled if 'registration' is in your INSTALLED_APPS
 setting, which should only occur if you are using the model-based
-activation backend.
+activation workflow.
 
 """
 
