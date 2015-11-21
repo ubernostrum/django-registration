@@ -5,19 +5,26 @@ The model-based activation workflow
 ===================================
 
 This workflow implements a two-step -- registration, followed by
-activation -- process for user signup. It was formerly the default
-registration workflow of ``django-registration``, though for two-step
-(registration and activation) signup, :ref:`the HMAC activation
-workflow <hmac-workflow>` is now recommended.
+activation -- process for user signup. 
 
-If you still want to make use of this workflow, however, you can
-follow the instructions below.
+.. note:: **Use of the model-based workflow is discouraged**
 
-Also, note that this workflow was previously found in
-``registration.backends.default``, and imports from that location
-still function in ``django-registration`` |version| but now raise
-deprecation warnings. The correct location going forward is
-``registration.backends.model_activation``.
+   The model-based activation workflow was originally the *only*
+   workflow built in to ``django-registration``, and later was the
+   default one. However, it no longer represents the best practice for
+   registration with modern versions of Django, and so it continues to
+   be included only for backwards compatibility with existing
+   installations of ``django-registration``.
+
+   If you're setting up a new installation and want a two-step process
+   with activation, it's recommended you use :ref:`the HMAC activation
+   workflow <hmac-workflow>` instead.
+
+   Also, note that this workflow was previously found in
+   ``registration.backends.default``, and imports from that location
+   still function in ``django-registration`` |version| but now raise
+   deprecation warnings. The correct location going forward is
+   ``registration.backends.model_activation``.
 
 
 Default behavior and configuration
@@ -27,9 +34,17 @@ To make use of this workflow, simply add ``registration`` to your
 ``INSTALLED_APPS``, run ``manage.py migrate`` to install its model,
 and include the URLconf
 ``registration.backends.model_activation.urls`` at whatever location
-you choose in your URL hierarchy. For example::
+you choose in your URL hierarchy. For example:
 
-    url(r'^accounts/', include('registration.backends.model_activation.urls')),
+.. code-block:: python
+
+   from django.conf.urls import include, url
+
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/', include('registration.backends.simple.urls')),
+       # More URL patterns ...
+   ]
 
 This workflow makes use of the following settings:
 
