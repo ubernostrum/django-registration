@@ -84,9 +84,17 @@ change/reset). The URLconf for the HMAC activation workflow can be
 found at ``registration.backends.hmac.urls``, and so can simply be
 included in your project's root URL configuration. For example, to
 place the URLs under the prefix ``/accounts/``, you could add the
-following to your project's root URLconf::
+following to your project's root URLconf:
 
-    url(r'^accounts/', include('registration.backends.hmac.urls')),
+.. code-block:: python
+
+   from django.conf.urls import include, url
+
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/', include('registration.backends.hmac.urls')),
+       # More URL patterns ...
+   ]
 
 Users would then be able to register by visiting the URL
 ``/accounts/register/``, log in (once activated) at
@@ -220,9 +228,17 @@ You will need to configure URLs to use the simple workflow; the
 easiest way is to simply ``include()`` the URLconf
 ``registration.backends.simple.urls`` in your root URLconf. For
 example, to place the URLs under the prefix ``/accounts/`` in your URL
-structure::
+structure:
 
-    url(r'^accounts/', include('registration.backends.simple.urls')),
+.. code-block:: python
+
+   from django.conf.urls import include, url
+
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/', include('registration.simple.hmac.urls')),
+       # More URL patterns ...
+   ]
 
 Users could then register accounts by visiting the URL
 ``/accounts/register/``.
