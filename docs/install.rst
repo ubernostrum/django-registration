@@ -40,7 +40,10 @@ Normal installation
 The preferred method of installing ``django-registration`` is via
 ``pip``, the standard Python package-installation tool. If you don't
 have ``pip``, instructions are available for `how to obtain and
-install it <https://pip.pypa.io/en/latest/installing.html>`_.
+install it <https://pip.pypa.io/en/latest/installing.html>`_. If
+you're using Python 2.7.9 or later (for Python 2) or Python 3.4 or
+later (for Python 3), ``pip`` came bundled with your installation of
+Python.
 
 Once you have ``pip``, simply type::
 
