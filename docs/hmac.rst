@@ -32,9 +32,17 @@ You will need to configure URLs, however. A default URLconf is
 provided, which you can ``include()`` in your URL configuration; that
 URLconf is ``registration.backends.hmac.urls``. For example, to place
 user registration under the URL prefix ``/accounts/``, you could place
-the following in your root URLconf::
+the following in your root URLconf:
 
-    url(r'^accounts/', include('registration.backends.hmac.urls')),
+.. code-block:: python
+
+   from django.conf.urls import include, url
+
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/', include('registration.backends.hmac.urls')),
+       # More URL patterns ...
+   ]
 
 That URLconf also sets up the views from ``django.contrib.auth``
 (login, logout, password reset, etc.), though if you want those views
