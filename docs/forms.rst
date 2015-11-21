@@ -29,12 +29,14 @@ workflows in mind, but may also be useful in other situations.
       75 characters in length.
 
    ``password1``
-      The password to use for the new account. This represented as a
-      password input (``input type="password"`` in the rendered HTML).
+      The password to use for the new account. This is represented as
+      a password input (``input type="password"`` in the rendered
+      HTML).
 
    ``password2``
-      The password to use for the new account. This represented as a
-      password input (``input type="password"`` in the rendered HTML).
+      The password to use for the new account. This is represented as
+      a password input (``input type="password"`` in the rendered
+      HTML).
 
    Because this is a subclass of Django's own ``UserCreationForm``,
    the constraints on usernames and email addresses match those
