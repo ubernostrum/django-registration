@@ -63,7 +63,7 @@ Package Index
 
 Once you've installed ``django-registration``, you can verify
 successful installation by opening a Python interpreter and typing
-``import contact_form``.
+``import registration``.
 
 If the installation was successful, you'll simply get a fresh Python
 prompt. If you instead see an ``ImportError``, check the configuration
