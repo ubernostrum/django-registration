@@ -1,36 +1,48 @@
-The primary author of django-registration is James Bennett
-<james@b-list.org>, who may be found online at
-<http://www.b-list.org/>.
+The primary author of django-registration is James Bennett, who may
+be found online at <http://www.b-list.org/>.
 
+Over the past eight years of django-registration's development,
+however, many others have contributed code, documentation and
+translations, and django-registration would not be what it is without
+their help. Below is a list of contributors who can be identified from
+the development history:
 
-Others who have contributed to the application:
-
-* Samuel Adam (French translation)
-* Jannis Leidel (German translation)
-* Rapahel Hertzog (helpful suggestions on packaging and distribution)
-* Panos Laganakos (Greek translation)
-* Ilya Filippov and Andy Mikhailenko (Russian translation)
-* Jarek Zgoda (Polish translation)
-* Meir Kriheli (Hebrew translation)
-* Italo Maia (Brazilian Portuguese translation)
-* Shinya Okano (Japanese translation)
-* A. Al-Ibrahim (Arabic translation)
-* Ernesto Rico Schmidt (Spanish translation)
-* Vladislav Mitov (Bulgarian translation)
-* Leonardo Manuel Rocha (Argentinean Spanish translation)
-* Emil Stenström (Swedish translation)
-* Liang Feng (Chinese translations)
-* Nebojsa Djordjevic (Serbian translation)
-* Nicola Larosa (Italian translation)
-* Joost Cassee (Dutch translation)
-* Björn Kristinsson (Icelandic translation)
-* Rune Bromer (Danish translation)
-* Domen Kožar (Slovenian translation)
-* Young Gyu Park (Korean translation)
-* Flavio Curella (updated Italian translation)
-* Jon Lønne (Bokmål translation)
-* Carles Barrobés (Catalan translation)
-* Nuno Mariz (Portuguese translation)
-* Patrick Samson (French translation)
-* Recep Kirmizi (Turkish translation)
-* Mohsen Mansouryar (Persian translation)
+* Samuel Adam
+* A. Al-Ibrahim
+* Adam Alton
+* Florian Apolloner
+* Carles Barrobés
+* Nico den Boer
+* Rune Bromer
+* Joost Cassee
+* Flavio Curella
+* Baptiste Darthenay
+* Nebojsa Djordjevic
+* Liang Feng
+* Ilya Filippov
+* Rapahel Hertzog
+* Recep Kirmizi
+* Domen Kožar
+* Meir Kriheli
+* Björn Kristinsson
+* Panos Laganakos
+* Nicola Larosa
+* Jannis Leidel
+* Jon Lønne
+* João Luiz Lorencetti
+* Italo Maia
+* Mohsen Mansouryar
+* Leonardo Manuel Rocha
+* Nuno Mariz
+* Andy Mikhailenko
+* Vladislav Mitov
+* Marko Mrdjenovic
+* Michael Niewöhner
+* Shinya Okano
+* Young Gyu Park
+* Duncan Parkes
+* Patrick Samson
+* Daniel Samuels
+* Ernesto Rico Schmidt
+* Emil Stenström
+* Jarek Zgoda
