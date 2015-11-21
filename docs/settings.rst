@@ -55,8 +55,8 @@ of several custom settings.
    HMAC-signed activation keys.
 
    This setting is optional, and a default of ``"registration"`` will
-   be used if not specified. Changing this setting provides no
-   additional security; it is used solely as a way of namespacing HMAC
+   be used if not specified. The value of this setting does not need
+   to be kept secret; it is used solely as a way of namespacing HMAC
    usage.
 
    Used by:
