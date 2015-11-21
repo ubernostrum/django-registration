@@ -42,7 +42,7 @@ you choose in your URL hierarchy. For example:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('registration.backends.simple.urls')),
+       url(r'^accounts/', include('registration.backends.model_activation.urls')),
        # More URL patterns ...
    ]
 
