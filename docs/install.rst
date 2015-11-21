@@ -25,11 +25,13 @@ Django:
    Although Django 1.7 and 1.8 support Python 3.2, and
    ``django-registration`` |version| supports it, many Python
    libraries supporting Python 3 impose a minimum requirement of
-   Python 3.3, because supporting Python 2 and 3 in the same codebase
-   is also much simpler beginning with Python 3.3. As a result, use of
-   Python 3.2 is discouraged; Django 1.9 has already dropped support
-   for it, and a future release of ``django-registration`` will likely
-   drop Python 3.2 support as well.
+   Python 3.3 (due to conveniences added in Python 3.3 which make
+   supporting Python 2 and 3 in the same codebase much simpler).
+
+   As a result, use of Python 3.2 is discouraged; Django 1.9 has
+   already dropped support for it, and a future release of
+   ``django-registration`` will likely drop Python 3.2 support as
+   well.
 
 
 Normal installation
