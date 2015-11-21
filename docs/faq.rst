@@ -99,8 +99,8 @@ General
       ``registration/runtests.py``).
 
     Additionally, the ``setup.cfg`` file included in
-    ``django-registration`` provides configuration for
-    [coverage.py](https://aws.amazon.com/public-data-sets/), enabling
+    ``django-registration`` provides configuration for `coverage.py
+    <https://coverage.readthedocs.org/en/coverage-4.0.2/>`_, enabling
     easy recording and reporting of test coverage.
 
    
