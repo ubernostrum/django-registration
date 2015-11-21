@@ -195,7 +195,10 @@ window; for this reason, when using the ``is_active`` field to "ban" a
 user, it is best to also set the user's password to an unusable value
 (i.e., by calling `set_unusable_password()
 <https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.models.User.set_unusable_password>`_
-for that user).
+for that user). Calling ``set_unusable_password()`` will also make it
+easier to query for manually-deactivated users, as their passwords
+will (when using Django's default ``User`` implementation) begin with
+the exclamation mark (``!``) character.
 
 Since the HMAC activation workflow does not use any models, it also
 does not make use of the admin interface and thus does not offer a
@@ -229,9 +232,10 @@ salt value which can be used to "namespace" different uses of HMAC
 across a Django-powered site.
 
 The HMAC activation workflow will use the value (a string) of the
-setting ``REGISTRATION_SALT`` as the salt, defaulting to the string
-``"registration"`` if that setting is not specified. This value does
-*not* need to be kept secret (only ``SECRET_KEY`` does); it serves
-only to ensure that other parts of a site which also produce signed
-values from user input could not be used as a way to generate
-activation keys for arbitrary usernames (and vice-versa).
+setting :data:`~django.conf.settings.REGISTRATION_SALT` as the salt,
+defaulting to the string ``"registration"`` if that setting is not
+specified. This value does *not* need to be kept secret (only
+``SECRET_KEY`` does); it serves only to ensure that other parts of a
+site which also produce signed values from user input could not be
+used as a way to generate activation keys for arbitrary usernames (and
+vice-versa).
