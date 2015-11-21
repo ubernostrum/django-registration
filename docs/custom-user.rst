@@ -16,9 +16,10 @@ model, so long as certain factors are accounted for.
 
    If your custom user model treats the email address as a username,
    or otherwise does not have distinct email address and username
-   fields, you **must** write a custom registration workflow; the
-   built-in workflows of ``django-registration`` will not function
-   with a user model which uses the email address as a username.
+   fields, you **must** write a custom registration workflow including
+   custom registration form; the built-in workflows of
+   ``django-registration`` will not function with a user model which
+   uses the email address as a username.
 
 
 Writing a custom registration workflow
@@ -63,7 +64,8 @@ fields, which are found on Django's default user model:
   account is active.
 
 You also *must* specify the attribute ``USERNAME_FIELD`` on your
-custom user model, and that field must accept string values.
+custom user model to denote the field used as the username, and that
+field must accept string values.
 
 Additionally, the model-based workflow requires this field:
 
@@ -73,13 +75,14 @@ Additionally, the model-based workflow requires this field:
 The model-based and HMAC workflows also require that the user model
 define a manager class named ``objects``, and that this manager class
 provide a method ``create_user``, which will create and return a user
-instance from the arguments ``username``, ``email``, and ``password``,
-and require that the user model provide the ``email_user`` method on
-instances.
+instance from the arguments ``USERNAME_FIELD``
+(``django-registration`` will use that to determine the name of the
+username field) ``email``, and ``password``, and require that the user
+model provide the ``email_user`` method on instances.
 
 The simple one-step workflow requires ``USERNAME_FIELD`` to be
 specified (and for that field to accept strings), requires ``email``
-and ``password``, fields, and requires the existence of an ``objects``
+and ``password`` fields, and requires the existence of an ``objects``
 manager defining ``create_user``, as in the two-step workflows.
 
 If your custom user model cannot meet these API requirements, your
