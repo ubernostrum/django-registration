@@ -193,7 +193,7 @@ following context:
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
 toward and interoperability problems with HTML email,
-django-registration defaults to plain-text email, and so these
+``django-registration`` defaults to plain-text email, and so these
 templates should simply output plain text rather than HTML.
 
 To make use of the views from ``django.contrib.auth`` (which are set
