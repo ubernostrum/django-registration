@@ -5,7 +5,7 @@
 
 This is a fairly simple user-registration application for Django,
 designed to make allowing user signups as painless as possible. It
-requires a functional installation of Django 1.4 or newer, but has no
+requires a functional installation of Django 1.7 or newer, but has no
 other dependencies.
 
 For installation instructions, see the file "INSTALL" in this
