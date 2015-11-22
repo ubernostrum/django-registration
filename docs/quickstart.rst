@@ -212,7 +212,7 @@ documentation for Django's authentication system
 regarding these templates.
 
 
-Configuring the the simple one-step workflow
+Configuring the simple one-step workflow
 --------------------------------------------
 
 Also included is a simpler, :ref:`one-step registration workflow
