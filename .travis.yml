@@ -7,7 +7,7 @@ python:
  - "2.7"
 env:
  - DJANGO_VERSION=1.7.10
- - DJANGO_VERSION=1.8.6
+ - DJANGO_VERSION=1.8.7
 install:
  - pip install coverage>=4.0
  - pip install flake8
