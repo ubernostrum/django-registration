@@ -15,7 +15,7 @@ install:
 matrix:
  exclude:
   - python: "3.5"
-    env: DJANGO_VERSION=1.7.10
+    env: DJANGO_VERSION=1.7.11
 script:
  - coverage run setup.py test
  - flake8 registration
