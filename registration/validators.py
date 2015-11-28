@@ -1,3 +1,9 @@
+"""
+Error messages, data and custom validation code used in
+django-registration's various user-registration form classes.
+
+"""
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
@@ -113,17 +119,43 @@ OTHER_SENSITIVE_NAMES = [
     'account',
     'accounts',
     'blog',
+    'buy',
+    'clients',
+    'contact',
+    'contactus',
+    'contact-us',
+    'copyright',
+    'dashboard',
     'doc',
     'docs',
+    'download',
+    'downloads',
+    'enquiry',
     'faq',
     'help',
+    'inquiry',
+    'license',
     'login',
+    'logout',
+    'payments',
+    'plans',
+    'portfolio',
+    'preferences',
+    'pricing',
+    'privacy',
+    'profile',
     'register'
+    'secure',
     'signup',
+    'ssl',
     'status',
+    'subscribe',
+    'terms',
+    'tos',
     'user',
     'users'
     'weblog',
+    'work',
 ]
 
 
