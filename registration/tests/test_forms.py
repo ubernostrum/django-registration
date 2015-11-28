@@ -30,6 +30,26 @@ class RegistrationFormTests(RegistrationTestCase):
                 form.errors[self.user_model.USERNAME_FIELD]
             )
 
+    def test_custom_reserved_names(self):
+        """
+        Reserved names can be overridden by an attribute.
+
+        """
+        custom_reserved_names = ['foo', 'bar', 'eggs', 'spam']
+
+        class CustomReservedNamesForm(forms.RegistrationForm):
+            reserved_names = custom_reserved_names
+
+        for reserved_name in custom_reserved_names:
+            data = self.valid_data.copy()
+            data[self.user_model.USERNAME_FIELD] = reserved_name
+            form = CustomReservedNamesForm(data=data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(
+                text_type(validators.RESERVED_NAME) in
+                form.errors[self.user_model.USERNAME_FIELD]
+            )
+
     def test_tos_field(self):
         """
         The terms-of-service field on RegistrationFormTermsOfService
