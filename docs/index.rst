@@ -47,6 +47,7 @@ documentation listed below.
    views
    forms
    custom-user
+   validators
    settings
    signals
 

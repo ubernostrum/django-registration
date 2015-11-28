@@ -48,6 +48,16 @@ workflows in mind, but may also be useful in other situations.
    ``password2`` field. This is a backwards-incompatible change from
    ``django-registration`` 1.0.
 
+   .. note:: **Validation of usernames**
+
+      Because it's a subclass of Django's ``UserCreationForm``,
+      ``RegistrationForm`` will inherit the base validation defined by
+      Django. It also adds a custom ``clean()`` method which applies
+      one custom validator:
+      :class:`~registration.validators.ReservedNameValidator`. See the
+      documentation for ``ReservedNameValidator`` for notes on why it
+      exists and how to customize its behavior.
+
 
 .. class:: RegistrationFormTermsOfService
 

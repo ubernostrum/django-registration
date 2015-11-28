@@ -6,6 +6,7 @@ Exercise django-registration's built-in form classes.
 from django.utils.six import text_type
 
 from .. import forms
+from .. import validators
 from .base import RegistrationTestCase
 
 
@@ -14,6 +15,21 @@ class RegistrationFormTests(RegistrationTestCase):
     Test the built-in form classes.
 
     """
+    def test_reserved_names(self):
+        """
+        Reserved names are disallowed.
+
+        """
+        for reserved_name in validators.DEFAULT_RESERVED_NAMES:
+            data = self.valid_data.copy()
+            data[self.user_model.USERNAME_FIELD] = reserved_name
+            form = forms.RegistrationForm(data=data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(
+                text_type(validators.RESERVED_NAME) in
+                form.errors[self.user_model.USERNAME_FIELD]
+            )
+
     def test_tos_field(self):
         """
         The terms-of-service field on RegistrationFormTermsOfService
@@ -26,7 +42,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['tos'],
-            [text_type(forms.TOS_REQUIRED)]
+            [text_type(validators.TOS_REQUIRED)]
         )
 
     def test_email_uniqueness(self):
@@ -46,7 +62,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(
             form.errors['email'],
-            [text_type(forms.DUPLICATE_EMAIL)]
+            [text_type(validators.DUPLICATE_EMAIL)]
         )
 
         data = self.valid_data.copy()
@@ -73,7 +89,7 @@ class RegistrationFormTests(RegistrationTestCase):
             self.assertFalse(form.is_valid())
             self.assertEqual(
                 form.errors['email'],
-                [text_type(forms.FREE_EMAIL)]
+                [text_type(validators.FREE_EMAIL)]
             )
 
         form = forms.RegistrationFormNoFreeEmail(
