@@ -57,6 +57,7 @@ PROTOCOL_HOSTNAMES = [
     'smtp',
     'usenet',
     'uucp',
+    'webmail',
     'www',
 ]
 
