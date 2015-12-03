@@ -6,16 +6,16 @@ python:
  - "3.3"
  - "2.7"
 env:
- - DJANGO_VERSION=1.7.11
  - DJANGO_VERSION=1.8.7
+ - DJANGO_VERSION=1.9
 install:
  - pip install coverage>=4.0
  - pip install flake8
  - pip install -q Django==$DJANGO_VERSION
 matrix:
  exclude:
-  - python: "3.5"
-    env: DJANGO_VERSION=1.7.11
+  - python: "3.2"
+    env: DJANGO_VERSION=1.9
 script:
  - coverage run setup.py test
  - flake8 registration
