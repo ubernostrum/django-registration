@@ -45,6 +45,27 @@ class RegistrationView(FormView):
         except ValueError:
             return redirect(success_url)
 
+    def form_invalid(self, form):
+        # tl;dr -- this method is implemented to work around Django
+        # ticket #25548, which is present in the Django 1.9 release
+        # (but not in Django 1.8).
+        #
+        # The longer explanation is that in Django 1.9,
+        # FormMixin.form_invalid() does not pass the form instance to
+        # get_context_data(). This causes get_context_data() to
+        # construct a new form instance with the same data in order to
+        # put it into the template context, and then any access to
+        # that form's ``errors`` or ``cleaned_data`` runs that form
+        # instance's validation. The end result is that validation
+        # gets run twice on an invalid form submission, which is
+        # undesirable for performance reasons.
+        #
+        # Manually implementing this method, and passing the form
+        # instance to get_context_data(), solves this issue (which
+        # will be fixed, at the very least, in Django 1.10, and may
+        # also be backported into the Django 1.9 release series).
+        return self.render_to_response(self.get_context_data(form=form))
+
     def registration_allowed(self):
         """
         Override this to enable/disable user registration, either
