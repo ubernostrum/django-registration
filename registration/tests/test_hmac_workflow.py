@@ -84,6 +84,12 @@ class HMACViewTests(ActivationTestCase):
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
+    # The timestamp calculation will error if USE_TZ=True, due to
+    # trying to subtract a naive from an aware datetime. Since time
+    # zones aren't relevant to the test, we just temporarily disable
+    # time-zone support rather than do the more complex dance of
+    # checking the setting and forcing everything to naive or aware.
+    @override_settings(USE_TZ=False)
     def test_activation_expired(self):
         """
         An expired account can't be activated.
