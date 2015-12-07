@@ -51,6 +51,20 @@ users.
 However, all of these workflows do make some assumptions about the
 structure of your user model.
 
+All three of ``django-registration``'s built-in workflows make use of
+:class:`~registration.forms.RegistrationForm` as the default form
+class; this is a subclass of Django's ``UserCreationForm``. So you'll
+need one of two things to be true:
+
+1. Your custom user model includes the fields which appear in
+   ``UserCreationForm``, and if your model has any other fields they
+   need to be optional, or
+
+2. You'll need to supply your own form subclass (either by subclassing
+   the registration view, or passing the form class as an argument in
+   your URLconf) which matches the field structure of your custom
+   model.
+
 The two-step workflows (both model-based and :ref:`HMAC-based
 <hmac-workflow>`) require that your user model define the following
 fields, which are found on Django's default user model:
