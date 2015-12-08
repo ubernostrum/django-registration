@@ -236,7 +236,7 @@ structure:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('registration.simple.hmac.urls')),
+       url(r'^accounts/', include('registration.backends.simple.urls')),
        # More URL patterns ...
    ]
 
