@@ -26,9 +26,9 @@ required to supply a custom form class when using
 ``django-registration`` with a custom user model.
 
 In the case where your user model is compatible with the default
-behavior of ``django-registration``, (see notes below) you will be
-able to simply subclass ``RegistrationForm``, set it to use your
-custom user model as the model, and then configure the views in
+behavior of ``django-registration``, (see below) you will be able to
+simply subclass ``RegistrationForm``, set it to use your custom user
+model as the model, and then configure the views in
 ``django-registration`` to use your form subclass. For example, you
 might do the following (in a ``forms.py`` module in your codebase):
 
@@ -43,27 +43,34 @@ might do the following (in a ``forms.py`` module in your codebase):
         class Meta:
             model = MyCustomUser
 
-And then in your URL configuration:
+And then in your URL configuration (example here uses the HMAC
+activation workflow):
 
 .. code-block:: python
 
-    from registration.views import RegistrationView
+    from django.conf.urls import include, url
+
+    from registration.backends.hmac.views import RegistrationView
     
     from mycustomuserapp.forms import MyCustomUserForm
 
 
-    url(r'^accounts/register/$',
-        RegistrationView.as_view(
-            form_class=MyCustomUserForm
+    urlpatterns = [
+        ... # other URL patterns here
+        url(r'^accounts/register/$',
+            RegistrationView.as_view(
+                form_class=MyCustomUserForm
+            ),
+            name='registration_register',
         ),
-        name='registration_register',
-    )
+        url(r'^accounts/', include('registration.backends.hmac.urls')),
+    ]
     
 If your custom user model is not compatible with the built-in
-workflows of ``django-registration``, you will probably need to
-subclass the provided views (either the base registration views, or
-the views of the workflow you want to use) and make the appropriate
-changes for your user model.
+workflows of ``django-registration`` (see next section), you will
+probably need to subclass the provided views (either the base
+registration views, or the views of the workflow you want to use) and
+make the appropriate changes for your user model.
 
 
 Determining compatibility of a custom user model
@@ -105,3 +112,10 @@ your user model set ``USERNAME_FIELD``, and requires that it define a
 field named ``password`` for storing the user's password; the
 combination of ``USERNAME_FIELD`` and ``password`` must be sufficient
 to log a user in.
+
+If your custom user model defines additional fields beyond the minimum
+requirements, you'll either need to ensure that all of those fields
+are optional (i.e., can be ``NULL`` in your database, or provide a
+suitable default value defined in the model), or you'll need to
+specify the full list of fields to display in the ``fields`` option of
+your ``RegistrationForm`` subclass.
