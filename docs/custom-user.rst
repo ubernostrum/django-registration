@@ -56,7 +56,7 @@ activation workflow):
 
 
     urlpatterns = [
-        ... # other URL patterns here
+        # ... other URL patterns here
         url(r'^accounts/register/$',
             RegistrationView.as_view(
                 form_class=MyCustomUserForm
@@ -81,7 +81,8 @@ much as is possible to ensure compatibility with custom user models;
 ``django.contrib.auth.models.User`` is never directly imported or
 referred to, and all code in ``django-registration`` instead uses
 ``settings.AUTH_USER_MODEL`` or
-``django.contrib.auth.get_user_model()`` to refer to the user model.
+``django.contrib.auth.get_user_model()`` to refer to the user model,
+and ``USERNAME_FIELD`` when access to the username is required.
 
 However, there are still some specific requirements you'll want to be
 aware of.
