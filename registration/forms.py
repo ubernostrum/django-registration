@@ -51,7 +51,6 @@ class RegistrationForm(UserCreationForm):
         if getattr(settings, 'ACCOUNT_ACTIVATION_DAYS'):
             self.fields['email'].required = True
 
-
     def clean(self):
         """
         Apply the reserved-name validator to the username.
