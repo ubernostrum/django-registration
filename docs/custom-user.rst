@@ -92,7 +92,7 @@ and :ref:`model <model-workflow>`-based -- require that your user
 model have the following fields:
 
 * ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
-  email address.
+  email address. This field is required by ``RegistrationForm``.
 
 * ``is_active`` -- a ``BooleanField`` indicating whether the user's
   account is active.
