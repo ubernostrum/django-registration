@@ -15,6 +15,17 @@ class RegistrationFormTests(RegistrationTestCase):
     Test the built-in form classes.
 
     """
+    def test_email_required(self):
+        """
+        The email address field is required.
+
+        """
+        form = forms.RegistrationForm()
+        self.assertTrue(
+            form.fields['email'].required
+        )
+        
+    
     def test_reserved_names(self):
         """
         Reserved names are disallowed.
