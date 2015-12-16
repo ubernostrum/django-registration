@@ -39,7 +39,7 @@ class RegistrationForm(UserCreationForm):
         help_text=_('email address'),
         required=True
     )
-    
+
     class Meta(UserCreationForm.Meta):
         fields = [
             User.USERNAME_FIELD,

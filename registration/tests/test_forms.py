@@ -24,8 +24,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertTrue(
             form.fields['email'].required
         )
-        
-    
+
     def test_reserved_names(self):
         """
         Reserved names are disallowed.
