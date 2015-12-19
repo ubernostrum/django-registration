@@ -62,8 +62,7 @@ class RegistrationView(FormView):
         #
         # Manually implementing this method, and passing the form
         # instance to get_context_data(), solves this issue (which
-        # will be fixed, at the very least, in Django 1.10, and may
-        # also be backported into the Django 1.9 release series).
+        # will be fixed in Django 1.9.1 and Django 1.10).
         return self.render_to_response(self.get_context_data(form=form))
 
     def registration_allowed(self):
