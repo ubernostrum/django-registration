@@ -104,7 +104,9 @@ and :ref:`model <model-workflow>`-based -- require that your user
 model have the following fields:
 
 * ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
-  email address. This field is required by ``RegistrationForm``.
+  email address. Note that this field is required by
+  ``RegistrationForm``, which is a difference from Django's default
+  ``UserCreationForm``.
 
 * ``is_active`` -- a ``BooleanField`` indicating whether the user's
   account is active.
