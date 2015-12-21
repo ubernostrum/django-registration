@@ -116,8 +116,7 @@ model to denote the field used as the username. Additionally, your
 user model must implement the ``email_user`` method for sending email
 to the user.
 
-The model-based activation workflow also requires that your user model
-have one additional field:
+The model-based activation workflow requires one additional field:
 
 * ``date_joined`` -- a ``DateField`` or ``DateTimeField`` indicating
   when the user's account was registered.
@@ -126,7 +125,9 @@ have one additional field:
 your user model set ``USERNAME_FIELD``, and requires that it define a
 field named ``password`` for storing the user's password; the
 combination of ``USERNAME_FIELD`` and ``password`` must be sufficient
-to log a user in.
+to log a user in. Also note that ``RegistrationForm`` requires the
+``email`` field, so either provide that field on your model or
+subclass ``RegistrationForm``.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
