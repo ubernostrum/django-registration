@@ -42,7 +42,8 @@ behavior of ``django-registration``, (see below) you will be able to
 simply subclass ``RegistrationForm``, set it to use your custom user
 model as the model, and then configure the views in
 ``django-registration`` to use your form subclass. For example, you
-might do the following (in a ``forms.py`` module in your codebase):
+might do the following (in a ``forms.py`` module somewhere in your
+codebase -- do **not** directly edit ``django-registration``'s code):
 
 .. code-block:: python
 
