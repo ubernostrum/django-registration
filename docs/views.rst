@@ -93,6 +93,17 @@ classes, for use in writing your own custom subclasses.
       Should return a boolean indicating whether user registration is
       allowed, either in general or for this specific request.
 
+    .. warning:: Implementing ``form_invalid()``
+
+       To work around `a potential performance issue in Django 1.9
+       <https://code.djangoproject.com/ticket/25548>`_,
+       ``RegistrationView`` implements the ``form_invalid()``
+       method. If you choose to override ``form_invalid()`` in a
+       subclass of ``RegistrationView``, be sure to read the
+       implementation and comments in the source code of
+       ``django-registration`` first. Note that Django 1.9.1, once
+       released, will not be affected by this bug.
+
 
 .. class:: ActivationView
 
