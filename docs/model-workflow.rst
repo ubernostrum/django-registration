@@ -159,6 +159,9 @@ the database, using the following model:
           The number of days the user has to activate, taken from the
           setting ``ACCOUNT_ACTIVATION_DAYS``.
 
+      ``user``
+          The user registering for the new account.
+
       ``site``
           An object representing the site on which the account was
           registered; depending on whether ``django.contrib.sites`` is

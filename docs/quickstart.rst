@@ -165,6 +165,9 @@ being used. This template has the following context:
     The number of days remaining during which the account may be
     activated.
 
+``user``
+    The user registering for the new account.
+
 ``site``
     An object representing the site on which the user registered;
     depending on whether ``django.contrib.sites`` is installed, this
