@@ -23,15 +23,17 @@ installations. Those two are:
 
 The guide below covers use of these two workflows.
 
-Before proceeding with either of the recommended built-in workflows,
-you'll need to ensure ``django.contrib.auth`` has been installed (by
-adding it to ``INSTALLED_APPS`` and running ``manage.py migrate`` to
-install needed database tables). Also, if you're making use of `a
-custom user model
-<https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
-you'll probably want to pause and read :ref:`the custom user
-compatibility guide <custom-user>` before using
-``django-registration``.
+.. important:: **Django's authentication system must be installed**
+
+   Before proceeding with either of the recommended built-in
+   workflows, you'll need to ensure ``django.contrib.auth`` has been
+   installed (by adding it to ``INSTALLED_APPS`` and running
+   ``manage.py migrate`` to install needed database tables). Also, if
+   you're making use of `a custom user model
+   <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
+   you'll probably want to pause and read :ref:`the custom user
+   compatibility guide <custom-user>` before using
+   ``django-registration``.
 
 
 Configuring the HMAC activation workflow
