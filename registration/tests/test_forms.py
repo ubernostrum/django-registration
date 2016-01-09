@@ -23,7 +23,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertTrue(
             form.fields['email'].required
         )
-    
+
     def test_tos_field(self):
         """
         The terms-of-service field on RegistrationFormTermsOfService
