@@ -56,7 +56,8 @@ The two-step workflows (both model-based and :ref:`HMAC-based
 fields, which are found on Django's default user model:
 
 * ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
-  email address.
+  email address. This field is required by
+  :class:`~registration.forms.RegistrationForm`.
 
 * ``password`` -- a ``CharField`` holding the user's password.
 

@@ -37,6 +37,11 @@ class RegistrationForm(UserCreationForm):
     will make use of it to create inactive user accounts.
 
     """
+    email = forms.EmailField(
+        help_text=_('email address'),
+        required=True
+    )
+    
     class Meta(UserCreationForm.Meta):
         fields = [
             User.USERNAME_FIELD,
