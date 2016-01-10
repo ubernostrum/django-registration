@@ -63,7 +63,7 @@ class RegistrationView(BaseRegistrationView):
         """
         return signing.dumps(
             obj=getattr(user, user.USERNAME_FIELD),
-            salt=REGISTRATION_SALT,
+            salt=REGISTRATION_SALT
         )
 
     def get_email_context(self, activation_key):
@@ -74,7 +74,7 @@ class RegistrationView(BaseRegistrationView):
         return {
             'activation_key': activation_key,
             'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-            'site': get_current_site(self.request),
+            'site': get_current_site(self.request)
         }
 
     def send_activation_email(self, user):
