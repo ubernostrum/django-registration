@@ -85,6 +85,6 @@ revision you want, and install it using ``python setup.py install``.
 Next steps
 ----------
 
-To get up and running quickly, checkout :ref:`the quick start guide
+To get up and running quickly, check out :ref:`the quick start guide
 <quickstart>`. For full documentation, see :ref:`the documentation
 index <index>`.
