@@ -72,7 +72,7 @@ This workflow makes use of up to three settings:
 
 * :data:`~django.conf.settings.REGISTRATION_OPEN`
 
-* :data:`~django.conf.settings.REGISTRATION_SALT`
+* :data:`~django.conf.settings.REGISTRATION_SALT` (see note below)
 
 By default, this workflow uses
 :class:`registration.forms.RegistrationForm` as its form class for
