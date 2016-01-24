@@ -66,13 +66,15 @@ views at a specific location in your URL hierarchy.
    The default URL pattern for the activation view in
    ``registration.backends.hmac.urls`` handles this for you.
 
-This workflow makes use of up to three settings:
+This workflow makes use of up to three settings (click for details on
+each):
 
 * :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`
 
 * :data:`~django.conf.settings.REGISTRATION_OPEN`
 
-* :data:`~django.conf.settings.REGISTRATION_SALT` (see note below)
+* :data:`~django.conf.settings.REGISTRATION_SALT` (see also :ref:`note
+  below <salt-security>`)
 
 By default, this workflow uses
 :class:`registration.forms.RegistrationForm` as its form class for
@@ -238,6 +240,8 @@ Django's implementation uses the value of the ``SECRET_KEY`` setting
 as the key for HMAC; additionally, it permits the specification of a
 salt value which can be used to "namespace" different uses of HMAC
 across a Django-powered site.
+
+.. _salt-security:
 
 The HMAC activation workflow will use the value (a string) of the
 setting :data:`~django.conf.settings.REGISTRATION_SALT` as the salt,
