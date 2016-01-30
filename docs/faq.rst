@@ -200,7 +200,10 @@ Tips and tricks
     is provided for this; in the admin for the
     :class:`~registration.models.RegistrationProfile` model, simply
     click the checkbox for the user(s) you'd like to re-send the email
-    for, then select the "Re-send activation emails" action.
+    for, then select the "Re-send activation emails" action. Note that
+    as of ``django-registration`` |version|, you now must manually
+    register ``RegistrationProfile``'s admin class with the Django
+    admin interface; this is no longer done automatically for you.
 
 **How do I manually activate a user?**
 
