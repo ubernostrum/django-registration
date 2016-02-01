@@ -120,14 +120,3 @@ following changes need to be noted:
 
 * As noted above, the password-mismatch error message is now attached
   to the ``password2`` field rather than being a form-level error.
-
-
-Changes since 2.0
------------------
-
-If you were using the model-based activation workflow, you will now
-need to explicitly register the ``RegistrationProfile`` model with the
-Django admin; previously this was done automatically, but since the
-model-based workflow is no longer recommended for new installs it now
-must be done manually.
-

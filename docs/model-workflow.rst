@@ -46,10 +46,6 @@ you choose in your URL hierarchy. For example:
        # More URL patterns ...
    ]
 
-You'll also want to register the ``RegistrationProfile`` model with
-the Django admin interface (by default it isn't, as the use of this
-workflow is not recommended for new installations).
-
 This workflow makes use of the following settings:
 
 * :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`

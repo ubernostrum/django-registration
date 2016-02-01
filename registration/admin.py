@@ -7,7 +7,7 @@ setting, which should only occur if you are using the model-based
 activation workflow.
 
 """
-
+from django.apps import apps
 from django.contrib import admin
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.translation import ugettext_lazy as _
@@ -47,3 +47,7 @@ class RegistrationAdmin(admin.ModelAdmin):
                     get_current_site(request)
                 )
     resend_activation_email.short_description = _("Re-send activation emails")
+    
+
+if apps.is_installed('registration'):
+    admin.site.register(RegistrationProfile, RegistrationAdmin)
