@@ -47,7 +47,7 @@ class RegistrationAdmin(admin.ModelAdmin):
                     get_current_site(request)
                 )
     resend_activation_email.short_description = _("Re-send activation emails")
-    
+
 
 if apps.is_installed('registration'):
     admin.site.register(RegistrationProfile, RegistrationAdmin)
