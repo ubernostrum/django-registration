@@ -1,20 +1,8 @@
 """
 URL patterns for the views included in ``django.contrib.auth``.
 
-Including these URLs (via the ``include()`` directive) will set up the
-following patterns based at whatever URL prefix they are included
-under:
-
-* User login at ``login/``.
-
-* User logout at ``logout/``.
-
-* The two-step password change at ``password/change/`` and
-  ``password/change/done/``.
-
-* The four-step password reset at ``password/reset/``,
-  ``password/reset/confirm/``, ``password/reset/complete/`` and
-  ``password/reset/done/``.
+Including these URLs (via the ``include()`` directive) will set up
+these patterns based at whatever URL prefix they are included under.
 
 The URLconfs in the built-in registration workflows already have an
 ``include()`` for these URLs, so if you're using one of them it is not
