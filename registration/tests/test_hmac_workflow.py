@@ -9,13 +9,14 @@ import time
 from django.conf import settings
 from django.core import signing
 from django.core.urlresolvers import reverse
-from django.test import override_settings
+from django.test import modify_settings, override_settings
 
 from registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import ActivationTestCase
 
 
+@modify_settings(INSTALLED_APPS={'remove': 'registration'})
 @override_settings(ROOT_URLCONF='registration.backends.hmac.urls')
 class HMACViewTests(ActivationTestCase):
     """

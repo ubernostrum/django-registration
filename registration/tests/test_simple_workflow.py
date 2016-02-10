@@ -4,11 +4,12 @@ Tests for the simple one-step registration workflow.
 """
 
 from django.core.urlresolvers import reverse
-from django.test import override_settings
+from django.test import modify_settings, override_settings
 
 from .base import WorkflowTestCase
 
 
+@modify_settings(INSTALLED_APPS={'remove': 'registration'})
 @override_settings(ROOT_URLCONF='registration.backends.simple.urls')
 class SimpleWorkflowViewTests(WorkflowTestCase):
     """

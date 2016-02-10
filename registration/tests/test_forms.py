@@ -3,6 +3,7 @@ Exercise django-registration's built-in form classes.
 
 """
 
+from django.test import modify_settings
 from django.utils.six import text_type
 
 from .. import forms
@@ -10,6 +11,7 @@ from .. import validators
 from .base import RegistrationTestCase
 
 
+@modify_settings(INSTALLED_APPS={'remove': 'registration'})
 class RegistrationFormTests(RegistrationTestCase):
     """
     Test the built-in form classes.
