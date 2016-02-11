@@ -35,6 +35,11 @@ class RegistrationForm(UserCreationForm):
     will make use of it to create inactive user accounts.
 
     """
+    # Explicitly declared here because Django's default
+    # UserCreationForm, which we subclass, does not require this field
+    # but workflows in django-registration which involve explicit
+    # activation step do require it. If you need an optional email
+    # field, simply subclass and declare the field not required.
     email = forms.EmailField(
         help_text=_('email address'),
         required=True
