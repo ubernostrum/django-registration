@@ -60,11 +60,12 @@ class RegistrationForm(UserCreationForm):
 
         """
         # This is done in clean() because Django does not currently
-        # have a non-ugly way to add a validator to a field; the
-        # standard approach is to re-declare the entire field in order
-        # to specify the validator. That's not an option here because
-        # we're dealing with the user model and we don't know -- given
-        # custom users -- how to declare the username field.
+        # have a non-ugly way to just add a validator to an existing
+        # field on a form when subclassing; the standard approach is
+        # to re-declare the entire field in order to specify the
+        # validator. That's not an option here because we're dealing
+        # with the user model and we don't know -- given custom users
+        # -- how to declare the username field.
         #
         # So defining clean() and attaching the error message (if
         # there is one) to the username field is the least-ugly
