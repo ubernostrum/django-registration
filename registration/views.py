@@ -61,8 +61,9 @@ class RegistrationView(FormView):
         # undesirable for performance reasons.
         #
         # Manually implementing this method, and passing the form
-        # instance to get_context_data(), solves this issue (which
-        # will be fixed in Django 1.9.1 and Django 1.10).
+        # instance to get_context_data(), solves this issue (which was
+        # fixed in Django 1.9.1 and will not be present in Django
+        # 1.10).
         return self.render_to_response(self.get_context_data(form=form))
 
     def registration_allowed(self):
