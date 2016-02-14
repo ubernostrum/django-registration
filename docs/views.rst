@@ -38,7 +38,9 @@ classes, for use in writing your own custom subclasses.
 
       This method should return the newly-registered user instance,
       and should send the signal
-      :data:`registration.signals.user_registered`.
+      :data:`registration.signals.user_registered`. Note that this is
+      not automatically done for you when writing your own custom
+      subclass, so you must send this signal manually.
 
    Useful optional places to override or customize on a
    ``RegistrationView`` subclass are:
