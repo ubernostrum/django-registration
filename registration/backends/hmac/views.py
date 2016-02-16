@@ -85,6 +85,9 @@ class RegistrationView(BaseRegistrationView):
         """
         activation_key = self.get_activation_key(user)
         context = self.get_email_context(activation_key)
+        context.update({
+            'user': user
+        })
         subject = render_to_string(self.email_subject_template,
                                    context)
         # Force subject to a single line to avoid header-injection
