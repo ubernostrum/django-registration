@@ -41,7 +41,7 @@ class RegistrationForm(UserCreationForm):
     # activation step do require it. If you need an optional email
     # field, simply subclass and declare the field not required.
     email = forms.EmailField(
-        help_text=_('email address'),
+        help_text=_(u'email address'),
         required=True
     )
 
@@ -93,7 +93,7 @@ class RegistrationFormTermsOfService(RegistrationForm):
     """
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label=_('I have read and agree to the Terms of Service'),
+        label=_(u'I have read and agree to the Terms of Service'),
         error_messages={
             'required': validators.TOS_REQUIRED,
         }

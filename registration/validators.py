@@ -8,12 +8,12 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 
-DUPLICATE_EMAIL = _("This email address is already in use. "
-                    "Please supply a different email address.")
-FREE_EMAIL = _("Registration using free email addresses is prohibited. "
-               "Please supply a different email address.")
-RESERVED_NAME = _("This value is reserved and cannot be registered.")
-TOS_REQUIRED = _("You must agree to the terms to register")
+DUPLICATE_EMAIL = _(u"This email address is already in use. "
+                    u"Please supply a different email address.")
+FREE_EMAIL = _(u"Registration using free email addresses is prohibited. "
+               u"Please supply a different email address.")
+RESERVED_NAME = _(u"This value is reserved and cannot be registered.")
+TOS_REQUIRED = _(u"You must agree to the terms to register")
 
 
 # Below we construct a large but non-exhaustive list of names which

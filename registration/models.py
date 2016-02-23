@@ -118,14 +118,14 @@ class RegistrationProfile(models.Model):
     ACTIVATED = "ALREADY_ACTIVATED"
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                verbose_name=_('user'))
-    activation_key = models.CharField(_('activation key'), max_length=40)
+                                verbose_name=_(u'user'))
+    activation_key = models.CharField(_(u'activation key'), max_length=40)
 
     objects = RegistrationManager()
 
     class Meta:
-        verbose_name = _('registration profile')
-        verbose_name_plural = _('registration profiles')
+        verbose_name = _(u'registration profile')
+        verbose_name_plural = _(u'registration profiles')
 
     def __str__(self):
         return "Registration information for %s" % self.user
