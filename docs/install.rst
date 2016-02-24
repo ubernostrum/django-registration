@@ -19,7 +19,7 @@ and 1.9, on any Python version supported by those versions of Django:
 
 .. important:: **Python 3.2**
 
-   Although Django 1.8 supported Python 3.2, at the time of its
+   Although Django 1.8 supported Python 3.2 at the time of its
    release, Python 3.2.7 (released in February 2016) marked the end of
    life of the Python 3.2 series, and as a result support for Python
    3.2 has been dropped from ``django-registration`` as of |version|.
