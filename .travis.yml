@@ -6,8 +6,8 @@ python:
  - "3.3"
  - "2.7"
 env:
- - DJANGO_VERSION=1.8.9
- - DJANGO_VERSION=1.9.2
+ - DJANGO_VERSION=1.8.10
+ - DJANGO_VERSION=1.9.3
 install:
  - pip install coverage>=4.0
  - pip install flake8
@@ -15,7 +15,7 @@ install:
 matrix:
  exclude:
   - python: "3.3"
-    env: DJANGO_VERSION=1.9.2
+    env: DJANGO_VERSION=1.9.3
 script:
  - coverage run setup.py test
  - flake8 registration
