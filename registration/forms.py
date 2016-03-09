@@ -13,7 +13,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 try:
     from django.contrib.auth import password_validation
-except ImportError:
+except ImportError:   # pragma: no cover
     password_validation = None
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
