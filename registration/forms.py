@@ -73,7 +73,7 @@ class RegistrationForm(UserCreationForm):
             password_validation.validate_password(
                 self.cleaned_data.get('password2'), self.instance)
         return password2
- 
+
     def clean(self):
         """
         Apply the reserved-name validator to the username.
