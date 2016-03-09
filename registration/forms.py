@@ -11,6 +11,10 @@ django-registration.
 
 from django import forms
 from django.contrib.auth import get_user_model
+try:
+    from django.contrib.auth import password_validation
+except ImportError:
+    password_validation = None
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
@@ -53,7 +57,23 @@ class RegistrationForm(UserCreationForm):
             'password2'
         ]
         required_css_class = 'required'
+        model = User
 
+    def clean_password2(self):
+        password1 = self.cleaned_data.get("password1")
+        password2 = self.cleaned_data.get("password2")
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError(
+                self.error_messages['password_mismatch'],
+                code='password_mismatch',
+            )
+        if password_validation:   # pragma: no cover
+            setattr(self.instance, User.USERNAME_FIELD,
+                    self.cleaned_data.get(User.USERNAME_FIELD))
+            password_validation.validate_password(
+                self.cleaned_data.get('password2'), self.instance)
+        return password2
+ 
     def clean(self):
         """
         Apply the reserved-name validator to the username.
