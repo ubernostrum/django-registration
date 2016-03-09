@@ -10,7 +10,11 @@ django-registration.
 """
 
 from django import forms
-from django.contrib.auth import get_user_model, password_validation
+from django.contrib.auth import get_user_model
+try:
+    from django.contrib.auth import password_validation
+except ImportError:
+    password_validation = None
 from django.contrib.auth.forms import UserCreationForm
 from django.utils.translation import ugettext_lazy as _
 
@@ -62,8 +66,9 @@ class RegistrationForm(UserCreationForm):
             )
         setattr(self.instance, User.USERNAME_FIELD,
                 self.cleaned_data.get(User.USERNAME_FIELD))
-        password_validation.validate_password(
-            self.cleaned_data.get('password2'), self.instance)
+        if password_validation:
+            password_validation.validate_password(
+                self.cleaned_data.get('password2'), self.instance)
         return password2
 
 
