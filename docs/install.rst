@@ -71,10 +71,8 @@ The development repository for ``django-registration`` is at
 have `git <http://git-scm.com/>`_ installed, you can obtain a copy of
 the repository by typing::
 
-    git clone https://github.com/ubernostrum/django-registration.git
+    pip install -e git+https://github.com/ubernostrum/django-registration.git#egg=django-registration
 
-From there, you can use normal git commands to check out the specific
-revision you want, and install it using ``python setup.py install``.
 
 
 Next steps
