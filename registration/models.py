@@ -1,7 +1,7 @@
 """
 Model and manager used by the model-based activation workflow. If
-you're not using that workflow, you don't need to have 'registration'
-in your INSTALLED_APPS.
+you're not using that workflow, you should not have 'registration' in
+your INSTALLED_APPS.
 
 This is provided primarily for backwards-compatibility with existing
 installations; new installs of django-registration should look into
