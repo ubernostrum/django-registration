@@ -47,7 +47,7 @@ class RegistrationManager(models.Manager):
         # Make sure the key we're trying conforms to the pattern of a
         # SHA1 hash; if it doesn't, no point trying to look it up in
         # the database.
-        if SHA1_RE.search(activation_key):
+        if SHA1_RE.search(activation_key.lower()):
             try:
                 profile = self.get(activation_key=activation_key)
             except self.model.DoesNotExist:
