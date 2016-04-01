@@ -10,6 +10,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import mail, management
+from django.db import models
 from django.test import RequestFactory, TestCase, override_settings
 from django.utils.six import text_type
 
@@ -331,3 +332,37 @@ class RegistrationModelTests(TestCase):
             User.objects.get(**{
                 User.USERNAME_FIELD: 'bob'
             })
+
+    def test_expired_query(self):
+        """
+        The expired() method of RegistrationManager correctly returns
+        only expired registration profiles.
+
+        """
+        usernames = ('expired_test1', 'expired_test2', 'expired_test3')
+        for username in usernames:
+            user = User.objects.create_user(
+                username, 'expired_test@example.com', 'swordfish'
+            )
+            profile = RegistrationProfile.objects.create_profile(user)
+        RegistrationProfile.objects.filter(
+            user__username='expired_test1'
+        ).update(activation_key=RegistrationProfile.ACTIVATED)
+        User.objects.filter(
+            username='expired_test2'
+        ).update(
+            date_joined=models.F('date_joined') - datetime.timedelta(
+                settings.ACCOUNT_ACTIVATION_DAYS + 1
+            )
+        )
+        expired = RegistrationProfile.objects.expired()
+        self.assertEqual(2, expired.count())
+
+    @override_settings(USE_TZ=True)
+    def test_expired_query_tz(self):
+        """
+        The expired() method still functions with time zones enabled.
+
+        """
+        self.test_expired_query()
+        

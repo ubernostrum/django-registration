@@ -22,6 +22,7 @@ from django.template.loader import render_to_string
 from django.utils import timezone
 from django.utils.crypto import get_random_string
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -60,6 +61,24 @@ class RegistrationManager(models.Manager):
                 profile.save()
                 return user
         return False
+
+    def expired(self):
+        """
+        Query for all profiles whose activation key has expired.
+        
+        """
+        if settings.USE_TZ:
+            now = timezone.now()
+        else:
+            now = datetime.datetime.now()
+        return self.filter(
+            models.Q(activation_key=self.model.ACTIVATED) |
+            models.Q(
+                user__date_joined__lt=now - datetime.timedelta(
+                    settings.ACCOUNT_ACTIVATION_DAYS
+                )
+            )
+        )
 
     @transaction.atomic
     def create_inactive_user(self, form, site, send_email=True):
