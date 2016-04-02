@@ -357,6 +357,16 @@ class RegistrationModelTests(TestCase):
         )
         expired = RegistrationProfile.objects.expired()
         self.assertEqual(2, expired.count())
+        self.assertEqual(
+            ['expired_test1', 'expired_test2'],
+            list(expired.values_list('user__username', flat=True))
+        )
+        RegistrationProfile.objects.activate_user(
+            RegistrationProfile.objects.get(
+                user__username='expired_test3'
+            ).activation_key
+        )
+        self.assertEqual(3, RegistrationProfile.objects.expired().count())
 
     @override_settings(USE_TZ=True)
     def test_expired_query_tz(self):
