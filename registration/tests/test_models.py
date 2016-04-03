@@ -344,7 +344,7 @@ class RegistrationModelTests(TestCase):
             user = User.objects.create_user(
                 username, 'expired_test@example.com', 'swordfish'
             )
-            profile = RegistrationProfile.objects.create_profile(user)
+            RegistrationProfile.objects.create_profile(user)
         RegistrationProfile.objects.filter(
             user__username='expired_test1'
         ).update(activation_key=RegistrationProfile.ACTIVATED)
@@ -375,4 +375,3 @@ class RegistrationModelTests(TestCase):
 
         """
         self.test_expired_query()
-        
