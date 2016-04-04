@@ -118,12 +118,10 @@ class RegistrationManager(models.Manager):
         associated users.
 
         """
-        for profile in self.all():
-            if profile.activation_key_expired():
-                user = profile.user
-                if not user.is_active:
-                    profile.delete()
-                    user.delete()
+        for profile in self.expired():
+            user = profile.user
+            profile.delete()
+            user.delete()
 
 
 @python_2_unicode_compatible
