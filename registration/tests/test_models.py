@@ -333,6 +333,7 @@ class RegistrationModelTests(TestCase):
                 User.USERNAME_FIELD: 'bob'
             })
 
+    @override_settings(USE_TZ=False)
     def test_expired_query(self):
         """
         The expired() method of RegistrationManager correctly returns
