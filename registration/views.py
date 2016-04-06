@@ -99,9 +99,11 @@ class ActivationView(TemplateView):
         """
         activated_user = self.activate(*args, **kwargs)
         if activated_user:
-            signals.user_activated.send(sender=self.__class__,
-                                        user=activated_user,
-                                        request=self.request)
+            signals.user_activated.send(
+                sender=self.__class__,
+                user=activated_user,
+                request=self.request
+            )
             success_url = self.get_success_url(activated_user)
             try:
                 to, args, kwargs = success_url
