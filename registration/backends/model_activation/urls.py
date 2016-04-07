@@ -7,7 +7,7 @@ two-step model-based activation workflow.
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
-from .views import ActivationView, RegistrationView
+from . import views
 
 
 urlpatterns = [
@@ -21,10 +21,10 @@ urlpatterns = [
     # the view; that way it can return a sensible "invalid key"
     # message instead of a confusing 404.
     url(r'^activate/(?P<activation_key>\w+)/$',
-        ActivationView.as_view(),
+        views.ActivationView.as_view(),
         name='registration_activate'),
     url(r'^register/$',
-        RegistrationView.as_view(),
+        views.RegistrationView.as_view(),
         name='registration_register'),
     url(r'^register/complete/$',
         TemplateView.as_view(
