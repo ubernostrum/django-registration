@@ -7,12 +7,12 @@ workflow.
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
-from .views import RegistrationView
+from . import views
 
 
 urlpatterns = [
     url(r'^register/$',
-        RegistrationView.as_view(),
+        views.RegistrationView.as_view(),
         name='registration_register'),
     url(r'^register/closed/$',
         TemplateView.as_view(
