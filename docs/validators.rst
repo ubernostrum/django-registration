@@ -75,7 +75,7 @@ Additionally, one custom validator is provided:
 
       ``django-registration`` includes a list of reserved names, and
       rejects them as usernames by default, in order to avoid this
-      problem.
+      issue.
 
    The default list of reserved names, if you don't specify one, is
    :data:`~registration.validators.DEFAULT_RESERVED_NAMES`. The
