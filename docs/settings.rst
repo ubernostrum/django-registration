@@ -56,8 +56,8 @@ of several custom settings.
 
    This setting is optional, and a default of ``"registration"`` will
    be used if not specified. The value of this setting does not need
-   to be kept secret; it is used solely as a way of namespacing HMAC
-   usage.
+   to be kept secret; see ref:`the note about this salt value and
+   security <salt-security>` for details.
 
    Used by:
 
