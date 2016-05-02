@@ -233,29 +233,25 @@ Additionally, :class:`RegistrationProfile` has a custom manager
 
       :rtype: ``None``
 
-   .. method:: create_inactive_user(username, email, password, site[, send_email])
+   .. method:: create_inactive_user(form, site, send_email=True)
 
       Creates a new, inactive user account and an associated instance
       of :class:`RegistrationProfile`, sends the activation email and
       returns the new ``User`` object representing the account.
 
-      :param username: The username to use for the new account.
-      :type username: string
-      :param email: The email address to use for the new account.
-      :type email: string
-      :param password: The password to use for the new account.
-      :type password: string
+      :param form: A bound instance of a subclass of
+         :class:`~registration.forms.RegistrationForm` representing
+         the (already-validated) data the user is trying to register
+         with.
       :param site: An object representing the site on which the
-         account is being registered.
-      :type site: ``django.contrib.sites.models.Site`` or
-         ``django.contrib.sites.models.RequestSite``
-      :param send_email: If ``True``, the activation email will be
-         sent to the account (by calling
+         account is being registered.  :type site:
+         ``django.contrib.sites.models.Site`` or
+         ``django.contrib.sites.models.RequestSite`` :param
+         send_email: If ``True``, the activation email will be sent to
+         the account (by calling
          :meth:`RegistrationProfile.send_activation_email`). If
          ``False``, no email will be sent (but the account will still
-         be inactive).
-      :type send_email: bool
-      :rtype: user
+         be inactive).  :type send_email: bool :rtype: user
 
    .. method:: create_profile(user)
 
