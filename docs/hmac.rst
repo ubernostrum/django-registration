@@ -231,7 +231,7 @@ In particular, the activation key is of the form::
 
     encoded_username:timestamp:signature
 
-Where ``encoded_username`` is the username of the new account,
+where ``encoded_username`` is the username of the new account,
 (URL-safe) base64-encoded, ``timestamp`` is a base62-encoded timestamp
 of the time the user registered, and ``signature`` is a (URL-safe)
 base64-encoded HMAC of the username and timestamp.
