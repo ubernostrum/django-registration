@@ -20,7 +20,8 @@ General
     sticks to making it easy to implement typical signup workflows
     using Django's own user model and auth system (with some ability
     to use custom user models), while apps like ``django-allauth``
-    handle the vagaries of social authentication far more effectively.
+    handle integration with third-party authentication services far
+    more effectively.
 
 **What license is django-registration under?**
 
