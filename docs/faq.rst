@@ -41,6 +41,9 @@ General
     supported Python 3.2 at initial release, Python 3.2 is now at its
     end-of-life and ``django-registration`` no longer supports it.
 
+    It is expected that ``django-registration`` |version| will also
+    work with Django 1.10 and Python 3.6 once they are released.
+
 **I found a bug or want to make an improvement!**
 
     The canonical development repository for ``django-registration``
