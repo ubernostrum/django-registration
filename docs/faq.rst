@@ -61,7 +61,7 @@ General
 
 **How secure is django-registration?**
 
-   In the eight-year history of ``django-registration``, there have
+   In the nine-year history of ``django-registration``, there have
    been no security issues reported which required new releases to
    remedy. This doesn't mean, though, that ``django-registration`` is
    perfectly secure: much will depend on ensuring best practices in
