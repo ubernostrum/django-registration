@@ -121,7 +121,7 @@ Installation and setup
 
     No, for two reasons:
 
-    1. Providing default templates with an application is generally
+    1. Providing default templates with an application is ranges from
        hard to impossible, because different sites can have such
        wildly different design and template structure. Any attempt to
        provide templates which would work with all the possibilities
