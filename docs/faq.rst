@@ -208,10 +208,10 @@ Tips and tricks
 
 **How do I manually activate a user?**
 
-    In the model-based workflow, a custom admin action is provided for
-    this. In the admin for the ``RegistrationProfile`` model, click
-    the checkbox for the user(s) you'd like to activate, then select
-    the "Activate users" action.
+    In :ref:`the model-based workflow <model-workflow>`, a custom
+    admin action is provided for this. In the admin for the
+    ``RegistrationProfile`` model, click the checkbox for the user(s)
+    you'd like to activate, then select the "Activate users" action.
 
     In the HMAC-based workflow, simply toggle the ``is_active`` field
     of the user in the admin.
