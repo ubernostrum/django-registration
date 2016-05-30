@@ -4,7 +4,7 @@
 Upgrading from previous versions
 ================================
 
-Prior to |version|, the last widely-deployed release of
+Prior to 2.0, the last widely-deployed release of
 ``django-registration`` was 0.8; a 1.0 release was published, and
 |version| is mostly backwards-compatible with it, but 1.0 appears not
 to have seen wide adoption. As such, this guide covers the process of
@@ -120,3 +120,20 @@ following changes need to be noted:
 
 * As noted above, the password-mismatch error message is now attached
   to the ``password2`` field rather than being a form-level error.
+
+
+Changes since 2.0
+-----------------
+
+Only one major change occurred between ``django-registration`` 2.0 and
+|version|: the addition of the
+:class:`~registration.validators.ReservedNameValidator`, which is now
+used by default on :class:`~registration.forms.RegistrationForm` and
+its subclasses.
+
+This is technically backwards-incompatible, since a set of usernames
+which previously could be registered now cannot be registered. If you
+need ot allow users to register with usernames forbidden by this
+validator, see its documentation for notes on how to customize or
+disable it.
+
