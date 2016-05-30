@@ -17,6 +17,9 @@ and 1.9, on any Python version supported by those versions of Django:
 
 * Django 1.9 supports Python 2.7, 3.4 and 3.5.
 
+It is expected that ``django-registration`` |version| will also work
+with Django 1.10 and Python 3.6 once they are released.
+
 .. important:: **Python 3.2**
 
    Although Django 1.8 supported Python 3.2 at the time of its
