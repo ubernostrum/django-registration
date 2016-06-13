@@ -133,7 +133,6 @@ its subclasses.
 
 This is technically backwards-incompatible, since a set of usernames
 which previously could be registered now cannot be registered. If you
-need ot allow users to register with usernames forbidden by this
+need to allow users to register with usernames forbidden by this
 validator, see its documentation for notes on how to customize or
 disable it.
-
