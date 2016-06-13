@@ -27,6 +27,24 @@ class RegistrationFormTests(RegistrationTestCase):
             form.fields['email'].required
         )
 
+    def test_username_uniqueness(self):
+        """
+        Username uniqueness is enforced.
+
+        This test is necessary as of 2.1.x to ensure the base
+        UserCreationForm clean() continues to be called from the
+        overridden clean() in RegistrationForm.
+
+        """
+        user_data = self.valid_data.copy()
+        del user_data['password1']
+        del user_data['password2']
+        user_data['password'] = 'swordfish'
+        existing_user = self.user_model(**user_data)
+        existing_user.save()
+        form = forms.RegistrationForm(data=self.valid_data.copy())
+        self.assertFalse(form.is_valid())
+
     def test_reserved_names(self):
         """
         Reserved names are disallowed.

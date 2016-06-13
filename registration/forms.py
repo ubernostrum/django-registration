@@ -83,6 +83,7 @@ class RegistrationForm(UserCreationForm):
                 validator(username_value)
             except ValidationError as v:
                 self.add_error(User.USERNAME_FIELD, v)
+        super(RegistrationForm, self).clean()
 
 
 class RegistrationFormTermsOfService(RegistrationForm):
