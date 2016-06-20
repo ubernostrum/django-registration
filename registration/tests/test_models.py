@@ -363,7 +363,6 @@ class RegistrationModelTests(TestCase):
         used_profile.activation_key = RegistrationProfile.ACTIVATED
         used_profile.save()
 
-
         self.assertEqual(RegistrationProfile.objects.count(), 2)
 
         management.call_command('deleteusedregistrations')

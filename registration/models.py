@@ -149,7 +149,6 @@ class RegistrationManager(models.Manager):
             profile.delete()
 
 
-
 @python_2_unicode_compatible
 class RegistrationProfile(models.Model):
     """

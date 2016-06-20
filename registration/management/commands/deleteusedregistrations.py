@@ -1,6 +1,7 @@
 """
-A management command which deletes used regiatration profiles (e.g.
-the registration code for users that have allready activated) from the database.
+A management command which deletes used regiatration profiles
+(e.g. the registration code for users that have allready activated)
+from the database.
 
 Calls ``RegistrationProfile.objects.delete_activated_profiles()``, which
 contains the actual logic for determining which accounts are deleted.
