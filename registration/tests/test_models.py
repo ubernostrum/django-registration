@@ -299,7 +299,7 @@ class RegistrationModelTests(TestCase):
                 User.USERNAME_FIELD: 'bob'
             })
 
-    def test_management_command(self):
+    def test_cleanupregistration_management_command(self):
         """
         The cleanupregistration management command properly deletes
         expired accounts.
@@ -332,6 +332,47 @@ class RegistrationModelTests(TestCase):
             User.objects.get(**{
                 User.USERNAME_FIELD: 'bob'
             })
+
+    def test_deleteusedregistrations_management_command(self):
+        """
+        The deleteusedregistrations management command properly deletes
+        used registration profiles (while not touching users).
+
+        """
+        RegistrationProfile.objects.create_inactive_user(
+            form=self.get_form(),
+            site=self.get_site()
+        )
+        expired_form = RegistrationForm(
+            data={
+                User.USERNAME_FIELD: 'bob',
+                'password1': 'swordfish',
+                'password2': 'swordfish',
+                'email': 'bob@example.com',
+            }
+        )
+        not_expired_user = RegistrationProfile.objects.create_inactive_user(
+            form=expired_form,
+            site=self.get_site()
+        )
+        not_expired_user.date_joined -= datetime.timedelta(
+            days=settings.ACCOUNT_ACTIVATION_DAYS + 1
+        )
+        not_expired_user.save()
+        used_profile = RegistrationProfile.objects.get(user=not_expired_user)
+        used_profile.activation_key = RegistrationProfile.ACTIVATED
+        used_profile.save()
+
+
+        self.assertEqual(RegistrationProfile.objects.count(), 2)
+
+        management.call_command('deleteusedregistrations')
+        self.assertEqual(RegistrationProfile.objects.count(), 1)
+
+        # User should still be here
+        User.objects.get(**{
+            User.USERNAME_FIELD: 'bob'
+        })
 
     def test_expired_query(self):
         """
@@ -385,10 +426,13 @@ class RegistrationModelTests(TestCase):
                 settings.ACCOUNT_ACTIVATION_DAYS + 1
             )
         )
-        self.assertEqual(1, len(RegistrationProfile.objects.expired()))
+        # expired() should NOT include ACTIVATED users
+        self.assertEqual(0, len(RegistrationProfile.objects.expired()))
+        # activated() should include ACTIVATED users
+        self.assertEqual(1, len(RegistrationProfile.objects.activated()))
         self.assertEqual(
             [user.username],
-            list(RegistrationProfile.objects.expired().values_list(
+            list(RegistrationProfile.objects.activated().values_list(
                 'user__username', flat=True
             ))
         )
