@@ -63,21 +63,24 @@ class RegistrationManager(models.Manager):
 
     def expired(self):
         """
-        Query for all profiles whose activation key has expired.
+        Query for all profiles which are expired and correspond to
+        non-active users.
 
         """
         if settings.USE_TZ:
             now = timezone.now()
         else:
             now = datetime.datetime.now()
-        return self.filter(
-            models.Q(activation_key=self.model.ACTIVATED) |
-            models.Q(
-                user__date_joined__lt=now - datetime.timedelta(
-                    settings.ACCOUNT_ACTIVATION_DAYS
+        return self.exclude(
+            user__is_active=True
+            ).filter(
+                models.Q(activation_key=self.model.ACTIVATED) |
+                models.Q(
+                    user__date_joined__lt=now - datetime.timedelta(
+                        settings.ACCOUNT_ACTIVATION_DAYS
+                    )
                 )
             )
-        )
 
     @transaction.atomic
     def create_inactive_user(self, form, site, send_email=True):

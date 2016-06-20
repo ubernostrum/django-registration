@@ -339,35 +339,80 @@ class RegistrationModelTests(TestCase):
         only expired registration profiles.
 
         """
-        usernames = ('expired_test1', 'expired_test2', 'expired_test3')
-        for username in usernames:
-            user = User.objects.create_user(
-                username, 'expired_test@example.com', 'swordfish'
-            )
-            RegistrationProfile.objects.create_profile(user)
-        RegistrationProfile.objects.filter(
-            user__username='expired_test1'
-        ).update(activation_key=RegistrationProfile.ACTIVATED)
-        User.objects.filter(
-            username='expired_test2'
-        ).update(
+        form = RegistrationForm(
+            data={
+                User.USERNAME_FIELD: 'test_expired_query',
+                'password1': 'swordfish',
+                'password2': 'swordfish',
+                'email': 'test_expired_query@example.com'
+            }
+        )
+        user = RegistrationProfile.objects.create_inactive_user(
+            form=form,
+            site=self.get_site()
+        )
+        profile = RegistrationProfile.objects.get(user=user)
+        original_date_joined = user.date_joined
+        original_activation_key = profile.activation_key
+
+        # Test matrix for expired() is as follows:
+        #
+        # * User with is_active=False, activation_key != ACTIVATED,
+        #   date_joined in the activation window is not expired.
+        self.assertEqual(0, len(RegistrationProfile.objects.expired()))
+
+        # * User with is_active=False, activation_key != ACTIVATED,
+        #   date_joined too old to be in activation window is expired.
+        User.objects.filter(username=user.username).update(
             date_joined=models.F('date_joined') - datetime.timedelta(
                 settings.ACCOUNT_ACTIVATION_DAYS + 1
             )
         )
-        expired = RegistrationProfile.objects.expired()
-        self.assertEqual(2, expired.count())
+        self.assertEqual(1, len(RegistrationProfile.objects.expired()))
         self.assertEqual(
-            ['expired_test1', 'expired_test2'],
-            list(expired.values_list('user__username', flat=True))
+            [user.username],
+            list(RegistrationProfile.objects.expired().values_list(
+                'user__username', flat=True
+            ))
         )
-        RegistrationProfile.objects.activate_user(
-            RegistrationProfile.objects.get(
-                user__username='expired_test3'
-            ).activation_key
-        )
-        self.assertEqual(3, RegistrationProfile.objects.expired().count())
 
+        # * User with is_active=False, activation_key=ACTIVATED,
+        #   date_joined too old to be in activation window is expired.
+        profile.activation_key = RegistrationProfile.ACTIVATED
+        profile.save()
+        User.objects.filter(username=user.username).update(
+            date_joined=models.F('date_joined') - datetime.timedelta(
+                settings.ACCOUNT_ACTIVATION_DAYS + 1
+            )
+        )
+        self.assertEqual(1, len(RegistrationProfile.objects.expired()))
+        self.assertEqual(
+            [user.username],
+            list(RegistrationProfile.objects.expired().values_list(
+                'user__username', flat=True
+            ))
+        )
+
+        # * User with is_active=True, activation_key=ACTIVATED,
+        #   date_joined too old to be in activation window is not
+        #   expired.
+        user.is_active = True
+        user.save()
+        self.assertEqual(0, len(RegistrationProfile.objects.expired()))
+
+        # * User with is_active=True, activation_key != ACTIVATED,
+        #   date_joined too old to be in activation window is not
+        #   expired.
+        profile.activation_key = original_activation_key
+        profile.save()
+        self.assertEqual(0, len(RegistrationProfile.objects.expired()))
+
+        # * User with is_active=True, activation_key != ACTIVATED,
+        #   date_joined in the activation window is not expired.
+        user.date_joined = original_date_joined
+        user.save()
+        self.assertEqual(0, len(RegistrationProfile.objects.expired()))
+        
     @override_settings(USE_TZ=True)
     def test_expired_query_tz(self):
         """
