@@ -412,7 +412,7 @@ class RegistrationModelTests(TestCase):
         user.date_joined = original_date_joined
         user.save()
         self.assertEqual(0, len(RegistrationProfile.objects.expired()))
-        
+
     @override_settings(USE_TZ=True)
     def test_expired_query_tz(self):
         """
