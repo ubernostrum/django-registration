@@ -110,6 +110,12 @@ class ActivationView(TemplateView):
                 return redirect(to, *args, **kwargs)
             except ValueError:
                 return redirect(success_url)
+        else:
+            signals.user_activation_failed.send(
+                sender=self.__class__,
+                request=self.request
+            )
+
         return super(ActivationView, self).get(*args, **kwargs)
 
     def activate(self, *args, **kwargs):
