@@ -12,6 +12,7 @@ from django.core import signing
 from django.template.loader import render_to_string
 
 from registration import signals
+from registration.exceptions import BadActivationKey, ActivationKeyExpired
 from registration.views import ActivationView as BaseActivationView
 from registration.views import RegistrationView as BaseRegistrationView
 
@@ -137,8 +138,10 @@ class ActivationView(BaseActivationView):
             return username
         # SignatureExpired is a subclass of BadSignature, so this will
         # catch either one.
+        except signing.SignatureExpired:
+            raise ActivationKeyExpired
         except signing.BadSignature:
-            return None
+            raise BadActivationKey
 
     def get_user(self, username):
         """

@@ -5,10 +5,12 @@ Base view classes for all registration workflows.
 
 from django.conf import settings
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from registration import signals
+from registration.exceptions import ActivationKeyExpired, BadActivationKey
 from registration.forms import RegistrationForm
 
 
@@ -90,6 +92,9 @@ class ActivationView(TemplateView):
     """
     template_name = 'registration/activate.html'
 
+    template_invalid_key = 'registration/activate_error_invalid_key.html'
+    template_outdated_key = 'registration/activate_error_outdated_key.html'
+
     def get(self, *args, **kwargs):
         """
         The base activation logic; subclasses should leave this method
@@ -97,7 +102,26 @@ class ActivationView(TemplateView):
         method.
 
         """
-        activated_user = self.activate(*args, **kwargs)
+        activated_user = None
+        try:
+            activated_user = self.activate(*args, **kwargs)
+        except BadActivationKey:
+            context = self.get_context_data(**kwargs)
+            return self.response_class(
+                request=self.request,
+                template=[self.template_invalid_key],
+                context=context,
+                using=self.template_engine
+            )
+        except ActivationKeyExpired:
+            context = self.get_context_data(**kwargs)
+            return self.response_class(
+                request=self.request,
+                template=[self.template_outdated_key],
+                context=context,
+                using=self.template_engine
+            )
+
         if activated_user:
             signals.user_activated.send(
                 sender=self.__class__,
