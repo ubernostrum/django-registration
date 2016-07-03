@@ -12,6 +12,7 @@ from django.core import signing
 from django.template.loader import render_to_string
 
 from registration import signals
+from registration.utils import send_user_activation_email
 from registration.views import ActivationView as BaseActivationView
 from registration.views import RegistrationView as BaseRegistrationView
 
@@ -29,8 +30,9 @@ class RegistrationView(BaseRegistrationView):
     TimestampSigner, with HMAC verification on activation.
 
     """
-    email_body_template = 'registration/activation_email.txt'
-    email_subject_template = 'registration/activation_email_subject.txt'
+    email_subject_template = None
+    email_body_template = None
+    email_html_body_template = None
 
     def register(self, form):
         new_user = self.create_inactive_user(form)
@@ -84,18 +86,15 @@ class RegistrationView(BaseRegistrationView):
 
         """
         activation_key = self.get_activation_key(user)
-        context = self.get_email_context(activation_key)
-        context.update({
+        email_ctx = self.get_email_context(activation_key)
+        email_ctx.update({
             'user': user
         })
-        subject = render_to_string(self.email_subject_template,
-                                   context)
-        # Force subject to a single line to avoid header-injection
-        # issues.
-        subject = ''.join(subject.splitlines())
-        message = render_to_string(self.email_body_template,
-                                   context)
-        user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        
+        send_user_activation_email(user, email_ctx,
+                                   self.email_subject_template,
+                                   self.email_body_template,
+                                   self.email_html_body_template)
 
 
 class ActivationView(BaseActivationView):
