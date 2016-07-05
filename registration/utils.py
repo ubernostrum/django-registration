@@ -8,13 +8,15 @@ def send_user_activation_email(user, email_ctx,
                                email_html_body_template=None):
     """
     Send an activation email to a user.
-    
+
     """
     # Subject of activation email.
     if not email_subject_template:
-        email_subject_template = getattr(settings,
-         'ACCOUNT_ACTIVATION_EMAIL_SUBJECT_TEMPLATE',
-         None)
+        email_subject_template = getattr(
+            settings,
+            'ACCOUNT_ACTIVATION_EMAIL_SUBJECT_TEMPLATE',
+            None
+        )
 
     if not email_subject_template:
         email_subject_template = 'registration/activation_email_subject.txt'
@@ -26,9 +28,11 @@ def send_user_activation_email(user, email_ctx,
 
     # Plain-text body of activation email.
     if not email_body_template:
-        email_body_template = getattr(settings,
-          'ACCOUNT_ACTIVATION_EMAIL_BODY_TEMPLATE',
-          None)
+        email_body_template = getattr(
+            settings,
+            'ACCOUNT_ACTIVATION_EMAIL_BODY_TEMPLATE',
+            None
+        )
 
     if not email_body_template:
         email_body_template = 'registration/activation_email.txt'
@@ -37,9 +41,11 @@ def send_user_activation_email(user, email_ctx,
 
     # HTML alternative of activation email's body.
     if not email_html_body_template:
-        email_html_body_template = getattr(settings,
-          'ACCOUNT_ACTIVATION_EMAIL_HTML_BODY_TEMPLATE',
-          None)
+        email_html_body_template = getattr(
+            settings,
+            'ACCOUNT_ACTIVATION_EMAIL_HTML_BODY_TEMPLATE',
+            None
+        )
 
     if not email_html_body_template:
         email_html_body_template = 'registration/activation_email.html'

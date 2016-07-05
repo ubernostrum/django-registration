@@ -18,7 +18,6 @@ import re
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils import timezone
@@ -175,5 +174,5 @@ class RegistrationProfile(models.Model):
                      'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
                      'user': self.user,
                      'site': site}
-        
+
         send_user_activation_email(self.user, email_ctx)

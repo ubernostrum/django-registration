@@ -9,7 +9,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
-from django.template.loader import render_to_string
 
 from registration import signals
 from registration.utils import send_user_activation_email
@@ -90,7 +89,7 @@ class RegistrationView(BaseRegistrationView):
         email_ctx.update({
             'user': user
         })
-        
+
         send_user_activation_email(user, email_ctx,
                                    self.email_subject_template,
                                    self.email_body_template,
