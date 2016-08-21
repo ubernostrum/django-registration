@@ -138,6 +138,8 @@ OTHER_SENSITIVE_NAMES = [
     'license',
     'login',
     'logout',
+    'me',
+    'myaccount',
     'payments',
     'plans',
     'portfolio',
@@ -147,6 +149,8 @@ OTHER_SENSITIVE_NAMES = [
     'profile',
     'register'
     'secure',
+    'settings',
+    'signin',
     'signup',
     'ssl',
     'status',
