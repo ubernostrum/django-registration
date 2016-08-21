@@ -16,7 +16,7 @@ install:
 matrix:
  exclude:
    - python: "3.3"
-     env: DJANGO_VERSION=1.9.6
+     env: DJANGO_VERSION=1.9.9
    - python: "3.3"
      env: DJANGO_VERSION=1.10
 script:
