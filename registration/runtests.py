@@ -42,9 +42,21 @@ SETTINGS_DICT = {
         'django.contrib.auth.middleware.AuthenticationMiddleware',
     ),
     'SITE_ID': 1,
-    'TEMPLATE_DIRS': (
-        os.path.join(APP_DIR, 'tests/templates'),
-    ),
+    'TEMPLATES': [{
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(APP_DIR, 'tests/templates')],
+        'OPTIONS': {
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    }],
 }
 
 
