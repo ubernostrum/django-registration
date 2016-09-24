@@ -8,6 +8,6 @@ configuration.
 
 For more details, see the documentation in the docs/ directory of the
 source-code distribution, or online at
-http://django-registration.readthedocs.org/
+https://django-registration.readthedocs.io/
 
 """
