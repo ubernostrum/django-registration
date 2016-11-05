@@ -16,7 +16,7 @@ General
     By using `django-allauth
     <https://pypi.python.org/pypi/django-allauth>`_. No single
     application can or should provide a universal API for every
-    authentication system ever developed; ``django-registration``
+    authentication system ever developed; django-registration
     sticks to making it easy to implement typical signup workflows
     using Django's own user model and auth system (with some ability
     to use custom user models), while apps like ``django-allauth``
@@ -25,7 +25,7 @@ General
 
 **What license is django-registration under?**
 
-    ``django-registration`` is offered under a three-clause BSD-style
+    django-registration is offered under a three-clause BSD-style
     license; this is `an OSI-approved open-source license
     <http://www.opensource.org/licenses/bsd-license.php>`_, and allows
     you a large degree of freedom in modifiying and redistributing the
@@ -36,23 +36,23 @@ General
 
 **What versions of Django and Python are supported?**
 
-    As of ``django-registration`` |version|, Django 1.8, 1.9, and 1.10
+    As of django-registration |version|, Django 1.8, 1.9, and 1.10
     are supported, on Python 2.7, 3.3 (Django 1.8 only), 3.4 and
     3.5. Although Django 1.8 supported Python 3.2 at initial release,
-    Python 3.2 is now at its end-of-life and ``django-registration``
+    Python 3.2 is now at its end-of-life and django-registration
     no longer supports it.
 
-    It is expected that ``django-registration`` |version| will work
+    It is expected that django-registration |version| will work
     without modification on Python 3.6 once it is released.
 
 **I found a bug or want to make an improvement!**
 
-    The canonical development repository for ``django-registration``
+    The canonical development repository for django-registration
     is online at
     <https://github.com/ubernostrum/django-registration>. Issues and
     pull requests can both be filed there.
 
-    If you'd like to contribute to ``django-registration``, that's
+    If you'd like to contribute to django-registration, that's
     great! Just please remember that pull requests should include
     tests and documentation for any changes made, and that following
     `PEP 8 <https://www.python.org/dev/peps/pep-0008/>`_ is
@@ -62,41 +62,41 @@ General
 
 **How secure is django-registration?**
 
-   In the nine-year history of ``django-registration``, there have
+   In the nine-year history of django-registration, there have
    been no security issues reported which required new releases to
-   remedy. This doesn't mean, though, that ``django-registration`` is
+   remedy. This doesn't mean, though, that django-registration is
    perfectly secure: much will depend on ensuring best practices in
    deployment and server configuration, and there could always be
    security issues that just haven't been recognized yet.
 
-   ``django-registration`` does, however, try to avoid common security
+   django-registration does, however, try to avoid common security
    issues:
 
-   * ``django-registration`` |version| only supports versions of
+   * django-registration |version| only supports versions of
      Django which were receiving upstream security support at the time
      of release.
 
-   * ``django-registration`` does not attempt to generate or store
+   * django-registration does not attempt to generate or store
      passwords, and does not transmit credentials which could be used
      to log in (the only "credential" ever sent out by
-     ``django-registration`` is an activation key used in the two-step
+     django-registration is an activation key used in the two-step
      activation workflows, and that key can only be used to make an
      account active; it cannot be used to log in).
 
-   * ``django-registration`` works with Django's own security features
+   * django-registration works with Django's own security features
      (including cryptographic features) where possible, rather than
      reinventing its own.
 
 **How do I run the tests?**
 
-    ``django-registration`` makes use of Django's own built-in
+    django-registration makes use of Django's own built-in
     unit-testing tools, and supports several ways to execute its test
     suite:
 
     * Within a Django project, simply invoke ``manage.py test
       registration``.
 
-    * If you've installed ``django-registration`` (so that it's on
+    * If you've installed django-registration (so that it's on
       your Python import path) and Django, but don't yet have a
       project created or want to test independently of a project, you
       can run ``registration/runtests.py``, or you can invoke ``python
@@ -104,7 +104,7 @@ General
       ``registration/runtests.py``).
 
     Additionally, the ``setup.cfg`` file included in
-    ``django-registration`` provides configuration for `coverage.py
+    django-registration provides configuration for `coverage.py
     <https://coverage.readthedocs.io/>`_, enabling
     easy recording and reporting of test coverage.
 
@@ -150,7 +150,7 @@ Configuration
     You're free to choose whichever one you think best fits your
     needs. However, :ref:`the model-based workflow <model-workflow>`
     is mostly provided for backwards compatibility with older versions
-    of ``django-registration``; it dates to 2007, and though it is
+    of django-registration; it dates to 2007, and though it is
     still as functional as ever, :ref:`the HMAC workflow
     <hmac-workflow>` has less overhead (i.e., no need to install or
     work with any models) due to being able to take advantage of more
@@ -173,7 +173,7 @@ Configuration
     
 **I don't want to write my own URLconf because I don't want to write patterns for all the auth views!**
 
-    You're in luck, then; ``django-registration`` provides a URLconf
+    You're in luck, then; django-registration provides a URLconf
     which *only* contains the patterns for the auth views, and which
     you can include in your own URLconf anywhere you'd like; it lives
     at ``registration.auth_urls``.

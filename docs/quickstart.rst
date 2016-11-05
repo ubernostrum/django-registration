@@ -3,12 +3,12 @@
 Quick start guide
 =================
 
-First you'll need to have Django and ``django-registration``
+First you'll need to have Django and django-registration
 installed; for details on that, see :ref:`the installation guide
 <install>`.
 
 The next steps will depend on which registration workflow you'd like
-to use. There are three workflows built in to ``django-registration``;
+to use. There are three workflows built in to django-registration;
 one is included largely for backwards compatibility with older
 releases, while the other two are recommended for new
 installations. Those two are:
@@ -33,7 +33,7 @@ The guide below covers use of these two workflows.
    <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
    you'll probably want to pause and read :ref:`the custom user
    compatibility guide <custom-user>` before using
-   ``django-registration``.
+   django-registration.
 
 
 Configuring the HMAC activation workflow
@@ -62,7 +62,7 @@ Django settings::
 
 You'll also need to have ``django.contrib.auth`` in your
 ``INSTALLED_APPS`` setting, since all of the registration workflows in
-``django-registration`` make use of it.
+django-registration make use of it.
 
 .. warning:: You should **not** add ``registration`` to your
    ``INSTALLED_APPS`` setting if you're following this document. This
@@ -78,7 +78,7 @@ You'll also need to have ``django.contrib.auth`` in your
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
-Each bundled registration workflow in ``django-registration`` includes
+Each bundled registration workflow in django-registration includes
 a Django URLconf which sets up URL patterns for :ref:`the views in
 django-registration <views>`, as well as several useful views in
 ``django.contrib.auth`` (e.g., login, logout, password
@@ -113,9 +113,9 @@ Required templates
 ~~~~~~~~~~~~~~~~~~
 
 You will also need to create several templates required by
-``django-registration``, and possibly additional templates required by
+django-registration, and possibly additional templates required by
 views in ``django.contrib.auth``. The templates required by
-``django-registration`` are as follows; note that, with the exception
+django-registration are as follows; note that, with the exception
 of the templates used for account activation emails, all of these are
 rendered using a ``RequestContext`` and so will also receive any
 additional variables provided by `context processors
@@ -209,7 +209,7 @@ following context:
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
 toward and interoperability problems with HTML email,
-``django-registration`` defaults to plain-text email, and so these
+django-registration defaults to plain-text email, and so these
 templates should simply output plain text rather than HTML.
 
 To make use of the views from ``django.contrib.auth`` (which are set

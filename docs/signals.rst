@@ -5,7 +5,7 @@
 Signals used by django-registration
 ===================================
 
-Much of ``django-registration``'s customizability comes through the
+Much of django-registration's customizability comes through the
 ability to write and use different workflows for user
 registration. However, there are many cases where only a small bit of
 additional logic needs to be injected into the registration process,

@@ -5,7 +5,7 @@ Validation utilities
 ====================
 
 To ease the process of validating user registration data,
-``django-registration`` includes some validation-related data and
+django-registration includes some validation-related data and
 utilities in ``registration.validators``.
 
 The available error messages are:
@@ -38,7 +38,7 @@ The available error messages are:
 
 All of these error messages are marked for translation; most have
 translations into multiple languages already in
-``django-registration``.
+django-registration.
 
 Additionally, one custom validator is provided:
 
@@ -73,7 +73,7 @@ Additionally, one custom validator is provided:
       which conflicts with an important URL, email address or
       subdomain, and this might give that user control over it.
 
-      ``django-registration`` includes a list of reserved names, and
+      django-registration includes a list of reserved names, and
       rejects them as usernames by default, in order to avoid this
       issue.
 

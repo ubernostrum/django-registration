@@ -5,25 +5,25 @@ Upgrading from previous versions
 ================================
 
 Prior to 2.0, the last widely-deployed release of
-``django-registration`` was 0.8; a 1.0 release was published, and
+django-registration was 0.8; a 1.0 release was published, and
 |version| is mostly backwards-compatible with it, but 1.0 appears not
 to have seen wide adoption. As such, this guide covers the process of
-upgrading from ``django-registration`` 0.8, as well as from 1.0.
+upgrading from django-registration 0.8, as well as from 1.0.
 
 
 Backends are now class-based views
 ----------------------------------
 
-In ``django-registration`` 0.8, a registration workflow was
+In django-registration 0.8, a registration workflow was
 implemented as a class with specific methods for the various steps of
-the registration process. In ``django-registration`` |version|, a
+the registration process. In django-registration 2.0 and later, a
 registration workflow is implemented as one or more class-based views.
 
 In general, the required changes to implement a 0.8 registration
-workflow in ``django-registration`` |version| is:
+workflow in django-registration |version| is:
 
 +-------------------------------------------------------------+------------------------------------------------------------------+
-| 0.8 backend class implementation                            | |version| view subclass implementation                           |
+| 0.8 backend class implementation                            | 2.0+      view subclass implementation                           |
 +=============================================================+==================================================================+
 | Backend class implementing ``register()``                   | :meth:`registration.views.RegistrationView.register`             |
 +-------------------------------------------------------------+------------------------------------------------------------------+
@@ -43,10 +43,10 @@ URLconf changes
 ---------------
 
 If you were using one of the provided workflows in
-``django-registration`` 0.8 without modification, you will not need to
+django-registration 0.8 without modification, you will not need to
 make any changes; both ``registration.backends.default.urls`` and
 ``registration.backends.simple.urls`` have been updated in
-``django-registration`` |version| to correctly point to the new
+django-registration 2.0+ to correctly point to the new
 class-based views:
 
 +---------------------------------+---------------------------------------------------+
@@ -86,14 +86,14 @@ the errors dictionary.
 Changes since 1.0
 -----------------
 
-If you used ``django-registration`` 1.0, or a pre-release checkout of
-the |version| code, you will need to make some minor adjustments.
+If you used django-registration 1.0, or a pre-2.0 checkout of the
+code, you will need to make some minor adjustments.
 
 If you previously used ``registration.backends.default``, you will now
 see deprecation warnings, as the former "default" workflow is now
 found in ``registration.backends.model_activation``. Use of
 ``registration.backends.default`` continues to work in
-``django-registration`` |version|, but will be removed in the future.
+django-registration |version|, but will be removed in the future.
 
 Similarly, references to ``registration.urls`` should become
 references to ``registration.backends.model_activation.urls``, and
@@ -125,14 +125,15 @@ following changes need to be noted:
 Changes since 2.0
 -----------------
 
-Only one major change occurred between ``django-registration`` 2.0 and
-|version|: the addition of the
+Only one major change occurred between django-registration 2.0 and
+|version|: the addition in version 2.1 of the
 :class:`~registration.validators.ReservedNameValidator`, which is now
 used by default on :class:`~registration.forms.RegistrationForm` and
 its subclasses.
 
 This is technically backwards-incompatible, since a set of usernames
-which previously could be registered now cannot be registered. If you
-need to allow users to register with usernames forbidden by this
-validator, see its documentation for notes on how to customize or
-disable it.
+which previously could be registered now cannot be registered, but was
+included because the security benefits outweigh the edge cases of the
+now-disallowed usernames. If you need to allow users to register with
+usernames forbidden by this validator, see its documentation for notes
+on how to customize or disable it.

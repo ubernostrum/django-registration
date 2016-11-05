@@ -14,7 +14,7 @@ key; instead, the activation key sent to the user is a timestamped,
 value.
 
 Unless you need to maintain compatibility in an existing install of
-``django-registration`` which used the model-based workflow, it's
+django-registration which used the model-based workflow, it's
 recommended you use the HMAC activation workflow for two-step signup
 processes.
 

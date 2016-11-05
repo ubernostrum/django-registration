@@ -3,7 +3,7 @@
 django-registration |version|
 =============================
 
-``django-registration`` is a simple, extensible application providing
+django-registration is a simple, extensible application providing
 user registration functionality for `Django
 <https://www.djangoproject.com/>`_-powered Web sites.
 
@@ -19,7 +19,7 @@ cases:
 
 To get up and running quickly, consult :ref:`the quick start guide
 <quickstart>`, which describes the steps necessary to configure
-``django-registration`` for the built-in workflows. For more detailed
+django-registration for the built-in workflows. For more detailed
 information, including how to customize the registration process (and
 support for alternate registration systems), read through the
 documentation listed below.

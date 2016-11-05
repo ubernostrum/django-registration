@@ -5,13 +5,13 @@ Base view classes
 =================
 
 In order to allow the utmost flexibility in customizing and supporting
-different workflows, ``django-registration`` makes use of Django's
+different workflows, django-registration makes use of Django's
 support for `class-based views
 <https://docs.djangoproject.com/en/stable/topics/class-based-views/>`_. Included
-in ``django-registration`` are two base classes which can be
+in django-registration are two base classes which can be
 subclassed to implement whatever workflow is required.
 
-The built-in workflows in ``django-registration`` provide their own
+The built-in workflows in django-registration provide their own
 subclasses of these views, and the documentation for those workflows
 will indicate customization points specific to those subclasses. The
 following reference covers useful attributes and methods of the base
@@ -103,8 +103,8 @@ classes, for use in writing your own custom subclasses.
        method. If you choose to override ``form_invalid()`` in a
        subclass of ``RegistrationView``, be sure to read the
        implementation and comments in the source code of
-       ``django-registration`` first. The relevant bug was fixed in
-       Django 1.9.1, but ``django-registration`` will continue to work
+       django-registration first. The relevant bug was fixed in
+       Django 1.9.1, but django-registration will continue to work
        around it for as long as the Django 1.9 release series is
        supported.
 

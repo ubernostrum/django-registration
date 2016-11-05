@@ -10,11 +10,11 @@ activation -- process for user signup.
 .. note:: **Use of the model-based workflow is discouraged**
 
    The model-based activation workflow was originally the *only*
-   workflow built in to ``django-registration``, and later was the
+   workflow built in to django-registration, and later was the
    default one. However, it no longer represents the best practice for
    registration with modern versions of Django, and so it continues to
    be included only for backwards compatibility with existing
-   installations of ``django-registration``.
+   installations of django-registration.
 
    If you're setting up a new installation and want a two-step process
    with activation, it's recommended you use :ref:`the HMAC activation
@@ -22,7 +22,7 @@ activation -- process for user signup.
 
    Also, note that this workflow was previously found in
    ``registration.backends.default``, and imports from that location
-   still function in ``django-registration`` |version| but now raise
+   still function in django-registration |version| but now raise
    deprecation warnings. The correct location going forward is
    ``registration.backends.model_activation``.
 
@@ -60,7 +60,7 @@ argument ``form_class`` to the registration view.
 Two views are provided:
 ``registration.backends.model_activation.views.RegistrationView`` and
 ``registration.backends.model_activation.views.ActivationView``. These
-views subclass ``django-registration``'s base
+views subclass django-registration's base
 :class:`~registration.views.RegistrationView` and
 :class:`~registration.views.ActivationView`, respectively, and
 implement the two-step registration/activation process.

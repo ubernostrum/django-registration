@@ -8,7 +8,7 @@ Custom settings
 Although the choice of registration workflow does not necessarily
 require changes to your Django settings (as registration workflows are
 selected by including the appropriate URL patterns in your root
-URLconf), the built-in workflows of ``django-registration`` make use
+URLconf), the built-in workflows of django-registration make use
 of several custom settings.
 
 

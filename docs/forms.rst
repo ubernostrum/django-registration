@@ -4,10 +4,10 @@
 Base form classes
 =================
 
-Several form classes are provided with ``django-registration``,
+Several form classes are provided with django-registration,
 covering common cases for gathering account information and
 implementing common constraints for user registration. These forms
-were designed with ``django-registration``'s built-in registration
+were designed with django-registration's built-in registration
 workflows in mind, but may also be useful in other situations.
 
 
@@ -58,7 +58,7 @@ workflows in mind, but may also be useful in other situations.
 
    The validation error for mismatched passwords is attached to the
    ``password2`` field. This is a backwards-incompatible change from
-   ``django-registration`` 1.0.
+   django-registration 1.0.
 
    .. note:: **Validation of usernames**
 
