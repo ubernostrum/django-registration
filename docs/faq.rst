@@ -216,3 +216,12 @@ Tips and tricks
 
     In the HMAC-based workflow, simply toggle the ``is_active`` field
     of the user in the admin.
+
+**How do I allow Unicode in usernames?**
+
+    Use Python 3. Django's username validation allows any word
+    character plus some additional characters, but the definition of
+    "word character" depends on the Python version in use. On Python
+    2, only ASCII will be permitted; on Python 3, usernames containing
+    word characters matched by a regex with the ``UNICODE`` flag will
+    be accepted.

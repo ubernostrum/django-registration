@@ -44,6 +44,18 @@ workflows in mind, but may also be useful in other situations.
    of ``django.contrib.auth.models.User``. The repeated entry of the
    password serves to catch typos.
 
+   .. note:: **Unicode usernames**
+
+      There is one important difference in form behavior depending on
+      the version of Python you're using. Django's username validation
+      regex allows a username to contain any word character along with
+      the following set of additional characters: ``.@+-``. However,
+      on Python 2 this regex uses the ``ASCII`` flag (since Python 2's
+      string type is ASCII by default), while on Python 3 it uses the
+      ``UNICODE`` flag (since Python 3's string type is Unicode). This
+      means that usernames containing non-ASCII word characters are
+      only permitted when using Python 3.
+
    The validation error for mismatched passwords is attached to the
    ``password2`` field. This is a backwards-incompatible change from
    ``django-registration`` 1.0.
