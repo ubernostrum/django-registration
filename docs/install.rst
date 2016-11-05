@@ -27,7 +27,7 @@ without modification on Python 3.6 once it is released.
    Although Django 1.8 supported Python 3.2 at the time of its
    release, the Python 3.2 series has reached end-of-life, and as a
    result support for Python 3.2 has been dropped from
-   ``django-registration``..
+   ``django-registration``.
 
 
 Normal installation
