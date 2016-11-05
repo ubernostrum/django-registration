@@ -10,22 +10,24 @@ information on obtaining and installing Django, consult the `Django
 download page <https://www.djangoproject.com/download/>`_, which
 offers convenient packaged downloads and installation instructions.
 
-The |version| release of ``django-registration`` supports Django 1.8
-and 1.9, on any Python version supported by those versions of Django:
+The |version| release of ``django-registration`` supports Django 1.8,
+1.9, and 1.10, on the following Python versions:
 
 * Django 1.8 suports Python 2.7, 3.3, 3.4 and 3.5.
 
 * Django 1.9 supports Python 2.7, 3.4 and 3.5.
 
-It is expected that ``django-registration`` |version| will also work
-with Django 1.10 and Python 3.6 once they are released.
+* Django 1.10 supports Python 2.7, 3.4 and 3.5.
+
+It is expected that ``django-registration`` |version| will work
+without modification on Python 3.6 once it is released.
 
 .. important:: **Python 3.2**
 
    Although Django 1.8 supported Python 3.2 at the time of its
    release, the Python 3.2 series has reached end-of-life, and as a
    result support for Python 3.2 has been dropped from
-   ``django-registration`` as of |version|.
+   ``django-registration``..
 
 
 Normal installation
