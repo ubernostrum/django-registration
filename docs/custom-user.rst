@@ -104,10 +104,10 @@ The two-step activation workflows -- both :ref:`HMAC <hmac-workflow>`-
 and :ref:`model <model-workflow>`-based -- require that your user
 model have the following fields:
 
-* ``email`` -- a ``CharField`` or ``EmailField`` holding the user's
-  email address. Note that this field is required by
-  ``RegistrationForm``, which is a difference from Django's default
-  ``UserCreationForm``.
+* ``email`` -- a textual field (``EmailField``, ``CharField`` or
+  ``TextField``) holding the user's email address. Note that this
+  field is required by ``RegistrationForm``, which is a difference
+  from Django's default ``UserCreationForm``.
 
 * ``is_active`` -- a ``BooleanField`` indicating whether the user's
   account is active.
@@ -124,11 +124,12 @@ The model-based activation workflow requires one additional field:
 
 :ref:`The simple one-step workflow <simple-workflow>` requires that
 your user model set ``USERNAME_FIELD``, and requires that it define a
-field named ``password`` for storing the user's password; the
-combination of ``USERNAME_FIELD`` and ``password`` must be sufficient
-to log a user in. Also note that ``RegistrationForm`` requires the
-``email`` field, so either provide that field on your model or
-subclass ``RegistrationForm``.
+field named ``password`` for storing the user's password (it will
+expect to find this value in the ``password1`` field of the
+registration form); the combination of ``USERNAME_FIELD`` and
+``password`` must be sufficient to log a user in. Also note that
+``RegistrationForm`` requires the ``email`` field, so either provide
+that field on your model or subclass ``RegistrationForm``.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
