@@ -104,7 +104,7 @@ General
 
     Additionally, the ``setup.cfg`` file included in
     ``django-registration`` provides configuration for `coverage.py
-    <https://coverage.readthedocs.org/>`_, enabling
+    <https://coverage.readthedocs.io/>`_, enabling
     easy recording and reporting of test coverage.
 
    

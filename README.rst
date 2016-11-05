@@ -9,4 +9,4 @@ requires a functional installation of Django 1.8 or newer, but has no
 other dependencies.
 
 Full documentation is `available online
-<https://django-registration.readthedocs.org/>`_.
+<https://django-registration.readthedocs.io/>`_.
