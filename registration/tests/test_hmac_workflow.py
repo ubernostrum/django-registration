@@ -11,9 +11,11 @@ from django.core import signing
 from django.core.urlresolvers import reverse
 from django.test import modify_settings, override_settings
 
+from .. import signals
 from registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import ActivationTestCase
+
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})
@@ -162,3 +164,30 @@ class HMACViewTests(ActivationTestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+
+    def test_activation_signal(self):
+        def activation_listener(sender, **kwargs):
+            self.activation_signal_sent = True
+        try:
+            signals.user_activated.connect(activation_listener)
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=self.valid_data
+            )
+
+            activation_key = signing.dumps(
+                obj=self.valid_data['username'],
+                salt=REGISTRATION_SALT
+            )
+
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
+            )
+            self.assertTrue(self.activation_signal_sent)
+        finally:
+            signals.user_activated.disconnect(activation_listener)
+            self.activation_signal_sent = False

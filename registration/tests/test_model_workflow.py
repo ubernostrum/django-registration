@@ -9,9 +9,11 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.test import override_settings
 
-from registration.models import RegistrationProfile
+from ..models import RegistrationProfile
+from .. import signals
 
 from .base import ActivationTestCase
+
 
 
 @override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')
@@ -20,6 +22,8 @@ class ModelActivationViewTests(ActivationTestCase):
     Tests for the model-based activation workflow.
 
     """
+    activation_signal_sent = False
+    
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -72,6 +76,33 @@ class ModelActivationViewTests(ActivationTestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+
+    def test_activation_signal(self):
+        def activation_listener(sender, **kwargs):
+            self.activation_signal_sent = True
+        try:
+            signals.user_activated.connect(activation_listener)
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=self.valid_data
+            )
+
+            profile = RegistrationProfile.objects.get(
+                user__username=self.valid_data['username']
+            )
+
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': profile.activation_key}
+                )
+            )
+            self.assertTrue(self.activation_signal_sent)
+        finally:
+            signals.user_activated.disconnect(activation_listener)
+            self.activation_signal_sent = False
+
 
 
 class ModelActivationCompatibilityTests(ModelActivationViewTests):

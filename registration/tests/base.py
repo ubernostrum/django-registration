@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 
 from ..forms import RegistrationForm
+from .. import signals
 
 
 User = get_user_model()
@@ -45,6 +46,8 @@ class WorkflowTestCase(RegistrationTestCase):
     to be tested for each one).
 
     """
+    registration_signal_sent = False
+    
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -121,6 +124,20 @@ class WorkflowTestCase(RegistrationTestCase):
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
 
+    def test_registration_signal(self):
+        def registration_listener(sender, **kwargs):
+            self.registration_signal_sent = True
+        try:
+            signals.user_registered.connect(registration_listener)
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=self.valid_data
+            )
+            self.assertTrue(self.registration_signal_sent)
+        finally:
+            signals.user_registered.disconnect(registration_listener)
+            self.registration_signal_sent = False
+
 
 class ActivationTestCase(WorkflowTestCase):
     """
@@ -128,6 +145,8 @@ class ActivationTestCase(WorkflowTestCase):
     activation step.
 
     """
+    activation_signal_sent = False
+    
     # First few methods repeat parent class, but with added checks for
     # is_active status and sending of activation emails.
     def test_registration(self):
