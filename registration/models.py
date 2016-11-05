@@ -61,9 +61,18 @@ class RegistrationManager(models.Manager):
                 return user
         return False
 
+    def activated(self):
+        """
+        Query for all profiles which are used and no longer needed.
+
+        """
+        return self.filter(
+            activation_key=self.model.ACTIVATED
+        )
+
     def expired(self):
         """
-        Query for all profiles which are expired and correspond to
+        Query for all profiles which are unused, expired and correspond to
         non-active users.
 
         """
@@ -72,15 +81,18 @@ class RegistrationManager(models.Manager):
         else:
             now = datetime.datetime.now()
         return self.exclude(
-            user__is_active=True
-            ).filter(
-                models.Q(activation_key=self.model.ACTIVATED) |
-                models.Q(
-                    user__date_joined__lt=now - datetime.timedelta(
-                        settings.ACCOUNT_ACTIVATION_DAYS
-                    )
-                )
+            # Don't include activated profiles
+            # (we don't want to delete users who has actually logged in)
+            activation_key=self.model.ACTIVATED
+        ).exclude(
+            user__is_active=True  # Don't include active users
+            # (we don't want to delete active users)
+        ).filter(
+            # Find expired codes
+            user__date_joined__lt=now - datetime.timedelta(
+                settings.ACCOUNT_ACTIVATION_DAYS
             )
+        )
 
     @transaction.atomic
     def create_inactive_user(self, form, site, send_email=True):
@@ -118,13 +130,23 @@ class RegistrationManager(models.Manager):
     def delete_expired_users(self):
         """
         Remove expired instances of ``RegistrationProfile`` and their
-        associated users.
+        inactive associated users.
 
         """
         for profile in self.expired():
             user = profile.user
             profile.delete()
             user.delete()
+
+    @transaction.atomic
+    def delete_activated_profiles(self):
+        """
+        Remove used instances of ``RegistrationProfile``.
+        (Does not touch their associated users)
+        """
+
+        for profile in self.activated():
+            profile.delete()
 
 
 @python_2_unicode_compatible
