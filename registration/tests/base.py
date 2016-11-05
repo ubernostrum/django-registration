@@ -47,7 +47,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
     """
     registration_signal_sent = False
-    
+
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -129,7 +129,7 @@ class WorkflowTestCase(RegistrationTestCase):
             self.registration_signal_sent = True
         try:
             signals.user_registered.connect(registration_listener)
-            resp = self.client.post(
+            self.client.post(
                 reverse('registration_register'),
                 data=self.valid_data
             )
@@ -146,7 +146,7 @@ class ActivationTestCase(WorkflowTestCase):
 
     """
     activation_signal_sent = False
-    
+
     # First few methods repeat parent class, but with added checks for
     # is_active status and sending of activation emails.
     def test_registration(self):

@@ -17,7 +17,6 @@ from registration.backends.hmac.views import REGISTRATION_SALT
 from .base import ActivationTestCase
 
 
-
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})
 @override_settings(ROOT_URLCONF='registration.backends.hmac.urls')
 class HMACViewTests(ActivationTestCase):
@@ -170,7 +169,7 @@ class HMACViewTests(ActivationTestCase):
             self.activation_signal_sent = True
         try:
             signals.user_activated.connect(activation_listener)
-            resp = self.client.post(
+            self.client.post(
                 reverse('registration_register'),
                 data=self.valid_data
             )
@@ -180,7 +179,7 @@ class HMACViewTests(ActivationTestCase):
                 salt=REGISTRATION_SALT
             )
 
-            resp = self.client.get(
+            self.client.get(
                 reverse(
                     'registration_activate',
                     args=(),

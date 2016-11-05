@@ -15,7 +15,6 @@ from .. import signals
 from .base import ActivationTestCase
 
 
-
 @override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')
 class ModelActivationViewTests(ActivationTestCase):
     """
@@ -23,7 +22,7 @@ class ModelActivationViewTests(ActivationTestCase):
 
     """
     activation_signal_sent = False
-    
+
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -82,7 +81,7 @@ class ModelActivationViewTests(ActivationTestCase):
             self.activation_signal_sent = True
         try:
             signals.user_activated.connect(activation_listener)
-            resp = self.client.post(
+            self.client.post(
                 reverse('registration_register'),
                 data=self.valid_data
             )
@@ -91,7 +90,7 @@ class ModelActivationViewTests(ActivationTestCase):
                 user__username=self.valid_data['username']
             )
 
-            resp = self.client.get(
+            self.client.get(
                 reverse(
                     'registration_activate',
                     args=(),
@@ -102,7 +101,6 @@ class ModelActivationViewTests(ActivationTestCase):
         finally:
             signals.user_activated.disconnect(activation_listener)
             self.activation_signal_sent = False
-
 
 
 class ModelActivationCompatibilityTests(ModelActivationViewTests):
