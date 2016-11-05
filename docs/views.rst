@@ -103,8 +103,10 @@ classes, for use in writing your own custom subclasses.
        method. If you choose to override ``form_invalid()`` in a
        subclass of ``RegistrationView``, be sure to read the
        implementation and comments in the source code of
-       ``django-registration`` first. Note that Django 1.9.1, once
-       released, will not be affected by this bug.
+       ``django-registration`` first. The relevant bug was fixed in
+       Django 1.9.1, but ``django-registration`` will continue to work
+       around it for as long as the Django 1.9 release series is
+       supported.
 
 
 .. class:: ActivationView
