@@ -9,6 +9,7 @@ import time
 from django.conf import settings
 from django.core import signing
 from django.core.urlresolvers import reverse
+from django.http import HttpRequest
 from django.test import modify_settings, override_settings
 
 from .. import signals
@@ -171,6 +172,7 @@ class HMACViewTests(ActivationTestCase):
                 kwargs['user'].username,
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
+            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
         try:
             signals.user_activated.connect(activation_listener)
             self.client.post(

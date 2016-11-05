@@ -7,6 +7,7 @@ import datetime
 
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.http import HttpRequest
 from django.test import override_settings
 
 from ..models import RegistrationProfile
@@ -83,6 +84,7 @@ class ModelActivationViewTests(ActivationTestCase):
                 kwargs['user'].username,
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
+            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
         try:
             signals.user_activated.connect(activation_listener)
             self.client.post(

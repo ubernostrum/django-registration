@@ -6,6 +6,7 @@ Base classes for other test cases to inherit from.
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.core.urlresolvers import reverse
+from django.http import HttpRequest
 from django.test import TestCase, override_settings
 
 from ..forms import RegistrationForm
@@ -130,6 +131,7 @@ class WorkflowTestCase(RegistrationTestCase):
             self.assertEqual(
                 kwargs['user'].username, self.valid_data[User.USERNAME_FIELD]
             )
+            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
         try:
             signals.user_registered.connect(registration_listener)
             self.client.post(
