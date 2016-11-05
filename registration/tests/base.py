@@ -127,6 +127,9 @@ class WorkflowTestCase(RegistrationTestCase):
     def test_registration_signal(self):
         def registration_listener(sender, **kwargs):
             self.registration_signal_sent = True
+            self.assertEqual(
+                kwargs['user'].username, self.valid_data[User.USERNAME_FIELD]
+            )
         try:
             signals.user_registered.connect(registration_listener)
             self.client.post(

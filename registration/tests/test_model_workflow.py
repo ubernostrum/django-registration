@@ -79,6 +79,10 @@ class ModelActivationViewTests(ActivationTestCase):
     def test_activation_signal(self):
         def activation_listener(sender, **kwargs):
             self.activation_signal_sent = True
+            self.assertEqual(
+                kwargs['user'].username,
+                self.valid_data[self.user_model.USERNAME_FIELD]
+            )
         try:
             signals.user_activated.connect(activation_listener)
             self.client.post(
