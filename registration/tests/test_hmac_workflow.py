@@ -36,17 +36,19 @@ class HMACViewTests(ActivationTestCase):
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data['username'],
+            obj=self.valid_data[self.user_model.USERNAME_FIELD],
             salt=REGISTRATION_SALT
         )
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': activation_key}
+        with self.assertSignalSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
             )
-        )
+
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
     def test_repeat_activation(self):
@@ -61,27 +63,29 @@ class HMACViewTests(ActivationTestCase):
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data['username'],
+            obj=self.valid_data[self.user_model.USERNAME_FIELD],
             salt=REGISTRATION_SALT
         )
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': activation_key}
+        with self.assertSignalSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
             )
-        )
         # First activation redirects to success.
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': activation_key}
+        with self.assertSignalNotSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
             )
-        )
 
         # Second activation fails.
         self.assertEqual(200, resp.status_code)
@@ -126,19 +130,20 @@ class HMACViewTests(ActivationTestCase):
 
         try:
             activation_key = signing.dumps(
-                obj=self.valid_data['username'],
+                obj=self.valid_data[self.user_model.USERNAME_FIELD],
                 salt=REGISTRATION_SALT
             )
         finally:
             time.time = _old_time
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': activation_key}
+        with self.assertSignalNotSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
             )
-        )
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
@@ -154,37 +159,31 @@ class HMACViewTests(ActivationTestCase):
             salt=REGISTRATION_SALT
         )
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': activation_key}
+        with self.assertSignalNotSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
             )
-        )
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
     def test_activation_signal(self):
-        def activation_listener(sender, **kwargs):
-            self.activation_signal_sent = True
-            self.assertEqual(
-                kwargs['user'].username,
-                self.valid_data[self.user_model.USERNAME_FIELD]
-            )
-            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
-        try:
-            signals.user_activated.connect(activation_listener)
-            self.client.post(
-                reverse('registration_register'),
-                data=self.valid_data
-            )
+        self.client.post(
+            reverse('registration_register'),
+            data=self.valid_data
+        )
 
-            activation_key = signing.dumps(
-                obj=self.valid_data['username'],
-                salt=REGISTRATION_SALT
-            )
+        activation_key = signing.dumps(
+            obj=self.valid_data[self.user_model.USERNAME_FIELD],
+            salt=REGISTRATION_SALT
+        )
 
+        with self.assertSignalSent(signals.user_activated,
+                                   required_kwargs=['user', 'request']) as cm:
             self.client.get(
                 reverse(
                     'registration_activate',
@@ -192,7 +191,11 @@ class HMACViewTests(ActivationTestCase):
                     kwargs={'activation_key': activation_key}
                 )
             )
-            self.assertTrue(self.activation_signal_sent)
-        finally:
-            signals.user_activated.disconnect(activation_listener)
-            self.activation_signal_sent = False
+            self.assertEqual(
+                getattr(cm.received_kwargs['user'],
+                        self.user_model.USERNAME_FIELD),
+                self.valid_data[self.user_model.USERNAME_FIELD]
+            )
+            self.assertTrue(
+                isinstance(cm.received_kwargs['request'], HttpRequest)
+            )

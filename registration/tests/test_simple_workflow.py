@@ -6,6 +6,7 @@ Tests for the simple one-step registration workflow.
 from django.core.urlresolvers import reverse
 from django.test import modify_settings, override_settings
 
+from .. import signals
 from .base import WorkflowTestCase
 
 
@@ -21,10 +22,17 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
         Registration creates a new account and logs the user in.
 
         """
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=self.valid_data
-        )
+        with self.assertSignalSent(signals.user_registered,
+                                   required_kwargs=['user', 'request']) as cm:
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=self.valid_data
+            )
+            self.assertEqual(
+                getattr(cm.received_kwargs['user'],
+                        self.user_model.USERNAME_FIELD),
+                self.valid_data[self.user_model.USERNAME_FIELD]
+            )
 
         # fetch_redirect_response=False because the URLConf we're
         # using in these tests does not define a URL pattern for '/',

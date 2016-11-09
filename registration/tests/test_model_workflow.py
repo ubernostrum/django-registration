@@ -22,8 +22,6 @@ class ModelActivationViewTests(ActivationTestCase):
     Tests for the model-based activation workflow.
 
     """
-    activation_signal_sent = False
-
     def test_activation(self):
         """
         Activation of an account functions properly.
@@ -35,16 +33,18 @@ class ModelActivationViewTests(ActivationTestCase):
         )
 
         profile = RegistrationProfile.objects.get(
-            user__username=self.valid_data['username']
+            user__username=self.valid_data[self.user_model.USERNAME_FIELD]
         )
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': profile.activation_key}
+        with self.assertSignalSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': profile.activation_key}
+                )
             )
-        )
+
         self.assertRedirects(resp, reverse('registration_activation_complete'))
 
     def test_activation_expired(self):
@@ -58,7 +58,7 @@ class ModelActivationViewTests(ActivationTestCase):
         )
 
         profile = RegistrationProfile.objects.get(
-            user__username=self.valid_data['username']
+            user__username=self.valid_data[self.user_model.USERNAME_FIELD]
         )
         user = profile.user
         user.date_joined -= datetime.timedelta(
@@ -66,36 +66,30 @@ class ModelActivationViewTests(ActivationTestCase):
         )
         user.save()
 
-        resp = self.client.get(
-            reverse(
-                'registration_activate',
-                args=(),
-                kwargs={'activation_key': profile.activation_key}
+        with self.assertSignalNotSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': profile.activation_key}
+                )
             )
-        )
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
     def test_activation_signal(self):
-        def activation_listener(sender, **kwargs):
-            self.activation_signal_sent = True
-            self.assertEqual(
-                kwargs['user'].username,
-                self.valid_data[self.user_model.USERNAME_FIELD]
-            )
-            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
-        try:
-            signals.user_activated.connect(activation_listener)
-            self.client.post(
-                reverse('registration_register'),
-                data=self.valid_data
-            )
+        self.client.post(
+            reverse('registration_register'),
+            data=self.valid_data
+        )
 
-            profile = RegistrationProfile.objects.get(
-                user__username=self.valid_data['username']
-            )
+        profile = RegistrationProfile.objects.get(
+            user__username=self.valid_data[self.user_model.USERNAME_FIELD]
+        )
 
+        with self.assertSignalSent(signals.user_activated,
+                                   required_kwargs=['user', 'request']) as cm:
             self.client.get(
                 reverse(
                     'registration_activate',
@@ -103,10 +97,14 @@ class ModelActivationViewTests(ActivationTestCase):
                     kwargs={'activation_key': profile.activation_key}
                 )
             )
-            self.assertTrue(self.activation_signal_sent)
-        finally:
-            signals.user_activated.disconnect(activation_listener)
-            self.activation_signal_sent = False
+            self.assertEqual(
+                getattr(cm.received_kwargs['user'],
+                        self.user_model.USERNAME_FIELD),
+                self.valid_data[self.user_model.USERNAME_FIELD]
+            )
+            self.assertTrue(
+                isinstance(cm.received_kwargs['request'], HttpRequest)
+            )
 
 
 class ModelActivationCompatibilityTests(ModelActivationViewTests):

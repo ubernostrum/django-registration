@@ -2,6 +2,7 @@
 Base classes for other test cases to inherit from.
 
 """
+from contextlib import contextmanager
 
 from django.contrib.auth import get_user_model
 from django.core import mail
@@ -14,6 +15,56 @@ from .. import signals
 
 
 User = get_user_model()
+
+
+# django-registration needs to test that signals are sent at
+# registration and activation. Django -- as of 1.10 -- does not have a
+# test assertion built in to test whether a signal was or was not
+# sent. The code below is from a pull request submitted upstream to
+# Django to add assertSignalSent and assertSignalNotSent assertions to
+# Django's base test case class, and will be removed once it's been
+# integrated into Django and django-registration is only supporting
+# versions of Django which include it.
+class _AssertSignalSentContext(object):
+    def __init__(self, test_case, signal, required_kwargs=None):
+        self.test_case = test_case
+        self.signal = signal
+        self.required_kwargs = required_kwargs
+
+    def _listener(self, sender, **kwargs):
+        self.signal_sent = True
+        self.received_kwargs = kwargs
+        self.sender = sender
+
+    def __enter__(self):
+        self.signal_sent = False
+        self.received_kwargs = {}
+        self.sender = None
+        self.signal.connect(self._listener)
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.signal.disconnect(self._listener)
+        if not self.signal_sent:
+            self.test_case.fail('Signal was not sent.')
+            return
+        if self.required_kwargs is not None:
+            missing_kwargs = []
+            for k in self.required_kwargs:
+                if k not in self.received_kwargs:
+                    missing_kwargs.append(k)
+            if missing_kwargs:
+                self.test_case.fail(
+                    "Signal missing required arguments: "
+                    "%s" % ','.join(missing_kwargs)
+                )
+
+
+class _AssertSignalNotSentContext(_AssertSignalSentContext):
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.signal.disconnect(self._listener)
+        if self.signal_sent:
+            self.test_case.fail('Signal was unexpectedly sent.')
 
 
 @override_settings(
@@ -39,6 +90,16 @@ class RegistrationTestCase(TestCase):
         User.USERNAME_FIELD: 'alice',
     }
 
+    @contextmanager
+    def assertSignalSent(self, signal, required_kwargs=None):
+        with _AssertSignalSentContext(self, signal, required_kwargs) as cm:
+            yield cm
+
+    @contextmanager
+    def assertSignalNotSent(self, signal):
+        with _AssertSignalNotSentContext(self, signal) as cm:
+            yield cm
+
 
 class WorkflowTestCase(RegistrationTestCase):
     """
@@ -47,8 +108,6 @@ class WorkflowTestCase(RegistrationTestCase):
     to be tested for each one).
 
     """
-    registration_signal_sent = False
-
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
@@ -96,10 +155,12 @@ class WorkflowTestCase(RegistrationTestCase):
         Registration creates a new account.
 
         """
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=self.valid_data
-        )
+        with self.assertSignalSent(signals.user_registered):
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=self.valid_data
+            )
+
         self.assertRedirects(resp, reverse('registration_complete'))
 
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
@@ -118,30 +179,30 @@ class WorkflowTestCase(RegistrationTestCase):
         """
         data = self.valid_data.copy()
         data.update(password2='notsecret')
-        resp = self.client.post(
-            reverse('registration_register'),
-            data=data
-        )
+
+        with self.assertSignalNotSent(signals.user_registered):
+            resp = self.client.post(
+                reverse('registration_register'),
+                data=data
+            )
+
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
 
     def test_registration_signal(self):
-        def registration_listener(sender, **kwargs):
-            self.registration_signal_sent = True
-            self.assertEqual(
-                kwargs['user'].username, self.valid_data[User.USERNAME_FIELD]
-            )
-            self.assertTrue(isinstance(kwargs['request'], HttpRequest))
-        try:
-            signals.user_registered.connect(registration_listener)
+        with self.assertSignalSent(signals.user_registered) as cm:
             self.client.post(
                 reverse('registration_register'),
                 data=self.valid_data
             )
-            self.assertTrue(self.registration_signal_sent)
-        finally:
-            signals.user_registered.disconnect(registration_listener)
-            self.registration_signal_sent = False
+            self.assertEqual(
+                getattr(cm.received_kwargs['user'],
+                        self.user_model.USERNAME_FIELD),
+                self.valid_data[User.USERNAME_FIELD]
+            )
+            self.assertTrue(
+                isinstance(cm.received_kwargs['request'], HttpRequest)
+            )
 
 
 class ActivationTestCase(WorkflowTestCase):
@@ -150,8 +211,6 @@ class ActivationTestCase(WorkflowTestCase):
     activation step.
 
     """
-    activation_signal_sent = False
-
     # First few methods repeat parent class, but with added checks for
     # is_active status and sending of activation emails.
     def test_registration(self):
@@ -160,7 +219,9 @@ class ActivationTestCase(WorkflowTestCase):
         activation email.
 
         """
-        super(ActivationTestCase, self).test_registration()
+        with self.assertSignalSent(signals.user_registered):
+            super(ActivationTestCase, self).test_registration()
+
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
 
         # New user must not be active.
@@ -174,7 +235,8 @@ class ActivationTestCase(WorkflowTestCase):
         Registering with invalid data fails.
 
         """
-        super(ActivationTestCase, self).test_registration_failure()
+        with self.assertSignalNotSent(signals.user_registered):
+            super(ActivationTestCase, self).test_registration_failure()
 
         # Activation email was not sent.
         self.assertEqual(0, len(mail.outbox))
@@ -189,10 +251,12 @@ class ActivationTestCase(WorkflowTestCase):
         with self.modify_settings(INSTALLED_APPS={
             'remove': ['django.contrib.sites']
         }):
-            resp = self.client.post(
-                reverse('registration_register'),
-                data=self.valid_data
-            )
+            with self.assertSignalSent(signals.user_registered):
+                resp = self.client.post(
+                    reverse('registration_register'),
+                    data=self.valid_data
+                )
+
             self.assertEqual(302, resp.status_code)
 
             new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
