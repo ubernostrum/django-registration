@@ -48,7 +48,7 @@ class RegistrationView(FormView):
     def form_invalid(self, form):
         # tl;dr -- this method is implemented to work around Django
         # ticket #25548, which is present in the Django 1.9 release
-        # (but not in Django 1.8).
+        # (but not in Django 1.8 or 1.10).
         #
         # The longer explanation is that in Django 1.9,
         # FormMixin.form_invalid() does not pass the form instance to
