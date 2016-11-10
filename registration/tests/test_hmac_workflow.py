@@ -126,9 +126,9 @@ class HMACViewTests(ActivationTestCase):
             joined_timestamp - (settings.ACCOUNT_ACTIVATION_DAYS + 1) * 86400
         )
         _old_time = time.time
-        time.time = lambda: expired_timestamp
 
         try:
+            time.time = lambda: expired_timestamp
             activation_key = signing.dumps(
                 obj=self.valid_data[self.user_model.USERNAME_FIELD],
                 salt=REGISTRATION_SALT
