@@ -62,7 +62,7 @@ class RegistrationView(FormView):
         #
         # Manually implementing this method, and passing the form
         # instance to get_context_data(), solves this issue (which was
-        # fixed in Django 1.9.1 and will not be present in Django
+        # fixed in Django 1.9.1 and so is not present in Django
         # 1.10).
         return self.render_to_response(self.get_context_data(form=form))
 
