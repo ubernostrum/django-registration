@@ -12,6 +12,7 @@ from django.test import TestCase, override_settings
 
 from ..forms import RegistrationForm
 from .. import signals
+from .. import validators
 
 
 User = get_user_model()
@@ -188,6 +189,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertFalse(resp.context['form'].is_valid())
+        self.assertTrue(resp.context['form'].has_error('password2'))
 
     def test_registration_signal(self):
         with self.assertSignalSent(signals.user_registered) as cm:

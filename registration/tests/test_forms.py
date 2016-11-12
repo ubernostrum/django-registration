@@ -44,6 +44,7 @@ class RegistrationFormTests(RegistrationTestCase):
         existing_user.save()
         form = forms.RegistrationForm(data=self.valid_data.copy())
         self.assertFalse(form.is_valid())
+        self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
 
     def test_reserved_names(self):
         """
@@ -55,6 +56,7 @@ class RegistrationFormTests(RegistrationTestCase):
             data[self.user_model.USERNAME_FIELD] = reserved_name
             form = forms.RegistrationForm(data=data)
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertTrue(
                 text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
@@ -75,6 +77,7 @@ class RegistrationFormTests(RegistrationTestCase):
             data[self.user_model.USERNAME_FIELD] = reserved_name
             form = CustomReservedNamesForm(data=data)
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertTrue(
                 text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
@@ -90,6 +93,7 @@ class RegistrationFormTests(RegistrationTestCase):
             data=self.valid_data.copy()
         )
         self.assertFalse(form.is_valid())
+        self.assertTrue(form.has_error('tos'))
         self.assertEqual(
             form.errors['tos'],
             [text_type(validators.TOS_REQUIRED)]
@@ -110,6 +114,7 @@ class RegistrationFormTests(RegistrationTestCase):
             data=self.valid_data.copy()
         )
         self.assertFalse(form.is_valid())
+        self.assertTrue(form.has_error('email'))
         self.assertEqual(
             form.errors['email'],
             [text_type(validators.DUPLICATE_EMAIL)]
@@ -137,6 +142,7 @@ class RegistrationFormTests(RegistrationTestCase):
                 data=data
             )
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error('email'))
             self.assertEqual(
                 form.errors['email'],
                 [text_type(validators.FREE_EMAIL)]
