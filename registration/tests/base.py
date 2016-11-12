@@ -12,7 +12,6 @@ from django.test import TestCase, override_settings
 
 from ..forms import RegistrationForm
 from .. import signals
-from .. import validators
 
 
 User = get_user_model()
