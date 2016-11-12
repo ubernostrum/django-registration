@@ -212,20 +212,28 @@ Additionally, :class:`RegistrationProfile` has a custom manager
       :type activation_key: string, a 40-character SHA1 hexdigest
       :rtype: user or bool
 
+   .. method:: expired
+
+      Return instances of :class:`RegistrationProfile` corresponding
+      to expired users. A user is considered to be "expired" if:
+
+      * The activation key of the user's :class:`RegistrationProfile`
+        is not set to :attr:`RegistrationProfile.ACTIVATED`, and
+
+      * The user's ``is_active`` field of is ``False``, and
+
+      * The user's ``date_joined`` field is more than
+        :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS` in the
+        past.
+
+      :rtype: ``QuerySet`` of :class:`RegistrationProfile`
+
    .. method:: delete_expired_users
 
       Removes expired instances of :class:`RegistrationProfile`, and
       their associated user accounts, from the database. This is
       useful as a periodic maintenance task to clean out accounts
       which registered but never activated.
-
-      Accounts to be deleted are identified by searching for instances
-      of :class:`RegistrationProfile` with expired activation keys and
-      with associated user accounts which are inactive (have their
-      ``is_active`` field set to ``False``). To disable a user account
-      without having it deleted, simply delete its associated
-      :class:`RegistrationProfile`; any ``User`` which does not have
-      an associated :class:`RegistrationProfile` will not be deleted.
 
       A custom management command is provided which will execute this
       method, suitable for use in cron jobs or other scheduled

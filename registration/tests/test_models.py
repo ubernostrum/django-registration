@@ -376,23 +376,6 @@ class RegistrationModelTests(TestCase):
             ))
         )
 
-        # * User with is_active=False, activation_key=ACTIVATED,
-        #   date_joined too old to be in activation window is expired.
-        profile.activation_key = RegistrationProfile.ACTIVATED
-        profile.save()
-        User.objects.filter(username=user.username).update(
-            date_joined=models.F('date_joined') - datetime.timedelta(
-                settings.ACCOUNT_ACTIVATION_DAYS + 1
-            )
-        )
-        self.assertEqual(1, len(RegistrationProfile.objects.expired()))
-        self.assertEqual(
-            [user.username],
-            list(RegistrationProfile.objects.expired().values_list(
-                'user__username', flat=True
-            ))
-        )
-
         # * User with is_active=True, activation_key=ACTIVATED,
         #   date_joined too old to be in activation window is not
         #   expired.

@@ -137,3 +137,10 @@ included because the security benefits outweigh the edge cases of the
 now-disallowed usernames. If you need to allow users to register with
 usernames forbidden by this validator, see its documentation for notes
 on how to customize or disable it.
+
+In |version|, the behavior of the
+:meth:`~registration.models.RegistrationProfile.expired` method was
+clarified to accommodate user expectations; it does *not* return (and
+thus,
+:meth:`~registration.models.RegistrationProfile.delete_expired_users`
+does not delete) profiles of users who had successfully activated.

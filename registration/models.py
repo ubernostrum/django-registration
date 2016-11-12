@@ -72,13 +72,11 @@ class RegistrationManager(models.Manager):
         else:
             now = datetime.datetime.now()
         return self.exclude(
-            user__is_active=True
+            models.Q(user__is_active=True) |
+            models.Q(activation_key=self.model.ACTIVATED)
             ).filter(
-                models.Q(activation_key=self.model.ACTIVATED) |
-                models.Q(
-                    user__date_joined__lt=now - datetime.timedelta(
-                        settings.ACCOUNT_ACTIVATION_DAYS
-                    )
+                user__date_joined__lt=now - datetime.timedelta(
+                    settings.ACCOUNT_ACTIVATION_DAYS
                 )
             )
 
