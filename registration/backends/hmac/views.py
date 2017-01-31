@@ -40,7 +40,7 @@ class RegistrationView(BaseRegistrationView):
         return new_user
 
     def get_success_url(self, user):
-        return ('registration_complete', (), {})
+        return (self.success_url, (), {})
 
     def create_inactive_user(self, form):
         """
