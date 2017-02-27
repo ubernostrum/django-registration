@@ -148,12 +148,11 @@ class ActivationView(BaseActivationView):
 
         """
         User = get_user_model()
-        lookup_kwargs = {
-            User.USERNAME_FIELD: username,
-            'is_active': False
-        }
         try:
-            user = User.objects.get(**lookup_kwargs)
+            user = User.objects.get(**{
+                User.USERNAME_FIELD: username,
+                'is_active': False
+            })
             return user
         except User.DoesNotExist:
             return None
