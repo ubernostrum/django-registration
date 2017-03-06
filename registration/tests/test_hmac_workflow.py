@@ -8,7 +8,6 @@ import time
 
 from django.conf import settings
 from django.core import signing
-from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from django.test import modify_settings, override_settings
 
@@ -16,6 +15,11 @@ from .. import signals
 from registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import ActivationTestCase
+
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    from django.core.urlresolvers import reverse  # pragma: no cover
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})

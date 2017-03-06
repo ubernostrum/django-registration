@@ -6,7 +6,6 @@ Tests for the model-based activation workflow.
 import datetime
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from django.test import override_settings
 
@@ -14,6 +13,11 @@ from ..models import RegistrationProfile
 from .. import signals
 
 from .base import ActivationTestCase
+
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    from django.core.urlresolvers import reverse  # pragma: no cover
 
 
 @override_settings(ROOT_URLCONF='registration.backends.model_activation.urls')

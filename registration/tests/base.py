@@ -6,12 +6,16 @@ from contextlib import contextmanager
 
 from django.contrib.auth import get_user_model
 from django.core import mail
-from django.core.urlresolvers import reverse
 from django.http import HttpRequest
 from django.test import TestCase, override_settings
 
 from ..forms import RegistrationForm
 from .. import signals
+
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    from django.core.urlresolvers import reverse  # pragma: no cover
 
 
 User = get_user_model()

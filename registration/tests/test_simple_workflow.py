@@ -3,11 +3,15 @@ Tests for the simple one-step registration workflow.
 
 """
 
-from django.core.urlresolvers import reverse
 from django.test import modify_settings, override_settings
 
 from .. import signals
 from .base import WorkflowTestCase
+
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    from django.core.urlresolvers import reverse  # pragma: no cover
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})

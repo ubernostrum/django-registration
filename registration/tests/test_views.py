@@ -3,11 +3,15 @@ Tests for django-registration's built-in views.
 
 """
 
-from django.core.urlresolvers import reverse
 from django.test import override_settings
 
 from ..models import RegistrationProfile
 from .base import RegistrationTestCase
+
+try:
+    from django.urls import reverse
+except ImportError:  # pragma: no cover
+    from django.core.urlresolvers import reverse  # pragma: no cover
 
 
 @override_settings(ROOT_URLCONF='registration.tests.urls')
