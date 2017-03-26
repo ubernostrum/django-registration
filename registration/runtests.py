@@ -82,5 +82,5 @@ def run_tests():
     sys.exit(bool(failures))
 
 
-if __name__ == '__main__':  # pragma: no cover
-    run_tests()             # pragma: no cover
+if __name__ == '__main__':
+    run_tests()
