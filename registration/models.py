@@ -107,8 +107,6 @@ class RegistrationManager(models.Manager):
         """
         User = get_user_model()
         username = getattr(user, User.USERNAME_FIELD)
-        if not isinstance(username, unicode):
-            username = str(getattr(user, User.USERNAME_FIELD))
         hash_input = (get_random_string(5) + username).encode('utf-8')
         activation_key = hashlib.sha1(hash_input).hexdigest()
         return self.create(user=user,
