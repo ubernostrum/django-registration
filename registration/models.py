@@ -20,7 +20,7 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.encoding import python_2_unicode_compatible, smart_unicode
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -106,7 +106,7 @@ class RegistrationManager(models.Manager):
 
         """
         User = get_user_model()
-        username = str(getattr(user, User.USERNAME_FIELD))
+        username = getattr(user, User.USERNAME_FIELD)
         hash_input = (get_random_string(5) + username).encode('utf-8')
         activation_key = hashlib.sha1(hash_input).hexdigest()
         return self.create(user=user,
@@ -145,7 +145,7 @@ class RegistrationProfile(models.Model):
         verbose_name_plural = _(u'registration profiles')
 
     def __str__(self):
-        return "Registration information for %s" % self.user
+        return "Registration information for %s" % smart_unicode(self.user)
 
     def activation_key_expired(self):
         """
