@@ -20,7 +20,7 @@ from django.contrib.auth import get_user_model
 from django.db import models, transaction
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.encoding import python_2_unicode_compatible, smart_unicode
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
@@ -145,7 +145,7 @@ class RegistrationProfile(models.Model):
         verbose_name_plural = _(u'registration profiles')
 
     def __str__(self):
-        return "Registration information for %s" % self.user
+        return "Registration information for %s" % smart_unicode(self.user)
 
     def activation_key_expired(self):
         """
