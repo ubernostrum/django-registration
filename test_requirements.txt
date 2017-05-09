@@ -1,2 +1,3 @@
 coverage
 flake8
+django-recaptcha2
