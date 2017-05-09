@@ -22,6 +22,7 @@ REGISTRATION_ASYNC_MAIL = getattr(settings, 'REGISTRATION_ASYNC_MAIL', False)
 if REGISTRATION_ASYNC_MAIL:
     from threading import Thread
 
+
 class RegistrationView(BaseRegistrationView):
     """
     Register a new (inactive) user account, generate an activation key
@@ -56,7 +57,8 @@ class RegistrationView(BaseRegistrationView):
         new_user.save()
 
         if REGISTRATION_ASYNC_MAIL:
-            thread = Thread(target=self.send_activation_email, args=(new_user, ))
+            thread = Thread(target=self.send_activation_email,
+                            args=(new_user, ))
             thread.start()
         else:
             self.send_activation_email(new_user)
