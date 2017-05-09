@@ -35,6 +35,9 @@ class RegistrationFormTests(RegistrationTestCase):
         with self.settings(REGISTRATION_RECAPTCHA2=True):
             forms.RegistrationForm()
 
+        with self.settings(REGISTRATION_RECAPTCHA2=False):
+            forms.RegistrationForm()
+
     def test_username_uniqueness(self):
         """
         Username uniqueness is enforced.

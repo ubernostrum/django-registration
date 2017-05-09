@@ -10,11 +10,9 @@ different settings and/or templates to run their tests.
 import os
 import sys
 
-
 # Make sure the app is (at least temporarily) on the import path.
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 sys.path.insert(0, APP_DIR)
-
 
 # Minimum settings required for the app's tests.
 SETTINGS_DICT = {
@@ -26,6 +24,7 @@ SETTINGS_DICT = {
         'django.contrib.sites',
         # This is only needed by the model-based activation workflow.
         'registration',
+        'snowpenguin.django.recaptcha2',
     ),
     # Test cases will override this liberally.
     'ROOT_URLCONF': 'registration.backends.default.urls',
@@ -57,6 +56,10 @@ SETTINGS_DICT = {
             ],
         },
     }],
+    'RECAPTCHA_PRIVATE_KEY': 'your private key',
+    'RECAPTCHA_PUBLIC_KEY': 'your public key',
+    'REGISTRATION_RECAPTCHA2': True,
+
 }
 
 
