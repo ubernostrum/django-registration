@@ -5,4 +5,4 @@ docs/_build/
 .coverage
 dist/
 .python-version
-tox/
+.tox/
