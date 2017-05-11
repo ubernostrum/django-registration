@@ -38,6 +38,7 @@ setup(name='django-registration',
       package_dir={'registration': 'registration'},
       packages=packages,
       package_data={'registration': data_files},
+      test_suite='registration.runtests.run_tests',
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
