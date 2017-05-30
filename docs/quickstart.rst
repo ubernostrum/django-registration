@@ -102,6 +102,20 @@ Users would then be able to register by visiting the URL
 ``/accounts/register/``, log in (once activated) at
 ``/accounts/login/``, etc.
 
+The following URL names are defined by this URLconf:
+
+* ``registration_register`` is the account-registrationview..
+
+* ``registration_complete`` is the post-registration success message.
+
+* ``registration_activate`` is the account-activation view.
+
+* ``registration_activation_complete`` is the post-activation success
+  message.
+
+* ``registration_disallowed`` is a message indicating registration is
+  not currently permitted.
+
 Another ``URLConf`` is also provided -- at ``registration.auth_urls``
 -- which just handles the Django auth views, should you want to put
 those at a different location.
