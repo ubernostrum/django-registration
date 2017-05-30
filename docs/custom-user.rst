@@ -56,6 +56,9 @@ codebase -- do **not** directly edit django-registration's code):
         class Meta:
             model = MyCustomUser
 
+You will also need to specify the fields to include in the form, via
+the ``fields`` declaration.
+
 And then in your URL configuration (example here uses the HMAC
 activation workflow):
 
