@@ -34,7 +34,10 @@ class RegistrationView(FormView):
 
     def form_valid(self, form):
         new_user = self.register(form)
-        success_url = self.get_success_url(new_user)
+        success_url = self.get_success_url(new_user) if \
+            (hasattr(self, 'get_success_url') and
+             callable(self.get_success_url)) else \
+            self.success_url
 
         # success_url may be a simple string, or a tuple providing the
         # full argument set for redirect(). Attempting to unpack it
