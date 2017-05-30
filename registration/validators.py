@@ -5,6 +5,7 @@ django-registration's various user-registration form classes.
 """
 
 from django.core.exceptions import ValidationError
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -179,6 +180,10 @@ class ReservedNameValidator(object):
         self.reserved_names = reserved_names
 
     def __call__(self, value):
+        # GH issue 82: this validator only makes sense when the
+        # username field is a string type.
+        if not isinstance(value, six.text_type):
+            return
         if value in self.reserved_names or \
            value.startswith('.well-known'):
             raise ValidationError(

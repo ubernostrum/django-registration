@@ -2,6 +2,7 @@
 Exercise django-registration's built-in form classes.
 
 """
+import uuid
 
 from django.test import modify_settings
 from django.utils.six import text_type
@@ -82,6 +83,16 @@ class RegistrationFormTests(RegistrationTestCase):
                 text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
             )
+
+    def test_reserved_name_non_string(self):
+        """
+        GitHub issue #82: reserved-name validator should not attempt
+        to validate a non-string 'username'.
+
+        """
+        validator = validators.ReservedNameValidator()
+        for value in (123456, 1.7, uuid.uuid4()):
+            self.assertTrue(validator(value) is None)
 
     def test_tos_field(self):
         """
