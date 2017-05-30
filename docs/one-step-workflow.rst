@@ -1,8 +1,8 @@
-.. _simple-workflow:
+.. _one-step-workflow:
 .. module:: registration.backends.simple
 
-The simple one-step workflow
-============================
+The one-step workflow
+=====================
 
 As an alternative to the :ref:`HMAC <hmac-workflow>` and
 :ref:`model-based <model-workflow>` two-step (registration and
@@ -21,7 +21,7 @@ workflow is deliberately as simple as possible:
 Configuration
 -------------
 
-To use this workflow, simply include the URLconf
+To use this workflow, include the URLconf
 ``registration.backends.simple.urls`` somewhere in your site's own URL
 configuration. For example:
 

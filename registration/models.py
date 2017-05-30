@@ -129,8 +129,8 @@ class RegistrationManager(models.Manager):
 @python_2_unicode_compatible
 class RegistrationProfile(models.Model):
     """
-    A simple model which stores an activation key for use during user
-    account registration.
+    A model which stores an activation key for use during user account
+    registration.
 
     """
     ACTIVATED = "ALREADY_ACTIVATED"

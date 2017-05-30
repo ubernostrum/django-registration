@@ -25,7 +25,7 @@ class ActivationViewTests(RegistrationTestCase):
     def test_activation(self):
         """
         Activation of an account functions properly when using a
-        simple string URL as the success redirect.
+        string URL as the success redirect.
 
         """
         resp = self.client.post(

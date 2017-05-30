@@ -17,9 +17,8 @@ installations. Those two are:
   implements a two-step process: a user signs up, then is emailed an
   activation link and must click it to activate the account.
 
-* :ref:`The simple one-step workflow <simple-workflow>`, in which a
-  user simply signs up and their account is immediately active and
-  logged in.
+* :ref:`The one-step workflow <one-step-workflow>`, in which a user
+  signs up and their account is immediately active and logged in.
 
 The guide below covers use of these two workflows.
 
@@ -78,15 +77,15 @@ django-registration make use of it.
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
-Each bundled registration workflow in django-registration includes
-a Django URLconf which sets up URL patterns for :ref:`the views in
+Each bundled registration workflow in django-registration includes a
+Django URLconf which sets up URL patterns for :ref:`the views in
 django-registration <views>`, as well as several useful views in
 ``django.contrib.auth`` (e.g., login, logout, password
 change/reset). The URLconf for the HMAC activation workflow can be
-found at ``registration.backends.hmac.urls``, and so can simply be
-included in your project's root URL configuration. For example, to
-place the URLs under the prefix ``/accounts/``, you could add the
-following to your project's root URLconf:
+found at ``registration.backends.hmac.urls``, and so can be included
+in your project's root URL configuration. For example, to place the
+URLs under the prefix ``/accounts/``, you could add the following to
+your project's root URLconf:
 
 .. code-block:: python
 
@@ -150,9 +149,9 @@ the following context:
 **registration/registration_complete.html**
 
 Used after successful completion of the registration form. This
-template has no context variables of its own, and should simply inform
-the user that an email containing account-activation information has
-been sent.
+template has no context variables of its own, and should inform the
+user that an email containing account-activation information has been
+sent.
 
 **registration/activate.html**
 
@@ -164,8 +163,8 @@ Used if account activation fails. With the default setup, has the following cont
 **registration/activation_complete.html**
 
 Used after successful account activation. This template has no context
-variables of its own, and should simply inform the user that their
-account is now active.
+variables of its own, and should inform the user that their account is
+now active.
 
 **registration/activation_email_subject.txt**
 
@@ -224,7 +223,7 @@ Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
 toward and interoperability problems with HTML email,
 django-registration defaults to plain-text email, and so these
-templates should simply output plain text rather than HTML.
+templates should output plain text rather than HTML.
 
 To make use of the views from ``django.contrib.auth`` (which are set
 up for you by the default URLconf mentioned above), you will also need
@@ -234,20 +233,20 @@ documentation for Django's authentication system
 regarding these templates.
 
 
-Configuring the simple one-step workflow
+Configuring the one-step workflow
 --------------------------------------------
 
-Also included is a simpler, :ref:`one-step registration workflow
-<simple-workflow>`, where a user signs up and their account is
+Also included is a :ref:`one-step registration workflow
+<one-step-workflow>`, where a user signs up and their account is
 immediately active and logged in.
 
-The simple workflow does not require any models other than those
+The one-step workflow does not require any models other than those
 provided by Django's own authentication system, so only
 ``django.contrib.auth`` needs to be in your ``INSTALLED_APPS``
 setting.
 
-You will need to configure URLs to use the simple workflow; the
-easiest way is to simply ``include()`` the URLconf
+You will need to configure URLs to use the one-step workflow; the
+easiest way is to ``include()`` the URLconf
 ``registration.backends.simple.urls`` in your root URLconf. For
 example, to place the URLs under the prefix ``/accounts/`` in your URL
 structure:

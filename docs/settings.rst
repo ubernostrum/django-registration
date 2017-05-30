@@ -38,7 +38,7 @@ of several custom settings.
 
    * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
 
-   * :ref:`The simple one-step workflow <simple-workflow>`
+   * :ref:`The one-step workflow <one-step-workflow>`
 
    * :ref:`The model-based activation workflow <model-workflow>`
 

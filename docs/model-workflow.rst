@@ -30,7 +30,7 @@ activation -- process for user signup.
 Default behavior and configuration
 ----------------------------------
 
-To make use of this workflow, simply add ``registration`` to your
+To make use of this workflow, add ``registration`` to your
 ``INSTALLED_APPS``, run ``manage.py migrate`` to install its model,
 and include the URLconf
 ``registration.backends.model_activation.urls`` at whatever location
@@ -97,10 +97,10 @@ the database, using the following model:
 
 .. class:: RegistrationProfile
 
-   A simple representation of the information needed to activate a new
-   user account. This is **not** a user profile; it simply provides a
-   place to temporarily store the activation key and determine whether
-   a given account has been activated.
+   A representation of the information needed to activate a new user
+   account. This is **not** a user profile; it just provides a place
+   to temporarily store the activation key and determine whether a
+   given account has been activated.
 
    Has the following fields:
 

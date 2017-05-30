@@ -1,5 +1,5 @@
 """
-Tests for the simple one-step registration workflow.
+Tests for the one-step registration workflow.
 
 """
 
@@ -18,7 +18,7 @@ except ImportError:  # pragma: no cover
 @override_settings(ROOT_URLCONF='registration.backends.simple.urls')
 class SimpleWorkflowViewTests(WorkflowTestCase):
     """
-    Tests for the simple one-step workflow.
+    Tests for the one-step workflow.
 
     """
     def test_registration(self):

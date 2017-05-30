@@ -25,7 +25,7 @@ class RegistrationView(BaseRegistrationView):
     and email it to the user.
 
     This is different from the model-based activation workflow in that
-    the activation key is simply the username, signed using Django's
+    the activation key is the username, signed using Django's
     TimestampSigner, with HMAC verification on activation.
 
     """
@@ -79,8 +79,8 @@ class RegistrationView(BaseRegistrationView):
 
     def send_activation_email(self, user):
         """
-        Send the activation email. The activation key is simply the
-        username, signed using TimestampSigner.
+        Send the activation email. The activation key is the username,
+        signed using TimestampSigner.
 
         """
         activation_key = self.get_activation_key(user)

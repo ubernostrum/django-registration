@@ -180,7 +180,7 @@ signup, containing a link to activate the account. When the user
 clicks the link, the activation view sets ``is_active`` to ``True``,
 after which the user can log in.
 
-The activation key is simply the username of the new account, signed
+The activation key is the username of the new account, signed
 using `Django's cryptographic signing tools
 <https://docs.djangoproject.com/en/stable/topics/signing/>`_
 (specifically, ``signing.dumps()`` is used, to produce a
@@ -213,8 +213,8 @@ the exclamation mark (``!``) character.
 Since the HMAC activation workflow does not use any models, it also
 does not make use of the admin interface and thus does not offer a
 convenient way to re-send an activation email. Users who have
-difficulty receiving the activation email can simply be manually
-activated by a site administrator.
+difficulty receiving the activation email can be manually activated by
+a site administrator.
 
 However, the reduced overhead of not needing to store the activation
 key makes this generally preferable to :ref:`the model-based workflow

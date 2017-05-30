@@ -39,7 +39,7 @@ class RegistrationForm(UserCreationForm):
     # UserCreationForm, which we subclass, does not require this field
     # but workflows in django-registration which involve explicit
     # activation step do require it. If you need an optional email
-    # field, simply subclass and declare the field not required.
+    # field, subclass and declare the field not required.
     email = forms.EmailField(
         help_text=_(u'email address'),
         required=True

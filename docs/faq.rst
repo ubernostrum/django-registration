@@ -93,15 +93,14 @@ General
     unit-testing tools, and supports several ways to execute its test
     suite:
 
-    * Within a Django project, simply invoke ``manage.py test
+    * Within a Django project, invoke ``manage.py test
       registration``.
 
-    * If you've installed django-registration (so that it's on
-      your Python import path) and Django, but don't yet have a
-      project created or want to test independently of a project, you
-      can run ``registration/runtests.py``, or you can invoke ``python
-      setup.py test`` (which will simply run
-      ``registration/runtests.py``).
+    * If you've installed django-registration (so that it's on your
+      Python import path) and Django, but don't yet have a project
+      created or want to test independently of a project, you can run
+      ``registration/runtests.py``, or you can invoke ``python
+      setup.py test`` (which will run ``registration/runtests.py``).
 
     Additionally, the ``setup.cfg`` file included in
     django-registration provides configuration for `coverage.py
@@ -192,8 +191,8 @@ Tips and tricks
 
 **How do I log a user in immediately after registration or activation?**
 
-    Take a look at the implementation of :ref:`the simple one-step workflow
-    <simple-workflow>`, which logs a user in immediately after
+    Take a look at the implementation of :ref:`the one-step workflow
+    <one-step-workflow>`, which logs a user in immediately after
     registration.
 
 
@@ -203,9 +202,9 @@ Tips and tricks
     <model-workflow>`, a `custom admin action
     <http://docs.djangoproject.com/en/stable/ref/contrib/admin/actions/>`_
     is provided for this; in the admin for the
-    :class:`~registration.models.RegistrationProfile` model, simply
-    click the checkbox for the user(s) you'd like to re-send the email
-    for, then select the "Re-send activation emails" action.
+    :class:`~registration.models.RegistrationProfile` model, click the
+    checkbox for the user(s) you'd like to re-send the email for, then
+    select the "Re-send activation emails" action.
 
 **How do I manually activate a user?**
 
@@ -214,8 +213,8 @@ Tips and tricks
     ``RegistrationProfile`` model, click the checkbox for the user(s)
     you'd like to activate, then select the "Activate users" action.
 
-    In the HMAC-based workflow, simply toggle the ``is_active`` field
-    of the user in the admin.
+    In the HMAC-based workflow, toggle the ``is_active`` field of the
+    user in the admin.
 
 **How do I allow Unicode in usernames?**
 

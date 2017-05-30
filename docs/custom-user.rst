@@ -39,11 +39,11 @@ model.
 
 In the case where your user model is compatible with the default
 behavior of django-registration, (see below) you will be able to
-simply subclass ``RegistrationForm``, set it to use your custom user
-model as the model, and then configure the views in
-django-registration to use your form subclass. For example, you
-might do the following (in a ``forms.py`` module somewhere in your
-codebase -- do **not** directly edit django-registration's code):
+subclass ``RegistrationForm``, set it to use your custom user model as
+the model, and then configure the views in django-registration to use
+your form subclass. For example, you might do the following (in a
+``forms.py`` module somewhere in your codebase -- do **not** directly
+edit django-registration's code):
 
 .. code-block:: python
 
@@ -125,14 +125,14 @@ The model-based activation workflow requires one additional field:
 * ``date_joined`` -- a ``DateField`` or ``DateTimeField`` indicating
   when the user's account was registered.
 
-:ref:`The simple one-step workflow <simple-workflow>` requires that
-your user model set ``USERNAME_FIELD``, and requires that it define a
-field named ``password`` for storing the user's password (it will
-expect to find this value in the ``password1`` field of the
-registration form); the combination of ``USERNAME_FIELD`` and
-``password`` must be sufficient to log a user in. Also note that
-``RegistrationForm`` requires the ``email`` field, so either provide
-that field on your model or subclass ``RegistrationForm``.
+:ref:`The one-step workflow <one-step-workflow>` requires that your
+user model set ``USERNAME_FIELD``, and requires that it define a field
+named ``password`` for storing the user's password (it will expect to
+find this value in the ``password1`` field of the registration form);
+the combination of ``USERNAME_FIELD`` and ``password`` must be
+sufficient to log a user in. Also note that ``RegistrationForm``
+requires the ``email`` field, so either provide that field on your
+model or subclass ``RegistrationForm``.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields

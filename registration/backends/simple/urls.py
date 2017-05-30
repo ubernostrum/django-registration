@@ -1,5 +1,5 @@
 """
-URLconf for registration using django-registration's simple one-step
+URLconf for registration using django-registration's one-step
 workflow.
 
 """

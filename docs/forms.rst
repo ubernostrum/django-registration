@@ -13,7 +13,7 @@ workflows in mind, but may also be useful in other situations.
 
 .. class:: RegistrationForm
 
-   A simple form for registering an account. This is a subclass of
+   A form for registering an account. This is a subclass of
    Django's built-in ``UserCreationForm``, and has the following
    fields, all of which are required:
 

@@ -41,45 +41,29 @@ you're using Python 2.7.9 or later (for Python 2) or Python 3.4 or
 later (for Python 3), ``pip`` came bundled with your installation of
 Python.
 
-Once you have ``pip``, simply type::
+Once you have ``pip``, type::
 
     pip install django-registration
-
-
-Manual installation
--------------------
-
-It's also possible to install django-registration manually. To do
-so, obtain the latest packaged version from `the listing on the Python
-Package Index
-<https://pypi.python.org/pypi/django-registration/>`_. Unpack the
-``.tar.gz`` file, and run::
-
-    python setup.py install
-
-Once you've installed django-registration, you can verify
-successful installation by opening a Python interpreter and typing
-``import registration``.
-
-If the installation was successful, you'll simply get a fresh Python
-prompt. If you instead see an ``ImportError``, check the configuration
-of your install tools and your Python import path to ensure
-django-registration installed into a location Python can import
-from.
 
 
 Installing from a source checkout
 ---------------------------------
 
+If you want to work on django-registration, you can obtain a source
+checkout.
+
 The development repository for django-registration is at
-<https://github.com/ubernostrum/django-registration>. Presuming you
-have `git <http://git-scm.com/>`_ installed, you can obtain a copy of
-the repository by typing::
+<https://github.com/ubernostrum/django-registration>. If you have `git
+<http://git-scm.com/>`_ installed, you can obtain a copy of the
+repository by typing::
 
     git clone https://github.com/ubernostrum/django-registration.git
 
 From there, you can use normal git commands to check out the specific
-revision you want, and install it using ``python setup.py install``.
+revision you want, and install it using ``pip install -e .`` (the
+``-e`` flag specifies an "editable" install, allowing you to change
+code as you work on django-registration, and have your changes picked
+up automatically).
 
 
 Next steps

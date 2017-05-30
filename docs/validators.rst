@@ -52,8 +52,8 @@ Additionally, one custom validator is provided:
    :class:`registration.forms.RegistrationForm` and all of its
    subclasses. The validator is applied in a form-level ``clean()``
    method on ``RegistrationForm``, so to remove it (not recommended),
-   simply subclass ``RegistrationForm`` and override ``clean()``. For
-   no custom form-level validation, you could simply implement it as:
+   subclass ``RegistrationForm`` and override ``clean()``. For no
+   custom form-level validation, you could implement it as:
 
    .. code-block:: python
 

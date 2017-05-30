@@ -39,9 +39,9 @@ class RegistrationView(FormView):
              callable(self.get_success_url)) else \
             self.success_url
 
-        # success_url may be a simple string, or a tuple providing the
-        # full argument set for redirect(). Attempting to unpack it
-        # tells us which one it is.
+        # success_url may be a string, or a tuple providing the full
+        # argument set for redirect(). Attempting to unpack it tells
+        # us which one it is.
         try:
             to, args, kwargs = success_url
             return redirect(to, *args, **kwargs)
@@ -104,8 +104,8 @@ class ActivationView(TemplateView):
     def get_success_url(self, user):
         """
         Implement this to return the URL (either a 3-tuple for
-        redirect(), or a simple string name of a URL pattern) to
-        redirect to after successful activation.
+        redirect(), or a string name of a URL pattern) to redirect to
+        after successful activation.
 
         This differs from most get_success_url() methods of Django
         views in that it receives an extra argument: the user whose
