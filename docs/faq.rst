@@ -186,8 +186,19 @@ Configuration
 
     See :ref:`the custom user documentation <custom-user>`.
 
+
 Tips and tricks
 ---------------
+
+**How do I close user signups?**
+
+    If you haven't modified the behavior of the
+    :meth:`~registration.views.RegistrationView.registration_allowed`
+    method in :class:`~registration.views.RegistrationView`, you can
+    use the setting :data:`~django.conf.settings.REGISTRATION_OPEN` to
+    control this; when the setting is ``True``, or isn't supplied,
+    user registration will be permitted. When the setting is
+    ``False``, user registration will not pe permitted.
 
 **How do I log a user in immediately after registration or activation?**
 
