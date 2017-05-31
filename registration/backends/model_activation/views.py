@@ -44,12 +44,11 @@ class ActivationView(BaseActivationView):
     couldn't be activated.
 
     """
+    success_url = 'registration_activation_complete'
+
     def activate(self, *args, **kwargs):
         activation_key = kwargs.get('activation_key')
         activated_user = RegistrationProfile.objects.activate_user(
             activation_key
         )
         return activated_user
-
-    def get_success_url(self, user):
-        return ('registration_activation_complete', (), {})

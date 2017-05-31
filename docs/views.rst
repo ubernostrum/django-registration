@@ -132,6 +132,16 @@ classes, for use in writing your own custom subclasses.
    Useful places to override or customize on an ``ActivationView``
    subclass are:
 
+   .. attribute:: success_url
+
+      The URL to redirect to after successful activation.  A string
+      containing a (relative) URL, or a string name of a URL pattern,
+      or a 3-tuple of arguments suitable for passing to Django's
+      `redirect shortcut
+      <https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#redirect>`_. Can
+      be overridden on a per-request basis (see below). Default value
+      is ``None``, so that per-request customization is used instead.
+
    .. attribute:: template_name
 
       The template to use for user activation. Should be a

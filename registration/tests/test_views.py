@@ -44,4 +44,4 @@ class ActivationViewTests(RegistrationTestCase):
                 kwargs={'activation_key': profile.activation_key}
             )
         )
-        self.assertRedirects(resp, '/')
+        self.assertRedirects(resp, '/activate/complete/')

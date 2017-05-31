@@ -7,11 +7,5 @@ covered by the built-in workflows.
 from registration.backends.model_activation.views import ActivationView
 
 
-class ActivateWithSimpleRedirect(ActivationView):
-    def get_success_url(self, user):
-        """
-        Returns a string URL to redirect to on success, rather than a
-        (view, args, kwargs) 3-tuple, to test handling of that case.
-
-        """
-        return '/'
+class ActivateWithComplexRedirect(ActivationView):
+    success_url = ('registration_activation_complete', (), {})

@@ -105,6 +105,8 @@ class ActivationView(BaseActivationView):
     couldn't be activated.
 
     """
+    success_url = 'registration_activation_complete'
+
     def activate(self, *args, **kwargs):
         # This is safe even if, somehow, there's no activation key,
         # because unsign() will raise BadSignature rather than
@@ -117,9 +119,6 @@ class ActivationView(BaseActivationView):
                 user.save()
                 return user
         return False
-
-    def get_success_url(self, user):
-        return ('registration_activation_complete', (), {})
 
     def validate_key(self, activation_key):
         """

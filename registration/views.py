@@ -70,6 +70,7 @@ class ActivationView(TemplateView):
     Base class for user activation views.
 
     """
+    success_url = None
     template_name = 'registration/activate.html'
 
     def get(self, *args, **kwargs):
@@ -86,7 +87,10 @@ class ActivationView(TemplateView):
                 user=activated_user,
                 request=self.request
             )
-            success_url = self.get_success_url(activated_user)
+            success_url = self.get_success_url(activated_user) if \
+                (hasattr(self, 'get_success_url') and
+                 callable(self.success_url)) else \
+                self.success_url
             try:
                 to, args, kwargs = success_url
                 return redirect(to, *args, **kwargs)
@@ -97,19 +101,6 @@ class ActivationView(TemplateView):
     def activate(self, *args, **kwargs):
         """
         Implement account-activation logic here.
-
-        """
-        raise NotImplementedError
-
-    def get_success_url(self, user):
-        """
-        Implement this to return the URL (either a 3-tuple for
-        redirect(), or a string name of a URL pattern) to redirect to
-        after successful activation.
-
-        This differs from most get_success_url() methods of Django
-        views in that it receives an extra argument: the user whose
-        account was activated.
 
         """
         raise NotImplementedError

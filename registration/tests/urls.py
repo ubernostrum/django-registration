@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateView
 
 from registration.backends.model_activation.views import RegistrationView
 
-from .views import ActivateWithSimpleRedirect
+from .views import ActivateWithComplexRedirect
 
 
 urlpatterns = [
@@ -30,7 +30,7 @@ urlpatterns = [
     # the view; that way it can return a sensible "invalid key"
     # message instead of a confusing 404.
     url(r'^activate/(?P<activation_key>\w+)/$',
-        ActivateWithSimpleRedirect.as_view(),
+        ActivateWithComplexRedirect.as_view(),
         name='registration_activate'),
     url(r'^register/$',
         RegistrationView.as_view(),
