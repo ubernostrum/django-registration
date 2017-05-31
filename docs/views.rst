@@ -93,7 +93,9 @@ classes, for use in writing your own custom subclasses.
    .. method:: registration_allowed()
 
       Should return a boolean indicating whether user registration is
-      allowed, either in general or for this specific request.
+      allowed, either in general or for this specific request. Default
+      value is the value of the setting
+      :data:`~django.conf.settings.REGISTRATION_OPEN`.
 
 
 .. class:: ActivationView
