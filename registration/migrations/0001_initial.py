@@ -28,7 +28,8 @@ class Migration(migrations.Migration):
                 ('user',
                  models.OneToOneField(
                      to=settings.AUTH_USER_MODEL,
-                     verbose_name='user')),
+                     verbose_name='user',
+                     on_delete=models.CASCADE)),
             ],
             options={
                 'verbose_name': 'registration profile',

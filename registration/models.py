@@ -136,7 +136,8 @@ class RegistrationProfile(models.Model):
     ACTIVATED = "ALREADY_ACTIVATED"
 
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                verbose_name=_(u'user'))
+                                verbose_name=_(u'user'),
+                                on_delete=models.CASCADE)
     activation_key = models.CharField(_(u'activation key'), max_length=40)
 
     objects = RegistrationManager()
