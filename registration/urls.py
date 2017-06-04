@@ -13,7 +13,8 @@ from registration.backends.model_activation import urls as model_urls
 
 
 warnings.warn(
-    "include('registration.urls') is deprecated; use "
+    "include('registration.urls') is deprecated and will be removed in "
+    "django-registration 3.0. Use "
     "include('registration.backends.model_activation.urls') instead.",
     DeprecationWarning
 )

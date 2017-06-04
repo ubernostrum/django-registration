@@ -15,8 +15,9 @@ from registration.backends.model_activation import urls as model_urls
 
 
 warnings.warn(
-    "registration.backends.default.urls is deprecated; "
-    "use registration.backends.model_activation.urls instead.",
+    "registration.backends.default.urls is deprecated and will be removed "
+    "in django-registration 3.0. Use "
+    "registration.backends.model_activation.urls instead.",
     DeprecationWarning
 )
 

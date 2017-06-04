@@ -15,8 +15,9 @@ from registration.backends.model_activation import views as new_location
 
 
 warnings.warn(
-    "registration.backends.default.views is deprecated; "
-    "use registration.backends.model_activation.views instead.",
+    "registration.backends.default.views is deprecated and will be removed "
+    "in django-registration 3.0. Use "
+    "registration.backends.model_activation.views instead.",
     DeprecationWarning
 )
 
