@@ -1,15 +1,16 @@
 The primary author of django-registration is James Bennett, who may
 be found online at <http://www.b-list.org/>.
 
-Over the past eight years of django-registration's development,
-however, many others have contributed code, documentation and
-translations, and django-registration would not be what it is without
-their help. Below is a list of contributors who can be identified from
-the development history:
+Over the many years of django-registration's development, however,
+many others have contributed code, documentation and translations, and
+django-registration would not be what it is without their help. Below
+is a list of contributors who can be identified from the development
+history:
 
 * Samuel Adam
 * A. Al-Ibrahim
 * Adam Alton
+* Luis Felipe Álvarez Burgos
 * Florian Apolloner
 * Carles Barrobés
 * Nico den Boer
