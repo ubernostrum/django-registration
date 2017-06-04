@@ -1,9 +1,5 @@
-include CHANGELOG
-include INSTALL
 include LICENSE
 include MANIFEST.in
-include README
 include AUTHORS
-include Makefile
 recursive-include docs *
 recursive-include registration/locale *
