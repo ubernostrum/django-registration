@@ -13,7 +13,7 @@ offers convenient packaged downloads and installation instructions.
 The |version| release of django-registration supports Django 1.8,
 1.9, and 1.10, on the following Python versions:
 
-* Django 1.8 suports Python 2.7, 3.3, 3.4 and 3.5.
+* Django 1.8 supports Python 2.7, 3.3, 3.4 and 3.5.
 
 * Django 1.9 supports Python 2.7, 3.4 and 3.5.
 
