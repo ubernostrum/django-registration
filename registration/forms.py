@@ -10,16 +10,17 @@ django-registration.
 """
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
-
 from . import validators
 
-
 User = get_user_model()
+
+REGISTRATION_RECAPTCHA2 = getattr(settings, "REGISTRATION_RECAPTCHA2", False)
 
 
 class RegistrationForm(UserCreationForm):
@@ -44,6 +45,11 @@ class RegistrationForm(UserCreationForm):
         help_text=_(u'email address'),
         required=True
     )
+
+    if REGISTRATION_RECAPTCHA2:
+        from snowpenguin.django.recaptcha2.fields import ReCaptchaField
+        from snowpenguin.django.recaptcha2.widgets import ReCaptchaWidget
+        captcha = ReCaptchaField(widget=ReCaptchaWidget())
 
     class Meta(UserCreationForm.Meta):
         fields = [
@@ -107,6 +113,7 @@ class RegistrationFormUniqueEmail(RegistrationForm):
     email addresses.
 
     """
+
     def clean_email(self):
         """
         Validate that the supplied email address is unique for the

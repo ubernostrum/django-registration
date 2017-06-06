@@ -28,6 +28,17 @@ class RegistrationFormTests(RegistrationTestCase):
             form.fields['email'].required
         )
 
+    def test_captcha(self):
+        """
+        Test the captcha field
+
+        """
+        with self.settings(REGISTRATION_RECAPTCHA2=True):
+            forms.RegistrationForm()
+
+        with self.settings(REGISTRATION_RECAPTCHA2=False):
+            forms.RegistrationForm()
+
     def test_username_uniqueness(self):
         """
         Username uniqueness is enforced.
