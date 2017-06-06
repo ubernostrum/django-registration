@@ -25,6 +25,7 @@ from django.utils.encoding import smart_str
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
+from registration.exceptions import BadActivationKey, ActivationKeyExpired
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
 
@@ -52,7 +53,7 @@ class RegistrationManager(models.Manager):
             try:
                 profile = self.get(activation_key=activation_key)
             except self.model.DoesNotExist:
-                return False
+                raise BadActivationKey
             if not profile.activation_key_expired():
                 user = profile.user
                 user.is_active = True
@@ -60,6 +61,8 @@ class RegistrationManager(models.Manager):
                 profile.activation_key = self.model.ACTIVATED
                 profile.save()
                 return user
+            else:
+                raise ActivationKeyExpired
         return False
 
     def expired(self):
