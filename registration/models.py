@@ -122,8 +122,9 @@ class RegistrationManager(models.Manager):
         """
         for profile in self.expired():
             user = profile.user
-            profile.delete()
-            user.delete()
+            if not user.is_active:
+                profile.delete()
+                user.delete()
 
 
 @python_2_unicode_compatible
