@@ -1,5 +1,9 @@
 .. -*-restructuredtext-*-
 
+.. image:: https://img.shields.io/pypi/v/django-registration.svg
+   :target: https://pypi.python.org/pypi/django-registration
+.. image:: https://img.shields.io/pypi/pyversions/django-registration.svg
+   :target: https://pypi.python.org/pypi/django-registration
 .. image:: https://travis-ci.org/ubernostrum/django-registration.svg?branch=master
     :target: https://travis-ci.org/ubernostrum/django-registration
 
