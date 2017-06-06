@@ -10,6 +10,7 @@ django-registration.
 """
 
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.core.exceptions import ValidationError
@@ -53,6 +54,12 @@ class RegistrationForm(UserCreationForm):
             'password2'
         ]
         required_css_class = 'required'
+
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+
+        if getattr(settings, 'ACCOUNT_ACTIVATION_DAYS'):
+            self.fields['email'].required = True
 
     def clean(self):
         """
