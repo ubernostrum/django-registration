@@ -17,6 +17,10 @@ from registration.views import RegistrationView as BaseRegistrationView
 
 
 REGISTRATION_SALT = getattr(settings, 'REGISTRATION_SALT', 'registration')
+REGISTRATION_ASYNC_MAIL = getattr(settings, 'REGISTRATION_ASYNC_MAIL', False)
+
+if REGISTRATION_ASYNC_MAIL:
+    from threading import Thread
 
 
 class RegistrationView(BaseRegistrationView):
@@ -52,7 +56,12 @@ class RegistrationView(BaseRegistrationView):
         new_user.is_active = False
         new_user.save()
 
-        self.send_activation_email(new_user)
+        if REGISTRATION_ASYNC_MAIL:
+            thread = Thread(target=self.send_activation_email,
+                            args=(new_user, ))
+            thread.start()
+        else:
+            self.send_activation_email(new_user)
 
         return new_user
 
