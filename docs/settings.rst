@@ -25,6 +25,58 @@ of several custom settings.
    * :ref:`The model-based activation workflow <model-workflow>`
 
 
+.. data:: ACCOUNT_ACTIVATION_EMAIL_SUBJECT_TEMPLATE
+
+   A ``path`` to a plain-text template used to render activation email subject.
+
+   This setting is optional, and a default of
+   ``registration/activation_email_subject.html`` will be used if not specified.
+
+   A ``TemplateSyntaxError`` will be raised if the specified template could not
+   be found.
+
+   Used by:
+
+   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+
+   * :ref:`The model-based activation workflow <model-workflow>`
+
+
+.. data:: ACCOUNT_ACTIVATION_EMAIL_BODY_TEMPLATE
+
+   A ``path`` to a plain-text template used to render activation email body.
+
+   This setting is optional, and a default of
+   ``registration/activation_email.txt`` will be used if not specified.
+
+   A ``TemplateSyntaxError`` will be raised if the specified template could not
+   be found.
+
+   Used by:
+
+   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+
+   * :ref:`The model-based activation workflow <model-workflow>`
+
+
+.. data:: ACCOUNT_ACTIVATION_EMAIL_HTML_BODY_TEMPLATE
+
+   A ``path`` to an optional alternative HTML template used to render
+   activation email body.
+
+   This setting is optional, and a default of
+   ``registration/activation_email.html`` will be used if not specified.
+
+   If the specified template could not be found, no HTML alternative email body
+   will be sent.
+
+   Used by:
+
+   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+
+   * :ref:`The model-based activation workflow <model-workflow>`
+
+
 .. data:: REGISTRATION_OPEN
 
    A ``bool`` indicating whether registration of new accounts is

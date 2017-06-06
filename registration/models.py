@@ -18,12 +18,13 @@ import re
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.db import models, transaction
-from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.encoding import smart_str
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+
+from registration.utils import send_user_activation_email
 
 
 SHA1_RE = re.compile('^[a-f0-9]{40}$')
@@ -169,17 +170,9 @@ class RegistrationProfile(models.Model):
         ``RegistrationProfile``.
 
         """
-        ctx_dict = {'activation_key': self.activation_key,
-                    'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-                    'user': self.user,
-                    'site': site}
-        subject = render_to_string('registration/activation_email_subject.txt',
-                                   ctx_dict)
-        # Force subject to a single line to avoid header-injection
-        # issues.
-        subject = ''.join(subject.splitlines())
+        email_ctx = {'activation_key': self.activation_key,
+                     'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
+                     'user': self.user,
+                     'site': site}
 
-        message = render_to_string('registration/activation_email.txt',
-                                   ctx_dict)
-
-        self.user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        send_user_activation_email(self.user, email_ctx)
