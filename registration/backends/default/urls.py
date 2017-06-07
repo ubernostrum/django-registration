@@ -9,15 +9,19 @@ and support for it will be removed in a future release.
 
 """
 
+import textwrap
 import warnings
 
 from registration.backends.model_activation import urls as model_urls
 
 
 warnings.warn(
-    "registration.backends.default.urls is deprecated and will be removed "
-    "in django-registration 3.0. Use "
-    "registration.backends.model_activation.urls instead.",
+    textwrap.dedent("""
+        include('registration.backends.default.urls') is deprecated and
+        will be removed in django-registration 3.0. Use
+        include('registration.backends.model_activation.urls')
+        instead.
+    """),
     DeprecationWarning
 )
 

@@ -79,8 +79,9 @@ class RegistrationManager(models.Manager):
 
             Deployments which need a way to identify and delete
             expired accounts should determine how they wish to do so
-            and implement their own methods for this. 
-            ''')
+            and implement their own methods for this.
+            '''),
+            DeprecationWarning
         )
         if settings.USE_TZ:
             now = timezone.now()

@@ -11,6 +11,6 @@ accordingly been moved to registration.backends.model_activation.
 Attempting to import the views or include() the URLconf found here
 will raise deprecation warnings to make users aware of this fact, and
 remind them to modify imports and include()s, as support for this
-location will be removed in a future release.
+location will be removed in django-registration 3.0
 
 """

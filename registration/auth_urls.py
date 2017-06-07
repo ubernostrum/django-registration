@@ -9,16 +9,19 @@ The URLconfs in the built-in registration workflows already have an
 necessary to manually include these views.
 
 """
-
+import textwrap
 import warnings
 
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
 
+
 warnings.warn(
-    "registration.auth_urls is deprecated and will be removed in "
-    "django-registration 3.0. Use an include() of django.contrib.auth.urls "
-    "instead.",
+    textwrap.dedent("""
+        include('registration.auth_urls') is deprecated and will be
+        removed in django-registration 3.0. Use
+        include('django.contrib.auth.urls') instead.
+    """),
     DeprecationWarning
 )
 
