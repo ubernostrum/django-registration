@@ -214,6 +214,11 @@ Additionally, :class:`RegistrationProfile` has a custom manager
 
    .. method:: expired
 
+      .. deprecated:: 2.3
+
+         This method is :ref:`deprecated <deprecations>` and scheduled
+         to be removed in django-registration 3.0.
+
       Return instances of :class:`RegistrationProfile` corresponding
       to expired users. A user is considered to be "expired" if:
 
@@ -229,6 +234,12 @@ Additionally, :class:`RegistrationProfile` has a custom manager
       :rtype: ``QuerySet`` of :class:`RegistrationProfile`
 
    .. method:: delete_expired_users
+
+      .. deprecated:: 2.3
+
+         This method is :ref:`deprecated <deprecations>` and scheduled
+         to be removed in django-registration 3.0, as is the
+         referenced ``cleanupregistration`` management command.
 
       Removes expired instances of :class:`RegistrationProfile`, and
       their associated user accounts, from the database. This is

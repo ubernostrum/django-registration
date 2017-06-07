@@ -14,6 +14,8 @@ activation key.
 import datetime
 import hashlib
 import re
+import textwrap
+import warnings
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -68,6 +70,18 @@ class RegistrationManager(models.Manager):
         non-active users.
 
         """
+        warnings.warn(
+            textwrap.dedent('''
+            The "cleanupregistration" management command, and the
+            RegistrationProfile.objects.delete_expired_users() and
+            RegistrationProfile.objects.expired() methods, are
+            deprecated and will be removed in django-registration 3.0.
+
+            Deployments which need a way to identify and delete
+            expired accounts should determine how they wish to do so
+            and implement their own methods for this. 
+            ''')
+        )
         if settings.USE_TZ:
             now = timezone.now()
         else:
