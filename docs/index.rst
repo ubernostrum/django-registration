@@ -50,6 +50,7 @@ documentation listed below.
    validators
    settings
    signals
+   deprecations
 
 .. toctree::
    :caption: Other documentation
