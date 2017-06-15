@@ -1,6 +1,23 @@
-from django.conf.urls import url
+"""
+URL patterns for the pre-1.11 function-based Django auth views.
 
+"""
+
+import textwrap
+import warnings
+
+from django.conf.urls import url
 from django.contrib.auth import views as auth_views
+
+
+warnings.warn(
+    textwrap.dedent("""
+        include('registration.auth_urls') is deprecated and will be
+        removed in django-registration 3.0. Use
+        include('django.contrib.auth.urls') instead.
+    """),
+    DeprecationWarning
+)
 
 
 urlpatterns = [
