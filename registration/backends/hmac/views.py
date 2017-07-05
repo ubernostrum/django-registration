@@ -84,9 +84,11 @@ class RegistrationView(BaseRegistrationView):
 
         """
         activation_key = self.get_activation_key(user)
+        scheme = 'https' if self.request.is_secure else 'http'
         context = self.get_email_context(activation_key)
         context.update({
-            'user': user
+            'user': user,
+            'scheme': scheme,
         })
         subject = render_to_string(self.email_subject_template,
                                    context)
