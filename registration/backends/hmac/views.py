@@ -71,7 +71,9 @@ class RegistrationView(BaseRegistrationView):
         Build the template context used for the activation email.
 
         """
+        scheme = 'https' if self.request.is_secure else 'http'
         return {
+            'scheme': scheme,
             'activation_key': activation_key,
             'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
             'site': get_current_site(self.request)
@@ -84,11 +86,9 @@ class RegistrationView(BaseRegistrationView):
 
         """
         activation_key = self.get_activation_key(user)
-        scheme = 'https' if self.request.is_secure else 'http'
         context = self.get_email_context(activation_key)
         context.update({
             'user': user,
-            'scheme': scheme,
         })
         subject = render_to_string(self.email_subject_template,
                                    context)
