@@ -9,11 +9,12 @@ from django.utils import six
 from django.utils.translation import ugettext_lazy as _
 
 
+CONFUSABLE = _("This name cannot be registered.")
 DUPLICATE_EMAIL = _(u"This email address is already in use. "
                     u"Please supply a different email address.")
 FREE_EMAIL = _(u"Registration using free email addresses is prohibited. "
                u"Please supply a different email address.")
-RESERVED_NAME = _(u"This value is reserved and cannot be registered.")
+RESERVED_NAME = _(u"This name is reserved and cannot be registered.")
 TOS_REQUIRED = _(u"You must agree to the terms to register")
 
 
@@ -189,3 +190,30 @@ class ReservedNameValidator(object):
             raise ValidationError(
                 RESERVED_NAME, code='invalid'
             )
+
+
+class ConfusablesValidator(object):
+    """
+    Validator which disallows 'dangerous' usernames likely to
+    represent homograph attacks.
+
+    A username is 'dangerous' if it is mixed-script (as defined by
+    Unicode 'Script' property) and contains one or more characters
+    appearing in the Unicode Visually Confusable Characters file.
+
+    A username is 'dangerous' if it is 'mixed-script confusable' as
+    defined by Unicode Technical Report #39 (i.e., it contains
+    characters from multiple scripts and contains one or more
+    characters appearing in the Visually Confusable Characters file).
+
+    Use of this validator requires installing with the 'confusables'
+    extra, or separate installation of the 'confusable_homoglyphs'
+    Python package.
+
+    """
+    def __call__(self, value):
+        if not isinstance(value, six.text_type):
+            return
+        from confusable_homoglyphs import confusables
+        if confusables.is_dangerous(value):
+            raise ValidationError(CONFUSABLE)

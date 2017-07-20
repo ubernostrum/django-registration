@@ -63,4 +63,7 @@ setup(name='django-registration',
       install_requires=[
           'Django>=1.8,!=1.9.*',
       ],
+      extras_require={
+          'confusables': ['confusable_homoglyphs'],
+      }
 )

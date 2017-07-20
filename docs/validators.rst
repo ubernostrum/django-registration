@@ -40,7 +40,7 @@ All of these error messages are marked for translation; most have
 translations into multiple languages already in
 django-registration.
 
-Additionally, one custom validator is provided:
+Additionally, two custom validators are provided:
 
 .. class:: ReservedNameValidator
 
@@ -128,3 +128,31 @@ Several constants are provided which are used by this validator:
    A list made of the concatentation of all of the above lists, used
    as the default set of reserved names for
    :class:`~registration.validators.ReservedNameValidator`.
+
+.. class:: ConfusablesValidator
+
+   A custom validator which prohibits the use of
+   dangerously-confusable values.
+
+   Django permits broad swaths of Unicode to be used in usernames;
+   while this is useful for serving a worldwide audience, it also
+   creates the possibility of `homograph attacks
+   <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the
+   use of characters which are easily visually confused for each other
+   (for example, "pаypаl" contains a Cyrillic "а", visually
+   indistinguishable in many fonts from a Latin "а").
+
+   This validator will reject any mixed-script value (as defined by
+   Unicode 'Script' property) which also contains one or more
+   characters that appear in the Unicode Visually Confusable
+   Characters file.
+
+   This validator is not enabled by default; use requires `the
+   confusable_homoglyphs Python module
+   <https://pypi.python.org/pypi/confusable_homoglyphs>`_. This can be
+   obtained manually via ``pip install confusable_homoglyphs``, or can
+   be installed automatically alongside django-registration, via ``pip
+   install django-registration[confusables]``.
+
+   Once the ``confusable_homoglyphs`` module is installed, this
+   validator can be added to any field of a registration form.

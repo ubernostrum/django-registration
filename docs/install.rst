@@ -45,6 +45,18 @@ Once you have ``pip``, type::
 
     pip install django-registration
 
+If you intend to use the optional
+:class:`~registration.validators.ConfusablesValidator`, you will also
+need the third-party ``confusable_homoglyphs`` module. This can be
+installed automatically for you as an extra dependency by instead
+running::
+
+    pip install django-registration[confusables]
+
+or manually by running::
+
+    pip install confusable_homoglyphs
+
 
 Installing from a source checkout
 ---------------------------------
