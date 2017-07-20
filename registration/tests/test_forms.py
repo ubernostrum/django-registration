@@ -1,9 +1,11 @@
+# -*- coding: utf-8 -*-
 """
 Exercise django-registration's built-in form classes.
 
 """
 import uuid
 
+from django.core.exceptions import ValidationError
 from django.test import modify_settings
 from django.utils.six import text_type
 
@@ -163,3 +165,10 @@ class RegistrationFormTests(RegistrationTestCase):
             data=self.valid_data.copy()
         )
         self.assertTrue(form.is_valid())
+
+    def test_confusables(self):
+        validator = validators.ConfusablesValidator()
+        validator('paypal')
+        validator(123)
+        with self.assertRaises(ValidationError):
+            validator(u'pаypаl')
