@@ -62,8 +62,6 @@ setup(name='django-registration',
           'Topic :: Utilities'],
       install_requires=[
           'Django>=1.8,!=1.9.*',
+          'confusable_homoglyphs',
       ],
-      extras_require={
-          'confusables': ['confusable_homoglyphs'],
-      }
 )
