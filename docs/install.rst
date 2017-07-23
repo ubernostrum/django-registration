@@ -45,6 +45,10 @@ Once you have ``pip``, type::
 
     pip install django-registration
 
+If you don't have a copy of a compatible version of Django, this will
+also automatically install one for you, and will install a third-party
+library required by some of django-registration's validation code.
+
 
 Installing from a source checkout
 ---------------------------------

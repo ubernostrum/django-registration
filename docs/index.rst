@@ -56,6 +56,7 @@ documentation listed below.
    :caption: Other documentation
    :maxdepth: 1
 
+   security
    upgrade
    faq
 

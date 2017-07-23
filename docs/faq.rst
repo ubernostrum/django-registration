@@ -36,13 +36,13 @@ General
 
 **What versions of Django and Python are supported?**
 
-    As of django-registration |version|, Django 1.8, 1.9, and 1.10
+    As of django-registration |release|, Django 1.8, 1.9, and 1.10
     are supported, on Python 2.7, 3.3 (Django 1.8 only), 3.4 and
     3.5. Although Django 1.8 supported Python 3.2 at initial release,
     Python 3.2 is now at its end-of-life and django-registration
     no longer supports it.
 
-    It is expected that django-registration |version| will work
+    It is expected that django-registration |release| will work
     without modification on Python 3.6 once it is released.
 
 **I found a bug or want to make an improvement!**
@@ -72,7 +72,7 @@ General
    django-registration does, however, try to avoid common security
    issues:
 
-   * django-registration |version| only supports versions of
+   * django-registration |release| only supports versions of
      Django which were receiving upstream security support at the time
      of release.
 
@@ -86,6 +86,8 @@ General
    * django-registration works with Django's own security features
      (including cryptographic features) where possible, rather than
      reinventing its own.
+
+   For more details, see :ref:`The security guide <security>`.
 
 **How do I run the tests?**
 
