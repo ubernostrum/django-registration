@@ -62,6 +62,6 @@ setup(name='django-registration',
           'Topic :: Utilities'],
       install_requires=[
           'Django>=1.8,!=1.9.*',
-          'confusable_homoglyphs',
+          'confusable_homoglyphs~=2.0',
       ],
 )
