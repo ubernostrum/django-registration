@@ -210,7 +210,7 @@ class ConfusablesValidator(object):
         if not isinstance(value, six.text_type):
             return
         if confusables.is_dangerous(value):
-            raise ValidationError(CONFUSABLE)
+            raise ValidationError(CONFUSABLE, code='invalid')
 
 
 class ConfusablesEmailValidator(object):
@@ -230,4 +230,4 @@ class ConfusablesEmailValidator(object):
         local_part, domain = value.split('@')
         if confusables.is_dangerous(local_part) or \
            confusables.is_dangerous(domain):
-            raise ValidationError(CONFUSABLE_EMAIL)
+            raise ValidationError(CONFUSABLE_EMAIL, code='invalid')
