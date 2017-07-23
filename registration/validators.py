@@ -201,11 +201,6 @@ class ConfusablesValidator(object):
     Unicode 'Script' property) and contains one or more characters
     appearing in the Unicode Visually Confusable Characters file.
 
-    A username is 'dangerous' if it is 'mixed-script confusable' as
-    defined by Unicode Technical Report #39 (i.e., it contains
-    characters from multiple scripts and contains one or more
-    characters appearing in the Visually Confusable Characters file).
-
     Use of this validator requires installing with the 'confusables'
     extra, or separate installation of the 'confusable_homoglyphs'
     Python package.
