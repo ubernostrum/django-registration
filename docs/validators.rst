@@ -132,7 +132,7 @@ Several constants are provided which are used by this validator:
 .. class:: ConfusablesValidator
 
    A custom validator which prohibits the use of
-   dangerously-confusable values.
+   dangerously-confusable usernames.
 
    Django permits broad swaths of Unicode to be used in usernames;
    while this is useful for serving a worldwide audience, it also
@@ -147,12 +147,28 @@ Several constants are provided which are used by this validator:
    characters that appear in the Unicode Visually Confusable
    Characters file.
 
-   This validator is not enabled by default; use requires `the
-   confusable_homoglyphs Python module
-   <https://pypi.python.org/pypi/confusable_homoglyphs>`_. This can be
-   obtained manually via ``pip install confusable_homoglyphs``, or can
-   be installed automatically alongside django-registration, via ``pip
-   install django-registration[confusables]``.
+   This validator is enabled by default on the username field of
+   registration forms.
 
-   Once the ``confusable_homoglyphs`` module is installed, this
-   validator can be added to any field of a registration form.
+.. class:: ConfusablesEmailValidator
+
+   A custom validator which prohibits the use of
+   dangerously-confusable email address.
+
+   Django permits broad swaths of Unicode to be used in email
+   addresses; while this is useful for serving a worldwide audience,
+   it also creates the possibility of `homograph attacks
+   <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the
+   use of characters which are easily visually confused for each other
+   (for example, "pаypаl" contains a Cyrillic "а", visually
+   indistinguishable in many fonts from a Latin "а").
+
+   This validator will reject any email address where either the
+   local-part of the domain is -- when considered in isolation --
+   dangerously confusable. A string is dangerously confusable if it is
+   a mixed-script value (as defined by Unicode 'Script' property)
+   which also contains one or more characters that appear in the
+   Unicode Visually Confusable Characters file.
+
+   This validator is enabled by default on the email field of
+   registration forms.

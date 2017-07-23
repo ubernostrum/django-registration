@@ -42,7 +42,10 @@ class RegistrationForm(UserCreationForm):
     # field, subclass and declare the field not required.
     email = forms.EmailField(
         help_text=_(u'email address'),
-        required=True
+        required=True,
+        validators=[
+            validators.ConfusablesEmailValidator(),
+        ]
     )
 
     class Meta(UserCreationForm.Meta):
@@ -77,10 +80,12 @@ class RegistrationForm(UserCreationForm):
                     reserved_names = self.reserved_names
                 else:
                     reserved_names = validators.DEFAULT_RESERVED_NAMES
-                validator = validators.ReservedNameValidator(
+                reserved_validator = validators.ReservedNameValidator(
                     reserved_names=reserved_names
                 )
-                validator(username_value)
+                reserved_validator(username_value)
+                confusables_validator = validators.ConfusablesValidator()
+                confusables_validator(username_value)
             except ValidationError as v:
                 self.add_error(User.USERNAME_FIELD, v)
         super(RegistrationForm, self).clean()

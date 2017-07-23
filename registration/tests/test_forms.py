@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Exercise django-registration's built-in form classes.
 
@@ -63,6 +62,50 @@ class RegistrationFormTests(RegistrationTestCase):
             self.assertTrue(
                 text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
+            )
+
+    def test_confusable_usernames(self):
+        """
+        Usernames containing dangerously confusable use of Unicode are
+        disallowed.
+
+        """
+        for dangerous_value in (
+                u'p\u0430yp\u0430l',
+                u'g\u043e\u043egle',
+                u'\u03c1ay\u03c1al',
+        ):
+            data = self.valid_data.copy()
+            data[self.user_model.USERNAME_FIELD] = dangerous_value
+            form = forms.RegistrationForm(data=data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
+            self.assertTrue(
+                text_type(validators.CONFUSABLE) in
+                form.errors[self.user_model.USERNAME_FIELD]
+            )
+
+    def test_confusable_emails(self):
+        """
+        Usernames containing dangerously confusable use of Unicode are
+        disallowed.
+
+        """
+        for dangerous_value in (
+                u'p\u0430yp\u0430l@example.com',
+                u'g\u043e\u043egle@example.com',
+                u'\u03c1y\u03c1al@example.com',
+                u'paypal@ex\u0430mple.com',
+                u'google@exam\u03c1le.com',
+        ):
+            data = self.valid_data.copy()
+            data['email'] = dangerous_value
+            form = forms.RegistrationForm(data=data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error('email'))
+            self.assertTrue(
+                text_type(validators.CONFUSABLE_EMAIL) in
+                form.errors['email']
             )
 
     def test_custom_reserved_names(self):
@@ -166,9 +209,50 @@ class RegistrationFormTests(RegistrationTestCase):
         )
         self.assertTrue(form.is_valid())
 
-    def test_confusables(self):
+    def test_confusables_validator(self):
+        """
+        Test the confusable-username validator standalone.
+
+        """
         validator = validators.ConfusablesValidator()
-        validator('paypal')
-        validator(123)
-        with self.assertRaises(ValidationError):
-            validator(u'pаypаl')
+        for dangerous_value in (
+                u'p\u0430yp\u0430l',
+                u'g\u043e\u043egle',
+                u'\u03c1ay\u03c1al',
+        ):
+            with self.assertRaises(ValidationError):
+                validator(dangerous_value)
+        for safe_value in (
+                u'paypal',
+                u'google',
+                u'root',
+                u'admin',
+                u'\u041f\u0451\u0442\u0440',
+                u'\u5c71\u672c',
+                3,
+        ):
+            validator(safe_value)
+
+    def test_confusables_email_validator(self):
+        """
+        Test the confusable-email validator standalone.
+
+        """
+        validator = validators.ConfusablesEmailValidator()
+        for dangerous_value in (
+                u'p\u0430yp\u0430l@example.com',
+                u'g\u043e\u043egle@example.com',
+                u'\u03c1ay\u03c1al@example.com',
+                u'paypal@ex\u0430mple.com',
+                u'google@exam\u03c1le.com'
+        ):
+            with self.assertRaises(ValidationError):
+                validator(dangerous_value)
+        for safe_value in(
+                u'paypal@example.com',
+                u'google@example.com',
+                u'\u041f\u0451\u0442\u0440@example.com',
+                u'\u5c71\u672c@example.com',
+                u'username',
+        ):
+            validator(safe_value)
