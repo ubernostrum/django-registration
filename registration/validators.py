@@ -210,7 +210,7 @@ class ConfusablesValidator(object):
         if not isinstance(value, six.text_type):
             return
         if confusables.is_dangerous(value):
-            raise ValidationError(CONFUSABLE.format(value))
+            raise ValidationError(CONFUSABLE)
 
 
 class ConfusablesEmailValidator(object):
