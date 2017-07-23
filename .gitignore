@@ -6,3 +6,5 @@ docs/_build/
 dist/
 .python-version
 .tox/
+categories.json
+confusables.json
