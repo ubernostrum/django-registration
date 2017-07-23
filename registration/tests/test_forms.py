@@ -214,14 +214,13 @@ class RegistrationFormTests(RegistrationTestCase):
         Test the confusable-username validator standalone.
 
         """
-        validator = validators.ConfusablesValidator()
         for dangerous_value in (
                 u'p\u0430yp\u0430l',
                 u'g\u043e\u043egle',
                 u'\u03c1ay\u03c1al',
         ):
             with self.assertRaises(ValidationError):
-                validator(dangerous_value)
+                validators.validate_confusables(dangerous_value)
         for safe_value in (
                 u'paypal',
                 u'google',
@@ -231,14 +230,13 @@ class RegistrationFormTests(RegistrationTestCase):
                 u'\u5c71\u672c',
                 3,
         ):
-            validator(safe_value)
+            validators.validate_confusables(safe_value)
 
     def test_confusables_email_validator(self):
         """
         Test the confusable-email validator standalone.
 
         """
-        validator = validators.ConfusablesEmailValidator()
         for dangerous_value in (
                 u'p\u0430yp\u0430l@example.com',
                 u'g\u043e\u043egle@example.com',
@@ -247,7 +245,7 @@ class RegistrationFormTests(RegistrationTestCase):
                 u'google@exam\u03c1le.com'
         ):
             with self.assertRaises(ValidationError):
-                validator(dangerous_value)
+                validators.validate_confusables_email(dangerous_value)
         for safe_value in(
                 u'paypal@example.com',
                 u'google@example.com',
@@ -255,4 +253,4 @@ class RegistrationFormTests(RegistrationTestCase):
                 u'\u5c71\u672c@example.com',
                 u'username',
         ):
-            validator(safe_value)
+            validators.validate_confusables_email(safe_value)

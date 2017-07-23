@@ -129,7 +129,7 @@ Several constants are provided which are used by this validator:
    as the default set of reserved names for
    :class:`~registration.validators.ReservedNameValidator`.
 
-.. class:: ConfusablesValidator
+.. function:: validate_confusables(value)
 
    A custom validator which prohibits the use of
    dangerously-confusable usernames.
@@ -150,7 +150,10 @@ Several constants are provided which are used by this validator:
    This validator is enabled by default on the username field of
    registration forms.
 
-.. class:: ConfusablesEmailValidator
+   :param value: The username value to validate
+   :type value: ``str`` (non-string usernames will not be checked)
+
+.. function:: validate_confusables_email(value)
 
    A custom validator which prohibits the use of
    dangerously-confusable email address.
@@ -172,3 +175,6 @@ Several constants are provided which are used by this validator:
 
    This validator is enabled by default on the email field of
    registration forms.
+
+   :param value: The email address to validate
+   :type value: ``str``

@@ -44,7 +44,7 @@ class RegistrationForm(UserCreationForm):
         help_text=_(u'email address'),
         required=True,
         validators=[
-            validators.ConfusablesEmailValidator(),
+            validators.validate_confusables_email,
         ]
     )
 
@@ -84,8 +84,7 @@ class RegistrationForm(UserCreationForm):
                     reserved_names=reserved_names
                 )
                 reserved_validator(username_value)
-                confusables_validator = validators.ConfusablesValidator()
-                confusables_validator(username_value)
+                validators.validate_confusables(username_value)
             except ValidationError as v:
                 self.add_error(User.USERNAME_FIELD, v)
         super(RegistrationForm, self).clean()

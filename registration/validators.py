@@ -196,7 +196,7 @@ class ReservedNameValidator(object):
             )
 
 
-class ConfusablesValidator(object):
+def validate_confusables(value):
     """
     Validator which disallows 'dangerous' usernames likely to
     represent homograph attacks.
@@ -206,14 +206,13 @@ class ConfusablesValidator(object):
     appearing in the Unicode Visually Confusable Characters file.
 
     """
-    def __call__(self, value):
-        if not isinstance(value, six.text_type):
-            return
-        if confusables.is_dangerous(value):
-            raise ValidationError(CONFUSABLE, code='invalid')
+    if not isinstance(value, six.text_type):
+        return
+    if confusables.is_dangerous(value):
+        raise ValidationError(CONFUSABLE, code='invalid')
 
 
-class ConfusablesEmailValidator(object):
+def validate_confusables_email(value):
     """
     Validator which disallows 'dangerous' email addresses likely to
     represent homograph attacks.
@@ -224,10 +223,9 @@ class ConfusablesEmailValidator(object):
     Characters file.
 
     """
-    def __call__(self, value):
-        if '@' not in value:
-            return
-        local_part, domain = value.split('@')
-        if confusables.is_dangerous(local_part) or \
-           confusables.is_dangerous(domain):
-            raise ValidationError(CONFUSABLE_EMAIL, code='invalid')
+    if '@' not in value:
+        return
+    local_part, domain = value.split('@')
+    if confusables.is_dangerous(local_part) or \
+       confusables.is_dangerous(domain):
+        raise ValidationError(CONFUSABLE_EMAIL, code='invalid')
