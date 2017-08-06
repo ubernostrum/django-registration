@@ -9,13 +9,13 @@ authentication system supported only its own built-in user model,
 have introduced support for `custom user models
 <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_.
 
-Older versions of django-registration did not generally support
-custom user models due to the additional complexity required; as of
-version |version|, however, django-registration now can support
-custom user models. Depending on how significantly your custom user
-model differs from Django's default, you may need to change only a few
-lines of code; custom user models significantly different from the
-default model may require more work to support.
+Older versions of django-registration did not generally support custom
+user models due to the additional complexity required. However,
+django-registration now can support custom user models. Depending on
+how significantly your custom user model differs from Django's
+default, you may need to change only a few lines of code; custom user
+models significantly different from the default model may require more
+work to support.
 
 
 Overview

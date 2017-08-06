@@ -125,8 +125,8 @@ following changes need to be noted:
 Changes since 2.0
 -----------------
 
-Only one major change occurred between django-registration 2.0 and
-|version|: the addition in version 2.1 of the
+One major change occurred between django-registration 2.0 and 2.1: the
+addition in version 2.1 of the
 :class:`~registration.validators.ReservedNameValidator`, which is now
 used by default on :class:`~registration.forms.RegistrationForm` and
 its subclasses.
@@ -138,9 +138,23 @@ now-disallowed usernames. If you need to allow users to register with
 usernames forbidden by this validator, see its documentation for notes
 on how to customize or disable it.
 
-In |version|, the behavior of the
+In 2.2, the behavior of the
 :meth:`~registration.models.RegistrationProfile.expired` method was
 clarified to accommodate user expectations; it does *not* return (and
 thus,
 :meth:`~registration.models.RegistrationProfile.delete_expired_users`
 does not delete) profiles of users who had successfully activated.
+
+In django-registration 2.3, the new validators
+:func:`~registration.validators.validate_confusables` and
+:func:`~registration.validators.validate_confusables_email` were
+added, and are applied by default to the username field and email
+field, respectively, of registration forms. This may cause some
+usernames which previously were accepted to no longer be accepted, but
+like the reserved-name validator this change was made because its
+security benefits significantly outweigh the edge cases in which it
+might disallow an otherwise-acceptable username or email address. If
+for some reason you need to allow registration with usernames or email
+addresses containing potentially dangerous use of Unicode, you can
+subclass the registration form and remove these validators, though
+doing so is not recommended.

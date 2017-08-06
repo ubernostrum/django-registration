@@ -1,6 +1,6 @@
 .. _index:
 
-django-registration |version|
+django-registration |release|
 =============================
 
 django-registration is an extensible application providing user
