@@ -22,7 +22,7 @@ msgstr "활동 사용자"
 
 #: admin.py:43
 msgid "Re-send activation emails"
-msgstr "이 메일 제 전송"
+msgstr "이메일 재전송"
 
 #: forms.py:35
 msgid "username"
