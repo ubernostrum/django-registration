@@ -1,3 +1,4 @@
+confusable_homoglyphs
 coverage
 flake8
-confusable_homoglyphs
+mock
