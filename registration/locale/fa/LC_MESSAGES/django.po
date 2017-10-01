@@ -1,80 +1,95 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# Mohsen Mansouryar <mohsen.brian@gmail.com>, 2011.
+# Hassan Sabbah <thelordofalamut@gmail.com>, 2017.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: django-registration 0.8\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 19:30-0500\n"
-"PO-Revision-Date: 2011-11-18 01:11+0330\n"
-"Last-Translator: Mohsen Mansouryar <mohsen.brian@gmail.com>\n"
-"Language-Team: erixe <mohsen.brian@gmail.com>\n"
+"Project-Id-Version: django-registration 2.2\n"
+"Report-Msgid-Bugs-To: <thelordofalamut@gmail.com>\n"
+"POT-Creation-Date: 2009-10-12 14:09-0500\n"
+"PO-Revision-Date: 2017-07-18 14:25+0430\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Persian\n"
-"X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language-Team: فارسی <FA@li.org>\n"
+"X-Generator: Poedit 2.0.2\n"
+"Last-Translator: Hassan Sabbah <thelordofalamut@gmail.com>\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: fa\n"
 
-#: forms.py:38
+#: admin.py:23
+msgid "Activate users"
+msgstr "فعال سازی کاربران"
+
+#: admin.py:43
+msgid "Re-send activation emails"
+msgstr "فرستادن دوباره ی ایمیل های فعال سازی"
+
+#: forms.py:35
 msgid "username"
 msgstr "نام کاربری"
 
-#: forms.py:41
-msgid "email address"
-msgstr "پست الکترونیکی"
+#: forms.py:36
+msgid "This value must contain only letters, numbers and underscores."
+msgstr "این رشته باید تنها دارای حروف، اعداد و زیرین خط ( ـ ) باشد."
 
-#: forms.py:43
-msgid "password"
+#: forms.py:39
+msgid "Email address"
+msgstr "نشانی ایمیل"
+
+#: forms.py:41
+msgid "Password"
 msgstr "گذرواژه"
 
-#: forms.py:45
-msgid "password (again)"
-msgstr "گذرواژه(تکرار)"
+#: forms.py:43
+msgid "Password (again)"
+msgstr "گذرواژه (تکرار)"
 
-#: forms.py:54
-msgid "Usernames can only contain letters, numbers and underscores"
-msgstr "نام های کاربری تنها می توانند شامل حرف، رقم و یا _ باشند."
+#: forms.py:55
+msgid "A user with that username already exists."
+msgstr "کاربری با این نام کاربری از گذشته موجود است."
 
-#: forms.py:59
-msgid "This username is already taken. Please choose another."
-msgstr "این نام کاربری گرفته شده است. لطفا نام دیگری انتخاب کنید."
+#: forms.py:67
+msgid "The two password fields didn't match."
+msgstr "دو رشته ی گذرواژه یکسان نبودند."
 
-#: forms.py:68
-msgid "You must type the same password each time"
-msgstr "دو گذرواژه باید مطابق باشند!"
-
-#: forms.py:96
+#: forms.py:78
 msgid "I have read and agree to the Terms of Service"
-msgstr "من شرایط استفاده از این سرویس را مطالعه کرده و می پذیرم."
+msgstr "من شرایط استفاده از خدمات را خوانده و پسندیده ام"
 
-#: forms.py:105
+#: forms.py:79
 msgid "You must agree to the terms to register"
-msgstr "شما باید شرایط عضویت را بپذیرید!"
+msgstr "شما برای نام نویسی باید شرایط استفاده از خدمات را بپسندید"
 
-#: forms.py:124
-msgid "This email address is already in use. Please supply a different email address."
-msgstr "این آدرس استفاده شده است. لطفا آدرس دیگری ارائه دهید."
+#: forms.py:95
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr ""
+"این نشانی ایمیل هم اکنون در حال استفاده است. خواهش می کنم نشانی ایمیل "
+"دیگری بکار ببرید."
 
-#: forms.py:149
-msgid "Registration using free email addresses is prohibited. Please supply a different email address."
-msgstr "ثبت نام با استفاده از پست های الکترونیکی رایگان امکان پذیر نمی باشد."
+#: forms.py:122
+msgid ""
+"Registration using free email addresses is prohibited. Please supply a "
+"different email address."
+msgstr ""
+"نام نویسی با ایمیل های رایگان ممنوع است. لطفا نشانی ایمیل دیگری بکار "
+"ببرید."
 
-#: models.py:188
+#: models.py:165
 msgid "user"
 msgstr "کاربر"
 
-#: models.py:189
+#: models.py:166
 msgid "activation key"
-msgstr "کد فعالسازی"
+msgstr "کلید فعال سازی"
 
-#: models.py:194
+#: models.py:171
 msgid "registration profile"
-msgstr "مشخصات ثبت نام"
+msgstr "پروفایل نام نویسی"
 
-#: models.py:195
+#: models.py:172
 msgid "registration profiles"
-msgstr "پروفایل های ثبت نام"
-
+msgstr "پروفایل های نام نویسی"
