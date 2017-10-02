@@ -31,7 +31,8 @@ urlpatterns = [
 
 @modify_settings(INSTALLED_APPS={
     'prepend': ['django.contrib.admin'], 'remove': 'registration'})
-@override_settings(ROOT_URLCONF='registration.tests.test_password_reset')
+@override_settings(
+    ROOT_URLCONF='registration.tests.test_django_auth_integration')
 @override_settings(TEMPLATES=[buildTemplateSettings()])
 class DjangoAuthURLTests(TestCase):
     """Tests for the auth URLs imported by django-registration"""
@@ -47,7 +48,7 @@ class DjangoAuthURLTests(TestCase):
         User.objects.create_user(cls.username, cls.email, cls.password)
 
     @patch.object(PasswordResetForm, 'send_mail')
-    def test_email_test(self, send_mail_mock):
+    def test_password_reset_email(self, send_mail_mock):
         """Regression test for #113
 
         https://github.com/ubernostrum/django-registration/issues/113
