@@ -21,6 +21,7 @@ class RegistrationView(FormView):
     form_class = RegistrationForm
     success_url = None
     template_name = 'registration/registration_form.html'
+    redirect_authenticated_user = False
 
     def dispatch(self, *args, **kwargs):
         """
@@ -28,6 +29,14 @@ class RegistrationView(FormView):
         dispatch or do other processing.
 
         """
+        user = self.request.user
+        is_authenticated = user.is_authenticated() if \
+            (hasattr(user, 'is_authenticated') and
+             callable(user.is_authenticated)) else \
+            user.is_authenticated
+
+        if self.redirect_authenticated_user and is_authenticated:
+            return redirect(settings.LOGIN_REDIRECT_URL) if not self.success_url else redirect(self.success_url)
         if not self.registration_allowed():
             return redirect(self.disallowed_url)
         return super(RegistrationView, self).dispatch(*args, **kwargs)

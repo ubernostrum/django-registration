@@ -45,3 +45,16 @@ class ActivationViewTests(RegistrationTestCase):
             )
         )
         self.assertRedirects(resp, '/activate/complete/')
+
+    def test_registration_redirect(self):
+        """
+        ``redirect_authenticated_user``, when ``True``, redirects
+        authenticated users to success_url.
+
+        """
+        self.client.login(**{
+            self.user_model.USERNAME_FIELD: self.valid_data[self.user_model.USERNAME_FIELD],
+            'password': self.valid_data['password1'],
+        })
+        resp = self.client.get(reverse('registration_register_or_redirect'))
+        self.assertRedirects(resp, '/')
