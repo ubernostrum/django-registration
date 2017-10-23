@@ -89,7 +89,7 @@ class ActivationView(TemplateView):
             )
             success_url = self.get_success_url(activated_user) if \
                 (hasattr(self, 'get_success_url') and
-                 callable(self.success_url)) else \
+                 callable(self.get_success_url)) else \
                 self.success_url
             try:
                 to, args, kwargs = success_url
