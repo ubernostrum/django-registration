@@ -219,6 +219,10 @@ following context:
     <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for
     details regarding these objects.
 
+``scheme``
+
+    The protocol on which the user had registered, it is http or https
+
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
 toward and interoperability problems with HTML email,
