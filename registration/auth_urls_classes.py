@@ -41,7 +41,8 @@ urlpatterns = [
         name='auth_password_change_done'),
     url(r'^password/reset/$',
         auth_views.PasswordResetView.as_view(
-            success_url='auth_password_reset_done'
+            email_template_name='registration/password_reset_email.txt',
+            success_url='auth_password_reset_done',
         ),
         name='auth_password_reset'),
     url(r'^password/reset/complete/$',
