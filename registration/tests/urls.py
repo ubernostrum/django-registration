@@ -11,7 +11,7 @@ from django.views.generic.base import TemplateView
 
 from registration.backends.model_activation.views import RegistrationView
 
-from .views import ActivateWithComplexRedirect
+from .views import ActivateWithComplexRedirect, RegistrationWithRedirect
 
 
 urlpatterns = [
@@ -35,6 +35,9 @@ urlpatterns = [
     url(r'^register/$',
         RegistrationView.as_view(),
         name='registration_register'),
+    url(r'^register-or-redirect/$',
+        RegistrationWithRedirect.as_view(),
+        name='registration_register_or_redirect'),
     url(r'^register/complete/$',
         TemplateView.as_view(
             template_name='registration/registration_complete.html'
