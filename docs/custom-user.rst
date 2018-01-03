@@ -53,7 +53,7 @@ edit django-registration's code):
 
     
     class MyCustomUserForm(RegistrationForm):
-        class Meta:
+        class Meta(RegistrationForm.Meta):
             model = MyCustomUser
 
 You will also need to specify the fields to include in the form, via
