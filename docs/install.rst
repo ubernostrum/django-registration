@@ -11,7 +11,7 @@ download page <https://www.djangoproject.com/download/>`_, which
 offers convenient packaged downloads and installation instructions.
 
 The |release| release of django-registration supports Django 1.8, 1.9,
-1.10 and 1.11, on the following Python versions:
+1.10, 1.11, and 2.0 on the following Python versions:
 
 * Django 1.8 supports Python 2.7, 3.3, 3.4 and 3.5.
 
@@ -21,8 +21,7 @@ The |release| release of django-registration supports Django 1.8, 1.9,
 
 * Django 1.11 supports Python 2.7, 3.4, 3.5 and 3.6.
 
-It is expected that django-registration |release| will work without
-modification on Python 3.6 once it is released.
+* Django 2.0 supports Python 3.4, 3.5 and 3.6.
 
 .. important:: **Python 3.2**
 

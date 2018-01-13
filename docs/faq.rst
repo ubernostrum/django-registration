@@ -38,9 +38,10 @@ General
 
     As of django-registration |release|, Django 1.8, 1.9, 1.10 and
     1.11 are supported, on Python 2.7, 3.3 (Django 1.8 only), 3.4, 3.5
-    and 3.6 (Django 1.11 only). Although Django 1.8 supported Python
-    3.2 at initial release, Python 3.2 is now at its end-of-life and
-    django-registration no longer supports it.
+    and 3.6 (Django 1.11 only), and Django 2.0 on Python 3.4, 3.5, and
+    3.6. Although Django 1.8 supported Python 3.2 at initial release,
+    Python 3.2 is now at its end-of-life and django-registration no
+    longer supports it.
 
 **I found a bug or want to make an improvement!**
 
