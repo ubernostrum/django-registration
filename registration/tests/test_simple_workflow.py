@@ -3,6 +3,7 @@ Tests for the one-step registration workflow.
 
 """
 
+import django
 from django.test import modify_settings, override_settings
 
 from .. import signals
@@ -57,4 +58,7 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
 
         # New user must be logged in.
         resp = self.client.get(reverse('registration_register'))
-        self.assertTrue(resp.context['user'].is_authenticated())
+        if django.VERSION < (2, 0):
+            self.assertTrue(resp.context['user'].is_authenticated())
+        else:
+            self.assertTrue(resp.context['user'].is_authenticated)
