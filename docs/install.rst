@@ -21,9 +21,6 @@ The |release| release of django-registration supports Django 1.8, 1.9,
 
 * Django 1.11 supports Python 2.7, 3.4, 3.5 and 3.6.
 
-It is expected that django-registration |release| will work without
-modification on Python 3.6 once it is released.
-
 .. important:: **Python 3.2**
 
    Although Django 1.8 supported Python 3.2 at the time of its
