@@ -28,7 +28,7 @@ SETTINGS_DICT = {
         'registration',
     ),
     # Test cases will override this liberally.
-    'ROOT_URLCONF': 'registration.backends.default.urls',
+    'ROOT_URLCONF': 'registration.backends.hmac.urls',
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

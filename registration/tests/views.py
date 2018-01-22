@@ -4,7 +4,7 @@ covered by the built-in workflows.
 
 """
 
-from registration.backends.model_activation.views import ActivationView
+from registration.backends.hmac.views import ActivationView
 
 
 class ActivateWithComplexRedirect(ActivationView):

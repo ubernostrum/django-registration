@@ -34,5 +34,5 @@ urlpatterns = [
             template_name='registration/registration_closed.html'
         ),
         name='registration_disallowed'),
-    url(r'', include('registration.auth_urls')),
+    url(r'', include('django.contrib.auth.urls')),
 ]
