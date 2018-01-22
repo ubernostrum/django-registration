@@ -10,10 +10,7 @@ from registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import RegistrationTestCase
 
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    from django.core.urlresolvers import reverse  # pragma: no cover
+from django.urls import reverse
 
 
 @override_settings(ROOT_URLCONF='registration.tests.urls')

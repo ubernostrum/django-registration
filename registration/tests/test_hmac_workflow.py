@@ -16,10 +16,7 @@ from registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import ActivationTestCase
 
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    from django.core.urlresolvers import reverse  # pragma: no cover
+from django.urls import reverse
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})
