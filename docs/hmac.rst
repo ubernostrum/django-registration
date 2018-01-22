@@ -6,17 +6,10 @@ The HMAC activation workflow
 
 The HMAC workflow, found in ``registration.backends.hmac``, implements
 a two-step registration process (signup, followed by activation), but
-unlike the older :ref:`model-based activation workflow
-<model-workflow>` uses no models and does not store its activation
-key; instead, the activation key sent to the user is a timestamped,
-`HMAC
+uses no models and does not store its activation key; instead, the
+activation key sent to the user is a timestamped, `HMAC
 <https://en.wikipedia.org/wiki/Hash-based_message_authentication_code>`_-verified
 value.
-
-Unless you need to maintain compatibility in an existing install of
-django-registration which used the model-based workflow, it's
-recommended you use the HMAC activation workflow for two-step signup
-processes.
 
 
 Behavior and configuration
@@ -189,36 +182,6 @@ verification of the signature prior to activation, as well as
 verifying that the user is activating within the permitted window (as
 specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, mentioned
 above), through use of Django's ``TimestampSigner``.
-
-
-Comparison to the model-activation workflow
--------------------------------------------
-
-The primary advantage of the HMAC activation workflow is that it
-requires no persistent storage of the activation key. However, this
-means there is no longer an automated way to differentiate accounts
-which have been purposefully deactivated (for example, as a way to ban
-a user) from accounts which failed to activate within a specified
-window. Additionally, it is possible a user could, if manually
-deactivated, re-activate their account if still within the activation
-window; for this reason, when using the ``is_active`` field to "ban" a
-user, it is best to also set the user's password to an unusable value
-(i.e., by calling `set_unusable_password()
-<https://docs.djangoproject.com/en/stable/ref/contrib/auth/#django.contrib.auth.models.User.set_unusable_password>`_
-for that user). Calling ``set_unusable_password()`` will also make it
-easier to query for manually-deactivated users, as their passwords
-will (when using Django's default ``User`` implementation) begin with
-the exclamation mark (``!``) character.
-
-Since the HMAC activation workflow does not use any models, it also
-does not make use of the admin interface and thus does not offer a
-convenient way to re-send an activation email. Users who have
-difficulty receiving the activation email can be manually activated by
-a site administrator.
-
-However, the reduced overhead of not needing to store the activation
-key makes this generally preferable to :ref:`the model-based workflow
-<model-workflow>`.
 
 
 Security considerations

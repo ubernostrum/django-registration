@@ -17,12 +17,9 @@ of several custom settings.
    An ``int`` indicating how long (in days) after signup an account
    has in which to activate.
 
-   This setting is required if using one of the built-in two-step
-   workflows:
+   Used by:
 
    * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
-
-   * :ref:`The model-based activation workflow <model-workflow>`
 
 
 .. data:: REGISTRATION_OPEN
@@ -39,8 +36,6 @@ of several custom settings.
    * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
 
    * :ref:`The one-step workflow <one-step-workflow>`
-
-   * :ref:`The model-based activation workflow <model-workflow>`
 
    Third-party workflows wishing to use an alternate method of
    determining whether registration is allowed should subclass

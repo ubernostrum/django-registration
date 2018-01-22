@@ -39,10 +39,7 @@ recommended default.
 The HMAC workflow provides a verification step -- the user must click
 a link sent to the email address they used to register -- which can
 serve as an impediment to automated account creation for malicious
-purposes. And unlike :ref:`the model-based workflow <model-workflow>`,
-the HMAC workflow does not need to store any additional server-side
-data (other than the user account itself -- the model workflow uses an
-additional model to store the activation key).
+purposes.
 
 The HMAC workflow generates an activation key which consists of the
 new account's username and the timestamp of the signup, verified using

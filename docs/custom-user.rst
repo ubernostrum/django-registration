@@ -103,9 +103,8 @@ and ``USERNAME_FIELD`` when access to the username is required.
 However, there are still some specific requirements you'll want to be
 aware of.
 
-The two-step activation workflows -- both :ref:`HMAC <hmac-workflow>`-
-and :ref:`model <model-workflow>`-based -- require that your user
-model have the following fields:
+The two-step :ref:`HMAC <hmac-workflow>` requires that your user model
+have the following fields:
 
 * ``email`` -- a textual field (``EmailField``, ``CharField`` or
   ``TextField``) holding the user's email address. Note that this
@@ -119,11 +118,6 @@ You also *must* specify the attribute ``USERNAME_FIELD`` on your user
 model to denote the field used as the username. Additionally, your
 user model must implement the ``email_user`` method for sending email
 to the user.
-
-The model-based activation workflow requires one additional field:
-
-* ``date_joined`` -- a ``DateField`` or ``DateTimeField`` indicating
-  when the user's account was registered.
 
 :ref:`The one-step workflow <one-step-workflow>` requires that your
 user model set ``USERNAME_FIELD``, and requires that it define a field
