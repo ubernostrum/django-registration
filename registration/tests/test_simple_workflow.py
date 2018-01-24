@@ -3,6 +3,7 @@ Tests for the one-step registration workflow.
 
 """
 
+import django
 from django.test import modify_settings, override_settings
 
 from .. import signals
