@@ -12,10 +12,7 @@ from django.test import TestCase, override_settings
 from ..forms import RegistrationForm
 from .. import signals
 
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    from django.core.urlresolvers import reverse  # pragma: no cover
+from django.urls import reverse
 
 
 User = get_user_model()

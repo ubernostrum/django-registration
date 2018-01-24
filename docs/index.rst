@@ -38,7 +38,6 @@ documentation listed below.
 
    hmac
    one-step-workflow
-   model-workflow
 
 .. toctree::
    :caption: For developers

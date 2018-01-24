@@ -9,10 +9,7 @@ from django.test import modify_settings, override_settings
 from .. import signals
 from .base import WorkflowTestCase
 
-try:
-    from django.urls import reverse
-except ImportError:  # pragma: no cover
-    from django.core.urlresolvers import reverse  # pragma: no cover
+from django.urls import reverse
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'registration'})
@@ -58,7 +55,4 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
 
         # New user must be logged in.
         resp = self.client.get(reverse('registration_register'))
-        if django.VERSION < (2, 0):
-            self.assertTrue(resp.context['user'].is_authenticated())
-        else:
-            self.assertTrue(resp.context['user'].is_authenticated)
+        self.assertTrue(resp.context['user'].is_authenticated)

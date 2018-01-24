@@ -114,6 +114,7 @@ SENSITIVE_FILENAMES = [
     'crossdomain.xml',         # Flash cross-domain policy file.
     'favicon.ico',
     'humans.txt',
+    'keybase.txt',  # Keybase ownership-verification URL.
     'robots.txt',
     '.htaccess',
     '.htpasswd',

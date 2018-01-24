@@ -10,14 +10,8 @@ information on obtaining and installing Django, consult the `Django
 download page <https://www.djangoproject.com/download/>`_, which
 offers convenient packaged downloads and installation instructions.
 
-The |release| release of django-registration supports Django 1.8, 1.9,
-1.10, 1.11, and 2.0 on the following Python versions:
-
-* Django 1.8 supports Python 2.7, 3.3, 3.4 and 3.5.
-
-* Django 1.9 supports Python 2.7, 3.4 and 3.5.
-
-* Django 1.10 supports Python 2.7, 3.4 and 3.5.
+The |release| release of django-registration supports Django 1.11 and
+2.0, on the following Python versions:
 
 * Django 1.11 supports Python 2.7, 3.4, 3.5 and 3.6.
 
@@ -34,13 +28,12 @@ The |release| release of django-registration supports Django 1.8, 1.9,
 Normal installation
 -------------------
 
-The preferred method of installing django-registration is via
-``pip``, the standard Python package-installation tool. If you don't
-have ``pip``, instructions are available for `how to obtain and
-install it <https://pip.pypa.io/en/latest/installing.html>`_. If
-you're using Python 2.7.9 or later (for Python 2) or Python 3.4 or
-later (for Python 3), ``pip`` came bundled with your installation of
-Python.
+The preferred method of installing django-registration is via ``pip``,
+the standard Python package-installation tool. If you don't have
+``pip``, instructions are available for `how to obtain and install it
+<https://pip.pypa.io/en/latest/installing.html>`_. If you're using a
+supported version of Python, ``pip`` should have come bundled with
+your installation of Python.
 
 Once you have ``pip``, type::
 

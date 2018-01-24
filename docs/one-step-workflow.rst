@@ -4,11 +4,11 @@
 The one-step workflow
 =====================
 
-As an alternative to the :ref:`HMAC <hmac-workflow>` and
-:ref:`model-based <model-workflow>` two-step (registration and
-activation) workflows, django-registration bundles a one-step
-registration workflow in ``registration.backends.simple``. This
-workflow is deliberately as simple as possible:
+As an alternative to the :ref:`HMAC <hmac-workflow>` two-step
+(registration and activation) workflow, django-registration bundles a
+one-step registration workflow in
+``registration.backends.simple``. This workflow consists of as few
+steps as possible:
 
 1. A user signs up by filling out a registration form.
 

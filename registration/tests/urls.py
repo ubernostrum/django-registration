@@ -9,7 +9,7 @@ development environment.
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
-from registration.backends.model_activation.views import RegistrationView
+from registration.backends.hmac.views import RegistrationView
 
 from .views import ActivateWithComplexRedirect
 
@@ -25,11 +25,9 @@ urlpatterns = [
             template_name='registration/activation_complete.html'
         ),
         name='registration_activation_complete'),
-    # Activation keys get matched by \w+ instead of the more specific
-    # [a-fA-F0-9]{40} because a bad activation key should still get to
-    # the view; that way it can return a sensible "invalid key"
-    # message instead of a confusing 404.
-    url(r'^activate/(?P<activation_key>\w+)/$',
+    # The activation key can make use of any character from the
+    # URL-safe base64 alphabet, plus the colon as a separator.
+    url(r'^activate/(?P<activation_key>[-:\w]+)/$',
         ActivateWithComplexRedirect.as_view(),
         name='registration_activate'),
     url(r'^register/$',
@@ -45,5 +43,5 @@ urlpatterns = [
             template_name='registration/registration_closed.html'
         ),
         name='registration_disallowed'),
-    url(r'', include('registration.auth_urls')),
+    url(r'', include('django.contrib.auth.urls')),
 ]

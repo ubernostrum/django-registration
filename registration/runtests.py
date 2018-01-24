@@ -28,21 +28,13 @@ SETTINGS_DICT = {
         'registration',
     ),
     # Test cases will override this liberally.
-    'ROOT_URLCONF': 'registration.backends.default.urls',
+    'ROOT_URLCONF': 'registration.backends.hmac.urls',
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': os.path.join(APP_DIR, 'db.sqlite3'),
         },
     },
-    # Legacy: Current for 1.8-1.9, deprecated 1.10+
-    'MIDDLEWARE_CLASSES': (
-        'django.middleware.common.CommonMiddleware',
-        'django.middleware.csrf.CsrfViewMiddleware',
-        'django.contrib.sessions.middleware.SessionMiddleware',
-        'django.contrib.auth.middleware.AuthenticationMiddleware',
-    ),
-    # Current: Used for 1.10+
     'MIDDLEWARE': (
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
