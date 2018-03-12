@@ -191,7 +191,7 @@ class ReservedNameValidator(object):
         if not isinstance(value, six.text_type):
             return
         if value in self.reserved_names or \
-           value.startswith('.well-known'):
+           value.startswith('.well-known'): # https://tools.ietf.org/html/rfc5785
             raise ValidationError(
                 RESERVED_NAME, code='invalid'
             )
