@@ -81,6 +81,7 @@ class SendActivationEmailTestCase(TestCase):
         # verify from_email
         self.assertEqual(email.from_email, 'from@example.com')
 
+    @override_settings(DEFAULT_FROM_EMAIL='from@example.com')
     def test_send_activation_email_kwargs(self):
         """
         Test if additional kwargs are passed to function
