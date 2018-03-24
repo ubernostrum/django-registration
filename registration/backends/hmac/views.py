@@ -79,7 +79,7 @@ class RegistrationView(BaseRegistrationView):
             'site': get_current_site(self.request)
         }
 
-    def send_activation_email(self, user):
+    def send_activation_email(self, user, **kwargs):
         """
         Send the activation email. The activation key is the username,
         signed using TimestampSigner.
@@ -97,7 +97,11 @@ class RegistrationView(BaseRegistrationView):
         subject = ''.join(subject.splitlines())
         message = render_to_string(self.email_body_template,
                                    context)
-        user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
+        # if `from_email` is not passed in kwargs get the value
+        # from settings
+        if kwargs.get('from_email') is None:
+            kwargs['from_email'] = getattr(settings, 'DEFAULT_FROM_EMAIL')
+        user.email_user(subject, message, **kwargs)
 
 
 class ActivationView(BaseActivationView):
