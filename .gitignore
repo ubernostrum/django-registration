@@ -8,3 +8,5 @@ dist/
 .tox/
 categories.json
 confusables.json
+.idea/vcs.xml
+.idea*
