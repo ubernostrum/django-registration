@@ -1,9 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.core import mail
 from django.test import TestCase, RequestFactory
 from django.test.utils import override_settings
+
 from ..backends.hmac.views import RegistrationView, ActivationView
-from django.contrib.auth import get_user_model
-from django.core.mail.backends.smtp import EmailBackend
 
 User = get_user_model()
 
@@ -90,7 +90,8 @@ class SendActivationEmailTestCase(TestCase):
             'from_email': 'test@o2.pl',
         }
         # send email to user
-        RegistrationView(request=self.request).send_activation_email(self.user, **kwargs)
+        RegistrationView(request=self.request)\
+            .send_activation_email(self.user, **kwargs)
         # grab email from outbox
         email = mail.outbox[0]
         # verify from_email
