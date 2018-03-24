@@ -121,7 +121,7 @@ class HMACViewTests(ActivationTestCase):
         # a date (ACCOUNT_ACTIVATION_DAYS + 1) days in the past.
         user = self.user_model.objects.get(**self.user_lookup_kwargs)
         joined_timestamp = (
-            user.date_joined - datetime.datetime.fromtimestamp(0)
+            user.date_joined - datetime.datetime.fromtimestamp(86400)
         ).total_seconds()
         expired_timestamp = (
             joined_timestamp - (settings.ACCOUNT_ACTIVATION_DAYS + 1) * 86400
