@@ -17,7 +17,7 @@ additional warning of pending removal.
 **Will be removed in:** django-registration 3.0
 
 This URLconf was provided in the earliest days of django-registration,
-when :ref:`the model-based workflow <model-workflow>` was the only one
+when the (now-removed) model-based workflow was the only one
 provided. Sites using the model-based workflow should instead
 ``include()`` the URLconf
 ``registration.backends.model_activation.urls``.

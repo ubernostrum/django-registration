@@ -68,10 +68,7 @@ django-registration make use of it.
    section is walking you through setup of the :ref:`the HMAC
    activation workflow <hmac-workflow>`, and that does not make use of
    any custom models or other features which require ``registration``
-   to be in ``INSTALLED_APPS``. Only add ``registration`` to your
-   ``INSTALLED_APPS`` setting if you're using :ref:`the model-based
-   activation workflow <model-workflow>`, or something derived from
-   it.
+   to be in ``INSTALLED_APPS``.
 
 
 Setting up URLs
