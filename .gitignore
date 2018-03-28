@@ -8,3 +8,4 @@ dist/
 .tox/
 categories.json
 confusables.json
+.idea
