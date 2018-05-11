@@ -5,6 +5,7 @@ workflow.
 """
 
 from django.contrib.auth import authenticate, get_user_model, login
+from django.conf import settings
 
 from registration import signals
 from registration.views import RegistrationView as BaseRegistrationView
@@ -33,4 +34,4 @@ class RegistrationView(BaseRegistrationView):
         return new_user
 
     def get_success_url(self, user):
-        return '/'
+        return getattr(settings, 'FORCE_SCRIPT_NAME', '/')
