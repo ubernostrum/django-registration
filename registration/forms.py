@@ -55,6 +55,7 @@ class RegistrationForm(UserCreationForm):
             'password1',
             'password2'
         ]
+        model = User
         required_css_class = 'required'
 
     def clean(self):
