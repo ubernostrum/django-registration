@@ -10,17 +10,16 @@ from django.conf import settings
 from django.core import signing
 from django.http import HttpRequest
 from django.test import modify_settings, override_settings
+from django.urls import reverse
 
-from .. import signals
-from registration.backends.hmac.views import REGISTRATION_SALT
+from django_registration import signals
+from django_registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import ActivationTestCase
 
-from django.urls import reverse
 
-
-@modify_settings(INSTALLED_APPS={'remove': 'registration'})
-@override_settings(ROOT_URLCONF='registration.backends.hmac.urls')
+@modify_settings(INSTALLED_APPS={'remove': 'django_registration'})
+@override_settings(ROOT_URLCONF='django_registration.backends.hmac.urls')
 class HMACViewTests(ActivationTestCase):
     """
     Tests for the signed-token registration workflow.

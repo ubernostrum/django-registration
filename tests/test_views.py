@@ -5,15 +5,14 @@ Tests for django-registration's built-in views.
 
 from django.core import signing
 from django.test import override_settings
+from django.urls import reverse
 
-from registration.backends.hmac.views import REGISTRATION_SALT
+from django_registration.backends.hmac.views import REGISTRATION_SALT
 
 from .base import RegistrationTestCase
 
-from django.urls import reverse
 
-
-@override_settings(ROOT_URLCONF='registration.tests.urls')
+@override_settings(ROOT_URLCONF='tests.urls')
 class ActivationViewTests(RegistrationTestCase):
     """
     Tests for aspects of the activation view not currently exercised

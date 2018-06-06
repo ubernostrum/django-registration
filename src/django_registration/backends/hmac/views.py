@@ -11,9 +11,9 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.template.loader import render_to_string
 
-from registration import signals
-from registration.views import ActivationView as BaseActivationView
-from registration.views import RegistrationView as BaseRegistrationView
+from django_registration import signals
+from django_registration.views import ActivationView as BaseActivationView
+from django_registration.views import RegistrationView as BaseRegistrationView
 
 
 REGISTRATION_SALT = getattr(settings, 'REGISTRATION_SALT', 'registration')

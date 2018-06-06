@@ -47,7 +47,7 @@ new account's username and the timestamp of the signup, verified using
 <https://docs.djangoproject.com/en/1.11/topics/signing/>`_ which in
 turn use `the HMAC implementation from the Python standard library
 <https://docs.python.org/3/library/hmac.html>`_. Thus,
-django-registration is not inventing or buliding any new cryptography,
+django-registration is not inventing or building any new cryptography,
 but only using existing/vetted implementations in an approved and
 standard manner.
 

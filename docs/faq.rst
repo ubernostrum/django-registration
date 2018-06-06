@@ -28,7 +28,7 @@ General
     django-registration is offered under a three-clause BSD-style
     license; this is `an OSI-approved open-source license
     <http://www.opensource.org/licenses/bsd-license.php>`_, and allows
-    you a large degree of freedom in modifiying and redistributing the
+    you a large degree of freedom in modifying and redistributing the
     code. For the full terms, see the file ``LICENSE`` which came with
     your copy of django-registration; if you did not receive a copy of
     this file, you can view it online at
@@ -181,7 +181,7 @@ Tips and tricks
     use the setting :data:`~django.conf.settings.REGISTRATION_OPEN` to
     control this; when the setting is ``True``, or isn't supplied,
     user registration will be permitted. When the setting is
-    ``False``, user registration will not pe permitted.
+    ``False``, user registration will not be permitted.
 
 **How do I log a user in immediately after registration or activation?**
 

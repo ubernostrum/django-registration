@@ -125,8 +125,8 @@ Several constants are provided which are used by this validator:
 
 .. data:: DEFAULT_RESERVED_NAMES
 
-   A list made of the concatentation of all of the above lists, used
-   as the default set of reserved names for
+   A list made of the concatenation of all of the above lists, used as
+   the default set of reserved names for
    :class:`~registration.validators.ReservedNameValidator`.
 
 .. function:: validate_confusables(value)

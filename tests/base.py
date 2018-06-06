@@ -8,11 +8,10 @@ from django.contrib.auth import get_user_model
 from django.core import mail
 from django.http import HttpRequest
 from django.test import TestCase, override_settings
-
-from ..forms import RegistrationForm
-from .. import signals
-
 from django.urls import reverse
+
+from django_registration import signals
+from django_registration.forms import RegistrationForm
 
 
 User = get_user_model()

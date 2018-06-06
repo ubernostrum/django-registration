@@ -6,8 +6,8 @@ workflow.
 
 from django.contrib.auth import authenticate, get_user_model, login
 
-from registration import signals
-from registration.views import RegistrationView as BaseRegistrationView
+from django_registration import signals
+from django_registration.views import RegistrationView as BaseRegistrationView
 
 
 User = get_user_model()

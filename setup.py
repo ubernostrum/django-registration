@@ -1,44 +1,16 @@
-import os
-
-from setuptools import setup
-
-from registration import get_version
-
-
-# Compile the list of packages available, because distutils doesn't have
-# an easy way to do this.
-packages, data_files = [], []
-root_dir = os.path.dirname(__file__)
-if root_dir:
-    os.chdir(root_dir)
-
-for dirpath, dirnames, filenames in os.walk('registration'):
-    # Ignore dirnames that start with '.'
-    for i, dirname in enumerate(dirnames):
-        if dirname.startswith('.') or '__pycache__' in dirname:
-            del dirnames[i]
-    if '__init__.py' in filenames:
-        pkg = dirpath.replace(os.path.sep, '.')
-        if os.path.altsep:
-            pkg = pkg.replace(os.path.altsep, '.')
-        packages.append(pkg)
-    elif filenames:
-        prefix = dirpath[13:]  # Strip "registration/" or "registration\"
-        for f in filenames:
-            data_files.append(os.path.join(prefix, f))
+from setuptools import find_packages, setup
 
 
 setup(name='django-registration',
       zip_safe=False,  # eggs are the devil.
-      version=get_version().replace(' ', '-'),
+      version='3.0-dev',
       description='An extensible user-registration application for Django',
       author='James Bennett',
       author_email='james@b-list.org',
       url='https://github.com/ubernostrum/django-registration/',
-      package_dir={'registration': 'registration'},
-      packages=packages,
-      package_data={'registration': data_files},
-      test_suite='registration.runtests.run_tests',
+      include_package_data=True,
+      package_dir={'': 'src'},
+      packages=find_packages('src'),
       classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
@@ -58,6 +30,7 @@ setup(name='django-registration',
           'Programming Language :: Python :: 3.5',
           'Programming Language :: Python :: 3.6',
           'Topic :: Utilities'],
+      python_requires=">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*",
       install_requires=[
           'Django>=1.11',
           'confusable_homoglyphs~=3.0',

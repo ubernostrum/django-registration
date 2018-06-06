@@ -24,15 +24,14 @@ SETTINGS_DICT = {
         'django.contrib.contenttypes',
         'django.contrib.sessions',
         'django.contrib.sites',
-        # This is only needed by the model-based activation workflow.
-        'registration',
+        'django_registration',
     ),
     # Test cases will override this liberally.
-    'ROOT_URLCONF': 'registration.backends.hmac.urls',
+    'ROOT_URLCONF': 'django_registration.backends.hmac.urls',
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(APP_DIR, 'db.sqlite3'),
+            'NAME': ':memory:',
         },
     },
     'MIDDLEWARE': (
@@ -78,7 +77,7 @@ def run_tests():
 
     # And then we run tests and return the results.
     test_runner = TestRunner(verbosity=2, interactive=True)
-    failures = test_runner.run_tests(['registration.tests'])
+    failures = test_runner.run_tests(['tests'])
     sys.exit(bool(failures))
 
 

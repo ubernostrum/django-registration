@@ -4,15 +4,15 @@ Tests for the one-step registration workflow.
 """
 
 from django.test import modify_settings, override_settings
-
-from .. import signals
-from .base import WorkflowTestCase
-
 from django.urls import reverse
 
+from django_registration import signals
 
-@modify_settings(INSTALLED_APPS={'remove': 'registration'})
-@override_settings(ROOT_URLCONF='registration.backends.simple.urls')
+from .base import WorkflowTestCase
+
+
+@modify_settings(INSTALLED_APPS={'remove': 'django_registration'})
+@override_settings(ROOT_URLCONF='django_registration.backends.simple.urls')
 class SimpleWorkflowViewTests(WorkflowTestCase):
     """
     Tests for the one-step workflow.

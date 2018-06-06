@@ -8,8 +8,8 @@ from django.core.exceptions import ValidationError
 from django.test import modify_settings
 from django.utils.six import text_type
 
-from .. import forms
-from .. import validators
+from django_registration import forms, validators
+
 from .base import RegistrationTestCase
 
 

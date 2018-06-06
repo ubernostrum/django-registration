@@ -9,7 +9,7 @@ development environment.
 from django.conf.urls import include, url
 from django.views.generic.base import TemplateView
 
-from registration.backends.hmac.views import RegistrationView
+from django_registration.backends.hmac.views import RegistrationView
 
 from .views import ActivateWithComplexRedirect
 

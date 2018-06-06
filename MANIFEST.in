@@ -3,3 +3,5 @@ include MANIFEST.in
 include AUTHORS
 recursive-include docs *
 recursive-include registration/locale *
+graft src
+graft tests

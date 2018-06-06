@@ -1,4 +1,0 @@
-confusable_homoglyphs
-coverage
-flake8
-mock

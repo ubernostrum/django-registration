@@ -8,8 +8,8 @@ from django.shortcuts import redirect
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
-from registration import signals
-from registration.forms import RegistrationForm
+from . import signals
+from .forms import RegistrationForm
 
 
 class RegistrationView(FormView):

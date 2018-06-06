@@ -4,7 +4,7 @@ covered by the built-in workflows.
 
 """
 
-from registration.backends.hmac.views import ActivationView
+from django_registration.backends.hmac.views import ActivationView
 
 
 class ActivateWithComplexRedirect(ActivationView):

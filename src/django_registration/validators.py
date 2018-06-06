@@ -3,11 +3,10 @@ Error messages, data and custom validation code used in
 django-registration's various user-registration form classes.
 
 """
+from confusable_homoglyphs import confusables
 from django.core.exceptions import ValidationError
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
-
-from confusable_homoglyphs import confusables
 
 
 CONFUSABLE = _(u"This name cannot be registered. "
