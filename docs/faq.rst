@@ -37,7 +37,7 @@ General
 **What versions of Django and Python are supported?**
 
     As of django-registration |release|, Django 1.11 and 2.0 are
-    supported, on Python 2.7, (Django 1.1 only), 3.4, 3.5 and 3.6.
+    supported, on Python 2.7, (Django 1.11 only), 3.4, 3.5 and 3.6.
 
 **I found a bug or want to make an improvement!**
 

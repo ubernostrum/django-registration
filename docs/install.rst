@@ -17,14 +17,6 @@ The |release| release of django-registration supports Django 1.11 and
 
 * Django 2.0 supports Python 3.4, 3.5 and 3.6.
 
-.. important:: **Python 3.2**
-
-   Although Django 1.8 supported Python 3.2 at the time of its
-   release, the Python 3.2 series has reached end-of-life, and as a
-   result support for Python 3.2 has been dropped from
-   django-registration.
-
-
 Normal installation
 -------------------
 
