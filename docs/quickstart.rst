@@ -249,7 +249,7 @@ setting.
 
 You will need to configure URLs to use the one-step workflow; the
 easiest way is to ``include()`` the URLconf
-``django_registration.backends.simple.urls`` in your root URLconf. For
+``django_registration.backends.one_step.urls`` in your root URLconf. For
 example, to place the URLs under the prefix ``/accounts/`` in your URL
 structure:
 
@@ -259,7 +259,7 @@ structure:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.simple.urls')),
+       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
        url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]

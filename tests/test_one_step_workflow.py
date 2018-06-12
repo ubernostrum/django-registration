@@ -12,7 +12,7 @@ from .base import WorkflowTestCase
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'django_registration'})
-@override_settings(ROOT_URLCONF='django_registration.backends.simple.urls')
+@override_settings(ROOT_URLCONF='django_registration.backends.one_step.urls')
 class SimpleWorkflowViewTests(WorkflowTestCase):
     """
     Tests for the one-step workflow.

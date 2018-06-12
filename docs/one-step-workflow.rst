@@ -1,5 +1,5 @@
 .. _one-step-workflow:
-.. module:: django_registration.backends.simple
+.. module:: django_registration.backends.one_step
 
 The one-step workflow
 =====================
@@ -7,7 +7,7 @@ The one-step workflow
 As an alternative to the :ref:`HMAC <hmac-workflow>` two-step
 (registration and activation) workflow, django-registration bundles a
 one-step registration workflow in
-``django_registration.backends.simple``. This workflow consists of as few
+``django_registration.backends.one_step``. This workflow consists of as few
 steps as possible:
 
 1. A user signs up by filling out a registration form.
@@ -22,7 +22,7 @@ Configuration
 -------------
 
 To use this workflow, include the URLconf
-``django_registration.backends.simple.urls`` somewhere in your site's
+``django_registration.backends.one_step.urls`` somewhere in your site's
 own URL configuration. For example:
 
 .. code-block:: python
@@ -31,7 +31,7 @@ own URL configuration. For example:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.simple.urls')),
+       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
        url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
@@ -41,7 +41,7 @@ specify the setting :data:`~django.conf.settings.REGISTRATION_OPEN`.
 
 Upon successful registration, the user will be redirected to the
 site's home page -- the URL ``/``. This can be changed by subclassing
-``django_registration.backends.simple.views.RegistrationView`` and
+``django_registration.backends.one_step.views.RegistrationView`` and
 overriding the method ``get_success_url()``.
 
 The default form class used for account registration will be
@@ -49,7 +49,7 @@ The default form class used for account registration will be
 be overridden by supplying a custom URL pattern for the registration
 view and passing the keyword argument ``form_class``, or by
 subclassing
-``django_registration.backends.simple.views.RegistrationView`` and
+``django_registration.backends.one_step.views.RegistrationView`` and
 either overriding ``form_class`` or implementing
 :meth:`~django_registration.views.RegistrationView.get_form_class()`,
 and specifying the custom subclass in your URL patterns.

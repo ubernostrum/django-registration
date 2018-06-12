@@ -33,6 +33,14 @@ requires no server-side storage of additional data beyond the user
 account itself.
 
 
+Renaming of one-step workflow
+-----------------------------
+
+:ref:`The one-step workflow <one-step-workflow>` was previously found
+at ``registration.backends.simple``; it has been renamed and is now
+found at ``registration.backends.one_step``.
+
+
 Removal of auth URLs
 ~~~~~~~~~~~~~~~~~~~~
 
