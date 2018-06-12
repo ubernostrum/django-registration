@@ -66,10 +66,10 @@ Restrictions on user names: reserved names
 
 By default, django-registration applies a list of reserved names, and
 does not permit users to create accounts using those names (see
-:class:`~registration.validators.ReservedNameValidator`). The default
-list of reserved names includes many names that could cause confusion
-or even inappropriate access. These reserved names fall into several
-categories:
+:class:`~django_registration.validators.ReservedNameValidator`). The
+default list of reserved names includes many names that could cause
+confusion or even inappropriate access. These reserved names fall into
+several categories:
 
 * Usernames which could allow a user to impersonate or be seen as a
   site administrator. For example, `'admin'` or `'administrator'`.

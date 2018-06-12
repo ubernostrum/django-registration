@@ -23,12 +23,12 @@ Overview
 
 The primary issue when using django-registration with a custom
 user model will be
-:class:`~registration.forms.RegistrationForm`. ``RegistrationForm`` is
+:class:`~django_registration.forms.RegistrationForm`. ``RegistrationForm`` is
 a subclass of Django's built-in ``UserCreationForm``, which in turn is
 a ``ModelForm`` with its model set to
 ``django.contrib.auth.models.User``. The only changes made by
 django-registration are to apply the reserved name validator
-(:class:`registration.validators.ReservedNameValidator`) and make the
+(:class:`django_registration.validators.ReservedNameValidator`) and make the
 ``email`` field required (by default, Django's user model makes this
 field optional; it is required in ``RegistrationForm`` because two of
 the three built-in workflows of django-registration require an
@@ -47,7 +47,7 @@ edit django-registration's code):
 
 .. code-block:: python
 
-    from registration.forms import RegistrationForm
+    from django_registration.forms import RegistrationForm
 
     from mycustomuserapp.models import MyCustomUser
 
@@ -66,7 +66,7 @@ activation workflow):
 
     from django.conf.urls import include, url
 
-    from registration.backends.hmac.views import RegistrationView
+    from django_registration.backends.hmac.views import RegistrationView
     
     from mycustomuserapp.forms import MyCustomUserForm
 
@@ -79,7 +79,7 @@ activation workflow):
             ),
             name='registration_register',
         ),
-        url(r'^accounts/', include('registration.backends.hmac.urls')),
+        url(r'^accounts/', include('django_registration.backends.hmac.urls')),
     ]
     
 If your custom user model is not compatible with the built-in

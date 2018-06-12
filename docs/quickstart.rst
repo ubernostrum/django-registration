@@ -79,10 +79,10 @@ Django URLconf which sets up URL patterns for :ref:`the views in
 django-registration <views>`, as well as several useful views in
 ``django.contrib.auth`` (e.g., login, logout, password
 change/reset). The URLconf for the HMAC activation workflow can be
-found at ``registration.backends.hmac.urls``, and so can be included
-in your project's root URL configuration. For example, to place the
-URLs under the prefix ``/accounts/``, you could add the following to
-your project's root URLconf:
+found at ``djanog_registration.backends.hmac.urls``, and so can be
+included in your project's root URL configuration. For example, to
+place the URLs under the prefix ``/accounts/``, you could add the
+following to your project's root URLconf:
 
 .. code-block:: python
 
@@ -90,13 +90,18 @@ your project's root URLconf:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('registration.backends.hmac.urls')),
+       url(r'^accounts/', include('django_registration.backends.hmac.urls')),
+       url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
 Users would then be able to register by visiting the URL
 ``/accounts/register/``, log in (once activated) at
 ``/accounts/login/``, etc.
+
+The sample URL configuration above also sets up the built-in auth
+views included in Django (login, logout, password reset, etc.) via the
+``django.contrib.auth.urls`` URLconf.
 
 The following URL names are defined by this URLconf:
 
@@ -111,10 +116,6 @@ The following URL names are defined by this URLconf:
 
 * ``registration_disallowed`` is a message indicating registration is
   not currently permitted.
-
-Another ``URLConf`` is also provided -- at ``registration.auth_urls``
--- which just handles the Django auth views, should you want to put
-those at a different location.
 
 
 .. _default-templates:
@@ -138,8 +139,8 @@ the following context:
 
 ``form``
     The registration form. This will likely be a subclass of
-    :class:`~registration.forms.RegistrationForm`; consult `Django's
-    forms documentation
+    :class:`~django_registration.forms.RegistrationForm`; consult
+    `Django's forms documentation
     <https://docs.djangoproject.com/en/stable/topics/forms/>`_ for
     information on how to display this in a template.
 
@@ -248,7 +249,7 @@ setting.
 
 You will need to configure URLs to use the one-step workflow; the
 easiest way is to ``include()`` the URLconf
-``registration.backends.simple.urls`` in your root URLconf. For
+``django_registration.backends.simple.urls`` in your root URLconf. For
 example, to place the URLs under the prefix ``/accounts/`` in your URL
 structure:
 
@@ -258,7 +259,8 @@ structure:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('registration.backends.simple.urls')),
+       url(r'^accounts/', include('django_registration.backends.simple.urls')),
+       url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 

@@ -1,5 +1,5 @@
 .. _views:
-.. module:: registration.views
+.. module:: django_registration.views
 
 Base view classes
 =================
@@ -33,12 +33,12 @@ classes, for use in writing your own custom subclasses.
       Implement your registration logic here. ``form`` will be the
       (already-validated) form filled out by the user during the
       registration process (i.e., a valid instance of
-      :class:`registration.forms.RegistrationForm` or a subclass of
+      :class:`django_registration.forms.RegistrationForm` or a subclass of
       it).
 
       This method should return the newly-registered user instance,
       and should send the signal
-      :data:`registration.signals.user_registered`. Note that this is
+      :data:`django_registration.signals.user_registered`. Note that this is
       not automatically done for you when writing your own custom
       subclass, so you must send this signal manually.
 
@@ -57,7 +57,7 @@ classes, for use in writing your own custom subclasses.
       The form class to use for user registration. Can be overridden
       on a per-request basis (see below). Should be the actual class
       object; by default, this class is
-      :class:`registration.forms.RegistrationForm`.
+      :class:`django_registration.forms.RegistrationForm`.
 
    .. attribute:: success_url
 

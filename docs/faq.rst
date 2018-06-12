@@ -150,8 +150,8 @@ Configuration
     for examples of this.
 
     For more complex or fine-grained control, you will likely want to
-    subclass :class:`~registration.views.RegistrationView` or
-    :class:`~registration.views.ActivationView`, or both, add your
+    subclass :class:`~django_registration.views.RegistrationView` or
+    :class:`~django_registration.views.ActivationView`, or both, add your
     custom logic to your subclasses, and then create a URLConf which
     makes use of your subclasses.
     
@@ -176,8 +176,8 @@ Tips and tricks
 **How do I close user signups?**
 
     If you haven't modified the behavior of the
-    :meth:`~registration.views.RegistrationView.registration_allowed`
-    method in :class:`~registration.views.RegistrationView`, you can
+    :meth:`~django_registration.views.RegistrationView.registration_allowed`
+    method in :class:`~django_registration.views.RegistrationView`, you can
     use the setting :data:`~django.conf.settings.REGISTRATION_OPEN` to
     control this; when the setting is ``True``, or isn't supplied,
     user registration will be permitted. When the setting is

@@ -1,5 +1,5 @@
 .. _signals:
-.. module:: registration.signals
+.. module:: django_registration.signals
 
 
 Signals used by django-registration
@@ -30,7 +30,7 @@ signals.
    workflows). Provides the following arguments:
 
    ``sender``
-       The :class:`~registration.views.ActivationView` subclass used
+       The :class:`~django_registration.views.ActivationView` subclass used
        to activate the user.
 
    ``user``
@@ -40,7 +40,7 @@ signals.
        The ``HttpRequest`` in which the account was activated.
 
    This signal is automatically sent for you by the base
-   :class:`~registration.views.ActivationView`, so unless you've
+   :class:`~django_registration.views.ActivationView`, so unless you've
    overridden its ``get()`` method in a subclass you should not need
    to explicitly send it.
 
@@ -51,7 +51,7 @@ signals.
    arguments:
 
    ``sender``
-       The :class:`~registration.views.RegistrationView` subclass used
+       The :class:`~django_registration.views.RegistrationView` subclass used
        to register the account.
 
    ``user``
@@ -61,9 +61,9 @@ signals.
         The ``HttpRequest`` in which the new account was registered.
 
    This signal is **not** automatically sent for you by the base
-   :class:`~registration.views.RegistrationView`. It is sent by the
+   :class:`~django_registration.views.RegistrationView`. It is sent by the
    subclasses implemented for the three included registration
    workflows, but if you write your own subclass of
    ``RegistrationView``, you'll need to send this signal as part of
    the implementation of the
-   :meth:`~registration.views.RegistrationView.register` method.
+   :meth:`~django_registration.views.RegistrationView.register` method.

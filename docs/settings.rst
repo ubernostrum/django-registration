@@ -39,9 +39,9 @@ of several custom settings.
 
    Third-party workflows wishing to use an alternate method of
    determining whether registration is allowed should subclass
-   :class:`registration.views.RegistrationView` (or a subclass of it
+   :class:`django_registration.views.RegistrationView` (or a subclass of it
    from an existing workflow) and override
-   :meth:`~registration.views.RegistrationView.registration_allowed`.
+   :meth:`~django_registration.views.RegistrationView.registration_allowed`.
 
 
 .. data:: REGISTRATION_SALT

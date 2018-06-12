@@ -1,5 +1,5 @@
 .. _forms:
-.. module:: registration.forms
+.. module:: django_registration.forms
 
 Base form classes
 =================
@@ -66,7 +66,7 @@ workflows in mind, but may also be useful in other situations.
       ``RegistrationForm`` will inherit the base validation defined by
       Django. It also adds a custom ``clean()`` method which applies
       one custom validator:
-      :class:`~registration.validators.ReservedNameValidator`. See the
+      :class:`~django_registration.validators.ReservedNameValidator`. See the
       documentation for ``ReservedNameValidator`` for notes on why it
       exists and how to customize its behavior.
 

@@ -1,38 +1,38 @@
 .. _validators:
-.. module:: registration.validators
+.. module:: django_registration.validators
 
 Validation utilities
 ====================
 
 To ease the process of validating user registration data,
 django-registration includes some validation-related data and
-utilities in ``registration.validators``.
+utilities in ``django_registration.validators``.
 
 The available error messages are:
 
 .. data:: DUPLICATE_EMAIL
 
    Error message raised by
-   :class:`~registration.forms.RegistrationFormUniqueEmail` when the
+   :class:`~django_registration.forms.RegistrationFormUniqueEmail` when the
    supplied email address is not unique.
 
 .. data:: FREE_EMAIL
 
    Error message raised by
-   :class:`~registration.forms.RegistrationFormNoFreeEmail` when the
+   :class:`~django_registration.forms.RegistrationFormNoFreeEmail` when the
    supplied email address is rejected by its list of free-email
    domains.
 
 .. data:: RESERVED_NAME
 
    Error message raised by
-   :class:`~registration.validators.ReservedNameValidator` when it is
+   :class:`~django_registration.validators.ReservedNameValidator` when it is
    given a value that is a reserved name.
 
 .. data:: TOS_REQUIRED
 
    Error message raised by
-   :class:`~registration.forms.RegistrationFormTermsOfService` when
+   :class:`~django_registration.forms.RegistrationFormTermsOfService` when
    the terms-of-service field is not checked.
 
 
@@ -49,7 +49,7 @@ Additionally, two custom validators are provided:
    which prohibits the use of a reserved name as the value.
 
    By default, this validator is applied to the username field of
-   :class:`registration.forms.RegistrationForm` and all of its
+   :class:`django_registration.forms.RegistrationForm` and all of its
    subclasses. The validator is applied in a form-level ``clean()``
    method on ``RegistrationForm``, so to remove it (not recommended),
    subclass ``RegistrationForm`` and override ``clean()``. For no
@@ -78,7 +78,7 @@ Additionally, two custom validators are provided:
       issue.
 
    The default list of reserved names, if you don't specify one, is
-   :data:`~registration.validators.DEFAULT_RESERVED_NAMES`. The
+   :data:`~django_registration.validators.DEFAULT_RESERVED_NAMES`. The
    validator will also reject any value beginning with the string
    ``".well-known"`` (see `RFC 5785
    <https://www.ietf.org/rfc/rfc5785.txt>`_).
@@ -127,7 +127,7 @@ Several constants are provided which are used by this validator:
 
    A list made of the concatenation of all of the above lists, used as
    the default set of reserved names for
-   :class:`~registration.validators.ReservedNameValidator`.
+   :class:`~django_registration.validators.ReservedNameValidator`.
 
 .. function:: validate_confusables(value)
 

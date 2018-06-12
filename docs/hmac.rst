@@ -1,13 +1,13 @@
 .. _hmac-workflow:
-.. module:: registration.backends.hmac
+.. module:: django_registration.backends.hmac
 
 The HMAC activation workflow
 ============================
 
-The HMAC workflow, found in ``registration.backends.hmac``, implements
-a two-step registration process (signup, followed by activation), but
-uses no models and does not store its activation key; instead, the
-activation key sent to the user is a timestamped, `HMAC
+The HMAC workflow, found in ``django_registration.backends.hmac``,
+implements a two-step registration process (signup, followed by
+activation), but uses no models and does not store its activation key;
+instead, the activation key sent to the user is a timestamped, `HMAC
 <https://en.wikipedia.org/wiki/Hash-based_message_authentication_code>`_-verified
 value.
 
@@ -23,7 +23,7 @@ the user model (either Django's default
 
 You will need to configure URLs, however. A default URLconf is
 provided, which you can ``include()`` in your URL configuration; that
-URLconf is ``registration.backends.hmac.urls``. For example, to place
+URLconf is ``django_registration.backends.hmac.urls``. For example, to place
 user registration under the URL prefix ``/accounts/``, you could place
 the following in your root URLconf:
 
@@ -34,30 +34,32 @@ the following in your root URLconf:
    urlpatterns = [
        # Other URL patterns ...
        url(r'^accounts/', include('registration.backends.hmac.urls')),
+       url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
-That URLconf also sets up the views from ``django.contrib.auth``
-(login, logout, password reset, etc.), though if you want those views
-at a different location, you can ``include()`` the URLconf
-``registration.auth_urls`` to place only the ``django.contrib.auth``
+That also sets up the views from ``django.contrib.auth`` (login,
+logout, password reset, etc.), though if you want those views at a
+different location, you can ``include()`` the URLconf
+``django.contrib.auth.urls`` to place only the ``django.contrib.auth``
 views at a specific location in your URL hierarchy.
 
 .. note:: **URL patterns for activation**
 
    Although the actual value used in the activation key is the new
    user account's username, the URL pattern for
-   :class:`~registration.views.backends.hmac.ActivationView` does not
-   need to match all possible legal characters in a username. The
-   activation key that will be sent to the user (and thus matched in
-   the URL) is produced by ``django.core.signing.dumps()``, which
-   base64-encodes its output. Thus, the only characters this pattern
-   needs to match are those from `the URL-safe base64 alphabet
+   :class:`~django_registration.views.backends.hmac.ActivationView`
+   does not need to match all possible legal characters in a
+   username. The activation key that will be sent to the user (and
+   thus matched in the URL) is produced by
+   ``django.core.signing.dumps()``, which base64-encodes its
+   output. Thus, the only characters this pattern needs to match are
+   those from `the URL-safe base64 alphabet
    <http://tools.ietf.org/html/rfc4648#section-5>`_, plus the colon
    ("``:``") which is used as a separator.
 
    The default URL pattern for the activation view in
-   ``registration.backends.hmac.urls`` handles this for you.
+   ``django_registration.backends.hmac.urls`` handles this for you.
 
 This workflow makes use of up to three settings (click for details on
 each):
@@ -70,15 +72,15 @@ each):
   below <salt-security>`)
 
 By default, this workflow uses
-:class:`registration.forms.RegistrationForm` as its form class for
-user registration; this can be overridden by passing the keyword
+:class:`django_registration.forms.RegistrationForm` as its form class
+for user registration; this can be overridden by passing the keyword
 argument ``form_class`` to the registration view.
 
 
 Views
 -----
 
-.. currentmodule:: registration.backends.hmac.views
+.. currentmodule:: django_registration.backends.hmac.views
 
 Two views are provided to implement the signup/activation
 process. These subclass :ref:`the base views of django-registration
@@ -94,7 +96,7 @@ start guide <quickstart>`.
 
 .. class:: RegistrationView
 
-   A subclass of :class:`registration.views.RegistrationView`
+   A subclass of :class:`djanog_registration.views.RegistrationView`
    implementing the signup portion of this workflow.
 
    Important customization points unique to this class are:
@@ -105,7 +107,7 @@ start guide <quickstart>`.
       :meth:`send_activation_email()` to send the email with the
       activation key. The argument ``form`` is a valid registration
       form instance passed from
-      :meth:`~registration.views.RegistrationView.register()`.
+      :meth:`~django_registration.views.RegistrationView.register()`.
 
    .. method:: get_activation_key(user)
 
@@ -139,7 +141,7 @@ start guide <quickstart>`.
 
 .. class:: ActivationView
 
-   A subclass of :class:`registration.views.ActivationView`
+   A subclass of :class:`django_registration.views.ActivationView`
    implementing the activation portion of this workflow.
 
    Important customization points unique to this class are:
