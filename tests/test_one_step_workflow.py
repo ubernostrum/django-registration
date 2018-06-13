@@ -13,7 +13,7 @@ from .base import WorkflowTestCase
 
 @modify_settings(INSTALLED_APPS={'remove': 'django_registration'})
 @override_settings(ROOT_URLCONF='django_registration.backends.one_step.urls')
-class SimpleWorkflowViewTests(WorkflowTestCase):
+class OneStepWorkflowViewTests(WorkflowTestCase):
     """
     Tests for the one-step workflow.
 
@@ -35,7 +35,7 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
 
-        # fetch_redirect_response=False because the URLConf we're
+        # fetch_redirect_response=False because the URLconf we're
         # using in these tests does not define a URL pattern for '/',
         # so allowing the default behavior would fail the test when
         # that URL 404s.
