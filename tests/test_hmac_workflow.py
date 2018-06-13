@@ -95,8 +95,7 @@ class HMACViewTests(ActivationTestCase):
 
     def test_bad_key(self):
         """
-        Once activated, attempting to re-activate an account (even
-        with a valid key) does nothing.
+        An invalid activation key fails to activate.
 
         """
         resp = self.client.post(
