@@ -153,10 +153,16 @@ sent.
 
 **registration/activate.html**
 
-Used if account activation fails. With the default setup, has the following context:
+Used if account activation fails. Has the following context:
 
-``activation_key``
-    The activation key used during the activation attempt.
+``activation_error``
+    A ``dict`` containing the information supplied to the
+    :class:`~django_registration.exceptions.ActivationError` which
+    occurred during activation. See the documentation for that
+    exception for a description of the keys in this ``dict``, and the
+    documentation for
+    :class:`~django_registration.backends.hmac.views.ActivationView`
+    for the specific values used in different failure situations.
 
 **registration/activation_complete.html**
 

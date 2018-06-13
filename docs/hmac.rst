@@ -144,24 +144,41 @@ start guide <quickstart>`.
    A subclass of :class:`django_registration.views.ActivationView`
    implementing the activation portion of this workflow.
 
+   Errors in activating the user account will raise
+   :class:`~django_registration.exceptions.ActivationError`, with one
+   of the following values for the exception's ``code``:
+   
+   ``"bad_username"``
+       Indicates the username decoded from the activation key is
+       invalid (does not correspond to any user account).
+
+   ``"expired"``
+       Indicates the account/activation key has expired.
+
+   ``"invalid_key"``
+      Generic indicator that the activation key was invalid.
+
    Important customization points unique to this class are:
 
    .. method:: get_user(username)
 
       Given a username (determined by the activation key), look up and
-      return the corresponding instance of the user model. Returns
-      ``None`` if no such instance exists. In the base implementation,
-      will include ``is_active=False`` in the query to avoid
-      re-activation of already-active accounts.
+      return the corresponding instance of the user model. If no such
+      account exists, will raise
+      :class:`~django_registration.exceptions.ActivationError` as
+      described above. In the base implementation, will include
+      ``is_active=False`` in the query to avoid re-activation of
+      already-active accounts.
 
    .. method:: validate_key(activation_key)
 
       Given the activation key, verifies that it carries a valid
       signature and a timestamp no older than the number of days
       specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, and
-      returns the username from the activation key. Returns ``None``
-      if the activation key has an invalid signature or if the
-      timestamp is too old.
+      returns the username from the activation key. Raises
+      :class:`~django_registration.exceptions.ActivationError`, as
+      described above, if the activation key has an invalid signature
+      or if the timestamp is too old.
 
 
 

@@ -56,6 +56,22 @@ you; if you want them, ``include()`` the URLconf
 ``django.contrib.auth.urls`` at a location of your choosing.
 
 
+Distinguishing activation failure conditions
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prior to 3.x, failures to activate a user account (in workflows which
+use activation) all simply returned ``None`` in place of the activated
+account. This meant it was not possible to determine, from inspecting
+the result, what exactly caused the failure.
+
+In django-registration 3.x, activation failures raise an exception --
+:class:`~django_registration.exceptions.ActivationError` -- with a
+message and code (such as ``"expired"``), to indicate the cause of
+failure. This exception is caught by
+:class:`~django_registration.views.ActivationView` and turned into the
+template context variable ``activation_error``.
+
+
 Other changes
 ~~~~~~~~~~~~~
 

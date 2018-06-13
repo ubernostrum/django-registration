@@ -9,6 +9,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from . import signals
+from .exceptions import ActivationError
 from .forms import RegistrationForm
 
 
@@ -80,8 +81,16 @@ class ActivationView(TemplateView):
         method.
 
         """
-        activated_user = self.activate(*args, **kwargs)
-        if activated_user:
+        extra_context = {}
+        try:
+            activated_user = self.activate(*args, **kwargs)
+        except ActivationError as e:
+            extra_context['activation_error'] = {
+                'message': e.message,
+                'code': e.code,
+                'params': e.params
+            }
+        else:
             signals.user_activated.send(
                 sender=self.__class__,
                 user=activated_user,
@@ -96,7 +105,9 @@ class ActivationView(TemplateView):
                 return redirect(to, *args, **kwargs)
             except ValueError:
                 return redirect(success_url)
-        return super(ActivationView, self).get(*args, **kwargs)
+        context_data = self.get_context_data()
+        context_data.update(extra_context)
+        return self.render_to_response(context_data)
 
     def activate(self, *args, **kwargs):
         """

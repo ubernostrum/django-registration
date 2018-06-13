@@ -13,7 +13,9 @@ from django.test import modify_settings, override_settings
 from django.urls import reverse
 
 from django_registration import signals
-from django_registration.backends.hmac.views import REGISTRATION_SALT
+from django_registration.backends.hmac.views import (
+    REGISTRATION_SALT, ActivationView
+)
 
 from .base import ActivationTestCase
 
@@ -91,6 +93,38 @@ class HMACViewTests(ActivationTestCase):
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
 
+    def test_bad_key(self):
+        """
+        Once activated, attempting to re-activate an account (even
+        with a valid key) does nothing.
+
+        """
+        resp = self.client.post(
+            reverse('registration_register'),
+            data=self.valid_data
+        )
+
+        activation_key = self.valid_data[self.user_model.USERNAME_FIELD]
+        with self.assertSignalNotSent(signals.user_activated):
+            resp = self.client.get(
+                reverse(
+                    'registration_activate',
+                    args=(),
+                    kwargs={'activation_key': activation_key}
+                )
+            )
+
+        # Second activation fails.
+        self.assertEqual(200, resp.status_code)
+        self.assertTemplateUsed(resp, 'registration/activate.html')
+        self.assertTrue('activation_error' in resp.context)
+        self.assertEqual(
+            resp.context['activation_error'],
+            {'message': ActivationView.INVALID_KEY_MESSAGE,
+             'code': 'invalid_key',
+             'params': {'activation_key': activation_key}}
+        )
+
     # The timestamp calculation will error if USE_TZ=True, due to
     # trying to subtract a naive from an aware datetime. Since time
     # zones aren't relevant to the test, we just temporarily disable
@@ -147,6 +181,13 @@ class HMACViewTests(ActivationTestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+        self.assertTrue('activation_error' in resp.context)
+        self.assertEqual(
+            resp.context['activation_error'],
+            {'message': ActivationView.EXPIRED_MESSAGE,
+             'code': 'expired',
+             'params': None}
+        )
 
     def test_nonexistent_activation(self):
         """
@@ -170,6 +211,13 @@ class HMACViewTests(ActivationTestCase):
 
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+        self.assertTrue('activation_error' in resp.context)
+        self.assertEqual(
+            resp.context['activation_error'],
+            {'message': ActivationView.BAD_USERNAME_MESSAGE,
+             'code': 'bad_username',
+             'params': None}
+        )
 
     def test_activation_signal(self):
         self.client.post(

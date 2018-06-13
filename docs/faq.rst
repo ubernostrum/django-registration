@@ -202,3 +202,11 @@ Tips and tricks
     2, only ASCII will be permitted; on Python 3, usernames containing
     word characters matched by a regex with the ``UNICODE`` flag will
     be accepted.
+
+**How do I tell why an account's activation failed?**
+
+    If you're using :ref:`the HMAC activation workflow
+    <hmac-workflow>`, the template context will contain a variable
+    ``activation_error`` containing the information passed when the
+    :class:`django_registration.exceptions.ActivationError` was
+    raised. This will indicate what caused the failure.

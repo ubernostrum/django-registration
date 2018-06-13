@@ -115,8 +115,9 @@ classes, for use in writing your own custom subclasses.
       to this method.
 
       This method should return the newly-activated user instance (if
-      activation was successful), or boolean ``False`` if activation
-      was not successful.
+      activation was successful), or raise
+      :class:`~django_registration.exceptions.ActivationError` (if
+      activation was not successful).
 
    Useful places to override or customize on an ``ActivationView``
    subclass are:

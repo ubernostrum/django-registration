@@ -10,8 +10,10 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.template.loader import render_to_string
+from django.utils.translation import ugettext_lazy as _
 
 from django_registration import signals
+from django_registration.exceptions import ActivationError
 from django_registration.views import ActivationView as BaseActivationView
 from django_registration.views import RegistrationView as BaseRegistrationView
 
@@ -107,26 +109,27 @@ class ActivationView(BaseActivationView):
     couldn't be activated.
 
     """
+    BAD_USERNAME_MESSAGE = _(
+        u'The account you attempted to activate is invalid.'
+    )
+    EXPIRED_MESSAGE = _(u'This account has expired.')
+    INVALID_KEY_MESSAGE = _(
+        u'The activation key you provided is invalid.'
+    )
     success_url = 'registration_activation_complete'
 
     def activate(self, *args, **kwargs):
-        # This is safe even if, somehow, there's no activation key,
-        # because unsign() will raise BadSignature rather than
-        # TypeError on a value of None.
         username = self.validate_key(kwargs.get('activation_key'))
-        if username is not None:
-            user = self.get_user(username)
-            if user is not None:
-                user.is_active = True
-                user.save()
-                return user
-        return False
+        user = self.get_user(username)
+        user.is_active = True
+        user.save()
+        return user
 
     def validate_key(self, activation_key):
         """
         Verify that the activation key is valid and within the
         permitted activation time window, returning the username if
-        valid or ``None`` if not.
+        valid or raising ``ActivationError`` if not.
 
         """
         try:
@@ -136,16 +139,23 @@ class ActivationView(BaseActivationView):
                 max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400
             )
             return username
-        # SignatureExpired is a subclass of BadSignature, so this will
-        # catch either one.
+        except signing.SignatureExpired:
+            raise ActivationError(
+                self.EXPIRED_MESSAGE,
+                code='expired'
+            )
         except signing.BadSignature:
-            return None
+            raise ActivationError(
+                self.INVALID_KEY_MESSAGE,
+                code='invalid_key',
+                params={'activation_key': activation_key}
+            )
 
     def get_user(self, username):
         """
         Given the verified username, look up and return the
-        corresponding user account if it exists, or ``None`` if it
-        doesn't.
+        corresponding user account if it exists, or raising
+        ``ActivationError`` if it doesn't.
 
         """
         User = get_user_model()
@@ -156,4 +166,7 @@ class ActivationView(BaseActivationView):
             })
             return user
         except User.DoesNotExist:
-            return None
+            raise ActivationError(
+                self.BAD_USERNAME_MESSAGE,
+                code='bad_username'
+            )

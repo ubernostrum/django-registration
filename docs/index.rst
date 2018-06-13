@@ -47,6 +47,7 @@ documentation listed below.
    forms
    custom-user
    validators
+   exceptions
    settings
    signals
    deprecations
