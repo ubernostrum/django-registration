@@ -2,5 +2,7 @@ include LICENSE
 include MANIFEST.in
 include AUTHORS
 recursive-include docs *
+include tox.ini
+include runtests.py
 graft src
 graft tests
