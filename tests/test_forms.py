@@ -183,32 +183,6 @@ class RegistrationFormTests(RegistrationTestCase):
         )
         self.assertTrue(form.is_valid())
 
-    def test_no_free_email(self):
-        """
-        Free email domains are disallowed by
-        RegistrationFormNoFreeEmail.
-
-        """
-        for domain in forms.RegistrationFormNoFreeEmail.bad_domains:
-            data = self.valid_data.copy()
-            data.update(
-                email='testuser@%s' % domain
-            )
-            form = forms.RegistrationFormNoFreeEmail(
-                data=data
-            )
-            self.assertFalse(form.is_valid())
-            self.assertTrue(form.has_error('email'))
-            self.assertEqual(
-                form.errors['email'],
-                [text_type(validators.FREE_EMAIL)]
-            )
-
-        form = forms.RegistrationFormNoFreeEmail(
-            data=self.valid_data.copy()
-        )
-        self.assertTrue(form.is_valid())
-
     def test_confusables_validator(self):
         """
         Test the confusable-username validator standalone.

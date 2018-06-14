@@ -72,6 +72,16 @@ failure. This exception is caught by
 template context variable ``activation_error``.
 
 
+Removed "no free email" form
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Earlier versions of django-registration included a form class,
+``RegistrationFormNoFreeEmail``, which attempted to forbid user
+signups using common free/throwaway email providers. Since this is a
+pointless task (the number of possible domains of such providers is
+ever-growing), this form class has been removed.
+
+
 Other changes
 ~~~~~~~~~~~~~
 

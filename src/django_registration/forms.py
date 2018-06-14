@@ -119,30 +119,3 @@ class RegistrationFormUniqueEmail(RegistrationForm):
         if User.objects.filter(email__iexact=self.cleaned_data['email']):
             raise forms.ValidationError(validators.DUPLICATE_EMAIL)
         return self.cleaned_data['email']
-
-
-class RegistrationFormNoFreeEmail(RegistrationForm):
-    """
-    Subclass of ``RegistrationForm`` which disallows registration with
-    email addresses from popular free webmail services; moderately
-    useful for preventing automated spam registrations.
-
-    To change the list of banned domains, pass a list of domains as
-    the keyword argument ``bad_domains`` when initializing the form.
-
-    """
-    bad_domains = ['aim.com', 'aol.com', 'email.com', 'gmail.com',
-                   'googlemail.com', 'hotmail.com', 'hushmail.com',
-                   'msn.com', 'mail.ru', 'mailinator.com', 'live.com',
-                   'yahoo.com']
-
-    def clean_email(self):
-        """
-        Check the supplied email address against a list of known free
-        webmail domains.
-
-        """
-        email_domain = self.cleaned_data['email'].split('@')[1]
-        if email_domain in self.bad_domains:
-            raise forms.ValidationError(validators.FREE_EMAIL)
-        return self.cleaned_data['email']

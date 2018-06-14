@@ -29,6 +29,7 @@ pre
 regex
 registrationview
 signup
+signups
 spambots
 subclassed
 subclassing
