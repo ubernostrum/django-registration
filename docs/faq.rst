@@ -56,7 +56,7 @@ General
 
 **How secure is django-registration?**
 
-   In the nine-year history of django-registration, there have
+   Over the decade-plus history of django-registration, there have
    been no security issues reported which required new releases to
    remedy. This doesn't mean, though, that django-registration is
    perfectly secure: much will depend on ensuring best practices in
@@ -74,7 +74,7 @@ General
      passwords, and does not transmit credentials which could be used
      to log in (the only "credential" ever sent out by
      django-registration is an activation key used in the two-step
-     activation workflows, and that key can only be used to make an
+     activation workflow, and that key can only be used to make an
      account active; it cannot be used to log in).
 
    * django-registration works with Django's own security features
@@ -85,23 +85,24 @@ General
 
 **How do I run the tests?**
 
-    django-registration makes use of Django's own built-in
-    unit-testing tools, and supports several ways to execute its test
-    suite:
+    django-registration's tests are run using `tox
+    <https://tox.readthedocs.io/>`_, but typical installation of
+    django-registration (via ``pip install django-registration``) will
+    not install the tests.
 
-    * Within a Django project, invoke ``manage.py test
-      registration``.
+    To run the tests, download the source (``.tar.gz``) distribution
+    of django-registration |release| from `its page on the Python
+    Package Index <https://pypi.org/project/django-registration/>`_,
+    unpack it (``tar zxvf django-registration-|release|.tar.gz`` on
+    most Unix-like operating systems), and in the unpacked directory
+    run ``tox``.
 
-    * If you've installed django-registration (so that it's on your
-      Python import path) and Django, but don't yet have a project
-      created or want to test independently of a project, you can run
-      ``registration/runtests.py``, or you can invoke ``python
-      setup.py test`` (which will run ``registration/runtests.py``).
-
-    Additionally, the ``setup.cfg`` file included in
-    django-registration provides configuration for `coverage.py
-    <https://coverage.readthedocs.io/>`_, enabling
-    easy recording and reporting of test coverage.
+    Note that you will need to have ``tox`` installed already (``pip
+    install tox``), and to run the full test matrix you will need to
+    have each supported version of Python available. To run only the
+    tests for a specific Python version and Django version, you can
+    invoke ``tox`` with the ``-e`` flag. For example, to run tests for
+    Python 3.6 and Django 2.0: ``tox -e py36-django20``.
 
    
 Installation and setup
@@ -144,7 +145,7 @@ Configuration
 
     Not always. Any behavior controlled by an attribute on a
     class-based view can be changed by passing a different value for
-    that attribute in the URLConf. See `Django's class-based view
+    that attribute in the URLconf. See `Django's class-based view
     documentation
     <https://docs.djangoproject.com/en/stable/topics/class-based-views/#simple-usage-in-your-urlconf>`_
     for examples of this.
@@ -152,7 +153,7 @@ Configuration
     For more complex or fine-grained control, you will likely want to
     subclass :class:`~django_registration.views.RegistrationView` or
     :class:`~django_registration.views.ActivationView`, or both, add your
-    custom logic to your subclasses, and then create a URLConf which
+    custom logic to your subclasses, and then create a URLconf which
     makes use of your subclasses.
     
 **I don't want to write my own URLconf because I don't want to write patterns for all the auth views!**
@@ -193,6 +194,13 @@ Tips and tricks
 
     In the HMAC-based workflow, toggle the ``is_active`` field of the
     user in the admin.
+
+**How do I delete expired unactivated accounts?**
+
+    Perform a query for those accounts, and call the ``delete()``
+    method of the resulting ``QuerySet``. Since django-registration
+    doesn't know in advance what your definition of "expired" will be,
+    it leaves this step to you.
 
 **How do I allow Unicode in usernames?**
 
