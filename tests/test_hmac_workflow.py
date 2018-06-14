@@ -92,6 +92,12 @@ class HMACViewTests(ActivationTestCase):
         # Second activation fails.
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(resp, 'registration/activate.html')
+        self.assertEqual(
+            resp.context['activation_error'],
+            {'message': ActivationView.ALREADY_ACTIVATED_MESSAGE,
+             'code': 'already_activated',
+             'params': None}
+        )
 
     def test_bad_key(self):
         """

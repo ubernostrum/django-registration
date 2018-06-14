@@ -147,6 +147,9 @@ start guide <quickstart>`.
    Errors in activating the user account will raise
    :class:`~django_registration.exceptions.ActivationError`, with one
    of the following values for the exception's ``code``:
+
+   ``"already_activated"``
+       Indicates the account has already been activated.
    
    ``"bad_username"``
        Indicates the username decoded from the activation key is

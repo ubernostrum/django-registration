@@ -109,6 +109,9 @@ class ActivationView(BaseActivationView):
     couldn't be activated.
 
     """
+    ALREADY_ACTIVATED_MESSAGE = _(
+        u'The account you tried to activate has already been activated.'
+    )
     BAD_USERNAME_MESSAGE = _(
         u'The account you attempted to activate is invalid.'
     )
@@ -162,8 +165,12 @@ class ActivationView(BaseActivationView):
         try:
             user = User.objects.get(**{
                 User.USERNAME_FIELD: username,
-                'is_active': False
             })
+            if user.is_active:
+                raise ActivationError(
+                    self.ALREADY_ACTIVATED_MESSAGE,
+                    code='already_activated'
+                )
             return user
         except User.DoesNotExist:
             raise ActivationError(
