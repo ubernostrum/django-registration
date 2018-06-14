@@ -6,7 +6,7 @@ development environment.
 
 """
 
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.views.generic.base import TemplateView
 
 from django_registration.backends.hmac.views import RegistrationView
