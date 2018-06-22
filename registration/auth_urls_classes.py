@@ -8,7 +8,7 @@ import warnings
 
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
-
+from django.urls import reverse_lazy
 
 warnings.warn(
     textwrap.dedent("""
@@ -33,7 +33,7 @@ urlpatterns = [
         name='auth_logout'),
     url(r'^password/change/$',
         auth_views.PasswordChangeView.as_view(
-            success_url='auth_password_change_done'
+            success_url=reverse_lazy('auth_password_change_done')
         ),
         name='auth_password_change'),
     url(r'^password/change/done/$',
@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^password/reset/$',
         auth_views.PasswordResetView.as_view(
             email_template_name='registration/password_reset_email.txt',
-            success_url='auth_password_reset_done',
+            success_url=reverse_lazy('auth_password_reset_done'),
         ),
         name='auth_password_reset'),
     url(r'^password/reset/complete/$',
@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^password/reset/confirm/(?P<uidb64>[0-9A-Za-z_\-]+)/'
         r'(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',
         auth_views.PasswordResetConfirmView.as_view(
-            success_url='auth_password_reset_complete'
+            success_url=reverse_lazy('auth_password_reset_complete')
         ),
         name='auth_password_reset_confirm'),
 ]
