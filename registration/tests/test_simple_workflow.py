@@ -57,4 +57,4 @@ class SimpleWorkflowViewTests(WorkflowTestCase):
 
         # New user must be logged in.
         resp = self.client.get(reverse('registration_register'))
-        self.assertTrue(resp.context['user'].is_authenticated())
+        self.assertTrue(resp.context['user'].is_authenticated)
