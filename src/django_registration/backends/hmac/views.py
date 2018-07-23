@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.template.loader import render_to_string
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from django_registration import signals
@@ -33,6 +34,7 @@ class RegistrationView(BaseRegistrationView):
     """
     email_body_template = 'registration/activation_email.txt'
     email_subject_template = 'registration/activation_email_subject.txt'
+    success_url = reverse_lazy('registration_complete')
 
     def register(self, form):
         new_user = self.create_inactive_user(form)
@@ -40,9 +42,6 @@ class RegistrationView(BaseRegistrationView):
                                      user=new_user,
                                      request=self.request)
         return new_user
-
-    def get_success_url(self, user):
-        return ('registration_complete', (), {})
 
     def create_inactive_user(self, form):
         """
@@ -119,7 +118,7 @@ class ActivationView(BaseActivationView):
     INVALID_KEY_MESSAGE = _(
         u'The activation key you provided is invalid.'
     )
-    success_url = 'registration_activation_complete'
+    success_url = reverse_lazy('registration_activation_complete')
 
     def activate(self, *args, **kwargs):
         username = self.validate_key(kwargs.get('activation_key'))

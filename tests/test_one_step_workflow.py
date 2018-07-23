@@ -35,11 +35,7 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
 
-        # fetch_redirect_response=False because the URLconf we're
-        # using in these tests does not define a URL pattern for '/',
-        # so allowing the default behavior would fail the test when
-        # that URL 404s.
-        self.assertRedirects(resp, '/', fetch_redirect_response=False)
+        self.assertRedirects(resp, reverse('registration_complete'))
 
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
         self.assertTrue(

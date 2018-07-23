@@ -4,7 +4,9 @@ Base view classes for all registration workflows.
 """
 
 from django.conf import settings
-from django.shortcuts import redirect
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
+from django.utils.encoding import force_text
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
@@ -18,7 +20,7 @@ class RegistrationView(FormView):
     Base class for user registration views.
 
     """
-    disallowed_url = 'registration_disallowed'
+    disallowed_url = reverse_lazy('registration_disallowed')
     form_class = RegistrationForm
     success_url = None
     template_name = 'registration/registration_form.html'
@@ -30,24 +32,24 @@ class RegistrationView(FormView):
 
         """
         if not self.registration_allowed():
-            return redirect(self.disallowed_url)
+            return HttpResponseRedirect(force_text(self.disallowed_url))
         return super(RegistrationView, self).dispatch(*args, **kwargs)
 
-    def form_valid(self, form):
-        new_user = self.register(form)
-        success_url = self.get_success_url(new_user) if \
-            (hasattr(self, 'get_success_url') and
-             callable(self.get_success_url)) else \
-            self.success_url
+    def get_success_url(self, user=None):
+        """
+        Return the URL to redirect to after successful redirection.
 
-        # success_url may be a string, or a tuple providing the full
-        # argument set for redirect(). Attempting to unpack it tells
-        # us which one it is.
-        try:
-            to, args, kwargs = success_url
-            return redirect(to, *args, **kwargs)
-        except ValueError:
-            return redirect(success_url)
+        """
+        # This is overridden solely to allow django-registration to
+        # support passing the user account as an argument; otherwise,
+        # the base FormMixin implementation, which accepts no
+        # arguments, could be called and end up raising a TypeError.
+        return super(RegistrationView, self).get_success_url()
+
+    def form_valid(self, form):
+        return HttpResponseRedirect(
+            self.get_success_url(self.register(form))
+        )
 
     def registration_allowed(self):
         """
@@ -74,6 +76,13 @@ class ActivationView(TemplateView):
     success_url = None
     template_name = 'registration/activate.html'
 
+    def get_success_url(self, user=None):
+        """
+        Return the URL to redirect to after successful redirection.
+
+        """
+        return force_text(self.success_url)
+
     def get(self, *args, **kwargs):
         """
         The base activation logic; subclasses should leave this method
@@ -96,15 +105,9 @@ class ActivationView(TemplateView):
                 user=activated_user,
                 request=self.request
             )
-            success_url = self.get_success_url(activated_user) if \
-                (hasattr(self, 'get_success_url') and
-                 callable(self.get_success_url)) else \
-                self.success_url
-            try:
-                to, args, kwargs = success_url
-                return redirect(to, *args, **kwargs)
-            except ValueError:
-                return redirect(success_url)
+            return HttpResponseRedirect(
+                force_text(self.get_success_url(activated_user))
+            )
         context_data = self.get_context_data()
         context_data.update(extra_context)
         return self.render_to_response(context_data)

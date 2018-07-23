@@ -72,6 +72,42 @@ failure. This exception is caught by
 template context variable ``activation_error``.
 
 
+Changes to ``success_url``
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Both the registration and activation views mimic Django's own generic
+views in supporting a choice of ways to specify where to redirect
+after a successful registration or activation; you can either set the
+attribute ``success_url`` on the view class, or implement the method
+``get_success_url()``. However, there is a key difference between the
+base Django generic-view version of this, and the version in
+django-registration: when calling a ``get_success_url()`` method,
+django-registration passes the user account as an argument.
+
+This is incompatible with the behavior of Django's base ``FormMixin``,
+which expects ``get_success_url()`` to take zero arguments.
+
+Also, earlier versions of django-registration allowed ``success_url``
+and ``get_success_url()`` to provide either a string URL, or a tuple
+of ``(viewname, args, kwargs)`` to pass to Django's ``reverse()``
+helper, in order to work around issues caused by calling ``reverse()``
+at the level of a class attribute.
+
+In django-registration 3.x, the ``user`` argument to
+``get_success_url()`` is now optional, meaning ``FormMixin``'s default
+behavior is now compatible with any ``get_success_url()``
+implementation that doesn't require the user object; as a result,
+implementations which don't rely on the user object should either
+switch to specifying ``success_url`` as an attribute, or change their
+own signature to ``get_success_url(self, user=None)``.
+
+Also, the ability to supply the 3-tuple of arguments for ``reverse()``
+has been removed; both ``success_url`` and ``get_success_url()`` now
+*must* be/return either a string, or a lazy object that resolves to a
+string. To avoid class-level calls to ``reverse()``, use
+``django.urls.reverse_lazy()`` instead.
+
+
 Removed "no free email" form
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

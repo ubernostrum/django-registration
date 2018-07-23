@@ -5,6 +5,7 @@ workflow.
 """
 
 from django.contrib.auth import authenticate, get_user_model, login
+from django.urls import reverse_lazy
 
 from django_registration import signals
 from django_registration.views import RegistrationView as BaseRegistrationView
@@ -20,6 +21,8 @@ class RegistrationView(BaseRegistrationView):
     useful account), and is immediately signed up and logged in.
 
     """
+    success_url = reverse_lazy('registration_complete')
+
     def register(self, form):
         new_user = form.save()
         new_user = authenticate(
@@ -31,6 +34,3 @@ class RegistrationView(BaseRegistrationView):
                                      user=new_user,
                                      request=self.request)
         return new_user
-
-    def get_success_url(self, user):
-        return '/'

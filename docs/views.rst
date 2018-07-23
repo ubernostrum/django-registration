@@ -61,13 +61,12 @@ classes, for use in writing your own custom subclasses.
 
    .. attribute:: success_url
 
-      The URL to redirect to after successful registration.  A string
-      containing a (relative) URL, or a string name of a URL pattern,
-      or a 3-tuple of arguments suitable for passing to Django's
-      `redirect shortcut
-      <https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#redirect>`_. Can
-      be overridden on a per-request basis (see below). Default value
-      is ``None``, so that per-request customization is used instead.
+      The URL to redirect to after successful registration. Can be a
+      hard-coded string, the string resulting from calling Django's
+      ``reverse()`` helper, or the lazy object produced by Django's
+      ``reverse_lazy`` helper. Can be overridden on a per-request
+      basis (see below). Default value is ``None``; subclasses must
+      override and provide this.
 
    .. attribute:: template_name
 
@@ -85,10 +84,8 @@ classes, for use in writing your own custom subclasses.
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should return a string containing a
-      (relative) URL, or a string name of a URL pattern, or a 3-tuple
-      of arguments suitable for passing to Django's ``redirect``
-      shortcut.
+      :attr:`~success_url`. Should return a value of the same type as
+      ``success_url`` (see above).
 
    .. method:: registration_allowed()
 
@@ -124,13 +121,12 @@ classes, for use in writing your own custom subclasses.
 
    .. attribute:: success_url
 
-      The URL to redirect to after successful activation.  A string
-      containing a (relative) URL, or a string name of a URL pattern,
-      or a 3-tuple of arguments suitable for passing to Django's
-      `redirect shortcut
-      <https://docs.djangoproject.com/en/stable/topics/http/shortcuts/#redirect>`_. Can
-      be overridden on a per-request basis (see below). Default value
-      is ``None``, so that per-request customization is used instead.
+      The URL to redirect to after successful activation. Can be a
+      hard-coded string, the string resulting from calling Django's
+      ``reverse()`` helper, or the lazy object produced by Django's
+      ``reverse_lazy`` helper. Can be overridden on a per-request
+      basis (see below). Default value is ``None``; subclasses must
+      override and provide this.
 
    .. attribute:: template_name
 
@@ -139,9 +135,7 @@ classes, for use in writing your own custom subclasses.
 
    .. method:: get_success_url(user)
 
-      Return a URL to redirect to after successful registration, on a
+      Return a URL to redirect to after successful activation, on a
       per-request or per-user basis. If not overridden, will use
-      :attr:`~success_url`. Should return a string containing a
-      (relative) URL, or a string name of a URL pattern, or a 3-tuple
-      of arguments suitable for passing to Django's ``redirect``
-      shortcut.
+      :attr:`~success_url`. Should return a value of the same type as
+      ``success_url`` (see above).
