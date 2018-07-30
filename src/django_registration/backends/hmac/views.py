@@ -38,9 +38,11 @@ class RegistrationView(BaseRegistrationView):
 
     def register(self, form):
         new_user = self.create_inactive_user(form)
-        signals.user_registered.send(sender=self.__class__,
-                                     user=new_user,
-                                     request=self.request)
+        signals.user_registered.send(
+            sender=self.__class__,
+            user=new_user,
+            request=self.request
+        )
         return new_user
 
     def create_inactive_user(self, form):
@@ -88,16 +90,16 @@ class RegistrationView(BaseRegistrationView):
         """
         activation_key = self.get_activation_key(user)
         context = self.get_email_context(activation_key)
-        context.update({
-            'user': user,
-        })
-        subject = render_to_string(self.email_subject_template,
-                                   context)
+        context['user'] = user
+        subject = render_to_string(
+            self.email_subject_template, context
+        )
         # Force subject to a single line to avoid header-injection
         # issues.
         subject = ''.join(subject.splitlines())
-        message = render_to_string(self.email_body_template,
-                                   context)
+        message = render_to_string(
+            self.email_body_template, context
+        )
         user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
 
 

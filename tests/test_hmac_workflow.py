@@ -235,8 +235,10 @@ class HMACViewTests(ActivationTestCase):
             salt=REGISTRATION_SALT
         )
 
-        with self.assertSignalSent(signals.user_activated,
-                                   required_kwargs=['user', 'request']) as cm:
+        with self.assertSignalSent(
+                signals.user_activated,
+                required_kwargs=['user', 'request']
+        ) as cm:
             self.client.get(
                 reverse(
                     'registration_activate',

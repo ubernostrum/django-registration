@@ -18,7 +18,7 @@ User = get_user_model()
 
 
 # django-registration needs to test that signals are sent at
-# registration and activation. Django -- as of 1.10 -- does not have a
+# registration and activation. Django -- as of 2.1 -- does not have a
 # test assertion built in to test whether a signal was or was not
 # sent. The code below is from a pull request submitted upstream to
 # Django to add assertSignalSent and assertSignalNotSent assertions to

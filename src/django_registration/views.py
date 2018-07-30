@@ -106,7 +106,9 @@ class ActivationView(TemplateView):
                 request=self.request
             )
             return HttpResponseRedirect(
-                force_text(self.get_success_url(activated_user))
+                force_text(
+                    self.get_success_url(activated_user)
+                )
             )
         context_data = self.get_context_data()
         context_data.update(extra_context)

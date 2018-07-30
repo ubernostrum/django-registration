@@ -30,7 +30,9 @@ class RegistrationView(BaseRegistrationView):
             password=form.cleaned_data['password1']
         )
         login(self.request, new_user)
-        signals.user_registered.send(sender=self.__class__,
-                                     user=new_user,
-                                     request=self.request)
+        signals.user_registered.send(
+            sender=self.__class__,
+            user=new_user,
+            request=self.request
+        )
         return new_user
