@@ -21,21 +21,20 @@ work to support.
 Overview
 --------
 
-The primary issue when using django-registration with a custom
-user model will be
-:class:`~django_registration.forms.RegistrationForm`. ``RegistrationForm`` is
-a subclass of Django's built-in ``UserCreationForm``, which in turn is
-a ``ModelForm`` with its model set to
+The primary issue when using django-registration with a custom user
+model will be
+:class:`~django_registration.forms.RegistrationForm`. ``RegistrationForm``
+is a subclass of Django's built-in ``UserCreationForm``, which in turn
+is a ``ModelForm`` with its model hard-coded to
 ``django.contrib.auth.models.User``. The only changes made by
 django-registration are to apply the reserved name validator
-(:class:`django_registration.validators.ReservedNameValidator`) and make the
-``email`` field required (by default, Django's user model makes this
-field optional; it is required in ``RegistrationForm`` because two of
-the three built-in workflows of django-registration require an
-email address in order to send account-activation instructions to the
+(:class:`django_registration.validators.ReservedNameValidator`) and
+make the ``email`` field required (by default, Django's user model
+makes this field optional; it is required in ``RegistrationForm``
+because the two-step :ref:`HMAC <hmac-workflow>` requires an email
+address in order to send account-activation instructions to the
 user). As a result, you will always be required to supply a custom
-form class when using django-registration with a custom user
-model.
+form class when using django-registration with a custom user model.
 
 In the case where your user model is compatible with the default
 behavior of django-registration, (see below) you will be able to
@@ -53,7 +52,7 @@ edit django-registration's code):
 
     
     class MyCustomUserForm(RegistrationForm):
-        class Meta:
+        class Meta(RegistrationForm.Meta):
             model = MyCustomUser
 
 You will also need to specify the fields to include in the form, via
@@ -79,7 +78,9 @@ activation workflow):
             ),
             name='registration_register',
         ),
-        url(r'^accounts/', include('django_registration.backends.hmac.urls')),
+        url(r'^accounts/',
+	    include('django_registration.backends.hmac.urls')
+	),
     ]
     
 If your custom user model is not compatible with the built-in
@@ -93,15 +94,20 @@ Determining compatibility of a custom user model
 ------------------------------------------------
 
 The built-in workflows and other code of django-registration do as
-much as is possible to ensure compatibility with custom user models;
+much as is possible to ensure compatibility with custom user models:
 ``django.contrib.auth.models.User`` is never directly imported or
-referred to, and all code in django-registration instead uses
+referred to; all code in django-registration instead uses
 ``settings.AUTH_USER_MODEL`` or
-``django.contrib.auth.get_user_model()`` to refer to the user model,
-and ``USERNAME_FIELD`` when access to the username is required.
+``django.contrib.auth.get_user_model()`` to refer to the user model;
+and ``USERNAME_FIELD`` is used when access to the username is
+required.
 
 However, there are still some specific requirements you'll want to be
 aware of.
+
+
+The two-step HMAC workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The two-step :ref:`HMAC <hmac-workflow>` requires that your user model
 have the following fields:
@@ -119,18 +125,34 @@ model to denote the field used as the username. Additionally, your
 user model must implement the ``email_user`` method for sending email
 to the user.
 
-:ref:`The one-step workflow <one-step-workflow>` requires that your
-user model set ``USERNAME_FIELD``, and requires that it define a field
-named ``password`` for storing the user's password (it will expect to
-find this value in the ``password1`` field of the registration form);
-the combination of ``USERNAME_FIELD`` and ``password`` must be
-sufficient to log a user in. Also note that ``RegistrationForm``
-requires the ``email`` field, so either provide that field on your
-model or subclass ``RegistrationForm``.
+
+The one-step workflow
+~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`The one-step workflow <one-step-workflow>` places the following
+requirements on your user model:
+
+* It must specify ``USERNAME_FIELD``, so that a username value can be
+  retrieved.
+
+* It must define a field named ``password`` for storing the user's
+  password (it will expect to find this in the field ``password1`` of
+  the registration form).
+
+Also note that ``RegistrationForm`` requires the ``email`` field, so
+either provide that field on your model or subclass
+``RegistrationForm`` and override to remove the ``email`` field or
+make it optional.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
 are optional (i.e., can be ``NULL`` in your database, or provide a
 suitable default value defined in the model), or you'll need to
-specify the full list of fields to display in the ``fields`` option of
-your ``RegistrationForm`` subclass.
+specify the full list of fields to display in the ``fields`` section
+of the ``Meta`` declaration of your ``RegistrationForm`` subclass.
+
+Because the one-step workflow logs in the new account immediately
+after creating it, you must either use Django's ``ModelBackend`` as an
+authentication backend, or use an authentication backend which accepts
+a combination of ``USERNAME_FIELD`` and ``password`` as sufficient
+credentials.
