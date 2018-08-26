@@ -164,7 +164,7 @@ OTHER_SENSITIVE_NAMES = [
     'terms',
     'tos',
     'user',
-    'users'
+    'users',
     'weblog',
     'work',
 ]
