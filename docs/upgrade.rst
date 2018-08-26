@@ -128,6 +128,10 @@ removed.
 The compatibility alias ``registration.backends.default``, which also
 pointed to the model-based workflow, has been removed.
 
+The default template name for the body of the activation email in the
+two-step HMAC workflow is now
+``registration/activation_email_body.txt``.
+
 
 Changes during the 2.x release series
 -------------------------------------

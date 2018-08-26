@@ -32,7 +32,7 @@ class RegistrationView(BaseRegistrationView):
     TimestampSigner, with HMAC verification on activation.
 
     """
-    email_body_template = 'registration/activation_email.txt'
+    email_body_template = 'registration/activation_email_body.txt'
     email_subject_template = 'registration/activation_email_subject.txt'
     success_url = reverse_lazy('registration_complete')
 
