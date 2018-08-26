@@ -34,6 +34,14 @@ The guide below covers use of these two workflows.
    compatibility guide <custom-user>` before using
    django-registration.
 
+.. note:: **Additional steps for account security**
+
+   While django-registration does what it can to secure the user
+   signup process, its scope is deliberately limited; please read
+   :ref:`the security documentation <security>` for recommendations on
+   steps to secure user accounts beyond what django-registration alone
+   can do.
+
 
 Configuring the HMAC activation workflow
 ----------------------------------------

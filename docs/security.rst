@@ -122,3 +122,31 @@ avoid a common false-positive situation, the local-part and domain of
 an email address are checked independently of each other.
 
 It is strongly recommended that you leave this validation enabled.
+
+
+Additional steps to secure user accounts
+----------------------------------------
+
+The scope of django-registration is solely the implementation of
+user-signup workflows, which limits the ways in which
+django-registration alone can protect your users. Other features of
+Django itself, or of other third-party applications, can provide
+significant increases in protection.
+
+In particular, it is recommended that you:
+
+* Prevent the use of common passwords. You can catch some common
+  passwords by enabling `Django's CommonPasswordValidator
+  <https://docs.djangoproject.com/en/2.1/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
+  which uses a list of twenty thousand common passwords. A more
+  comprehensive option is the password validator and other utilities
+  from `pwned-passwords-django
+  <https://pwned-passwords-django.readthedocs.io/en/1.2.1/>`_, which
+  checks against a database containing (as of mid-2018) over half a
+  billion passwords found in data breaches.
+
+* Use two-factor authentication via authenticator applications or
+  hardware security keys (*not* SMS). The package `django-two-factor
+  <https://django-two-factor-auth.readthedocs.io/en/stable/>`_
+  provides integration for two-factor authentication into Django's
+  auth framework.
