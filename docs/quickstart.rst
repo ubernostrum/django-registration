@@ -216,6 +216,10 @@ following context:
 ``user``
     The user registering for the new account.
 
+``request``
+    The ``HttpRequest`` object representing the request in which the
+    user registered.
+
 ``site``
     An object representing the site on which the user registered;
     depending on whether ``django.contrib.sites`` is installed, this
@@ -229,6 +233,8 @@ following context:
 ``scheme``
 
     The protocol on which the user had registered, it is http or https
+
+
 
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
