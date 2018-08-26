@@ -69,14 +69,9 @@ Django settings::
 
 You'll also need to have ``django.contrib.auth`` in your
 ``INSTALLED_APPS`` setting, since all of the registration workflows in
-django-registration make use of it.
+django-registration make use of it. You should also add
+``django_registration`` to ``INSTALLED_APPS``.
 
-.. warning:: You should **not** add ``registration`` to your
-   ``INSTALLED_APPS`` setting if you're following this document. This
-   section is walking you through setup of the :ref:`the HMAC
-   activation workflow <hmac-workflow>`, and that does not make use of
-   any custom models or other features which require ``registration``
-   to be in ``INSTALLED_APPS``.
 
 
 Setting up URLs
