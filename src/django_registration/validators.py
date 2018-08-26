@@ -159,7 +159,7 @@ OTHER_SENSITIVE_NAMES = [
     'pricing',
     'privacy',
     'profile',
-    'register'
+    'register',
     'secure',
     'settings',
     'signin',
