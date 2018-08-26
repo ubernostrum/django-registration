@@ -197,8 +197,10 @@ class WorkflowTestCase(RegistrationTestCase):
                 data=self.valid_data
             )
             self.assertEqual(
-                getattr(cm.received_kwargs['user'],
-                        self.user_model.USERNAME_FIELD),
+                getattr(
+                    cm.received_kwargs['user'],
+                    self.user_model.USERNAME_FIELD
+                ),
                 self.valid_data[User.USERNAME_FIELD]
             )
             self.assertTrue(
@@ -230,6 +232,7 @@ class ActivationTestCase(WorkflowTestCase):
 
         # An activation email was sent.
         self.assertEqual(len(mail.outbox), 1)
+        self.assertTrue('http' in mail.outbox[0].subject)
 
     def test_registration_failure(self):
         """

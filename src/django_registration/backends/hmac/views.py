@@ -74,7 +74,7 @@ class RegistrationView(BaseRegistrationView):
         Build the template context used for the activation email.
 
         """
-        scheme = 'https' if self.request.is_secure else 'http'
+        scheme = 'https' if self.request.is_secure() else 'http'
         return {
             'scheme': scheme,
             'activation_key': activation_key,
