@@ -23,7 +23,7 @@ class RegistrationView(FormView):
     disallowed_url = reverse_lazy('registration_disallowed')
     form_class = RegistrationForm
     success_url = None
-    template_name = 'registration/registration_form.html'
+    template_name = 'django_registration/registration_form.html'
 
     def dispatch(self, *args, **kwargs):
         """
@@ -74,7 +74,7 @@ class ActivationView(TemplateView):
 
     """
     success_url = None
-    template_name = 'registration/activation_failed.html'
+    template_name = 'django_registration/activation_failed.html'
 
     def get_success_url(self, user=None):
         """

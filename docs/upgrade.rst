@@ -118,6 +118,26 @@ pointless task (the number of possible domains of such providers is
 ever-growing), this form class has been removed.
 
 
+Template names
+~~~~~~~~~~~~~~
+
+Since django-registration's Python module has been renamed from
+``registration`` to ``django_registration``, its default template
+folder has also been renamed, from ``registration`` to
+``django_registration``. Additionally, the following templates have
+undergone name changes:
+
+* The default template name for the body of the activation email in
+  the two-step HMAC workflow is now
+  ``django_registration/activation_email_body.txt`` (previously, it
+  was ``registration/activation_email.txt``)
+
+* The default template name for
+  :class:`~django_registration.views.ActivationView` and its
+  subclasses is now ``django_registration/activation_failed.html``
+  (previously, it was ``registration/activate.html``).
+
+
 Other changes
 ~~~~~~~~~~~~~
 
@@ -127,14 +147,6 @@ removed.
 
 The compatibility alias ``registration.backends.default``, which also
 pointed to the model-based workflow, has been removed.
-
-The default template name for the body of the activation email in the
-two-step HMAC workflow is now
-``registration/activation_email_body.txt``.
-
-The default template name for
-:class:`~django_registration.views.ActivationView` and its subclasses
-is now ``registration/activation_failed.html``.
 
 
 Changes during the 2.x release series

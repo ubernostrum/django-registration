@@ -142,7 +142,7 @@ class WorkflowTestCase(RegistrationTestCase):
         resp = self.client.get(reverse('registration_register'))
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(
-            resp, 'registration/registration_form.html'
+            resp, 'django_registration/registration_form.html'
         )
         self.assertTrue(
             isinstance(

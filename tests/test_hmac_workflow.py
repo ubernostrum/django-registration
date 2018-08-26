@@ -91,7 +91,9 @@ class HMACViewTests(ActivationTestCase):
 
         # Second activation fails.
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp, 'registration/activation_failed.html')
+        self.assertTemplateUsed(
+            resp, 'django_registration/activation_failed.html'
+        )
         self.assertEqual(
             resp.context['activation_error'],
             {'message': ActivationView.ALREADY_ACTIVATED_MESSAGE,
@@ -121,7 +123,9 @@ class HMACViewTests(ActivationTestCase):
 
         # Second activation fails.
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp, 'registration/activation_failed.html')
+        self.assertTemplateUsed(
+            resp, 'django_registration/activation_failed.html'
+        )
         self.assertTrue('activation_error' in resp.context)
         self.assertEqual(
             resp.context['activation_error'],
@@ -185,7 +189,9 @@ class HMACViewTests(ActivationTestCase):
             )
 
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp, 'registration/activation_failed.html')
+        self.assertTemplateUsed(
+            resp, 'django_registration/activation_failed.html'
+        )
         self.assertTrue('activation_error' in resp.context)
         self.assertEqual(
             resp.context['activation_error'],
@@ -215,7 +221,9 @@ class HMACViewTests(ActivationTestCase):
             )
 
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(resp, 'registration/activation_failed.html')
+        self.assertTemplateUsed(
+            resp, 'django_registration/activation_failed.html'
+        )
         self.assertTrue('activation_error' in resp.context)
         self.assertEqual(
             resp.context['activation_error'],
