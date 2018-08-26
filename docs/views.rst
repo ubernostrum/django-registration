@@ -130,8 +130,9 @@ classes, for use in writing your own custom subclasses.
 
    .. attribute:: template_name
 
-      The template to use for user activation. Should be a
-      string. Default value is ``registration/activate.html``.
+      The template to use after failed user activation. Should be a
+      string. Default value is
+      ``registration/activation_failed.html``.
 
    .. method:: get_success_url(user)
 

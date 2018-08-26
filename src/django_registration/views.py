@@ -74,7 +74,7 @@ class ActivationView(TemplateView):
 
     """
     success_url = None
-    template_name = 'registration/activate.html'
+    template_name = 'registration/activation_failed.html'
 
     def get_success_url(self, user=None):
         """

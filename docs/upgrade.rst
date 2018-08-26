@@ -132,6 +132,10 @@ The default template name for the body of the activation email in the
 two-step HMAC workflow is now
 ``registration/activation_email_body.txt``.
 
+The default template name for
+:class:`~django_registration.views.ActivationView` and its subclasses
+is now ``registration/activation_failed.html``.
+
 
 Changes during the 2.x release series
 -------------------------------------
