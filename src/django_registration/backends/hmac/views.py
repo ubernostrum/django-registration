@@ -65,7 +65,7 @@ class RegistrationView(BaseRegistrationView):
 
         """
         return signing.dumps(
-            obj=getattr(user, user.USERNAME_FIELD),
+            obj=user.get_username(),
             salt=REGISTRATION_SALT
         )
 

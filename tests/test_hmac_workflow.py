@@ -259,8 +259,7 @@ class HMACViewTests(ActivationTestCase):
                 )
             )
             self.assertEqual(
-                getattr(cm.received_kwargs['user'],
-                        self.user_model.USERNAME_FIELD),
+                cm.received_kwargs['user'].get_username(),
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
             self.assertTrue(

@@ -12,7 +12,6 @@ django-registration.
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 
 from . import validators
@@ -34,59 +33,33 @@ class RegistrationForm(UserCreationForm):
     will make use of it to create inactive user accounts.
 
     """
-    # Explicitly declared here because Django's default
-    # UserCreationForm, which we subclass, does not require this field
-    # but workflows in django-registration which involve explicit
-    # activation step do require it. If you need an optional email
-    # field, subclass and declare the field not required.
-    email = forms.EmailField(
-        help_text=_(u'email address'),
-        required=True,
-        validators=[
-            validators.validate_confusables_email,
-        ]
-    )
-
     class Meta(UserCreationForm.Meta):
         fields = [
             User.USERNAME_FIELD,
-            'email',
+            User.get_email_field_name(),
             'password1',
             'password2'
         ]
-        required_css_class = 'required'
 
-    def clean(self):
-        """
-        Apply the reserved-name validator to the username.
+    error_css_class = 'error'
+    required_css_class = 'required'
 
-        """
-        # This is done in clean() because Django does not currently
-        # have a non-ugly way to just add a validator to an existing
-        # field on a form when subclassing; the standard approach is
-        # to re-declare the entire field in order to specify the
-        # validator. That's not an option here because we're dealing
-        # with the user model and we don't know -- given custom users
-        # -- how to declare the username field.
-        #
-        # So defining clean() and attaching the error message (if
-        # there is one) to the username field is the least-ugly
-        # solution.
-        username_value = self.cleaned_data.get(User.USERNAME_FIELD)
-        if username_value is not None:
-            try:
-                if hasattr(self, 'reserved_names'):
-                    reserved_names = self.reserved_names
-                else:
-                    reserved_names = validators.DEFAULT_RESERVED_NAMES
-                reserved_validator = validators.ReservedNameValidator(
-                    reserved_names=reserved_names
-                )
-                reserved_validator(username_value)
-                validators.validate_confusables(username_value)
-            except ValidationError as v:
-                self.add_error(User.USERNAME_FIELD, v)
-        super(RegistrationForm, self).clean()
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        email_field = User.get_email_field_name()
+        if hasattr(self, 'reserved_names'):
+            reserved_names = self.reserved_names
+        else:
+            reserved_names = validators.DEFAULT_RESERVED_NAMES
+        username_validators = [
+            validators.ReservedNameValidator(reserved_names),
+            validators.validate_confusables
+        ]
+        self.fields[User.USERNAME_FIELD].validators.extend(username_validators)
+        self.fields[email_field].validators.append(
+            validators.validate_confusables_email
+        )
+        self.fields[email_field].required = True
 
 
 class RegistrationFormTermsOfService(RegistrationForm):
@@ -110,12 +83,20 @@ class RegistrationFormUniqueEmail(RegistrationForm):
     email addresses.
 
     """
-    def clean_email(self):
+    def clean(self):
         """
         Validate that the supplied email address is unique for the
         site.
 
         """
-        if User.objects.filter(email__iexact=self.cleaned_data['email']):
-            raise forms.ValidationError(validators.DUPLICATE_EMAIL)
-        return self.cleaned_data['email']
+        email_field = User.get_email_field_name()
+        email_value = self.cleaned_data.get(email_field)
+        if email_value is not None:
+            if User.objects.filter(**{
+                    '{}__iexact'.format(email_field): email_value
+            }).exists():
+                self.add_error(
+                    email_field,
+                    forms.ValidationError(validators.DUPLICATE_EMAIL)
+                )
+        super(RegistrationForm, self).clean()
