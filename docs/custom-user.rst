@@ -3,10 +3,10 @@
 Custom user models
 ==================
 
-When django-registration was first developed, Django's
-authentication system supported only its own built-in user model,
-``django.contrib.auth.models.User``. More recent versions of Django
-have introduced support for `custom user models
+When django-registration was first developed, Django's authentication
+system supported only its own built-in user model,
+:class:`django.contrib.auth.models.User`. More recent versions of
+Django have introduced support for `custom user models
 <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_.
 
 Older versions of django-registration did not generally support custom
@@ -23,26 +23,28 @@ Overview
 
 The primary issue when using django-registration with a custom user
 model will be
-:class:`~django_registration.forms.RegistrationForm`. ``RegistrationForm``
-is a subclass of Django's built-in ``UserCreationForm``, which in turn
-is a ``ModelForm`` with its model hard-coded to
-``django.contrib.auth.models.User``. The only changes made by
+:class:`~django_registration.forms.RegistrationForm`. :class:`~django_registration.forms.RegistrationForm`
+is a subclass of Django's built-in
+:class:`~django.contrib.auth.forms.UserCreationForm`, which in turn is
+a :class:`~django.forms.ModelForm` with its model hard-coded to
+:class:`django.contrib.auth.models.User`. The only changes made by
 django-registration are to apply the reserved name validator
 (:class:`django_registration.validators.ReservedNameValidator`) and
 make the ``email`` field required (by default, Django's user model
-makes this field optional; it is required in ``RegistrationForm``
-because the two-step :ref:`HMAC <hmac-workflow>` requires an email
+makes this field optional; it is required in
+:class:`~django_registration.forms.RegistrationForm` because the
+two-step :ref:`HMAC workflow <hmac-workflow>` requires an email
 address in order to send account-activation instructions to the
 user). As a result, you will always be required to supply a custom
 form class when using django-registration with a custom user model.
 
 In the case where your user model is compatible with the default
 behavior of django-registration, (see below) you will be able to
-subclass ``RegistrationForm``, set it to use your custom user model as
-the model, and then configure the views in django-registration to use
-your form subclass. For example, you might do the following (in a
-``forms.py`` module somewhere in your codebase -- do **not** directly
-edit django-registration's code):
+subclass :class:`~django_registration.forms.RegistrationForm`, set it
+to use your custom user model as the model, and then configure the
+views in django-registration to use your form subclass. For example,
+you might do the following (in a ``forms.py`` module somewhere in your
+codebase -- do **not** directly edit django-registration's code):
 
 .. code-block:: python
 
@@ -76,11 +78,12 @@ activation workflow):
             RegistrationView.as_view(
                 form_class=MyCustomUserForm
             ),
-            name='registration_register',
+            name='django_registration_register',
         ),
         url(r'^accounts/',
 	    include('django_registration.backends.hmac.urls')
 	),
+	# ... more URL patterns
     ]
     
 If your custom user model is not compatible with the built-in
@@ -95,12 +98,12 @@ Determining compatibility of a custom user model
 
 The built-in workflows and other code of django-registration do as
 much as is possible to ensure compatibility with custom user models:
-``django.contrib.auth.models.User`` is never directly imported or
-referred to; all code in django-registration instead uses
-``settings.AUTH_USER_MODEL`` or
-``django.contrib.auth.get_user_model()`` to refer to the user model;
-and ``USERNAME_FIELD`` is used when access to the username is
-required.
+:class:`django.contrib.auth.models.User` is never directly imported or
+referred to; all code in django-registration instead uses the
+:data:`~django.conf.settings.AUTH_USER_MODEL` setting or
+:func:`django.contrib.auth.get_user_model()` to refer to the user
+model; and :attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD` is
+used when access to the username is required.
 
 However, there are still some specific requirements you'll want to be
 aware of.
@@ -112,18 +115,23 @@ The two-step HMAC workflow
 The two-step :ref:`HMAC <hmac-workflow>` requires that your user model
 have the following fields:
 
-* ``email`` -- a textual field (``EmailField``, ``CharField`` or
-  ``TextField``) holding the user's email address. Note that this
-  field is required by ``RegistrationForm``, which is a difference
-  from Django's default ``UserCreationForm``.
+* ``email`` -- a textual field (:class:`~django.db.models.EmailField`,
+  :class:`~django.db.models.CharField` or
+  :class:`~django.db.models.TextField`) holding the user's email
+  address. Note that this field is required by
+  :class:`~django_registration.forms.RegistrationForm`, which is a
+  difference from Django's default
+  :class:`~django.contrib.auth.forms.UserCreationForm`.
 
-* ``is_active`` -- a ``BooleanField`` indicating whether the user's
-  account is active.
+* ``is_active`` -- a :class:`~django.db.models.BooleanField`
+  indicating whether the user's account is active.
 
-You also *must* specify the attribute ``USERNAME_FIELD`` on your user
+You also *must* specify the attribute
+:attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD` on your user
 model to denote the field used as the username. Additionally, your
-user model must implement the ``email_user`` method for sending email
-to the user.
+user model must implement the
+:meth:`~django.contrib.auth.models.User.email_user` method for sending
+email to the user.
 
 
 The one-step workflow
@@ -132,24 +140,26 @@ The one-step workflow
 :ref:`The one-step workflow <one-step-workflow>` places the following
 requirements on your user model:
 
-* It must specify ``USERNAME_FIELD``, so that a username value can be
-  retrieved.
+* It must specify
+  :attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD`, so that a
+  username value can be retrieved.
 
 * It must define a field named ``password`` for storing the user's
   password (it will expect to find this in the field ``password1`` of
   the registration form).
 
-Also note that ``RegistrationForm`` requires the ``email`` field, so
-either provide that field on your model or subclass
-``RegistrationForm`` and override to remove the ``email`` field or
-make it optional.
+Also note that :class:`~django_registration.forms.RegistrationForm`
+requires the ``email`` field, so either provide that field on your
+model or subclass :class:`~django_registration.forms.RegistrationForm`
+and override to remove the ``email`` field or make it optional.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
 are optional (i.e., can be ``NULL`` in your database, or provide a
 suitable default value defined in the model), or you'll need to
 specify the full list of fields to display in the ``fields`` section
-of the ``Meta`` declaration of your ``RegistrationForm`` subclass.
+of the ``Meta`` declaration of your
+:class:`~django_registration.forms.RegistrationForm` subclass.
 
 Because the one-step workflow logs in the new account immediately
 after creating it, you must either use Django's ``ModelBackend`` as an

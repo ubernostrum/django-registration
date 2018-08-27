@@ -15,17 +15,11 @@ value.
 Behavior and configuration
 --------------------------
 
-Since this workflow does not make use of any additional models beyond
-the user model (either Django's default
-``django.contrib.auth.models.User``, or :ref:`a custom user model
-<custom-user>`), *do not* add ``registration`` to your
-``INSTALLED_APPS`` setting.
-
-You will need to configure URLs, however. A default URLconf is
-provided, which you can ``include()`` in your URL configuration; that
-URLconf is ``django_registration.backends.hmac.urls``. For example, to place
-user registration under the URL prefix ``/accounts/``, you could place
-the following in your root URLconf:
+A default URLconf is provided, which you can ``include()`` in your URL
+configuration; that URLconf is
+``django_registration.backends.hmac.urls``. For example, to place user
+registration under the URL prefix ``/accounts/``, you could place the
+following in your root URLconf:
 
 .. code-block:: python
 
@@ -33,26 +27,26 @@ the following in your root URLconf:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('registration.backends.hmac.urls')),
+       url(r'^accounts/', include('django_registration.backends.hmac.urls')),
        url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
 That also sets up the views from ``django.contrib.auth`` (login,
 logout, password reset, etc.), though if you want those views at a
-different location, you can ``include()`` the URLconf
-``django.contrib.auth.urls`` to place only the ``django.contrib.auth``
-views at a specific location in your URL hierarchy.
+different location, you can use :func:`~django.urls.include` to
+include the URLconf ``django.contrib.auth.urls`` to place only the
+``django.contrib.auth`` views at a specific location in your URL
+hierarchy.
 
 .. note:: **URL patterns for activation**
 
    Although the actual value used in the activation key is the new
    user account's username, the URL pattern for
-   :class:`~django_registration.views.backends.hmac.ActivationView`
-   does not need to match all possible legal characters in a
-   username. The activation key that will be sent to the user (and
-   thus matched in the URL) is produced by
-   ``django.core.signing.dumps()``, which base64-encodes its
+   :class:`~views.ActivationView` does not need to match all possible legal
+   characters in a username. The activation key that will be sent to
+   the user (and thus matched in the URL) is produced by
+   :func:`django.core.signing.dumps()`, which base64-encodes its
    output. Thus, the only characters this pattern needs to match are
    those from `the URL-safe base64 alphabet
    <http://tools.ietf.org/html/rfc4648#section-5>`_, plus the colon
@@ -72,7 +66,7 @@ each):
   below <salt-security>`)
 
 By default, this workflow uses
-:class:`django_registration.forms.RegistrationForm` as its form class
+:class:`~django_registration.forms.RegistrationForm` as its form class
 for user registration; this can be overridden by passing the keyword
 argument ``form_class`` to the registration view.
 
@@ -96,7 +90,7 @@ start guide <quickstart>`.
 
 .. class:: RegistrationView
 
-   A subclass of :class:`djanog_registration.views.RegistrationView`
+   A subclass of :class:`django_registration.views.RegistrationView`
    implementing the signup portion of this workflow.
 
    Important customization points unique to this class are:
@@ -109,35 +103,44 @@ start guide <quickstart>`.
       form instance passed from
       :meth:`~django_registration.views.RegistrationView.register()`.
 
+      :param django_registration.forms.RegistrationForm form: The registration form.
+
    .. method:: get_activation_key(user)
 
       Given an instance of the user model, generates and returns an
       activation key (a string) for that user account.
+
+      :param django.contrib.auth.models.AbstractUser user: The new user account.
 
    .. method:: get_email_context(activation_key)
 
       Returns a dictionary of values to be used as template context
       when generating the activation email.
 
+      :param str activation_key: The activation key for the new user account.
+
    .. method:: send_activation_email(user)
 
       Given an inactive user account, generates and sends the
       activation email for that account.
 
+      :param django.contrib.auth.models.AbstractUser user: The new user account.
+      
    .. attribute:: email_body_template
 
       A string specifying the template to use for the body of the
       activation email. Default is
-      ``"registration/activation_email.txt"``.
+      ``"django_registration/activation_email.txt"``.
 
    .. attribute:: email_subject_template
 
       A string specifying the template to use for the subject of the
       activation email. Default is
-      ``"registration/activation_email_subject.txt"``. Note that, to
-      avoid header-injection vulnerabilities, the result of rendering
-      this template will be forced into a single line of text,
-      stripping newline characters.
+      ``"django_registration/activation_email_subject.txt"``. Note that, to
+      avoid `header-injection vulnerabilities
+      <https://en.wikipedia.org/wiki/Email_injection>`_, the result of
+      rendering this template will be forced into a single line of
+      text, stripping newline characters.
 
 .. class:: ActivationView
 
@@ -145,7 +148,7 @@ start guide <quickstart>`.
    implementing the activation portion of this workflow.
 
    Errors in activating the user account will raise
-   :class:`~django_registration.exceptions.ActivationError`, with one
+   :exc:`~django_registration.exceptions.ActivationError`, with one
    of the following values for the exception's ``code``:
 
    ``"already_activated"``
@@ -168,51 +171,55 @@ start guide <quickstart>`.
       Given a username (determined by the activation key), look up and
       return the corresponding instance of the user model. If no such
       account exists, will raise
-      :class:`~django_registration.exceptions.ActivationError` as
+      :exc:`~django_registration.exceptions.ActivationError` as
       described above. In the base implementation, will include
       ``is_active=False`` in the query to avoid re-activation of
       already-active accounts.
 
+      :param str username: The username of the new user account.
+      
    .. method:: validate_key(activation_key)
 
       Given the activation key, verifies that it carries a valid
       signature and a timestamp no older than the number of days
       specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, and
       returns the username from the activation key. Raises
-      :class:`~django_registration.exceptions.ActivationError`, as
+      :exc:`~django_registration.exceptions.ActivationError`, as
       described above, if the activation key has an invalid signature
       or if the timestamp is too old.
 
+      :param str activation_key: The activation key for the new user account.
 
 
 How it works
 ------------
 
-When a user signs up, the HMAC workflow creates a new ``User``
-instance to represent the account, and sets the ``is_active`` field to
+When a user signs up, the HMAC workflow creates a new user instance to
+represent the account, and sets the ``is_active`` field to
 ``False``. It then sends an email to the address provided during
 signup, containing a link to activate the account. When the user
 clicks the link, the activation view sets ``is_active`` to ``True``,
 after which the user can log in.
 
-The activation key is the username of the new account, signed
-using `Django's cryptographic signing tools
+The activation key is the username of the new account, signed using
+`Django's cryptographic signing tools
 <https://docs.djangoproject.com/en/stable/topics/signing/>`_
-(specifically, ``signing.dumps()`` is used, to produce a
-guaranteed-URL-safe value). The activation process includes
+(specifically, :func:`~django.core.signing.dumps()` is used, to
+produce a guaranteed-URL-safe value). The activation process includes
 verification of the signature prior to activation, as well as
 verifying that the user is activating within the permitted window (as
-specified in the setting ``ACCOUNT_ACTIVATION_DAYS``, mentioned
-above), through use of Django's ``TimestampSigner``.
+specified in the setting
+:data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`, mentioned
+above), through use of Django's
+:class:`~django.core.signing.TimestampSigner`.
 
 
 Security considerations
 -----------------------
 
 The activation key emailed to the user in the HMAC activation workflow
-is a value obtained by using Django's cryptographic signing tools.
-
-In particular, the activation key is of the form::
+is a value obtained by using Django's cryptographic signing tools. The
+activation key is of the form::
 
     encoded_username:timestamp:signature
 
@@ -221,10 +228,11 @@ where ``encoded_username`` is the username of the new account,
 of the time the user registered, and ``signature`` is a (URL-safe)
 base64-encoded HMAC of the username and timestamp.
 
-Django's implementation uses the value of the ``SECRET_KEY`` setting
-as the key for HMAC; additionally, it permits the specification of a
-salt value which can be used to "namespace" different uses of HMAC
-across a Django-powered site.
+Django's implementation uses the value of the
+:data:`~django.conf.settings.SECRET_KEY` setting as the key for HMAC;
+additionally, it permits the specification of a salt value which can
+be used to "namespace" different uses of HMAC across a Django-powered
+site.
 
 .. _salt-security:
 
@@ -232,7 +240,7 @@ The HMAC activation workflow will use the value (a string) of the
 setting :data:`~django.conf.settings.REGISTRATION_SALT` as the salt,
 defaulting to the string ``"registration"`` if that setting is not
 specified. This value does *not* need to be kept secret (only
-``SECRET_KEY`` does); it serves only to ensure that other parts of a
-site which also produce signed values from user input could not be
-used as a way to generate activation keys for arbitrary usernames (and
-vice-versa).
+:data:`~django.conf.settings.SECRET_KEY` does); it serves only to
+ensure that other parts of a site which also produce signed values
+from user input could not be used as a way to generate activation keys
+for arbitrary usernames (and vice-versa).

@@ -8,10 +8,7 @@ installed; for details on that, see :ref:`the installation guide
 <install>`.
 
 The next steps will depend on which registration workflow you'd like
-to use. There are three workflows built in to django-registration;
-one is included largely for backwards compatibility with older
-releases, while the other two are recommended for new
-installations. Those two are:
+to use. There two workflows built in to django-registration:
 
 * :ref:`The HMAC activation workflow <hmac-workflow>`, which
   implements a two-step process: a user signs up, then is emailed an
@@ -20,7 +17,9 @@ installations. Those two are:
 * :ref:`The one-step workflow <one-step-workflow>`, in which a user
   signs up and their account is immediately active and logged in.
 
-The guide below covers use of these two workflows.
+The guide below covers use of these two workflows. Regardless of which
+one you choose to use, you should add ``django_registration`` to your
+``INSTALLED_APPS`` setting.
 
 .. important:: **Django's authentication system must be installed**
 
@@ -67,25 +66,17 @@ Django settings::
 
     ACCOUNT_ACTIVATION_DAYS = 7 # One-week activation window; you may, of course, use a different value.
 
-You'll also need to have ``django.contrib.auth`` in your
-``INSTALLED_APPS`` setting, since all of the registration workflows in
-django-registration make use of it. You should also add
-``django_registration`` to ``INSTALLED_APPS``.
-
-
 
 Setting up URLs
 ~~~~~~~~~~~~~~~
 
 Each bundled registration workflow in django-registration includes a
 Django URLconf which sets up URL patterns for :ref:`the views in
-django-registration <views>`, as well as several useful views in
-``django.contrib.auth`` (e.g., login, logout, password
-change/reset). The URLconf for the HMAC activation workflow can be
-found at ``djanog_registration.backends.hmac.urls``, and so can be
-included in your project's root URL configuration. For example, to
-place the URLs under the prefix ``/accounts/``, you could add the
-following to your project's root URLconf:
+django-registration <views>`. The URLconf for the HMAC activation
+workflow can be found at ``django_registration.backends.hmac.urls``,
+and so can be included in your project's root URL configuration. For
+example, to place the URLs under the prefix ``/accounts/``, you could
+add the following to your project's root URLconf:
 
 .. code-block:: python
 
@@ -108,16 +99,17 @@ views included in Django (login, logout, password reset, etc.) via the
 
 The following URL names are defined by this URLconf:
 
-* ``registration_register`` is the account-registrationview..
+* ``django_registration_register`` is the account-registration view.
 
-* ``registration_complete`` is the post-registration success message.
-
-* ``registration_activate`` is the account-activation view.
-
-* ``registration_activation_complete`` is the post-activation success
+* ``django_registration_complete`` is the post-registration success
   message.
 
-* ``registration_disallowed`` is a message indicating registration is
+* ``django_registration_activate`` is the account-activation view.
+
+* ``django_registration_activation_complete`` is the post-activation
+  success message.
+
+* ``django_registration_disallowed`` is a message indicating registration is
   not currently permitted.
 
 
@@ -160,7 +152,7 @@ Used if account activation fails. Has the following context:
 
 ``activation_error``
     A ``dict`` containing the information supplied to the
-    :class:`~django_registration.exceptions.ActivationError` which
+    :exc:`~django_registration.exceptions.ActivationError` which
     occurred during activation. See the documentation for that
     exception for a description of the keys in this ``dict``, and the
     documentation for
@@ -245,8 +237,8 @@ following context:
 Note that the templates used to generate the account activation email
 use the extension ``.txt``, not ``.html``. Due to widespread antipathy
 toward and interoperability problems with HTML email,
-django-registration defaults to plain-text email, and so these
-templates should output plain text rather than HTML.
+django-registration produces plain-text email, and so these templates
+should output plain text rather than HTML.
 
 To make use of the views from ``django.contrib.auth`` (which are set
 up for you by the default URLconf mentioned above), you will also need
@@ -262,11 +254,6 @@ Configuring the one-step workflow
 Also included is a :ref:`one-step registration workflow
 <one-step-workflow>`, where a user signs up and their account is
 immediately active and logged in.
-
-The one-step workflow does not require any models other than those
-provided by Django's own authentication system, so only
-``django.contrib.auth`` needs to be in your ``INSTALLED_APPS``
-setting.
 
 You will need to configure URLs to use the one-step workflow; the
 easiest way is to ``include()`` the URLconf

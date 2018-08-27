@@ -41,8 +41,28 @@ specify the setting :data:`~django.conf.settings.REGISTRATION_OPEN`.
 
 Upon successful registration, the user will be redirected to the
 site's home page -- the URL ``/``. This can be changed by subclassing
-``django_registration.backends.one_step.views.RegistrationView`` and
-overriding the method ``get_success_url()``.
+:class:`django_registration.backends.one_step.views.RegistrationView`
+and overriding the method
+:meth:`~django_registration.views.RegistrationView.get_success_url`
+or setting the attribute
+:attr:`~django_registration.views.RegistrationView.success_url`. You
+can also do this in a URLconf. For example:
+
+.. code-block:: python
+
+   from django.conf.urls import include, url
+
+   from django_registration.backends.one_step import RegistrationView
+
+   urlpatterns = [
+       # Other URL patterns ...
+       url(r'^accounts/register/',
+           RegistrationView.as_view(success_url='/profile/'),
+	   name='django_registration_register'),
+       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
+       url(r'^accounts/', include('django.contrib.auth.urls')),
+       # More URL patterns ...
+   ]
 
 The default form class used for account registration will be
 :class:`django_registration.forms.RegistrationForm`, although this can
@@ -50,7 +70,9 @@ be overridden by supplying a custom URL pattern for the registration
 view and passing the keyword argument ``form_class``, or by
 subclassing
 ``django_registration.backends.one_step.views.RegistrationView`` and
-either overriding ``form_class`` or implementing
+either overriding
+:attr:`~django_registration.views.RegistrationView.form_class` or
+implementing
 :meth:`~django_registration.views.RegistrationView.get_form_class()`,
 and specifying the custom subclass in your URL patterns.
 
@@ -60,7 +82,7 @@ Templates
 
 The one-step workflow uses only one custom template:
 
-**registration/registration_form.html**
+**django_registration/registration_form.html**
 
 Used to show the form users will fill out to register. By default, has
 the following context:

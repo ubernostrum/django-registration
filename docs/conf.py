@@ -4,7 +4,7 @@ import sys
 
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
-extensions = []
+extensions = ['sphinx.ext.intersphinx']
 templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
@@ -20,6 +20,12 @@ latex_documents = [
     ('index', 'django-registration.tex', u'django-registration Documentation',
      u'James Bennett', 'manual'),
 ]
+
+intersphinx_mapping = {
+    'django': ('https://docs.djangoproject.com/en/stable/',
+               'https://docs.djangoproject.com/en/stable/_objects/')
+}
+
 if not on_rtd:
     import sphinx_rtd_theme
     html_theme = 'sphinx_rtd_theme'

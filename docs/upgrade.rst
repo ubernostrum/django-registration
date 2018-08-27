@@ -9,6 +9,9 @@ which is not backwards-compatible with the django-registration 2.x
 release series.
 
 
+Changes between django-registration 2.x and 3.x
+-----------------------------------------------
+
 Module renaming
 ~~~~~~~~~~~~~~~
 
@@ -34,7 +37,7 @@ account itself.
 
 
 Renaming of one-step workflow
------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`The one-step workflow <one-step-workflow>` was previously found
 at ``registration.backends.simple``; it has been renamed and is now
@@ -52,7 +55,7 @@ required detecting the set of auth views and choosing a set of URL
 patterns at runtime.
 
 As a result, auth views are no longer automatically configured for
-you; if you want them, ``include()`` the URLconf
+you; if you want them, :func:`~django.urls.include` the URLconf
 ``django.contrib.auth.urls`` at a location of your choosing.
 
 
@@ -65,7 +68,7 @@ account. This meant it was not possible to determine, from inspecting
 the result, what exactly caused the failure.
 
 In django-registration 3.x, activation failures raise an exception --
-:class:`~django_registration.exceptions.ActivationError` -- with a
+:exc:`~django_registration.exceptions.ActivationError` -- with a
 message and code (such as ``"expired"``), to indicate the cause of
 failure. This exception is caught by
 :class:`~django_registration.views.ActivationView` and turned into the
@@ -78,34 +81,49 @@ Changes to ``success_url``
 Both the registration and activation views mimic Django's own generic
 views in supporting a choice of ways to specify where to redirect
 after a successful registration or activation; you can either set the
-attribute ``success_url`` on the view class, or implement the method
-``get_success_url()``. However, there is a key difference between the
-base Django generic-view version of this, and the version in
-django-registration: when calling a ``get_success_url()`` method,
-django-registration passes the user account as an argument.
+attribute
+:attr:`~django_registration.views.RegistrationView.success_url` on the
+view class, or implement the method
+:meth:`~django_registration.views.RegistrationView.get_success_url`
+. However, there is a key difference between the base Django
+generic-view version of this, and the version in django-registration:
+when calling a
+:meth:`~django_registration.views.RegistrationView.get_success_url`
+method, django-registration passes the user account as an argument.
 
-This is incompatible with the behavior of Django's base ``FormMixin``,
-which expects ``get_success_url()`` to take zero arguments.
+This is incompatible with the behavior of Django's base
+:class:`~django.views.generic.edit.FormMixin`, which expects
+:meth:`~django.views.generic.edit.FormMixin.get_success_url` to take
+zero arguments.
 
-Also, earlier versions of django-registration allowed ``success_url``
-and ``get_success_url()`` to provide either a string URL, or a tuple
-of ``(viewname, args, kwargs)`` to pass to Django's ``reverse()``
-helper, in order to work around issues caused by calling ``reverse()``
-at the level of a class attribute.
+Also, earlier versions of django-registration allowed
+:attr:`~django_registration.views.RegistrationView.success_url` and
+:meth:`~django_registration.views.RegistrationView.get_success_url` to
+provide either a string URL, or a tuple of ``(viewname, args,
+kwargs)`` to pass to Django's :func:`~django.urls.reverse` helper, in
+order to work around issues caused by calling
+:func:`~django.urls.reverse` at the level of a class attribute.
 
 In django-registration 3.x, the ``user`` argument to
-``get_success_url()`` is now optional, meaning ``FormMixin``'s default
-behavior is now compatible with any ``get_success_url()``
+:meth:`~django_registration.views.RegistrationView.get_success_url` is
+now optional, meaning :class:`~django.views.generic.edit.FormMixin`'s
+default behavior is now compatible with any
+:meth:`~django_registration.views.RegistrationView.get_success_url`
 implementation that doesn't require the user object; as a result,
 implementations which don't rely on the user object should either
-switch to specifying ``success_url`` as an attribute, or change their
-own signature to ``get_success_url(self, user=None)``.
+switch to specifying
+:attr:`~django_registration.views.RegistrationView.success_url` as an
+attribute, or change their own signature to ``get_success_url(self,
+user=None)``.
 
-Also, the ability to supply the 3-tuple of arguments for ``reverse()``
-has been removed; both ``success_url`` and ``get_success_url()`` now
-*must* be/return either a string, or a lazy object that resolves to a
-string. To avoid class-level calls to ``reverse()``, use
-``django.urls.reverse_lazy()`` instead.
+Also, the ability to supply the 3-tuple of arguments for
+:func:`~django.urls.reverse` has been removed; both
+:attr:`~django_registration.views.RegistrationView.success_url` and
+:meth:`~django_registration.views.RegistrationView.get_success_url`
+now *must* be/return either a string, or a lazy object that resolves
+to a string. To avoid class-level calls to
+:func:`~django.urls.reverse`, use ``django.urls.reverse_lazy()``
+instead.
 
 
 Removed "no free email" form
@@ -136,6 +154,16 @@ undergone name changes:
   :class:`~django_registration.views.ActivationView` and its
   subclasses is now ``django_registration/activation_failed.html``
   (previously, it was ``registration/activate.html``).
+
+
+Renaming of URL patterns
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Prior to 3.x, django-registration's included URLconf modules provided
+URL pattern names beginning with ``"registration"``. For example:
+``"registration_register"``. In 3.x, these are all renamed to begin
+with ``"django_registration"``. For example:
+``"django_registration_register"``.
 
 
 Other changes
@@ -186,7 +214,7 @@ doing so is not recommended.
 
 
 Versions prior to 2.0
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 A 1.0 release of django-registration existed, but the 2.x series was
 compatible with it.

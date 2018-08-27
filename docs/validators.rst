@@ -50,10 +50,13 @@ Additionally, two custom validators are provided:
 
    By default, this validator is applied to the username field of
    :class:`django_registration.forms.RegistrationForm` and all of its
-   subclasses. The validator is applied in a form-level ``clean()``
-   method on ``RegistrationForm``, so to remove it (not recommended),
-   subclass ``RegistrationForm`` and override ``clean()``. For no
-   custom form-level validation, you could implement it as:
+   subclasses. The validator is applied in a form-level
+   :meth:`~django.forms.Form.clean` method on
+   :class:`~django_registration.forms.RegistrationForm`, so to remove
+   it (not recommended), subclass
+   :class:`~django_registration.forms.RegistrationForm` and override
+   :meth:`~django.forms.Form.clean`. For no custom form-level
+   validation, you could implement it as:
 
    .. code-block:: python
 
@@ -61,8 +64,9 @@ Additionally, two custom validators are provided:
           pass
 
    If you want to supply your own custom list of reserved names, you
-   can subclass ``RegistrationForm`` and set the attribute
-   ``reserved_names`` to the list of values you want to disallow.
+   can subclass :class:`~django_registration.forms.RegistrationForm`
+   and set the attribute ``reserved_names`` to the list of values you
+   want to disallow.
 
    .. note:: **Why reserved names are reserved**
 
@@ -150,8 +154,9 @@ Several constants are provided which are used by this validator:
    This validator is enabled by default on the username field of
    registration forms.
 
-   :param value: The username value to validate
-   :type value: ``str`` (non-string usernames will not be checked)
+   :param str value: The username value to validate (non-string
+      usernames will not be checked)
+   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable
 
 .. function:: validate_confusables_email(value)
 
@@ -176,5 +181,5 @@ Several constants are provided which are used by this validator:
    This validator is enabled by default on the email field of
    registration forms.
 
-   :param value: The email address to validate
-   :type value: ``str``
+   :param str value: The email address to validate
+   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable

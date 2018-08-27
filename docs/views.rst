@@ -23,8 +23,11 @@ classes, for use in writing your own custom subclasses.
    <https://docs.djangoproject.com/en/stable/ref/class-based-views/generic-editing/#formview>`_,
    which provides the infrastructure for supporting user registration.
 
-   Since it's a subclass of ``FormView``, ``RegistrationView`` has all
-   the usual attributes and methods you can override.
+   Standard attributes and methods of
+   :class:`~django.views.generic.edit.FormView` can be overridden to
+   control behavior as described in Django's documentation, with the
+   exception of :meth:`get_success_url`, which must use the signature
+   documented below.
 
    When writing your own subclass, one method is required:
 
@@ -33,7 +36,7 @@ classes, for use in writing your own custom subclasses.
       Implement your registration logic here. ``form`` will be the
       (already-validated) form filled out by the user during the
       registration process (i.e., a valid instance of
-      :class:`django_registration.forms.RegistrationForm` or a subclass of
+      :class:`~django_registration.forms.RegistrationForm` or a subclass of
       it).
 
       This method should return the newly-registered user instance,
@@ -42,8 +45,10 @@ classes, for use in writing your own custom subclasses.
       not automatically done for you when writing your own custom
       subclass, so you must send this signal manually.
 
-   Useful optional places to override or customize on a
-   ``RegistrationView`` subclass are:
+      :param django_registration.forms.RegistrationForm form: The registration form to use.
+      :rtype: django.contrib.auth.models.AbstractUser
+
+   Useful optional places to override or customize on subclasses are:
 
    .. attribute:: disallowed_url
 
@@ -63,16 +68,16 @@ classes, for use in writing your own custom subclasses.
 
       The URL to redirect to after successful registration. Can be a
       hard-coded string, the string resulting from calling Django's
-      ``reverse()`` helper, or the lazy object produced by Django's
-      ``reverse_lazy`` helper. Can be overridden on a per-request
-      basis (see below). Default value is ``None``; subclasses must
-      override and provide this.
+      :func:`~django.urls.reverse` helper, or the lazy object produced
+      by Django's :func:`~django.urils.reverse_lazy` helper. Can be
+      overridden on a per-request basis (see below). Default value is
+      ``None``; subclasses must override and provide this.
 
    .. attribute:: template_name
 
       The template to use for user registration. Should be a
       string. Default value is
-      ``registration/registration_form.html``.
+      ``django_registration/registration_form.html``.
 
    .. method:: get_form_class()
 
@@ -80,12 +85,17 @@ classes, for use in writing your own custom subclasses.
       overridden, will use :attr:`~form_class`. Should be the actual
       class object.
 
+      :rtype: django_registration.forms.RegistrationForm
+
    .. method:: get_success_url(user)
 
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
       :attr:`~success_url`. Should return a value of the same type as
       ``success_url`` (see above).
+      
+      :param django.contrib.auth.models.AbstractUser user: The new user account.
+      :rtype: str
 
    .. method:: registration_allowed()
 
@@ -116,6 +126,9 @@ classes, for use in writing your own custom subclasses.
       :class:`~django_registration.exceptions.ActivationError` (if
       activation was not successful).
 
+      :raises django_registration.exceptions.ActivationError: if activation fails.
+      :rtype: django.contrib.auth.models.AbstractUser
+      
    Useful places to override or customize on an ``ActivationView``
    subclass are:
 
@@ -123,16 +136,16 @@ classes, for use in writing your own custom subclasses.
 
       The URL to redirect to after successful activation. Can be a
       hard-coded string, the string resulting from calling Django's
-      ``reverse()`` helper, or the lazy object produced by Django's
-      ``reverse_lazy`` helper. Can be overridden on a per-request
-      basis (see below). Default value is ``None``; subclasses must
-      override and provide this.
+      :func:`~django.urls.reverse` helper, or the lazy object produced
+      by Django's :func:`~django.urls.reverse_lazy` helper. Can be
+      overridden on a per-request basis (see below). Default value is
+      ``None``; subclasses must override and provide this.
 
    .. attribute:: template_name
 
       The template to use after failed user activation. Should be a
       string. Default value is
-      ``registration/activation_failed.html``.
+      ``django_registration/activation_failed.html``.
 
    .. method:: get_success_url(user)
 
@@ -140,3 +153,7 @@ classes, for use in writing your own custom subclasses.
       per-request or per-user basis. If not overridden, will use
       :attr:`~success_url`. Should return a value of the same type as
       ``success_url`` (see above).
+
+      :param django.contrib.auth.models.AbstractUser user: The activated user account.
+      :rtype: str
+

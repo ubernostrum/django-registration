@@ -4,12 +4,6 @@
 Installation guide
 ==================
 
-Before installing django-registration, you'll need to have a copy
-of `Django <https://www.djangoproject.com>`_ already installed. For
-information on obtaining and installing Django, consult the `Django
-download page <https://www.djangoproject.com/download/>`_, which
-offers convenient packaged downloads and installation instructions.
-
 The |release| release of django-registration supports Django 1.11,
 2.0 and 2.1 on the following Python versions:
 
@@ -44,7 +38,7 @@ library required by some of django-registration's validation code.
    1.11 release before installing django-registration. Later versions
    of Django no longer support Python 2, and installation will
    fail. To install a compatible version of Django for Python 2, run
-   ``pip install "Django>=1.11,<2.0"`` or similar.
+   ``pip install "Django>=1.11,<2.0"``.
 
 
 Installing from a source checkout

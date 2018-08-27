@@ -18,6 +18,7 @@ customizability
 customizable
 dev
 django
+Facebook
 favicon
 filenames
 hostnames

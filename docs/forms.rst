@@ -13,9 +13,9 @@ workflows in mind, but may also be useful in other situations.
 
 .. class:: RegistrationForm
 
-   A form for registering an account. This is a subclass of
-   Django's built-in ``UserCreationForm``, and has the following
-   fields, all of which are required:
+   A form for registering an account. This is a subclass of Django's
+   built-in :class:`~django.contrib.auth.forms.UserCreationForm`, and
+   has the following fields, all of which are required:
 
    ``username``
        The username to use for the new account. This is represented as
@@ -38,10 +38,11 @@ workflows in mind, but may also be useful in other situations.
       a password input (``input type="password"`` in the rendered
       HTML).
 
-   Because this is a subclass of Django's own ``UserCreationForm``,
-   the constraints on usernames and email addresses match those
-   enforced by Django's default authentication backend for instances
-   of ``django.contrib.auth.models.User``. The repeated entry of the
+   Because this is a subclass of Django's own
+   :class:`~django.contrib.auth.forms.UserCreationForm`, the
+   constraints on usernames and email addresses match those enforced
+   by Django's default authentication backend for instances of
+   :class:`~django.contrib.auth.models.User`. The repeated entry of the
    password serves to catch typos.
 
    .. note:: **Unicode usernames**
@@ -56,19 +57,18 @@ workflows in mind, but may also be useful in other situations.
       means that usernames containing non-ASCII word characters are
       only permitted when using Python 3.
 
-   The validation error for mismatched passwords is attached to the
-   ``password2`` field. This is a backwards-incompatible change from
-   django-registration 1.0.
-
    .. note:: **Validation of usernames**
 
-      Because it's a subclass of Django's ``UserCreationForm``,
-      ``RegistrationForm`` will inherit the base validation defined by
-      Django. It also adds a custom ``clean()`` method which applies
-      one custom validator:
-      :class:`~django_registration.validators.ReservedNameValidator`. See the
-      documentation for ``ReservedNameValidator`` for notes on why it
-      exists and how to customize its behavior.
+      Because it's a subclass of Django's
+      :class:`~django.contrib.auth.forms.UserCreationForm`,
+      :class:`RegistrationForm` will inherit the base validation
+      defined by Django. It also adds a custom
+      :meth:`~django.forms.Form.clean()` method which applies one
+      custom validator:
+      :class:`~django_registration.validators.ReservedNameValidator`. See
+      the documentation for
+      :class:`~django_registration.validators.ReservedNameValidator`
+      for notes on why it exists and how to customize its behavior.
 
 
 .. class:: RegistrationFormTermsOfService
