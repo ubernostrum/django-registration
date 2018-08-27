@@ -27,7 +27,7 @@ class ActivationViewTests(RegistrationTestCase):
 
         """
         resp = self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -38,7 +38,7 @@ class ActivationViewTests(RegistrationTestCase):
 
         resp = self.client.get(
             reverse(
-                'registration_activate',
+                'django_registration_activate',
                 args=(),
                 kwargs={'activation_key': activation_key}
             )

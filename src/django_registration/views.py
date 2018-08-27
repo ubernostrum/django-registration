@@ -20,7 +20,7 @@ class RegistrationView(FormView):
     Base class for user registration views.
 
     """
-    disallowed_url = reverse_lazy('registration_disallowed')
+    disallowed_url = reverse_lazy('django_registration_disallowed')
     form_class = RegistrationForm
     success_url = None
     template_name = 'django_registration/registration_form.html'

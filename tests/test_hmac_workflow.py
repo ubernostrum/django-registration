@@ -33,7 +33,7 @@ class HMACViewTests(ActivationTestCase):
 
         """
         resp = self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -45,13 +45,15 @@ class HMACViewTests(ActivationTestCase):
         with self.assertSignalSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
             )
 
-        self.assertRedirects(resp, reverse('registration_activation_complete'))
+        self.assertRedirects(
+            resp, reverse('django_registration_activation_complete')
+        )
 
     def test_repeat_activation(self):
         """
@@ -60,7 +62,7 @@ class HMACViewTests(ActivationTestCase):
 
         """
         resp = self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -72,18 +74,20 @@ class HMACViewTests(ActivationTestCase):
         with self.assertSignalSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
             )
         # First activation redirects to success.
-        self.assertRedirects(resp, reverse('registration_activation_complete'))
+        self.assertRedirects(
+            resp, reverse('django_registration_activation_complete')
+        )
 
         with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
@@ -107,7 +111,7 @@ class HMACViewTests(ActivationTestCase):
 
         """
         resp = self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -115,7 +119,7 @@ class HMACViewTests(ActivationTestCase):
         with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
@@ -146,7 +150,7 @@ class HMACViewTests(ActivationTestCase):
 
         """
         self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -182,7 +186,7 @@ class HMACViewTests(ActivationTestCase):
         with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
@@ -214,7 +218,7 @@ class HMACViewTests(ActivationTestCase):
         with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )
@@ -234,7 +238,7 @@ class HMACViewTests(ActivationTestCase):
 
     def test_activation_signal(self):
         self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
 
@@ -249,7 +253,7 @@ class HMACViewTests(ActivationTestCase):
         ) as cm:
             self.client.get(
                 reverse(
-                    'registration_activate',
+                    'django_registration_activate',
                     args=(),
                     kwargs={'activation_key': activation_key}
                 )

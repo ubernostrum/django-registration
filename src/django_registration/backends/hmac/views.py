@@ -34,7 +34,7 @@ class RegistrationView(BaseRegistrationView):
     """
     email_body_template = 'django_registration/activation_email_body.txt'
     email_subject_template = 'django_registration/activation_email_subject.txt'
-    success_url = reverse_lazy('registration_complete')
+    success_url = reverse_lazy('django_registration_complete')
 
     def register(self, form):
         new_user = self.create_inactive_user(form)
@@ -124,7 +124,7 @@ class ActivationView(BaseActivationView):
     INVALID_KEY_MESSAGE = _(
         u'The activation key you provided is invalid.'
     )
-    success_url = reverse_lazy('registration_activation_complete')
+    success_url = reverse_lazy('django_registration_activation_complete')
 
     def activate(self, *args, **kwargs):
         username = self.validate_key(kwargs.get('activation_key'))

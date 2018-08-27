@@ -26,7 +26,7 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
         with self.assertSignalSent(signals.user_registered,
                                    required_kwargs=['user', 'request']) as cm:
             resp = self.client.post(
-                reverse('registration_register'),
+                reverse('django_registration_register'),
                 data=self.valid_data
             )
             self.assertEqual(
@@ -35,7 +35,7 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
                 self.valid_data[self.user_model.USERNAME_FIELD]
             )
 
-        self.assertRedirects(resp, reverse('registration_complete'))
+        self.assertRedirects(resp, reverse('django_registration_complete'))
 
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
         self.assertTrue(
@@ -49,5 +49,5 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
         self.assertTrue(new_user.is_active)
 
         # New user must be logged in.
-        resp = self.client.get(reverse('registration_register'))
+        resp = self.client.get(reverse('django_registration_register'))
         self.assertTrue(resp.context['user'].is_authenticated)

@@ -113,7 +113,7 @@ class WorkflowTestCase(RegistrationTestCase):
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
 
         """
-        resp = self.client.get(reverse('registration_register'))
+        resp = self.client.get(reverse('django_registration_register'))
         self.assertEqual(200, resp.status_code)
 
     @override_settings(REGISTRATION_OPEN=False)
@@ -123,15 +123,15 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         resp = self.client.get(
-            reverse('registration_register')
+            reverse('django_registration_register')
         )
-        self.assertRedirects(resp, reverse('registration_disallowed'))
+        self.assertRedirects(resp, reverse('django_registration_disallowed'))
 
         resp = self.client.post(
-            reverse('registration_register'),
+            reverse('django_registration_register'),
             data=self.valid_data
         )
-        self.assertRedirects(resp, reverse('registration_disallowed'))
+        self.assertRedirects(resp, reverse('django_registration_disallowed'))
 
     def test_registration_get(self):
         """
@@ -139,7 +139,7 @@ class WorkflowTestCase(RegistrationTestCase):
         template and populates a registration form into the context.
 
         """
-        resp = self.client.get(reverse('registration_register'))
+        resp = self.client.get(reverse('django_registration_register'))
         self.assertEqual(200, resp.status_code)
         self.assertTemplateUsed(
             resp, 'django_registration/registration_form.html'
@@ -157,11 +157,11 @@ class WorkflowTestCase(RegistrationTestCase):
         """
         with self.assertSignalSent(signals.user_registered):
             resp = self.client.post(
-                reverse('registration_register'),
+                reverse('django_registration_register'),
                 data=self.valid_data
             )
 
-        self.assertRedirects(resp, reverse('registration_complete'))
+        self.assertRedirects(resp, reverse('django_registration_complete'))
 
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
 
@@ -182,7 +182,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
         with self.assertSignalNotSent(signals.user_registered):
             resp = self.client.post(
-                reverse('registration_register'),
+                reverse('django_registration_register'),
                 data=data
             )
 
@@ -193,7 +193,7 @@ class WorkflowTestCase(RegistrationTestCase):
     def test_registration_signal(self):
         with self.assertSignalSent(signals.user_registered) as cm:
             self.client.post(
-                reverse('registration_register'),
+                reverse('django_registration_register'),
                 data=self.valid_data
             )
             self.assertEqual(
@@ -257,7 +257,7 @@ class ActivationTestCase(WorkflowTestCase):
         }):
             with self.assertSignalSent(signals.user_registered):
                 resp = self.client.post(
-                    reverse('registration_register'),
+                    reverse('django_registration_register'),
                     data=self.valid_data
                 )
 
