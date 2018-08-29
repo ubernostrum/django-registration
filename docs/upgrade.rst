@@ -75,6 +75,20 @@ failure. This exception is caught by
 template context variable ``activation_error``.
 
 
+Changes to custom user support
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Support for custom user models has been brought more in line with the
+features Django offers. This affects compatibility of custom user
+models with django-registration's default forms and views. In
+particular, custom user models should now provide, in addition to
+:attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD`, the
+:meth:`~django.contrib.auth.models.AbstractBaseUser.get_username` and
+:meth:`~django.contrib.auth.models.AbstractBaseUser.get_email_field_name`
+methods. See :ref:`the custom user documentation <custom-user>` for
+details.
+
+
 Changes to ``success_url``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 

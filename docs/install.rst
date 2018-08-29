@@ -35,10 +35,10 @@ library required by some of django-registration's validation code.
 .. warning:: **Python 2**
 
    If you are using Python 2, you should install the latest Django
-   1.11 release before installing django-registration. Later versions
-   of Django no longer support Python 2, and installation will
-   fail. To install a compatible version of Django for Python 2, run
-   ``pip install "Django>=1.11,<2.0"``.
+   1.11 release *before* installing django-registration. Later
+   versions of Django no longer support Python 2, and installation
+   will fail. To install a compatible version of Django for Python 2,
+   run ``pip install "Django>=1.11,<2.0"``.
 
 
 Installing from a source checkout
@@ -54,7 +54,7 @@ repository by typing::
 
     git clone https://github.com/ubernostrum/django-registration.git
 
-From there, you can use normal git commands to check out the specific
+From there, you can use git commands to check out the specific
 revision you want, and install it using ``pip install -e .`` (the
 ``-e`` flag specifies an "editable" install, allowing you to change
 code as you work on django-registration, and have your changes picked

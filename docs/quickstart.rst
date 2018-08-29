@@ -18,8 +18,8 @@ to use. There two workflows built in to django-registration:
   signs up and their account is immediately active and logged in.
 
 The guide below covers use of these two workflows. Regardless of which
-one you choose to use, you should add ``django_registration`` to your
-``INSTALLED_APPS`` setting.
+one you choose to use, you should add ``"django_registration"`` to your
+:data:`~django.conf.settings.INSTALLED_APPS` setting.
 
 .. important:: **Django's authentication system must be installed**
 
