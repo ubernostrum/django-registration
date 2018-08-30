@@ -16,9 +16,9 @@ value.
 Behavior and configuration
 --------------------------
 
-A default URLconf is provided, which you can ``include()`` in your URL
-configuration; that URLconf is
-``django_registration.backends.activation.urls``. For example, to
+A default URLconf is provided, which you can
+:func:`~django.urls.include` in your URL configuration; that URLconf
+is ``django_registration.backends.activation.urls``. For example, to
 place user registration under the URL prefix ``/accounts/``, you could
 place the following in your root URLconf:
 
