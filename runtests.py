@@ -27,7 +27,7 @@ SETTINGS_DICT = {
         'django_registration',
     ),
     # Test cases will override this liberally.
-    'ROOT_URLCONF': 'django_registration.backends.hmac.urls',
+    'ROOT_URLCONF': 'django_registration.backends.activation.urls',
     'DATABASES': {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',

@@ -34,9 +34,9 @@ made by django-registration are:
 * Make the email field required. By default, Django's user model makes
   this field optional; it is required in
   :class:`~django_registration.forms.RegistrationForm` because
-  :ref:`the two-step HMAC workflow <hmac-workflow>` requires an email
-  address in order to send account-activation instructions to the
-  user.
+  :ref:`the two-step activation workflow <activation-workflow>`
+  requires an email address in order to send account-activation
+  instructions to the user.
 
 Django's :class:`~django.contrib.auth.forms.UserCreationForm` is a
 :class:`~django.forms.ModelForm` with its model hard-coded to
@@ -67,14 +67,14 @@ codebase -- do **not** directly edit django-registration's code):
 You will also need to specify the fields to include in the form, via
 the ``fields`` declaration.
 
-And then in your URL configuration (example here uses the HMAC
+And then in your URL configuration (example here uses the two-step
 activation workflow):
 
 .. code-block:: python
 
     from django.conf.urls import include, url
 
-    from django_registration.backends.hmac.views import RegistrationView
+    from django_registration.backends.activation.views import RegistrationView
     
     from mycustomuserapp.forms import MyCustomUserForm
 
@@ -88,7 +88,7 @@ activation workflow):
             name='django_registration_register',
         ),
         url(r'^accounts/',
-	    include('django_registration.backends.hmac.urls')
+	    include('django_registration.backends.activation.urls')
 	),
 	# ... more URL patterns
     ]
@@ -113,11 +113,11 @@ However, there are still some specific requirements you'll want to be
 aware of.
 
 
-The two-step HMAC workflow
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+The two-step activation workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The two-step :ref:`HMAC <hmac-workflow>` requires that the following
-be true of your user model:
+The :ref:`two-step activation <activation-workflow>` requires that the
+following be true of your user model:
 
 * It must set the attribute
   :attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD` to denote the

@@ -7,7 +7,7 @@ from django.core import signing
 from django.test import override_settings
 from django.urls import reverse
 
-from django_registration.backends.hmac.views import REGISTRATION_SALT
+from django_registration.backends.activation.views import REGISTRATION_SALT
 
 from .base import RegistrationTestCase
 

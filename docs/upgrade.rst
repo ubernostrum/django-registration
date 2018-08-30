@@ -31,9 +31,17 @@ Removal of model-based workflow
 The two-step model-based signup workflow, which has been present since
 the first public release of django-registration in 2007, has now been
 removed. In its place, it is recommended that you use :ref:`the
-two-step HMAC workflow <hmac-workflow>` instead, as that workflow
-requires no server-side storage of additional data beyond the user
-account itself.
+two-step activation workflow <activation-workflow>` instead, as that
+workflow requires no server-side storage of additional data beyond the
+user account itself.
+
+
+Renaming of two-step activation workflow
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:ref:`The two-step activation workflow <activation-workflow>` was
+previously found at ``registration.backends.hmac``; it has been
+renamed and is now found at ``registration.backends.activation``.
 
 
 Renaming of one-step workflow
@@ -160,7 +168,7 @@ folder has also been renamed, from ``registration`` to
 undergone name changes:
 
 * The default template name for the body of the activation email in
-  the two-step HMAC workflow is now
+  the two-step activation workflow is now
   ``django_registration/activation_email_body.txt`` (previously, it
   was ``registration/activation_email.txt``)
 

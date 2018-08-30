@@ -19,7 +19,7 @@ of several custom settings.
 
    Used by:
 
-   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+   * :ref:`The two-step activation workflow <activation-workflow>`
 
 
 .. data:: REGISTRATION_OPEN
@@ -33,7 +33,7 @@ of several custom settings.
 
    Used by: 
 
-   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+   * :ref:`The two-step activation workflow <activation-workflow>`
 
    * :ref:`The one-step workflow <one-step-workflow>`
 
@@ -47,7 +47,7 @@ of several custom settings.
 .. data:: REGISTRATION_SALT
 
    A ``str`` used as an additional "salt" in the process of generating
-   HMAC-signed activation keys.
+   signed activation keys.
 
    This setting is optional, and a default of ``"registration"`` will
    be used if not specified. The value of this setting does not need
@@ -56,4 +56,4 @@ of several custom settings.
 
    Used by:
 
-   * :ref:`The two-step HMAC activation workflow <hmac-workflow>`
+   * :ref:`The two-step activation workflow <activation-workflow>`

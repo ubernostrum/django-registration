@@ -201,8 +201,8 @@ registration.
 How do I manually activate a user?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In the HMAC-based workflow, toggle the ``is_active`` field of the user
-in the admin.
+In :ref:`the two-step activation workflow <activation-workflow>`,
+toggle the ``is_active`` field of the user in the admin.
 
 How do I delete expired unactivated accounts?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -225,8 +225,8 @@ accepted.
 How do I tell why an account's activation failed?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you're using :ref:`the HMAC activation workflow <hmac-workflow>`,
-the template context will contain a variable ``activation_error``
-containing the information passed when the
-:exc:`django_registration.exceptions.ActivationError` was
-raised. This will indicate what caused the failure.
+If you're using :ref:`the two-step activation workflow
+<activation-workflow>`, the template context will contain a variable
+``activation_error`` containing the information passed when the
+:exc:`django_registration.exceptions.ActivationError` was raised. This
+will indicate what caused the failure.

@@ -1,5 +1,5 @@
 """
-Tests for the HMAC signed-token registration workflow.
+Tests for the signed-token activation registration workflow.
 
 """
 
@@ -13,7 +13,7 @@ from django.test import modify_settings, override_settings
 from django.urls import reverse
 
 from django_registration import signals
-from django_registration.backends.hmac.views import (
+from django_registration.backends.activation.views import (
     REGISTRATION_SALT, ActivationView
 )
 
@@ -21,10 +21,10 @@ from .base import ActivationTestCase
 
 
 @modify_settings(INSTALLED_APPS={'remove': 'django_registration'})
-@override_settings(ROOT_URLCONF='django_registration.backends.hmac.urls')
-class HMACViewTests(ActivationTestCase):
+@override_settings(ROOT_URLCONF='django_registration.backends.activation.urls')
+class ActivationBackendViewTests(ActivationTestCase):
     """
-    Tests for the signed-token registration workflow.
+    Tests for the signed-token activation registration workflow.
 
     """
     def test_activation(self):

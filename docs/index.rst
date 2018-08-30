@@ -36,7 +36,7 @@ documentation listed below.
    :caption: Built-in registration workflows
    :maxdepth: 1
 
-   hmac
+   activation-workflow
    one-step-workflow
 
 .. toctree::

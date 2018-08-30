@@ -10,7 +10,7 @@ installed; for details on that, see :ref:`the installation guide
 The next steps will depend on which registration workflow you'd like
 to use. There two workflows built in to django-registration:
 
-* :ref:`The HMAC activation workflow <hmac-workflow>`, which
+* :ref:`The two-step activation workflow <activation-workflow>`, which
   implements a two-step process: a user signs up, then is emailed an
   activation link and must click it to activate the account.
 
@@ -42,12 +42,12 @@ one you choose to use, you should add ``"django_registration"`` to your
    can do.
 
 
-Configuring the HMAC activation workflow
-----------------------------------------
+Configuring the two-step activation workflow
+--------------------------------------------
 
-The configuration process for using the HMAC activation workflow is
-straightforward: you'll need to specify a couple of settings, connect
-some URLs and create a few templates.
+The configuration process for using the two-step activation workflow
+is straightforward: you'll need to specify a couple of settings,
+connect some URLs and create a few templates.
 
 
 Required settings
@@ -72,11 +72,12 @@ Setting up URLs
 
 Each bundled registration workflow in django-registration includes a
 Django URLconf which sets up URL patterns for :ref:`the views in
-django-registration <views>`. The URLconf for the HMAC activation
-workflow can be found at ``django_registration.backends.hmac.urls``,
-and so can be included in your project's root URL configuration. For
-example, to place the URLs under the prefix ``/accounts/``, you could
-add the following to your project's root URLconf:
+django-registration <views>`. The URLconf for the two-step activation
+workflow can be found at
+``django_registration.backends.activation.urls``, and so can be
+included in your project's root URL configuration. For example, to
+place the URLs under the prefix ``/accounts/``, you could add the
+following to your project's root URLconf:
 
 .. code-block:: python
 
@@ -84,7 +85,7 @@ add the following to your project's root URLconf:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.hmac.urls')),
+       url(r'^accounts/', include('django_registration.backends.activation.urls')),
        url(r'^accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
@@ -156,7 +157,7 @@ Used if account activation fails. Has the following context:
     occurred during activation. See the documentation for that
     exception for a description of the keys in this ``dict``, and the
     documentation for
-    :class:`~django_registration.backends.hmac.views.ActivationView`
+    :class:`~django_registration.backends.activation.views.ActivationView`
     for the specific values used in different failure situations.
 
 **django_registration/activation_complete.html**
