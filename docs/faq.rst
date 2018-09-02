@@ -15,7 +15,7 @@ emails and other sources.
    supported; its final release was |release|, and it has now been
    superseded by the django-registration 3.x release series. You
    should upgrade to 3.x as soon as possible, because the
-   django-registration 2.x series no logner receives bugfixes or any
+   django-registration 2.x series no longer receives bugfixes or any
    other type of support.
 
 
