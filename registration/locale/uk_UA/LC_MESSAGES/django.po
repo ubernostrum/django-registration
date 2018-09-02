@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: 2018-05-27 21:26+0300\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: uk\n"
+"X-Generator: Poedit 2.0.7\n"
+
+#: admin.py:23
+msgid "Activate users"
+msgstr "Активувати облікові записи"
+
+#: admin.py:43
+msgid "Re-send activation emails"
+msgstr "Вислати ключі активації заново"
+
+#: forms.py:35
+msgid "Username"
+msgstr "Ім’я користувача"
+
+#: forms.py:36
+msgid "This value must contain only letters, numbers and underscores."
+msgstr "Це поле може містити тільки літери, цифри та підкреслення."
+
+#: forms.py:39
+msgid "Email address"
+msgstr "Адреса електронної пошти"
+
+#: forms.py:41
+msgid "Password"
+msgstr "Пароль"
+
+#: forms.py:43
+msgid "Password (again)"
+msgstr "Пароль (знову)"
+
+#: forms.py:55
+msgid "A user with that username already exists."
+msgstr "Користувач із таким ім’ям вже існує."
+
+#: forms.py:67
+msgid "The two password fields didn't match."
+msgstr "Введені паролі не співпадають."
+
+#: forms.py:78
+msgid "I have read and agree to the Terms of Service"
+msgstr "Я прочитав Правила Використання і згоден з ними"
+
+#: forms.py:79
+msgid "You must agree to the terms to register"
+msgstr "Для реєстрації Ви повинні погодитися з Правилами"
+
+#: forms.py:95
+msgid ""
+"This email address is already in use. Please supply a different email "
+"address."
+msgstr ""
+"Ця адреса електронної пошти вже використовується. Будь ласка, введіть "
+"іншу адресу."
+
+#: forms.py:122
+msgid ""
+"Registration using free email addresses is prohibited. Please supply a "
+"different email address."
+msgstr ""
+"Реєстрація з використанням вільних поштових серверів заборонена. Будь "
+"ласка, введіть іншу адресу електронної пошти."
+
+#: models.py:165
+msgid "user"
+msgstr "користувач"
+
+#: models.py:166
+msgid "activation key"
+msgstr "ключ активації"
+
+#: models.py:171
+msgid "registration profile"
+msgstr "картка реєстрації"
+
+#: models.py:172
+msgid "registration profiles"
+msgstr "картки реєстрації"
