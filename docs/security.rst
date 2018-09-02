@@ -4,6 +4,13 @@
 Security guide
 ==============
 
+.. important:: **Reporting security issues**
+
+   If you believe you have found a security issue in
+   django-registration, please do *not* use the public GitHub issue
+   tracker to report it. Instead, you can `contact the author
+   privately <https://www.b-list.org/contact/>`_ to report the issue.
+
 Anything related to users or user accounts has security implications
 and represents a large source of potential security issues. This
 document is not an exhaustive guide to those implications and issues,

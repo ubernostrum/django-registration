@@ -45,6 +45,13 @@ only), 3.5, 3.6 and 3.7 (Django 2.0 and 2.1 only).
 I found a bug or want to make an improvement!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+.. important:: **Reporting security issues**
+
+   If you believe you have found a security issue in
+   django-registration, please do *not* use the public GitHub issue
+   tracker to report it. Instead, you can `contact the author
+   privately <https://www.b-list.org/contact/>`_ to report the issue.
+
 The canonical development repository for django-registration is online
 at <https://github.com/ubernostrum/django-registration>. Issues and
 pull requests can both be filed there.
