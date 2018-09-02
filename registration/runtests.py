@@ -20,6 +20,7 @@ sys.path.insert(0, APP_DIR)
 SETTINGS_DICT = {
     'BASE_DIR': APP_DIR,
     'INSTALLED_APPS': (
+        'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
         'django.contrib.sessions',
@@ -35,7 +36,7 @@ SETTINGS_DICT = {
             'NAME': os.path.join(APP_DIR, 'db.sqlite3'),
         },
     },
-    'MIDDLEWARE_CLASSES': (
+    'MIDDLEWARE': (
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',

@@ -30,7 +30,7 @@ urlpatterns = [
 
 
 @modify_settings(INSTALLED_APPS={
-    'prepend': ['django.contrib.admin'], 'remove': 'registration'})
+    'remove': 'registration'})
 @override_settings(
     ROOT_URLCONF='registration.tests.test_django_auth_integration')
 @override_settings(TEMPLATES=[buildTemplateSettings()])

@@ -8,6 +8,17 @@ to installing/using django-registration, culled from bug reports,
 emails and other sources.
 
 
+.. warning:: **django-registration 2.x is no longer supported**
+
+   You are reading the documentation for django-registration
+   |release|. The django-registration 2.x release series is no longer
+   supported; its final release was |release|, and it has now been
+   superseded by the django-registration 3.x release series. You
+   should upgrade to 3.x as soon as possible, because the
+   django-registration 2.x series no logner receives bugfixes or any
+   other type of support.
+
+
 General
 -------
 
@@ -36,11 +47,11 @@ General
 
 **What versions of Django and Python are supported?**
 
-    As of django-registration |release|, Django 1.8, 1.9, 1.10 and
-    1.11 are supported, on Python 2.7, 3.3 (Django 1.8 only), 3.4, 3.5
-    and 3.6 (Django 1.11 only). Although Django 1.8 supported Python
-    3.2 at initial release, Python 3.2 is now at its end-of-life and
-    django-registration no longer supports it.
+    As of django-registration |release|, Django 1.11, 2.0 and 2.1 are
+    supported, on Python 2.7, (Django 1.11 only), 3.4, 3.5 and
+    3.6. Older versions of Django and Python were supported in
+    previous releases, but they have now reached end-of-life and are
+    no longer supported.
 
 **I found a bug or want to make an improvement!**
 
