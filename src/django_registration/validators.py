@@ -211,14 +211,15 @@ class ReservedNameValidator(object):
             )
 
 
-class CaseInsensitiveValidator(object):
+class CaseInsensitiveUnique(object):
     """
-    Validator which checks username uniquness case-insensitively.
+    Validator which performs a case-insensitive uniqueness check.
 
     """
-    def __init__(self, model=User, field_name=User.USERNAME_FIELD):
+    def __init__(self, model, field_name, error_message):
         self.model = model
         self.field_name = field_name
+        self.error_message = error_message
 
     def __call__(self, value):
         # Only run if the username is a string.
@@ -230,7 +231,7 @@ class CaseInsensitiveValidator(object):
         if self.model._default_manager.filter(**{
                 '{}__iexact'.format(self.field_name): value
         }).exists():
-            raise ValidationError(DUPLICATE_USERNAME, code='unique')
+            raise ValidationError(self.error_message, code='unique')
 
 
 def validate_confusables(value):

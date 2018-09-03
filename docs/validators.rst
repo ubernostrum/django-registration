@@ -63,9 +63,9 @@ By default, django-registration treats some usernames as reserved.
 
 .. class:: ReservedNameValidator(reserved_names)
 
-   A custom validator (see `Django's validators documentation
-   <https://docs.djangoproject.com/en/stable/ref/forms/validation/#using-validators>`_)
-   which prohibits the use of a reserved name as the value.
+   A callable validator class (see `Django's validators documentation
+   <https://docs.djangoproject.com/en/stable/ref/validators/>`_) which
+   prohibits the use of a reserved name as the value.
 
    By default, this validator is applied to the username field of
    :class:`django_registration.forms.RegistrationForm` and all of its
@@ -197,17 +197,16 @@ rules to usernames and email addresses.
 Other validators
 ----------------
 
-.. class:: CaseInsensitiveValidator(model, field_name)
+.. class:: CaseInsensitiveUnique(model, field_name)
 
-   A validator which enforces case-insensitive uniqueness on a
-   given field of a particular model. Used by
+   A callable validator class (see `Django's validators documentation
+   <https://docs.djangoproject.com/en/stable/ref/validators/>`_) which
+   enforces case-insensitive uniqueness on a given field of a
+   particular model. Used by
    :class:`~django_registration.forms.RegistrationFormCaseInsensitive`
-   for case-insensitive username uniqueness.
-
-   If not provided, `model` defaults to whatever is returned by
-   :func:`django.contrib.auth.get_user_model()`, and `field_name`
-   defaults to whatever is found in that model's
-   :attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD` attribute.
+   for case-insensitive username uniqueness, and
+   :class:`~django_registration.forms.RegistrationFormUniqueEmail` for
+   unique email addresses.
 
    :param django.db.models.Model model: The model class to query
       against for uniqueness checks.

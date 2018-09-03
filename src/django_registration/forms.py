@@ -72,7 +72,10 @@ class RegistrationFormCaseInsensitive(RegistrationForm):
     def __init__(self, *args, **kwargs):
         super(RegistrationFormCaseInsensitive, self).__init__(*args, **kwargs)
         self.fields[User.USERNAME_FIELD].validators.append(
-            validators.CaseInsensitiveValidator()
+            validators.CaseInsensitiveUnique(
+                User, User.USERNAME_FIELD,
+                validators.DUPLICATE_USERNAME
+            )
         )
 
 
@@ -97,20 +100,12 @@ class RegistrationFormUniqueEmail(RegistrationForm):
     email addresses.
 
     """
-    def clean(self):
-        """
-        Validate that the supplied email address is unique for the
-        site.
-
-        """
+    def __init__(self, *args, **kwargs):
+        super(RegistrationFormUniqueEmail, self).__init__(*args, **kwargs)
         email_field = User.get_email_field_name()
-        email_value = self.cleaned_data.get(email_field)
-        if email_value is not None:
-            if User.objects.filter(**{
-                    '{}__iexact'.format(email_field): email_value
-            }).exists():
-                self.add_error(
-                    email_field,
-                    forms.ValidationError(validators.DUPLICATE_EMAIL)
-                )
-        super(RegistrationForm, self).clean()
+        self.fields[email_field].validators.append(
+            validators.CaseInsensitiveUnique(
+                User, email_field,
+                validators.DUPLICATE_EMAIL
+            )
+        )

@@ -63,7 +63,7 @@ workflows in mind, but may also be useful in other situations.
 
    A subclass of :class:`RegistrationForm` which enforces
    case-insensitive uniqueness of usernames, by applying
-   :class:`~django_registration.validators.CaseInsensitiveValidator`
+   :class:`~django_registration.validators.CaseInsensitiveUnique`
    to the username field.
 
    .. note:: **Unicode case handling**
@@ -95,4 +95,7 @@ workflows in mind, but may also be useful in other situations.
 .. class:: RegistrationFormUniqueEmail
 
    A subclass of :class:`RegistrationForm` which enforces uniqueness
-   of email addresses in addition to uniqueness of usernames.
+   of email addresses in addition to uniqueness of usernames, by
+   applying
+   :class:`~django_registration.validators.CaseInsensitiveUnique` to
+   the email field.

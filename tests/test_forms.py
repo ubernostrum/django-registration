@@ -153,8 +153,12 @@ class RegistrationFormTests(RegistrationTestCase):
         Test the case-insensitive username validator.
 
         """
-        validator = validators.CaseInsensitiveValidator()
-        self.assertTrue(validator(12345) is None)
+        validator = validators.CaseInsensitiveUnique(
+            self.user_model, self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME
+        )
+        for value in (123456, 1.7, uuid.uuid4()):
+            self.assertTrue(validator(value) is None)
 
         base_creation_data = self.valid_data.copy()
         base_creation_data['password'] = base_creation_data['password1']
@@ -213,8 +217,8 @@ class RegistrationFormTests(RegistrationTestCase):
             self.assertTrue(
                 form.has_error(self.user_model.USERNAME_FIELD)
             )
-            self.assertTrue(
-                six.text_type(validators.DUPLICATE_USERNAME) in
+            self.assertEqual(
+                [six.text_type(validators.DUPLICATE_USERNAME)],
                 form.errors[self.user_model.USERNAME_FIELD]
             )
             self.assertEqual(
