@@ -17,54 +17,42 @@ workflows in mind, but may also be useful in other situations.
    built-in :class:`~django.contrib.auth.forms.UserCreationForm`, and
    has the following fields, all of which are required:
 
-   ``username``
+   `username`
        The username to use for the new account. This is represented as
        a text input which validates that the username is unique,
        consists entirely of alphanumeric characters and underscores
        and is at most 30 characters in length.
 
-   ``email``
+   `email`
       The email address to use for the new account. This is
       represented as a text input which accepts email addresses up to
       75 characters in length.
 
-   ``password1``
+   `password1`
       The password to use for the new account. This is represented as
-      a password input (``input type="password"`` in the rendered
-      HTML).
+      a password input.
 
-   ``password2``
+   `password2`
       The password to use for the new account. This is represented as
-      a password input (``input type="password"`` in the rendered
-      HTML).
-
-   Because this is a subclass of Django's own
-   :class:`~django.contrib.auth.forms.UserCreationForm`, the
-   constraints on usernames and email addresses match those enforced
-   by Django's default authentication backend for instances of
-   :class:`~django.contrib.auth.models.User`. The repeated entry of the
-   password serves to catch typos.
-
-   .. note:: **Unicode usernames**
-
-      There is one important difference in form behavior depending on
-      the version of Python you're using. Django's username validation
-      regex allows a username to contain any word character along with
-      the following set of additional characters: ``.@+-``. However,
-      on Python 2 this regex uses the ``ASCII`` flag (since Python 2's
-      string type is ASCII by default), while on Python 3 it uses the
-      ``UNICODE`` flag (since Python 3's string type is Unicode). This
-      means that usernames containing non-ASCII word characters are
-      only permitted when using Python 3.
+      a password input. The two password fields are used to catch
+      typos.
 
    .. note:: **Validation of usernames**
+
+      Django supplies a default regex-based validator for usernames in
+      its base :class:`~django.contrib.auth.models.AbstractBaseUser`
+      implementation, allowing any word character along with the
+      following set of additional characters: `.`, `@`, `+`, and
+      `-`. However, in Django 1.11 on Python 2 this regex uses the
+      :data:`re.ASCII` flag, while on Python 3 it uses the
+      :data:`re.UNICODE` flag. This means that if you're using Django
+      1.11, the set of accepted characters will vary depending on the
+      Python version you use.
 
       Because it's a subclass of Django's
       :class:`~django.contrib.auth.forms.UserCreationForm`,
       :class:`RegistrationForm` will inherit the base validation
-      defined by Django. It also adds a custom
-      :meth:`~django.forms.Form.clean()` method which applies one
-      custom validator:
+      defined by Django. It also applies one custom validator:
       :class:`~django_registration.validators.ReservedNameValidator`. See
       the documentation for
       :class:`~django_registration.validators.ReservedNameValidator`
@@ -86,7 +74,7 @@ workflows in mind, but may also be useful in other situations.
      strings). The normalization matches what is performed by Django's
      default implementation.
 
-     The validator will then use a case-insensitive (``iexact``)
+     The validator will then use a case-insensitive (`iexact`)
      lookup to determine if a user with the same username already
      exists; the results of this query may depend on the quality of
      your database's Unicode implementation, and on configuration
@@ -99,7 +87,7 @@ workflows in mind, but may also be useful in other situations.
    A subclass of :class:`RegistrationForm` which adds one additional,
    required field:
 
-   ``tos``
+   `tos`
        A checkbox indicating agreement to the site's terms of
        service/user agreement.
 

@@ -17,14 +17,14 @@ The |release| release of django-registration supports Django 1.11,
 Normal installation
 -------------------
 
-The preferred method of installing django-registration is via ``pip``,
+The preferred method of installing django-registration is via `pip`,
 the standard Python package-installation tool. If you don't have
-``pip``, instructions are available for `how to obtain and install it
+`pip`, instructions are available for `how to obtain and install it
 <https://pip.pypa.io/en/latest/installing.html>`_. If you're using a
-supported version of Python, ``pip`` should have come bundled with
+supported version of Python, `pip` should have come bundled with
 your installation of Python.
 
-Once you have ``pip``, type::
+Once you have `pip`, type::
 
     pip install django-registration
 
@@ -38,7 +38,7 @@ library required by some of django-registration's validation code.
    1.11 release *before* installing django-registration. Later
    versions of Django no longer support Python 2, and installation
    will fail. To install a compatible version of Django for Python 2,
-   run ``pip install "Django>=1.11,<2.0"``.
+   run `pip install "Django>=1.11,<2.0"`.
 
 
 Installing from a source checkout
@@ -55,8 +55,8 @@ repository by typing::
     git clone https://github.com/ubernostrum/django-registration.git
 
 From there, you can use git commands to check out the specific
-revision you want, and install it using ``pip install -e .`` (the
-``-e`` flag specifies an "editable" install, allowing you to change
+revision you want, and install it using `pip install -e .` (the
+`-e` flag specifies an "editable" install, allowing you to change
 code as you work on django-registration, and have your changes picked
 up automatically).
 

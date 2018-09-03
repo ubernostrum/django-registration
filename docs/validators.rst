@@ -6,9 +6,15 @@ Validation utilities
 
 To ease the process of validating user registration data,
 django-registration includes some validation-related data and
-utilities in ``django_registration.validators``.
+utilities.
 
-The available error messages are:
+
+Error messages
+--------------
+
+Several error messages are available as constants. All of them are
+marked for translation; most have translations already provided in
+django-registration.
 
 .. data:: DUPLICATE_EMAIL
 
@@ -25,13 +31,6 @@ The available error messages are:
    :class:`~django.contrib.auth.models.User` model for a non-unique
    username.
 
-.. data:: FREE_EMAIL
-
-   Error message raised by
-   :class:`~django_registration.forms.RegistrationFormNoFreeEmail` when the
-   supplied email address is rejected by its list of free-email
-   domains.
-
 .. data:: RESERVED_NAME
 
    Error message raised by
@@ -45,13 +44,24 @@ The available error messages are:
    the terms-of-service field is not checked.
 
 
-All of these error messages are marked for translation; most have
-translations into multiple languages already in
-django-registration.
+Rejecting "reserved" usernames
+------------------------------
 
-Additionally, several custom validators are provided:
+By default, django-registration treats some usernames as reserved.
 
-.. class:: ReservedNameValidator
+.. note:: **Why reserved names are reserved**
+
+   Many Web applications enable per-user URLs (to display account
+   information), and some may also create email addresses or even
+   subdomains, based on a user's username. While this is often useful,
+   it also represents a risk: a user might register a name which
+   conflicts with an important URL, email address or subdomain, and
+   this might give that user control over it.
+
+   django-registration includes a list of reserved names, and rejects
+   them as usernames by default, in order to avoid this issue.
+
+.. class:: ReservedNameValidator(reserved_names)
 
    A custom validator (see `Django's validators documentation
    <https://docs.djangoproject.com/en/stable/ref/forms/validation/#using-validators>`_)
@@ -59,70 +69,53 @@ Additionally, several custom validators are provided:
 
    By default, this validator is applied to the username field of
    :class:`django_registration.forms.RegistrationForm` and all of its
-   subclasses. The validator is applied in a form-level
-   :meth:`~django.forms.Form.clean` method on
-   :class:`~django_registration.forms.RegistrationForm`, so to remove
-   it (not recommended), subclass
+   subclasses. This validator is attached to the list of validators
+   for the username field, so to remove it (not recommended), subclass
    :class:`~django_registration.forms.RegistrationForm` and override
-   :meth:`~django.forms.Form.clean`. For no custom form-level
-   validation, you could implement it as:
-
-   .. code-block:: python
-
-      def clean(self):
-          pass
+   `__init__()` to change the set of validators on the username field.
 
    If you want to supply your own custom list of reserved names, you
    can subclass :class:`~django_registration.forms.RegistrationForm`
-   and set the attribute ``reserved_names`` to the list of values you
+   and set the attribute `reserved_names` to the list of values you
    want to disallow.
-
-   .. note:: **Why reserved names are reserved**
-
-      Many Web applications enable per-user URLs (to display account
-      information), and some may also create email addresses or even
-      subdomains, based on a user's username. While this is often
-      useful, it also represents a risk: a user might register a name
-      which conflicts with an important URL, email address or
-      subdomain, and this might give that user control over it.
-
-      django-registration includes a list of reserved names, and
-      rejects them as usernames by default, in order to avoid this
-      issue.
 
    The default list of reserved names, if you don't specify one, is
    :data:`~django_registration.validators.DEFAULT_RESERVED_NAMES`. The
    validator will also reject any value beginning with the string
-   ``".well-known"`` (see `RFC 5785
+   `".well-known"` (see `RFC 5785
    <https://www.ietf.org/rfc/rfc5785.txt>`_).
 
+   :param list reserved_names: A list of reserved names to forbid.
+   :raises django.core.exceptions.ValidationError: if the provided
+      value is reserved.
+
 Several constants are provided which are used by this validator:
-
-.. data:: SPECIAL_HOSTNAMES
-
-   A list of hostnames with reserved or special meaning (such as
-   "autoconfig", used by some email clients to automatically discover
-   configuration data for a domain).
-
-.. data:: PROTOCOL_HOSTNAMES
-
-   A list of protocol-specific hostnames sites commonly want to
-   reserve, such as "www" and "mail".
 
 .. data:: CA_ADDRESSES
 
    A list of email usernames commonly used by certificate authorities
    when verifying identity.
 
-.. data:: RFC_2142
-
-   A list of common email usernames specified by `RFC 2142
-   <https://www.ietf.org/rfc/rfc2142.txt>`_.
-
 .. data:: NOREPLY_ADDRESSES
 
    A list of common email usernames used for automated messages from a
    Web site (such as "noreply" and "mailer-daemon").
+
+.. data:: PROTOCOL_HOSTNAMES
+
+   A list of protocol-specific hostnames sites commonly want to
+   reserve, such as "www" and "mail".
+
+.. data:: OTHER_SENSITIVE_NAMES
+
+   Other names, not covered by any of the other lists, which have the
+   potential to conflict with common URLs or subdomains, such as
+   "blog" and "docs".
+
+.. data:: RFC_2142
+
+   A list of common email usernames specified by `RFC 2142
+   <https://www.ietf.org/rfc/rfc2142.txt>`_.
 
 .. data:: SENSITIVE_FILENAMES
 
@@ -130,11 +123,11 @@ Several constants are provided which are used by this validator:
    usernames should not be allowed to conflict with them (such as
    "favicon.ico" and "robots.txt").
 
-.. data:: OTHER_SENSITIVE_NAMES
+.. data:: SPECIAL_HOSTNAMES
 
-   Other names, not covered by the above lists, which have the
-   potential to conflict with common URLs or subdomains, such as
-   "blog" and "docs".
+   A list of hostnames with reserved or special meaning (such as
+   "autoconfig", used by some email clients to automatically discover
+   configuration data for a domain).
 
 .. data:: DEFAULT_RESERVED_NAMES
 
@@ -143,31 +136,24 @@ Several constants are provided which are used by this validator:
    :class:`~django_registration.validators.ReservedNameValidator`.
 
 
-.. class:: CaseInsensitiveValidator(model, field_name)
+Protecting against homograph attacks
+------------------------------------
 
-   A validator which enforces case-insensitive uniqueness on a
-   particular field. Used by
-   :class:`~django_registration.forms.RegistrationFormCaseInsensitive`
-   for case-insensitive username uniqueness.
+By default, Django permits a broad range of Unicode to be used in
+usernames; while this is useful for serving a worldwide audience, it
+also creates the possibility of `homograph attacks
+<https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the use
+of characters which are easily visually confused for each other (for
+example: "pаypаl" containing a Cyrillic "а", visually
+indistinguishable in many fonts from a Latin "а").
 
-   :param django.db.models.Model model: The model class to query
-      against for uniqueness checks.
-   :param str field_name: The field name to perform the uniqueness
-      check against.
-
+To protect against this, django-registration applies some validation
+rules to usernames and email addresses.
 
 .. function:: validate_confusables(value)
 
    A custom validator which prohibits the use of
    dangerously-confusable usernames.
-
-   Django permits broad swaths of Unicode to be used in usernames;
-   while this is useful for serving a worldwide audience, it also
-   creates the possibility of `homograph attacks
-   <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the
-   use of characters which are easily visually confused for each other
-   (for example, "pаypаl" contains a Cyrillic "а", visually
-   indistinguishable in many fonts from a Latin "а").
 
    This validator will reject any mixed-script value (as defined by
    Unicode 'Script' property) which also contains one or more
@@ -206,3 +192,26 @@ Several constants are provided which are used by this validator:
 
    :param str value: The email address to validate
    :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable
+
+
+Other validators
+----------------
+
+.. class:: CaseInsensitiveValidator(model, field_name)
+
+   A validator which enforces case-insensitive uniqueness on a
+   given field of a particular model. Used by
+   :class:`~django_registration.forms.RegistrationFormCaseInsensitive`
+   for case-insensitive username uniqueness.
+
+   If not provided, `model` defaults to whatever is returned by
+   :func:`django.contrib.auth.get_user_model()`, and `field_name`
+   defaults to whatever is found in that model's
+   :attr:`~django.contrib.auth.CustomUser.USERNAME_FIELD` attribute.
+
+   :param django.db.models.Model model: The model class to query
+      against for uniqueness checks.
+   :param str field_name: The field name to perform the uniqueness
+      check against.
+   :raises django.core.exceptions.ValidationError: if the value is not
+      unique.

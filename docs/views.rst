@@ -33,7 +33,7 @@ classes, for use in writing your own custom subclasses.
 
    .. method:: register(form)
 
-      Implement your registration logic here. ``form`` will be the
+      Implement your registration logic here. `form` will be the
       (already-validated) form filled out by the user during the
       registration process (i.e., a valid instance of
       :class:`~django_registration.forms.RegistrationForm` or a subclass of
@@ -55,7 +55,7 @@ classes, for use in writing your own custom subclasses.
       The URL to redirect to when registration is disallowed. Should
       be a `string name of a URL pattern
       <https://docs.djangoproject.com/en/stable/topics/http/urls/#naming-url-patterns>`_.
-      Default value is ``"registration_disallowed"``.
+      Default value is `"registration_disallowed"`.
 
    .. attribute:: form_class
 
@@ -71,13 +71,13 @@ classes, for use in writing your own custom subclasses.
       :func:`~django.urls.reverse` helper, or the lazy object produced
       by Django's :func:`~django.urils.reverse_lazy` helper. Can be
       overridden on a per-request basis (see below). Default value is
-      ``None``; subclasses must override and provide this.
+      `None`; subclasses must override and provide this.
 
    .. attribute:: template_name
 
       The template to use for user registration. Should be a
       string. Default value is
-      ``django_registration/registration_form.html``.
+      `django_registration/registration_form.html`.
 
    .. method:: get_form_class()
 
@@ -92,17 +92,18 @@ classes, for use in writing your own custom subclasses.
       Return a URL to redirect to after successful registration, on a
       per-request or per-user basis. If not overridden, will use
       :attr:`~success_url`. Should return a value of the same type as
-      ``success_url`` (see above).
+      :attr:`success_url` (see above).
       
       :param django.contrib.auth.models.AbstractUser user: The new user account.
       :rtype: str
 
    .. method:: registration_allowed()
 
-      Should return a boolean indicating whether user registration is
-      allowed, either in general or for this specific request. Default
-      value is the value of the setting
-      :data:`~django.conf.settings.REGISTRATION_OPEN`.
+      Should indicate whether user registration is allowed, either in
+      general or for this specific request. Default value is the value
+      of the setting :data:`~django.conf.settings.REGISTRATION_OPEN`.
+
+      :rtype: bool
 
 
 .. class:: ActivationView
@@ -118,8 +119,8 @@ classes, for use in writing your own custom subclasses.
 
       Implement your activation logic here. You are free to configure
       your URL patterns to pass any set of positional or keyword
-      arguments to ``ActivationView``, and they will in turn be passed
-      to this method.
+      arguments to :class:`ActivationView`, and they will in turn be
+      passed to this method.
 
       This method should return the newly-activated user instance (if
       activation was successful), or raise
@@ -129,8 +130,8 @@ classes, for use in writing your own custom subclasses.
       :raises django_registration.exceptions.ActivationError: if activation fails.
       :rtype: django.contrib.auth.models.AbstractUser
       
-   Useful places to override or customize on an ``ActivationView``
-   subclass are:
+   Useful places to override or customize on an
+   :class:`ActivationView` subclass are:
 
    .. attribute:: success_url
 
@@ -139,20 +140,20 @@ classes, for use in writing your own custom subclasses.
       :func:`~django.urls.reverse` helper, or the lazy object produced
       by Django's :func:`~django.urls.reverse_lazy` helper. Can be
       overridden on a per-request basis (see below). Default value is
-      ``None``; subclasses must override and provide this.
+      `None`; subclasses must override and provide this.
 
    .. attribute:: template_name
 
       The template to use after failed user activation. Should be a
       string. Default value is
-      ``django_registration/activation_failed.html``.
+      `django_registration/activation_failed.html`.
 
    .. method:: get_success_url(user)
 
       Return a URL to redirect to after successful activation, on a
       per-request or per-user basis. If not overridden, will use
       :attr:`~success_url`. Should return a value of the same type as
-      ``success_url`` (see above).
+      :attr:`success_url` (see above).
 
       :param django.contrib.auth.models.AbstractUser user: The activated user account.
       :rtype: str

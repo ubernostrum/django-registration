@@ -29,20 +29,22 @@ signals.
    Sent when a user account is activated (not applicable to all
    workflows). Provides the following arguments:
 
-   ``sender``
+   `sender`
        The :class:`~django_registration.views.ActivationView` subclass used
        to activate the user.
 
-   ``user``
+   `user`
         A user-model instance representing the activated account.
 
-   ``request``
-       The ``HttpRequest`` in which the account was activated.
+   `request`
+       The :class:`~django.http.HttpRequest` in which the account was
+       activated.
 
    This signal is automatically sent for you by the base
-   :class:`~django_registration.views.ActivationView`, so unless you've
-   overridden its ``get()`` method in a subclass you should not need
-   to explicitly send it.
+   :class:`~django_registration.views.ActivationView`, so unless
+   you've overridden its
+   :meth:`~django.views.generic.base.TemplateView.get` method in a
+   subclass you should not need to explicitly send it.
 
 
 .. data:: user_registered
@@ -50,20 +52,22 @@ signals.
    Sent when a new user account is registered. Provides the following
    arguments:
 
-   ``sender``
+   `sender`
        The :class:`~django_registration.views.RegistrationView` subclass used
        to register the account.
 
-   ``user``
+   `user`
         A user-model instance representing the new account.
 
-   ``request``
-        The ``HttpRequest`` in which the new account was registered.
+   `request`
+        The :class:`~django.http.HttpRequest` in which the new account
+        was registered.
 
    This signal is **not** automatically sent for you by the base
-   :class:`~django_registration.views.RegistrationView`. It is sent by the
-   subclasses implemented for the three included registration
+   :class:`~django_registration.views.RegistrationView`. It is sent by
+   the subclasses implemented for the three included registration
    workflows, but if you write your own subclass of
-   ``RegistrationView``, you'll need to send this signal as part of
-   the implementation of the
-   :meth:`~django_registration.views.RegistrationView.register` method.
+   :class:`~django_registration.views.RegistrationView`, you'll need
+   to send this signal as part of the implementation of the
+   :meth:`~django_registration.views.RegistrationView.register`
+   method.

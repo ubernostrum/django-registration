@@ -50,7 +50,7 @@ behavior of django-registration, (see below) you will be able to
 subclass :class:`~django_registration.forms.RegistrationForm`, set it
 to use your custom user model as the model, and then configure the
 views in django-registration to use your form subclass. For example,
-you might do the following (in a ``forms.py`` module somewhere in your
+you might do the following (in a `forms.py` module somewhere in your
 codebase -- do **not** directly edit django-registration's code):
 
 .. code-block:: python
@@ -65,7 +65,7 @@ codebase -- do **not** directly edit django-registration's code):
             model = MyCustomUser
 
 You will also need to specify the fields to include in the form, via
-the ``fields`` declaration.
+the `fields` declaration.
 
 And then in your URL configuration (example here uses the two-step
 activation workflow):
@@ -146,16 +146,17 @@ following be true of your user model:
   the email address as the username field, you will need to supply
   your own completely custom registration form.
 
-* It must have a field named ``is_active``, and it must be a
+* It must have a field named
+  :attr:`~django.contrib.auth.models.User.is_active`, and it must be a
   :class:`~django.db.models.BooleanField` indicating whether the
   user's account is active.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
-are optional (i.e., can be ``NULL`` in your database, or provide a
+are optional (i.e., can be `NULL` in your database, or provide a
 suitable default value defined in the model), or you'll need to
-specify the full list of fields to display in the ``fields`` section
-of the ``Meta`` declaration of your
+specify the full list of fields to display in the `fields` section
+of the `Meta` declaration of your
 :class:`~django_registration.forms.RegistrationForm` subclass.
 
 
@@ -173,25 +174,26 @@ requirements on your user model:
   :class:`~django.contrib.auth.models.AbstractBaseUser` receive this
   attribute and method automatically.
 
-* It must define a field named ``password`` for storing the user's
+* It must define a field named `password` for storing the user's
   password (it will expect to find the value in the field
-  ``password1`` of the registration form).
+  `password1` of the registration form).
 
 Also note that :class:`~django_registration.forms.RegistrationForm`
-requires the ``email`` field, so either provide that field on your
+requires the `email` field, so either provide that field on your
 model or subclass :class:`~django_registration.forms.RegistrationForm`
-and override to remove the ``email`` field or make it optional.
+and override to remove the `email` field or make it optional.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields
-are optional (i.e., can be ``NULL`` in your database, or provide a
+are optional (i.e., can be `NULL` in your database, or provide a
 suitable default value defined in the model), or you'll need to
-specify the full list of fields to display in the ``fields`` section
-of the ``Meta`` declaration of your
+specify the full list of fields to display in the `fields` section
+of the `Meta` declaration of your
 :class:`~django_registration.forms.RegistrationForm` subclass.
 
 Because the one-step workflow logs in the new account immediately
-after creating it, you must either use Django's ``ModelBackend`` as an
+after creating it, you must either use Django's
+:class:`~django.contrib.auth.backends.ModelBackend` as an
 authentication backend, or use an authentication backend which accepts
-a combination of ``USERNAME_FIELD`` and ``password`` as sufficient
+a combination of `USERNAME_FIELD` and `password` as sufficient
 credentials.

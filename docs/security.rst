@@ -112,7 +112,7 @@ registered (see above), a user might still attempt to register a name
 that appears visually identical, by substituting a Cyrillic 'a' or
 other similar-appearing character for the first character. This is a
 `homograph attack
-<https://en.wikipedia.org/wiki/IDN_homograph_attack>`_
+<https://en.wikipedia.org/wiki/IDN_homograph_attack>`_.
 
 To prevent homograph attacks, django-registration applies the
 following rule to usernames, and to the local-part and the domain of
