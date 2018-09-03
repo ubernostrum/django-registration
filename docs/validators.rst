@@ -16,6 +16,15 @@ The available error messages are:
    :class:`~django_registration.forms.RegistrationFormUniqueEmail` when the
    supplied email address is not unique.
 
+.. data:: DUPLICATE_USERNAME
+
+   Error message raised by
+   :class:`~django_registration.validators.CaseInsensitiveValidator`
+   when the supplied username is not unique. This is the same string
+   raised by Django's default
+   :class:`~django.contrib.auth.models.User` model for a non-unique
+   username.
+
 .. data:: FREE_EMAIL
 
    Error message raised by
@@ -40,7 +49,7 @@ All of these error messages are marked for translation; most have
 translations into multiple languages already in
 django-registration.
 
-Additionally, two custom validators are provided:
+Additionally, several custom validators are provided:
 
 .. class:: ReservedNameValidator
 
@@ -132,6 +141,20 @@ Several constants are provided which are used by this validator:
    A list made of the concatenation of all of the above lists, used as
    the default set of reserved names for
    :class:`~django_registration.validators.ReservedNameValidator`.
+
+
+.. class:: CaseInsensitiveValidator(model, field_name)
+
+   A validator which enforces case-insensitive uniqueness on a
+   particular field. Used by
+   :class:`~django_registration.forms.RegistrationFormCaseInsensitive`
+   for case-insensitive username uniqueness.
+
+   :param django.db.models.Model model: The model class to query
+      against for uniqueness checks.
+   :param str field_name: The field name to perform the uniqueness
+      check against.
+
 
 .. function:: validate_confusables(value)
 

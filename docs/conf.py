@@ -23,7 +23,8 @@ latex_documents = [
 
 intersphinx_mapping = {
     'django': ('https://docs.djangoproject.com/en/stable/',
-               'https://docs.djangoproject.com/en/stable/_objects/')
+               'https://docs.djangoproject.com/en/stable/_objects/'),
+    'python': ('https://docs.python.org/3', None),
 }
 
 if not on_rtd:

@@ -62,6 +62,20 @@ class RegistrationForm(UserCreationForm):
         self.fields[email_field].required = True
 
 
+class RegistrationFormCaseInsensitive(RegistrationForm):
+    """T
+
+    Subclass of ``RegistrationForm`` enforcing case-insensitive
+    uniqueness of usernames.
+
+    """
+    def __init__(self, *args, **kwargs):
+        super(RegistrationFormCaseInsensitive, self).__init__(*args, **kwargs)
+        self.fields[User.USERNAME_FIELD].validators.append(
+            validators.CaseInsensitiveValidator()
+        )
+
+
 class RegistrationFormTermsOfService(RegistrationForm):
     """
     Subclass of ``RegistrationForm`` which adds a required checkbox

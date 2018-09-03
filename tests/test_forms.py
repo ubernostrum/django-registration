@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Exercise django-registration's built-in form classes.
 
@@ -6,7 +7,7 @@ import uuid
 
 from django.core.exceptions import ValidationError
 from django.test import modify_settings
-from django.utils.six import text_type
+from django.utils import six
 
 from django_registration import forms, validators
 
@@ -64,7 +65,7 @@ class RegistrationFormTests(RegistrationTestCase):
                 form.has_error(self.user_model.USERNAME_FIELD)
             )
             self.assertTrue(
-                text_type(validators.RESERVED_NAME) in
+                six.text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
             )
 
@@ -87,7 +88,7 @@ class RegistrationFormTests(RegistrationTestCase):
                 form.has_error(self.user_model.USERNAME_FIELD)
             )
             self.assertTrue(
-                text_type(validators.CONFUSABLE) in
+                six.text_type(validators.CONFUSABLE) in
                 form.errors[self.user_model.USERNAME_FIELD]
             )
 
@@ -110,7 +111,7 @@ class RegistrationFormTests(RegistrationTestCase):
             self.assertFalse(form.is_valid())
             self.assertTrue(form.has_error('email'))
             self.assertTrue(
-                text_type(validators.CONFUSABLE_EMAIL) in
+                six.text_type(validators.CONFUSABLE_EMAIL) in
                 form.errors['email']
             )
 
@@ -133,7 +134,7 @@ class RegistrationFormTests(RegistrationTestCase):
                 form.has_error(self.user_model.USERNAME_FIELD)
             )
             self.assertTrue(
-                text_type(validators.RESERVED_NAME) in
+                six.text_type(validators.RESERVED_NAME) in
                 form.errors[self.user_model.USERNAME_FIELD]
             )
 
@@ -146,6 +147,79 @@ class RegistrationFormTests(RegistrationTestCase):
         validator = validators.ReservedNameValidator()
         for value in (123456, 1.7, uuid.uuid4()):
             self.assertTrue(validator(value) is None)
+
+    def test_case_insensitive_validator(self):
+        """
+        Test the case-insensitive username validator.
+
+        """
+        validator = validators.CaseInsensitiveValidator()
+        self.assertTrue(validator(12345) is None)
+
+        base_creation_data = self.valid_data.copy()
+        base_creation_data['password'] = base_creation_data['password1']
+        del base_creation_data['password1']
+        del base_creation_data['password2']
+
+        test_names = [
+            (u'alice', u'ALICE'),
+            (u'ALICE', u'alice'),
+            (u'Alice', u'alice'),
+        ]
+        if six.PY3:
+            test_names.extend([
+                (u'STRASSBURGER', u'straßburger'),
+            ])
+
+        for name, conflict in test_names:
+            creation_data = base_creation_data.copy()
+            creation_data[self.user_model.USERNAME_FIELD] = name
+            existing_user = self.user_model(**creation_data)
+            existing_user.save()
+            with self.assertRaisesMessage(
+                    ValidationError,
+                    six.text_type(validators.DUPLICATE_USERNAME)
+            ):
+                validator(conflict)
+            existing_user.delete()
+
+    def test_case_insensitive_form(self):
+        """
+        Test the case-insensitive registration form.
+
+        """
+        base_creation_data = self.valid_data.copy()
+        base_creation_data['password'] = base_creation_data['password1']
+        del base_creation_data['password1']
+        del base_creation_data['password2']
+
+        test_names = [
+            (u'alice', u'ALICE'),
+            (u'ALICE', u'alice'),
+            (u'Alice', u'alice'),
+            (u'AlIcE', u'aLiCe'),
+            (u'STRASSBURGER', u'straßburger'),
+        ]
+
+        for name, conflict in test_names:
+            creation_data = base_creation_data.copy()
+            creation_data[self.user_model.USERNAME_FIELD] = name
+            existing_user = self.user_model(**creation_data)
+            existing_user.save()
+            user_data = self.valid_data.copy()
+            user_data[self.user_model.USERNAME_FIELD] = name
+            form = forms.RegistrationFormCaseInsensitive(data=user_data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(
+                form.has_error(self.user_model.USERNAME_FIELD)
+            )
+            self.assertTrue(
+                six.text_type(validators.DUPLICATE_USERNAME) in
+                form.errors[self.user_model.USERNAME_FIELD]
+            )
+            self.assertEqual(
+                1, len(form.errors[self.user_model.USERNAME_FIELD])
+            )
 
     def test_tos_field(self):
         """
@@ -160,7 +234,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertTrue(form.has_error('tos'))
         self.assertEqual(
             form.errors['tos'],
-            [text_type(validators.TOS_REQUIRED)]
+            [six.text_type(validators.TOS_REQUIRED)]
         )
 
     def test_email_uniqueness(self):
@@ -181,7 +255,7 @@ class RegistrationFormTests(RegistrationTestCase):
         self.assertTrue(form.has_error('email'))
         self.assertEqual(
             form.errors['email'],
-            [text_type(validators.DUPLICATE_EMAIL)]
+            [six.text_type(validators.DUPLICATE_EMAIL)]
         )
 
         data = self.valid_data.copy()

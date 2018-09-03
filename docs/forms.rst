@@ -71,6 +71,29 @@ workflows in mind, but may also be useful in other situations.
       for notes on why it exists and how to customize its behavior.
 
 
+.. class:: RegistrationFormCaseInsensitive
+
+   A subclass of :class:`RegistrationForm` which enforces
+   case-insensitive uniqueness of usernames, by applying
+   :class:`~django_registration.validators.CaseInsensitiveValidator`
+   to the username field.
+
+   .. note:: **Unicode case handling**
+
+     On all versions of Python, this form will normalize the username
+     value to form NFKC. On Python 3, it will also case-fold the value
+     (Python 3 provides a native :meth:`~str.casefold()` method on
+     strings). The normalization matches what is performed by Django's
+     default implementation.
+
+     The validator will then use a case-insensitive (``iexact``)
+     lookup to determine if a user with the same username already
+     exists; the results of this query may depend on the quality of
+     your database's Unicode implementation, and on configuration
+     details. The results may also be surprising to developers who are
+     primarily used to English/ASCII text, as Unicode's case rules can
+     be quite complex.
+
 .. class:: RegistrationFormTermsOfService
 
    A subclass of :class:`RegistrationForm` which adds one additional,
