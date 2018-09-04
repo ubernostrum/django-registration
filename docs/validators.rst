@@ -172,14 +172,6 @@ rules to usernames and email addresses.
    A custom validator which prohibits the use of
    dangerously-confusable email address.
 
-   Django permits broad swaths of Unicode to be used in email
-   addresses; while this is useful for serving a worldwide audience,
-   it also creates the possibility of `homograph attacks
-   <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the
-   use of characters which are easily visually confused for each other
-   (for example, "pаypаl" contains a Cyrillic "а", visually
-   indistinguishable in many fonts from a Latin "а").
-
    This validator will reject any email address where either the
    local-part of the domain is -- when considered in isolation --
    dangerously confusable. A string is dangerously confusable if it is
