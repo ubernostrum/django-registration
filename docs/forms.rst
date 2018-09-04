@@ -18,23 +18,16 @@ workflows in mind, but may also be useful in other situations.
    has the following fields, all of which are required:
 
    `username`
-       The username to use for the new account. This is represented as
-       a text input which validates that the username is unique,
-       consists entirely of alphanumeric characters and underscores
-       and is at most 30 characters in length.
+       The username to use for the new account.
 
    `email`
-      The email address to use for the new account. This is
-      represented as a text input which accepts email addresses up to
-      75 characters in length.
+      The email address to use for the new account.
 
    `password1`
-      The password to use for the new account. This is represented as
-      a password input.
+      The password to use for the new account.
 
    `password2`
-      The password to use for the new account. This is represented as
-      a password input. The two password fields are used to catch
+      The password to use for the new account, repeated to catch
       typos.
 
    .. note:: **Validation of usernames**
@@ -69,10 +62,10 @@ workflows in mind, but may also be useful in other situations.
    .. note:: **Unicode case handling**
 
      On all versions of Python, this form will normalize the username
-     value to form NFKC. On Python 3, it will also case-fold the value
+     value to form NFKC, matching Django's default approach to Unicode
+     normalization. On Python 3, it will also case-fold the value
      (Python 3 provides a native :meth:`~str.casefold()` method on
-     strings). The normalization matches what is performed by Django's
-     default implementation.
+     strings).
 
      The validator will then use a case-insensitive (`iexact`)
      lookup to determine if a user with the same username already

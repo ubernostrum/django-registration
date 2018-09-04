@@ -55,10 +55,10 @@ repository by typing::
     git clone https://github.com/ubernostrum/django-registration.git
 
 From there, you can use git commands to check out the specific
-revision you want, and install it using `pip install -e .` (the
-`-e` flag specifies an "editable" install, allowing you to change
-code as you work on django-registration, and have your changes picked
-up automatically).
+revision you want, and perform an "editable" install (allowing you to
+change code as you work on it) by typing::
+
+    pip install -e .
 
 
 Next steps

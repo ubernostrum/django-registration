@@ -9,7 +9,7 @@ different workflows, django-registration makes use of Django's
 support for `class-based views
 <https://docs.djangoproject.com/en/stable/topics/class-based-views/>`_. Included
 in django-registration are two base classes which can be
-subclassed to implement whatever workflow is required.
+subclassed to implement many types of registration workflows.
 
 The built-in workflows in django-registration provide their own
 subclasses of these views, and the documentation for those workflows
@@ -19,8 +19,7 @@ classes, for use in writing your own custom subclasses.
 
 .. class:: RegistrationView
 
-   A subclass of Django's `FormView
-   <https://docs.djangoproject.com/en/stable/ref/class-based-views/generic-editing/#formview>`_,
+   A subclass of Django's :class:`~django.views.generic.edit.FormView`
    which provides the infrastructure for supporting user registration.
 
    Standard attributes and methods of
@@ -52,11 +51,13 @@ classes, for use in writing your own custom subclasses.
 
    .. attribute:: disallowed_url
 
-      The URL to redirect to when registration is disallowed. Should
-      be a `string name of a URL pattern
-      <https://docs.djangoproject.com/en/stable/topics/http/urls/#naming-url-patterns>`_.
-      Default value is `"registration_disallowed"`.
-
+      The URL to redirect to when registration is disallowed. Can be a
+      hard-coded string, the string resulting from calling Django's
+      :func:`~django.urls.reverse` helper, or the lazy object produced
+      by Django's :func:`~django.urls.reverse_lazy` helper. Default
+      value is the result of calling :func:`~django.urls.reverse_lazy`
+      with the URL name `'registration_disallowed'`.
+      
    .. attribute:: form_class
 
       The form class to use for user registration. Can be overridden
@@ -69,7 +70,7 @@ classes, for use in writing your own custom subclasses.
       The URL to redirect to after successful registration. Can be a
       hard-coded string, the string resulting from calling Django's
       :func:`~django.urls.reverse` helper, or the lazy object produced
-      by Django's :func:`~django.urils.reverse_lazy` helper. Can be
+      by Django's :func:`~django.urls.reverse_lazy` helper. Can be
       overridden on a per-request basis (see below). Default value is
       `None`; subclasses must override and provide this.
 
@@ -77,7 +78,7 @@ classes, for use in writing your own custom subclasses.
 
       The template to use for user registration. Should be a
       string. Default value is
-      `django_registration/registration_form.html`.
+      `'django_registration/registration_form.html'`.
 
    .. method:: get_form_class()
 
@@ -108,10 +109,10 @@ classes, for use in writing your own custom subclasses.
 
 .. class:: ActivationView
 
-   A subclass of Django's `TemplateView
-   <https://docs.djangoproject.com/en/stable/ref/class-based-views/base/#templateview>`_
-   which provides support for a separate account-activation step, in
-   workflows which require that.
+   A subclass of Django's
+   :class:`~django.views.generic.base.TemplateView` which provides
+   support for a separate account-activation step, in workflows which
+   require that.
 
    One method is required:
 
@@ -127,8 +128,8 @@ classes, for use in writing your own custom subclasses.
       :class:`~django_registration.exceptions.ActivationError` (if
       activation was not successful).
 
-      :raises django_registration.exceptions.ActivationError: if activation fails.
       :rtype: django.contrib.auth.models.AbstractUser
+      :raises django_registration.exceptions.ActivationError: if activation fails.
       
    Useful places to override or customize on an
    :class:`ActivationView` subclass are:
@@ -146,7 +147,7 @@ classes, for use in writing your own custom subclasses.
 
       The template to use after failed user activation. Should be a
       string. Default value is
-      `django_registration/activation_failed.html`.
+      `'django_registration/activation_failed.html'`.
 
    .. method:: get_success_url(user)
 

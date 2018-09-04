@@ -19,7 +19,7 @@ Prior to 3.x, django-registration installed a Python module named
 `registration`. To avoid silent incompatibilities, and to conform to
 more recent best practices, django-registration 3.x now installs a
 module named `django_registration`. Attempts to import from the
-`registration` module will immediately fail with `ImportError`.
+`registration` module will immediately fail with :exc:`ImportError`.
 
 Many installations will be able to adapt by replacing references to
 `registration` with references to `django_registration`.

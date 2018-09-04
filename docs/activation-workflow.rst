@@ -6,11 +6,9 @@ The two-step activation workflow
 
 The two-step activation workflow, found in
 `django_registration.backends.activation`, implements a two-step
-registration process (signup, followed by activation), but uses no
-models and does not store its activation key; instead, the activation
-key sent to the user is a timestamped, `HMAC
-<https://en.wikipedia.org/wiki/Hash-based_message_authentication_code>`_-verified
-value.
+registration process: a user signs up, an inactive account is created,
+and an email is sent containing an activation link which must be
+clicked to make the account active.
 
 
 Behavior and configuration
@@ -87,7 +85,7 @@ below.
 
 For an overview of the templates used by these views (other than those
 specified below), and their context variables, see :ref:`the quick
-start guide <quickstart>`.
+start guide <default-templates>`.
 
 
 .. class:: RegistrationView
@@ -174,18 +172,20 @@ start guide <quickstart>`.
 
    .. method:: get_user(username)
 
-      Given a username (determined by the activation key), look up and
-      return the corresponding instance of the user model. If no such
-      account exists, will raise
+      Given a username (determined by the activation key), looks up
+      and returns the corresponding instance of the user model. If no
+      such account exists, raises
       :exc:`~django_registration.exceptions.ActivationError` as
-      described above. In the base implementation, will include
-      `is_active=False` in the query to avoid re-activation of
-      already-active accounts.
+      described above. In the base implementation, checks the
+      :attr:`~django.contrib.auth.models.User.is_active` field to
+      avoid re-activating already-active accounts, and raises
+      :exc:`~django_registration.exceptions.ActivationError` with code
+      `already_activated` to indicate this case.
 
       :param str username: The username of the new user account.
       :rtype: django.contrib.auth.models.AbstractUser
       :raises django_registration.exceptions.ActivationError: if no
-         matching user account exists.
+         matching inactive user account exists.
       
    .. method:: validate_key(activation_key)
 
@@ -236,9 +236,10 @@ activation key is of the form::
     encoded_username:timestamp:signature
 
 where `encoded_username` is the username of the new account,
-(URL-safe) base64-encoded, `timestamp` is a base62-encoded timestamp
-of the time the user registered, and `signature` is an HMAC-verified
-(URL-safe) base64 encoding of the username and timestamp.
+`timestamp` is the timestamp of the time the user registered, and
+`signature` is an HMAC of the username and timestamp. The username and
+HMAC will be URL-safe base64 encoded; the timestamp will be base62
+encoded.
 
 Django's implementation uses the value of the
 :data:`~django.conf.settings.SECRET_KEY` setting as the key for HMAC;

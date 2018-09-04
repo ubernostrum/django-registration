@@ -226,7 +226,7 @@ Use Python 3. Django's username validation allows any word character
 plus some additional characters, but the definition of "word
 character" depends on the Python version in use. On Python 2, only
 ASCII will be permitted; on Python 3, usernames containing word
-characters matched by a regex with the `UNICODE` flag will be
+characters matched by a regex with the :data:`re.UNICODE` flag will be
 accepted.
 
 How do I tell why an account's activation failed?
@@ -235,5 +235,5 @@ How do I tell why an account's activation failed?
 If you're using :ref:`the two-step activation workflow
 <activation-workflow>`, the template context will contain a variable
 `activation_error` containing the information passed when the
-:exc:`django_registration.exceptions.ActivationError` was raised. This
-will indicate what caused the failure.
+:exc:`~django_registration.exceptions.ActivationError` was
+raised. This will indicate what caused the failure.

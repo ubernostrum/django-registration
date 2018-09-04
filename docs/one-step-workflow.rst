@@ -67,10 +67,9 @@ can also do this in a URLconf. For example:
 The default form class used for account registration will be
 :class:`django_registration.forms.RegistrationForm`, although this can
 be overridden by supplying a custom URL pattern for the registration
-view and passing the keyword argument `form_class`, or by
-subclassing
-`django_registration.backends.one_step.views.RegistrationView` and
-either overriding
+view and passing the keyword argument `form_class`, or by subclassing
+:class:`django_registration.backends.one_step.views.RegistrationView`
+and either overriding
 :attr:`~django_registration.views.RegistrationView.form_class` or
 implementing
 :meth:`~django_registration.views.RegistrationView.get_form_class()`,
@@ -81,15 +80,6 @@ Templates
 ---------
 
 The one-step workflow uses only one custom template:
-
-**django_registration/registration_form.html**
-
-Used to show the form users will fill out to register. By default, has
-the following context:
-
-`form`
-    The registration form. This will likely be a subclass of
-    :class:`~django_registration.forms.RegistrationForm`; consult
-    `Django's forms documentation
-    <https://docs.djangoproject.com/en/stable/topics/forms/>`_ for
-    information on how to display this in a template.
+`django_registration/registration_form.html`. See :ref:`the quick
+start guide <default-form-template>` for details of this template's
+context.

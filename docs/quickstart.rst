@@ -129,7 +129,11 @@ rendered using a :class:`~django.template.RequestContext` and so will
 also receive any additional variables provided by `context processors
 <https://docs.djangoproject.com/en/stable/ref/templates/api/#id1>`_.
 
-**django_registration/registration_form.html**
+
+.. _default-form-template:
+
+`django_registration/registration_form.html`
+````````````````````````````````````````````
 
 Used to show the form users will fill out to register. By default, has
 the following context:
@@ -141,33 +145,39 @@ the following context:
     <https://docs.djangoproject.com/en/stable/topics/forms/>`_ for
     information on how to display this in a template.
 
-**django_registration/registration_complete.html**
+
+`django_registration/registration_complete.html`
+````````````````````````````````````````````````
 
 Used after successful completion of the registration form. This
 template has no context variables of its own, and should inform the
 user that an email containing account-activation information has been
 sent.
 
-**django_registration/activation_failed.html**
+`django_registration/activation_failed.html`
+````````````````````````````````````````````
 
 Used if account activation fails. Has the following context:
 
 `activation_error`
-    A `dict` containing the information supplied to the
+    A :class:`dict` containing the information supplied to the
     :exc:`~django_registration.exceptions.ActivationError` which
     occurred during activation. See the documentation for that
-    exception for a description of the keys in this `dict`, and the
-    documentation for
+    exception for a description of the keys, and the documentation for
     :class:`~django_registration.backends.activation.views.ActivationView`
     for the specific values used in different failure situations.
 
-**django_registration/activation_complete.html**
+
+`django_registration/activation_complete.html`
+``````````````````````````````````````````````
 
 Used after successful account activation. This template has no context
 variables of its own, and should inform the user that their account is
 now active.
 
-**django_registration/activation_email_subject.txt**
+
+`django_registration/activation_email_subject.txt`
+``````````````````````````````````````````````````
 
 Used to generate the subject line of the activation email. Because the
 subject line of an email must be a single line of text, any output
@@ -191,18 +201,20 @@ being used. This template has the following context:
 
 `site`
     An object representing the site on which the user registered;
-    depending on whether `django.contrib.sites` is installed, this
-    may be an instance of either `django.contrib.sites.models.Site`
+    depending on whether `django.contrib.sites` is installed, this may
+    be an instance of either :class:`django.contrib.sites.models.Site`
     (if the sites application is installed) or
-    `django.contrib.sites.requests.RequestSite` (if not). Consult
-    `the documentation for the Django sites framework
-    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for
-    details regarding these objects' interfaces.
+    :class:`django.contrib.sites.requests.RequestSite` (if
+    not). Consult `the documentation for the Django sites framework
+    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_
+    for details regarding these objects' interfaces.
 
 `user`
     The newly-created user object.
 
-**django_registration/activation_email_body.txt**
+
+`django_registration/activation_email_body.txt`
+```````````````````````````````````````````````
 
 Used to generate the body of the activation email. Should display a
 link the user can click to activate the account. This template has the
@@ -225,13 +237,13 @@ following context:
 
 `site`
     An object representing the site on which the user registered;
-    depending on whether `django.contrib.sites` is installed, this
-    may be an instance of either `django.contrib.sites.models.Site`
+    depending on whether `django.contrib.sites` is installed, this may
+    be an instance of either :class:`django.contrib.sites.models.Site`
     (if the sites application is installed) or
-    `django.contrib.sites.requests.RequestSite` (if not). Consult
-    `the documentation for the Django sites framework
-    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for
-    details regarding these objects.
+    :class:`django.contrib.sites.requests.RequestSite` (if
+    not). Consult `the documentation for the Django sites framework
+    <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_
+    for details regarding these objects.
 
 `user`
     The newly-created user object.
@@ -282,6 +294,5 @@ the built-in `django.contrib.auth` views (log in, log out, password
 reset, etc.).
 
 Finally, you will need to create one template:
-`registration/registration_form.html`. See :ref:`the list of
-templates above <default-templates>` for details of this template's
-context.
+`registration/registration_form.html`. See :ref:`the documentation
+above <default-form-template>` for details of this template's context.

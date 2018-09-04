@@ -150,8 +150,8 @@ significant increases in protection.
 In particular, it is recommended that you:
 
 * Prevent the use of common passwords. You can catch some common
-  passwords by enabling `Django's CommonPasswordValidator
-  <https://docs.djangoproject.com/en/2.1/topics/auth/passwords/#django.contrib.auth.password_validation.CommonPasswordValidator>`_,
+  passwords by enabling Django's
+  :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`,
   which uses a list of twenty thousand common passwords. A more
   comprehensive option is the password validator and other utilities
   from `pwned-passwords-django
