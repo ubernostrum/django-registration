@@ -52,7 +52,7 @@ can also do this in a URLconf. For example:
 
    from django.conf.urls import include, url
 
-   from django_registration.backends.one_step import RegistrationView
+   from django_registration.backends.one_step.views import RegistrationView
 
    urlpatterns = [
        # Other URL patterns ...
