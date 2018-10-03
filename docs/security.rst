@@ -155,7 +155,7 @@ In particular, it is recommended that you:
   which uses a list of twenty thousand common passwords. A more
   comprehensive option is the password validator and other utilities
   from `pwned-passwords-django
-  <https://pwned-passwords-django.readthedocs.io/en/1.2.1/>`_, which
+  <https://pwned-passwords-django.readthedocs.io/en/stable/>`_, which
   checks against a database containing (as of mid-2018) over half a
   billion passwords found in data breaches.
 
