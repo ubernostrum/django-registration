@@ -134,7 +134,7 @@ start guide <default-templates>`.
 
       A string specifying the template to use for the body of the
       activation email. Default is
-      `"django_registration/activation_email.txt"`.
+      `"django_registration/activation_email_body.txt"`.
 
    .. attribute:: email_subject_template
 
