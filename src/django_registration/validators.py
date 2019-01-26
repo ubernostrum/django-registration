@@ -10,6 +10,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
+from django.utils.deconstruct import deconstructible
 
 
 CONFUSABLE = _(u"This name cannot be registered. "
@@ -190,6 +191,7 @@ DEFAULT_RESERVED_NAMES = (
 )
 
 
+@deconstructible
 class ReservedNameValidator(object):
     """
     Validator which disallows many reserved names as form field
@@ -210,7 +212,11 @@ class ReservedNameValidator(object):
                 RESERVED_NAME, code='invalid'
             )
 
+    def __eq__(self, other):
+        return self.reserved_names == other.reserved_names
 
+
+@deconstructible
 class CaseInsensitiveUnique(object):
     """
     Validator which performs a case-insensitive uniqueness check.
@@ -232,6 +238,11 @@ class CaseInsensitiveUnique(object):
                 '{}__iexact'.format(self.field_name): value
         }).exists():
             raise ValidationError(self.error_message, code='unique')
+
+    def __eq__(self, other):
+        return self.model == other.model and \
+               self.field_name == other.field_name and \
+               self.error_message == other.error_message
 
 
 def validate_confusables(value):
