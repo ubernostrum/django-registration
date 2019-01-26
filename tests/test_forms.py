@@ -148,6 +148,20 @@ class RegistrationFormTests(RegistrationTestCase):
         for value in (123456, 1.7, uuid.uuid4()):
             self.assertTrue(validator(value) is None)
 
+    def test_reserved_name_validator_eq(self):
+        """
+        Test ReservedNameValidator __eq__ method.
+        __eq__ is necessary for serializing custom user models that use
+        the validator.
+
+        """
+        validator = validators.ReservedNameValidator()
+        validator_same = validators.ReservedNameValidator()
+        self.assertTrue(validator.__eq__(validator_same))
+
+        validator_different = validators.ReservedNameValidator(reserved_names=[])
+        self.assertFalse(validator.__eq__(validator_different))
+
     def test_case_insensitive_validator(self):
         """
         Test the case-insensitive username validator.
@@ -186,6 +200,29 @@ class RegistrationFormTests(RegistrationTestCase):
             ):
                 validator(conflict)
             existing_user.delete()
+
+    def test_case_insensitive_validator_eq(self):
+        """
+        Test CaseInsensitiveUnique __eq__ method.
+        __eq__ is necessary for serializing custom user models that use
+        the validator.
+
+        """
+        validator = validators.CaseInsensitiveUnique(
+            self.user_model, self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME
+        )
+        validator_same = validators.CaseInsensitiveUnique(
+            self.user_model, self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME
+        )
+        self.assertTrue(validator.__eq__(validator_same))
+
+        validator_different = validators.CaseInsensitiveUnique(
+            self.user_model, 'not username field',
+            validators.DUPLICATE_USERNAME
+        )
+        self.assertFalse(validator.__eq__(validator_different))
 
     def test_case_insensitive_form(self):
         """
