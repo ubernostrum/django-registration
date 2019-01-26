@@ -159,7 +159,9 @@ class RegistrationFormTests(RegistrationTestCase):
         validator_same = validators.ReservedNameValidator()
         self.assertTrue(validator.__eq__(validator_same))
 
-        validator_different = validators.ReservedNameValidator(reserved_names=[])
+        validator_different = validators.ReservedNameValidator(
+            reserved_names=[]
+        )
         self.assertFalse(validator.__eq__(validator_different))
 
     def test_case_insensitive_validator(self):
