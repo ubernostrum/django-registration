@@ -6,7 +6,6 @@ django-registration's various user-registration form classes.
 import unicodedata
 
 from confusable_homoglyphs import confusables
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils import six
 from django.utils.translation import ugettext_lazy as _
@@ -24,9 +23,6 @@ FREE_EMAIL = _(u"Registration using free email addresses is prohibited. "
                u"Please supply a different email address.")
 RESERVED_NAME = _(u"This name is reserved and cannot be registered.")
 TOS_REQUIRED = _(u"You must agree to the terms to register")
-
-
-User = get_user_model()
 
 
 # Below we construct a large but non-exhaustive list of names which
