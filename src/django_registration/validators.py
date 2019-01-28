@@ -263,7 +263,10 @@ def validate_confusables_email(value):
     """
     if '@' not in value:
         return
-    local_part, domain = value.split('@')
+
+    email_pieces = value.split('@')
+    local_part = email_pieces[0]
+    domain = email_pieces[1]
     if confusables.is_dangerous(local_part) or \
        confusables.is_dangerous(domain):
         raise ValidationError(CONFUSABLE_EMAIL, code='invalid')
