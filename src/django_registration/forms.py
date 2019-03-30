@@ -33,6 +33,8 @@ class RegistrationForm(UserCreationForm):
     will make use of it to create inactive user accounts.
 
     """
+    EMAIL_FIELD_HELP_TEXT = _('This field is required')
+
     class Meta(UserCreationForm.Meta):
         fields = [
             User.USERNAME_FIELD,
@@ -60,6 +62,7 @@ class RegistrationForm(UserCreationForm):
             validators.validate_confusables_email
         )
         self.fields[email_field].required = True
+        self.fields[email_field].help_text = self.EMAIL_FIELD_HELP_TEXT
 
 
 class RegistrationFormCaseInsensitive(RegistrationForm):
