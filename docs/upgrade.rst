@@ -9,6 +9,22 @@ which is not backwards-compatible with the django-registration 2.x
 release series.
 
 
+Changes within the 3.x series
+-----------------------------
+
+Within the 3.x release series, there have been several minor changes
+and improvements, documented here along with the version in which they
+occurred.
+
+django-registration 3.0.1
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+* The :ref:`custom validators <validators>` are now serializable.
+
+* Although no code changes were required, this release officially
+  marks itself compatible with Python 3.7 and with django 2.2.
+
+
 Changes between django-registration 2.x and 3.x
 -----------------------------------------------
 
