@@ -6,9 +6,9 @@ django-registration's various user-registration form classes.
 import unicodedata
 
 from confusable_homoglyphs import confusables
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.utils import six
+from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -23,9 +23,6 @@ FREE_EMAIL = _(u"Registration using free email addresses is prohibited. "
                u"Please supply a different email address.")
 RESERVED_NAME = _(u"This name is reserved and cannot be registered.")
 TOS_REQUIRED = _(u"You must agree to the terms to register")
-
-
-User = get_user_model()
 
 
 # Below we construct a large but non-exhaustive list of names which
@@ -190,6 +187,7 @@ DEFAULT_RESERVED_NAMES = (
 )
 
 
+@deconstructible
 class ReservedNameValidator(object):
     """
     Validator which disallows many reserved names as form field
@@ -210,7 +208,11 @@ class ReservedNameValidator(object):
                 RESERVED_NAME, code='invalid'
             )
 
+    def __eq__(self, other):
+        return self.reserved_names == other.reserved_names
 
+
+@deconstructible
 class CaseInsensitiveUnique(object):
     """
     Validator which performs a case-insensitive uniqueness check.
@@ -232,6 +234,11 @@ class CaseInsensitiveUnique(object):
                 '{}__iexact'.format(self.field_name): value
         }).exists():
             raise ValidationError(self.error_message, code='unique')
+
+    def __eq__(self, other):
+        return self.model == other.model and \
+               self.field_name == other.field_name and \
+               self.error_message == other.error_message
 
 
 def validate_confusables(value):
