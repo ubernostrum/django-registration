@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 
 setup(name='django-registration',
       zip_safe=False,  # eggs are the devil.
-      version='3.0',
+      version='3.0.1-dev',
       description='An extensible user-registration application for Django',
       author='James Bennett',
       author_email='james@b-list.org',
@@ -18,6 +18,7 @@ setup(name='django-registration',
           'Framework :: Django :: 1.11',
           'Framework :: Django :: 2.0',
           'Framework :: Django :: 2.1',
+          'Framework :: Django :: 2.2',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: BSD License',
           'Operating System :: OS Independent',
