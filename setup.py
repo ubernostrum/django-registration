@@ -35,5 +35,5 @@ setup(
         "Topic :: Utilities",
     ],
     python_requires=">=3.5",
-    install_requires=["Django>=2.2", "confusable_homoglyphs~=3.0", "six"],
+    install_requires=["Django>=2.2", "confusable_homoglyphs~=3.0"],
 )

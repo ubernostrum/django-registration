@@ -11,7 +11,6 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, RegexValidator
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
-import six
 
 
 CONFUSABLE = _(u"This name cannot be registered. " "Please choose a different name.")
@@ -221,7 +220,7 @@ class ReservedNameValidator(object):
     def __call__(self, value):
         # GH issue 82: this validator only makes sense when the
         # username field is a string type.
-        if not isinstance(value, six.text_type):
+        if not isinstance(value, str):
             return
         if value in self.reserved_names or value.startswith(".well-known"):
             raise ValidationError(RESERVED_NAME, code="invalid")
@@ -244,7 +243,7 @@ class CaseInsensitiveUnique(object):
 
     def __call__(self, value):
         # Only run if the username is a string.
-        if not isinstance(value, six.text_type):
+        if not isinstance(value, str):
             return
         value = unicodedata.normalize("NFKC", value)
         if hasattr(value, "casefold"):
@@ -282,7 +281,7 @@ def validate_confusables(value):
     appearing in the Unicode Visually Confusable Characters file.
 
     """
-    if not isinstance(value, six.text_type):
+    if not isinstance(value, str):
         return
     if confusables.is_dangerous(value):
         raise ValidationError(CONFUSABLE, code="invalid")
