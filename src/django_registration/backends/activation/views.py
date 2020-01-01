@@ -112,11 +112,11 @@ class ActivationView(BaseActivationView):
     """
 
     ALREADY_ACTIVATED_MESSAGE = _(
-        u"The account you tried to activate has already been activated."
+        "The account you tried to activate has already been activated."
     )
-    BAD_USERNAME_MESSAGE = _(u"The account you attempted to activate is invalid.")
-    EXPIRED_MESSAGE = _(u"This account has expired.")
-    INVALID_KEY_MESSAGE = _(u"The activation key you provided is invalid.")
+    BAD_USERNAME_MESSAGE = _("The account you attempted to activate is invalid.")
+    EXPIRED_MESSAGE = _("This account has expired.")
+    INVALID_KEY_MESSAGE = _("The activation key you provided is invalid.")
     success_url = reverse_lazy("django_registration_activation_complete")
 
     def activate(self, *args, **kwargs):

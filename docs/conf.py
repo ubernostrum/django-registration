@@ -8,10 +8,10 @@ extensions = ["sphinx.ext.intersphinx"]
 templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
-project = u"django-registration"
-copyright = u"2007-2019, James Bennett"
-version = "3.0.1"
-release = "3.0.1"
+project = "django-registration"
+copyright = "2007-2019, James Bennett"
+version = "3.1a1"
+release = "3.1a1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 html_static_path = ["_static"]
@@ -20,8 +20,8 @@ latex_documents = [
     (
         "index",
         "django-registration.tex",
-        u"django-registration Documentation",
-        u"James Bennett",
+        "django-registration Documentation",
+        "James Bennett",
         "manual",
     )
 ]

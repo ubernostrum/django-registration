@@ -107,9 +107,9 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-            u"p\u0430yp\u0430l",
-            u"g\u043e\u043egle",
-            u"\u03c1ay\u03c1al",
+            "p\u0430yp\u0430l",
+            "g\u043e\u043egle",
+            "\u03c1ay\u03c1al",
         ):
             data = self.valid_data.copy()
             data[self.user_model.USERNAME_FIELD] = dangerous_value
@@ -128,11 +128,11 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-            u"p\u0430yp\u0430l@example.com",
-            u"g\u043e\u043egle@example.com",
-            u"\u03c1y\u03c1al@example.com",
-            u"paypal@ex\u0430mple.com",
-            u"google@exam\u03c1le.com",
+            "p\u0430yp\u0430l@example.com",
+            "g\u043e\u043egle@example.com",
+            "\u03c1y\u03c1al@example.com",
+            "paypal@ex\u0430mple.com",
+            "google@exam\u03c1le.com",
         ):
             data = self.valid_data.copy()
             data["email"] = dangerous_value
@@ -225,8 +225,8 @@ class RegistrationFormTests(RegistrationTestCase):
         del base_creation_data["password1"]
         del base_creation_data["password2"]
 
-        test_names = [(u"alice", u"ALICE"), (u"ALICE", u"alice"), (u"Alice", u"alice")]
-        test_names.extend([(u"STRASSBURGER", u"straßburger")])
+        test_names = [("alice", "ALICE"), ("ALICE", "alice"), ("Alice", "alice")]
+        test_names.extend([("STRASSBURGER", "straßburger")])
 
         for name, conflict in test_names:
             creation_data = base_creation_data.copy()
@@ -274,11 +274,11 @@ class RegistrationFormTests(RegistrationTestCase):
         del base_creation_data["password2"]
 
         test_names = [
-            (u"alice", u"ALICE"),
-            (u"ALICE", u"alice"),
-            (u"Alice", u"alice"),
-            (u"AlIcE", u"aLiCe"),
-            (u"STRASSBURGER", u"straßburger"),
+            ("alice", "ALICE"),
+            ("ALICE", "alice"),
+            ("Alice", "alice"),
+            ("AlIcE", "aLiCe"),
+            ("STRASSBURGER", "straßburger"),
         ]
 
         for name, conflict in test_names:
@@ -335,19 +335,19 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-            u"p\u0430yp\u0430l",
-            u"g\u043e\u043egle",
-            u"\u03c1ay\u03c1al",
+            "p\u0430yp\u0430l",
+            "g\u043e\u043egle",
+            "\u03c1ay\u03c1al",
         ):
             with self.assertRaises(ValidationError):
                 validators.validate_confusables(dangerous_value)
         for safe_value in (
-            u"paypal",
-            u"google",
-            u"root",
-            u"admin",
-            u"\u041f\u0451\u0442\u0440",
-            u"\u5c71\u672c",
+            "paypal",
+            "google",
+            "root",
+            "admin",
+            "\u041f\u0451\u0442\u0440",
+            "\u5c71\u672c",
             3,
         ):
             validators.validate_confusables(safe_value)
@@ -358,19 +358,19 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-            u"p\u0430yp\u0430l@example.com",
-            u"g\u043e\u043egle@example.com",
-            u"\u03c1ay\u03c1al@example.com",
-            u"paypal@ex\u0430mple.com",
-            u"google@exam\u03c1le.com",
+            "p\u0430yp\u0430l@example.com",
+            "g\u043e\u043egle@example.com",
+            "\u03c1ay\u03c1al@example.com",
+            "paypal@ex\u0430mple.com",
+            "google@exam\u03c1le.com",
         ):
             with self.assertRaises(ValidationError):
                 validators.validate_confusables_email(dangerous_value)
         for safe_value in (
-            u"paypal@example.com",
-            u"google@example.com",
-            u"\u041f\u0451\u0442\u0440@example.com",
-            u"\u5c71\u672c@example.com",
-            u"username",
+            "paypal@example.com",
+            "google@example.com",
+            "\u041f\u0451\u0442\u0440@example.com",
+            "\u5c71\u672c@example.com",
+            "username",
         ):
             validators.validate_confusables_email(safe_value)

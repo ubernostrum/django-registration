@@ -88,7 +88,7 @@ class RegistrationFormTermsOfService(RegistrationForm):
 
     tos = forms.BooleanField(
         widget=forms.CheckboxInput,
-        label=_(u"I have read and agree to the Terms of Service"),
+        label=_("I have read and agree to the Terms of Service"),
         error_messages={"required": validators.TOS_REQUIRED},
     )
 

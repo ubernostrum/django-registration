@@ -13,22 +13,21 @@ from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
 
 
-CONFUSABLE = _(u"This name cannot be registered. " "Please choose a different name.")
+CONFUSABLE = _("This name cannot be registered. " "Please choose a different name.")
 CONFUSABLE_EMAIL = _(
-    u"This email address cannot be registered. "
+    "This email address cannot be registered. "
     "Please supply a different email address."
 )
 DUPLICATE_EMAIL = _(
-    u"This email address is already in use. "
-    u"Please supply a different email address."
+    "This email address is already in use. " "Please supply a different email address."
 )
 DUPLICATE_USERNAME = _("A user with that username already exists.")
 FREE_EMAIL = _(
-    u"Registration using free email addresses is prohibited. "
-    u"Please supply a different email address."
+    "Registration using free email addresses is prohibited. "
+    "Please supply a different email address."
 )
-RESERVED_NAME = _(u"This name is reserved and cannot be registered.")
-TOS_REQUIRED = _(u"You must agree to the terms to register")
+RESERVED_NAME = _("This name is reserved and cannot be registered.")
+TOS_REQUIRED = _("You must agree to the terms to register")
 
 # WHATWG HTML5 spec, section 4.10.5.1.5.
 HTML5_EMAIL_RE = (
