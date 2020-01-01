@@ -12,13 +12,14 @@ from django_registration.backends.activation.views import REGISTRATION_SALT
 from .base import RegistrationTestCase
 
 
-@override_settings(ROOT_URLCONF='tests.urls')
+@override_settings(ROOT_URLCONF="tests.urls")
 class ActivationViewTests(RegistrationTestCase):
     """
     Tests for aspects of the activation view not currently exercised
     by any built-in workflow.
 
     """
+
     @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
     def test_activation(self):
         """
@@ -27,20 +28,18 @@ class ActivationViewTests(RegistrationTestCase):
 
         """
         resp = self.client.post(
-            reverse('django_registration_register'),
-            data=self.valid_data
+            reverse("django_registration_register"), data=self.valid_data
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data[self.user_model.USERNAME_FIELD],
-            salt=REGISTRATION_SALT
+            obj=self.valid_data[self.user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
         )
 
         resp = self.client.get(
             reverse(
-                'django_registration_activate',
+                "django_registration_activate",
                 args=(),
-                kwargs={'activation_key': activation_key}
+                kwargs={"activation_key": activation_key},
             )
         )
-        self.assertRedirects(resp, '/activate/complete/')
+        self.assertRedirects(resp, "/activate/complete/")

@@ -9,4 +9,4 @@ from django_registration.backends.activation.views import ActivationView
 
 
 class ActivateWithComplexRedirect(ActivationView):
-    success_url = reverse_lazy('django_registration_activation_complete')
+    success_url = reverse_lazy("django_registration_activation_complete")

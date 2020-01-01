@@ -7,28 +7,69 @@ import uuid
 
 from django.core.exceptions import ValidationError
 from django.test import modify_settings
-from django.utils import six
 
 from django_registration import forms, validators
 
 from .base import RegistrationTestCase
 
 
-@modify_settings(INSTALLED_APPS={'remove': 'registration'})
+try:
+    from django.utils import six
+except ImportError:
+    import six
+
+
+@modify_settings(INSTALLED_APPS={"remove": "registration"})
 class RegistrationFormTests(RegistrationTestCase):
     """
     Test the built-in form classes.
 
     """
+
     def test_email_required(self):
         """
         The email address field is required.
 
         """
         form = forms.RegistrationForm()
-        self.assertTrue(
-            form.fields['email'].required
-        )
+        self.assertTrue(form.fields["email"].required)
+
+    def test_email_validation(self):
+        """
+        Stricter-than-RFC email validation is applied.
+
+        This test is necessary because of the combination of
+        HTML5EmailValidator and validate_confusables_email() in the
+        default validator set for the email field of RegistrationForm;
+        some technically-valid email addresses which nonetheless
+        usually indicate bad faith or at least mischief are to be
+        rejected before the confusables validator is applied.
+
+        """
+        for value in (
+            "test@example.com",
+            "test+test@example.com",
+            "test.test@example.com",
+            "test_test@example.com",
+        ):
+            user_data = self.valid_data.copy()
+            user_data["email"] = value
+            form = forms.RegistrationForm(data=user_data)
+            self.assertTrue(form.is_valid())
+        for value in (
+            "@@@example.com",
+            "test:test@test@example.com",
+            'test"test@example"test@example.com',
+        ):
+            user_data = self.valid_data.copy()
+            user_data["email"] = value
+            form = forms.RegistrationForm(data=user_data)
+            self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.get_email_field_name()))
+            self.assertTrue(
+                six.text_type(validators.HTML5EmailValidator.message)
+                in form.errors[self.user_model.get_email_field_name()]
+            )
 
     def test_username_uniqueness(self):
         """
@@ -40,16 +81,14 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         user_data = self.valid_data.copy()
-        del user_data['password1']
-        del user_data['password2']
-        user_data['password'] = 'swordfish'
+        del user_data["password1"]
+        del user_data["password2"]
+        user_data["password"] = "swordfish"
         existing_user = self.user_model(**user_data)
         existing_user.save()
         form = forms.RegistrationForm(data=self.valid_data.copy())
         self.assertFalse(form.is_valid())
-        self.assertTrue(
-            form.has_error(self.user_model.USERNAME_FIELD)
-        )
+        self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
 
     def test_reserved_names(self):
         """
@@ -61,12 +100,10 @@ class RegistrationFormTests(RegistrationTestCase):
             data[self.user_model.USERNAME_FIELD] = reserved_name
             form = forms.RegistrationForm(data=data)
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertTrue(
-                form.has_error(self.user_model.USERNAME_FIELD)
-            )
-            self.assertTrue(
-                six.text_type(validators.RESERVED_NAME) in
-                form.errors[self.user_model.USERNAME_FIELD]
+                six.text_type(validators.RESERVED_NAME)
+                in form.errors[self.user_model.USERNAME_FIELD]
             )
 
     def test_confusable_usernames(self):
@@ -76,20 +113,18 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-                u'p\u0430yp\u0430l',
-                u'g\u043e\u043egle',
-                u'\u03c1ay\u03c1al',
+            u"p\u0430yp\u0430l",
+            u"g\u043e\u043egle",
+            u"\u03c1ay\u03c1al",
         ):
             data = self.valid_data.copy()
             data[self.user_model.USERNAME_FIELD] = dangerous_value
             form = forms.RegistrationForm(data=data)
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertTrue(
-                form.has_error(self.user_model.USERNAME_FIELD)
-            )
-            self.assertTrue(
-                six.text_type(validators.CONFUSABLE) in
-                form.errors[self.user_model.USERNAME_FIELD]
+                six.text_type(validators.CONFUSABLE)
+                in form.errors[self.user_model.USERNAME_FIELD]
             )
 
     def test_confusable_emails(self):
@@ -99,20 +134,19 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-                u'p\u0430yp\u0430l@example.com',
-                u'g\u043e\u043egle@example.com',
-                u'\u03c1y\u03c1al@example.com',
-                u'paypal@ex\u0430mple.com',
-                u'google@exam\u03c1le.com',
+            u"p\u0430yp\u0430l@example.com",
+            u"g\u043e\u043egle@example.com",
+            u"\u03c1y\u03c1al@example.com",
+            u"paypal@ex\u0430mple.com",
+            u"google@exam\u03c1le.com",
         ):
             data = self.valid_data.copy()
-            data['email'] = dangerous_value
+            data["email"] = dangerous_value
             form = forms.RegistrationForm(data=data)
             self.assertFalse(form.is_valid())
-            self.assertTrue(form.has_error('email'))
+            self.assertTrue(form.has_error("email"))
             self.assertTrue(
-                six.text_type(validators.CONFUSABLE_EMAIL) in
-                form.errors['email']
+                six.text_type(validators.CONFUSABLE_EMAIL) in form.errors["email"]
             )
 
     def test_custom_reserved_names(self):
@@ -120,7 +154,7 @@ class RegistrationFormTests(RegistrationTestCase):
         Reserved names can be overridden by an attribute.
 
         """
-        custom_reserved_names = ['foo', 'bar', 'eggs', 'spam']
+        custom_reserved_names = ["foo", "bar", "eggs", "spam"]
 
         class CustomReservedNamesForm(forms.RegistrationForm):
             reserved_names = custom_reserved_names
@@ -130,12 +164,10 @@ class RegistrationFormTests(RegistrationTestCase):
             data[self.user_model.USERNAME_FIELD] = reserved_name
             form = CustomReservedNamesForm(data=data)
             self.assertFalse(form.is_valid())
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertTrue(
-                form.has_error(self.user_model.USERNAME_FIELD)
-            )
-            self.assertTrue(
-                six.text_type(validators.RESERVED_NAME) in
-                form.errors[self.user_model.USERNAME_FIELD]
+                six.text_type(validators.RESERVED_NAME)
+                in form.errors[self.user_model.USERNAME_FIELD]
             )
 
     def test_reserved_name_non_string(self):
@@ -159,10 +191,31 @@ class RegistrationFormTests(RegistrationTestCase):
         validator_same = validators.ReservedNameValidator()
         self.assertTrue(validator.__eq__(validator_same))
 
-        validator_different = validators.ReservedNameValidator(
-            reserved_names=[]
-        )
+        validator_different = validators.ReservedNameValidator(reserved_names=[])
         self.assertFalse(validator.__eq__(validator_different))
+
+    def test_email_validator(self):
+        """
+        Test the HTMl5 email address validator.
+
+        """
+        validator = validators.HTML5EmailValidator()
+        for value in (
+            "test@example.com",
+            "test+test@example.com",
+            "test.test@example.com",
+            "test_test@example.com",
+        ):
+            self.assertTrue(validator(value) is None)
+        for value in (
+            "@@@example.com",
+            "test:test@test@example.com",
+            'test"test@example"test@example.com',
+        ):
+            with self.assertRaisesMessage(
+                ValidationError, six.text_type(validator.message)
+            ):
+                validator(value)
 
     def test_case_insensitive_validator(self):
         """
@@ -170,26 +223,21 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         validator = validators.CaseInsensitiveUnique(
-            self.user_model, self.user_model.USERNAME_FIELD,
-            validators.DUPLICATE_USERNAME
+            self.user_model,
+            self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         for value in (123456, 1.7, uuid.uuid4()):
             self.assertTrue(validator(value) is None)
 
         base_creation_data = self.valid_data.copy()
-        base_creation_data['password'] = base_creation_data['password1']
-        del base_creation_data['password1']
-        del base_creation_data['password2']
+        base_creation_data["password"] = base_creation_data["password1"]
+        del base_creation_data["password1"]
+        del base_creation_data["password2"]
 
-        test_names = [
-            (u'alice', u'ALICE'),
-            (u'ALICE', u'alice'),
-            (u'Alice', u'alice'),
-        ]
+        test_names = [(u"alice", u"ALICE"), (u"ALICE", u"alice"), (u"Alice", u"alice")]
         if six.PY3:
-            test_names.extend([
-                (u'STRASSBURGER', u'straßburger'),
-            ])
+            test_names.extend([(u"STRASSBURGER", u"straßburger")])
 
         for name, conflict in test_names:
             creation_data = base_creation_data.copy()
@@ -197,8 +245,7 @@ class RegistrationFormTests(RegistrationTestCase):
             existing_user = self.user_model(**creation_data)
             existing_user.save()
             with self.assertRaisesMessage(
-                    ValidationError,
-                    six.text_type(validators.DUPLICATE_USERNAME)
+                ValidationError, six.text_type(validators.DUPLICATE_USERNAME)
             ):
                 validator(conflict)
             existing_user.delete()
@@ -211,18 +258,19 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         validator = validators.CaseInsensitiveUnique(
-            self.user_model, self.user_model.USERNAME_FIELD,
-            validators.DUPLICATE_USERNAME
+            self.user_model,
+            self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         validator_same = validators.CaseInsensitiveUnique(
-            self.user_model, self.user_model.USERNAME_FIELD,
-            validators.DUPLICATE_USERNAME
+            self.user_model,
+            self.user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         self.assertTrue(validator.__eq__(validator_same))
 
         validator_different = validators.CaseInsensitiveUnique(
-            self.user_model, 'not username field',
-            validators.DUPLICATE_USERNAME
+            self.user_model, "not username field", validators.DUPLICATE_USERNAME
         )
         self.assertFalse(validator.__eq__(validator_different))
 
@@ -232,16 +280,16 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         base_creation_data = self.valid_data.copy()
-        base_creation_data['password'] = base_creation_data['password1']
-        del base_creation_data['password1']
-        del base_creation_data['password2']
+        base_creation_data["password"] = base_creation_data["password1"]
+        del base_creation_data["password1"]
+        del base_creation_data["password2"]
 
         test_names = [
-            (u'alice', u'ALICE'),
-            (u'ALICE', u'alice'),
-            (u'Alice', u'alice'),
-            (u'AlIcE', u'aLiCe'),
-            (u'STRASSBURGER', u'straßburger'),
+            (u"alice", u"ALICE"),
+            (u"ALICE", u"alice"),
+            (u"Alice", u"alice"),
+            (u"AlIcE", u"aLiCe"),
+            (u"STRASSBURGER", u"straßburger"),
         ]
 
         for name, conflict in test_names:
@@ -253,16 +301,12 @@ class RegistrationFormTests(RegistrationTestCase):
             user_data[self.user_model.USERNAME_FIELD] = name
             form = forms.RegistrationFormCaseInsensitive(data=user_data)
             self.assertFalse(form.is_valid())
-            self.assertTrue(
-                form.has_error(self.user_model.USERNAME_FIELD)
-            )
+            self.assertTrue(form.has_error(self.user_model.USERNAME_FIELD))
             self.assertEqual(
                 [six.text_type(validators.DUPLICATE_USERNAME)],
-                form.errors[self.user_model.USERNAME_FIELD]
+                form.errors[self.user_model.USERNAME_FIELD],
             )
-            self.assertEqual(
-                1, len(form.errors[self.user_model.USERNAME_FIELD])
-            )
+            self.assertEqual(1, len(form.errors[self.user_model.USERNAME_FIELD]))
 
     def test_tos_field(self):
         """
@@ -270,15 +314,10 @@ class RegistrationFormTests(RegistrationTestCase):
         is required.
 
         """
-        form = forms.RegistrationFormTermsOfService(
-            data=self.valid_data.copy()
-        )
+        form = forms.RegistrationFormTermsOfService(data=self.valid_data.copy())
         self.assertFalse(form.is_valid())
-        self.assertTrue(form.has_error('tos'))
-        self.assertEqual(
-            form.errors['tos'],
-            [six.text_type(validators.TOS_REQUIRED)]
-        )
+        self.assertTrue(form.has_error("tos"))
+        self.assertEqual(form.errors["tos"], [six.text_type(validators.TOS_REQUIRED)])
 
     def test_email_uniqueness(self):
         """
@@ -286,26 +325,21 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         self.user_model.objects.create(
-            username='bob',
-            email=self.valid_data['email'],
-            password=self.valid_data['password1']
+            username="bob",
+            email=self.valid_data["email"],
+            password=self.valid_data["password1"],
         )
 
-        form = forms.RegistrationFormUniqueEmail(
-            data=self.valid_data.copy()
-        )
+        form = forms.RegistrationFormUniqueEmail(data=self.valid_data.copy())
         self.assertFalse(form.is_valid())
-        self.assertTrue(form.has_error('email'))
+        self.assertTrue(form.has_error("email"))
         self.assertEqual(
-            form.errors['email'],
-            [six.text_type(validators.DUPLICATE_EMAIL)]
+            form.errors["email"], [six.text_type(validators.DUPLICATE_EMAIL)]
         )
 
         data = self.valid_data.copy()
-        data.update(email='bob@example.com')
-        form = forms.RegistrationFormUniqueEmail(
-            data=data
-        )
+        data.update(email="bob@example.com")
+        form = forms.RegistrationFormUniqueEmail(data=data)
         self.assertTrue(form.is_valid())
 
     def test_confusables_validator(self):
@@ -314,20 +348,20 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-                u'p\u0430yp\u0430l',
-                u'g\u043e\u043egle',
-                u'\u03c1ay\u03c1al',
+            u"p\u0430yp\u0430l",
+            u"g\u043e\u043egle",
+            u"\u03c1ay\u03c1al",
         ):
             with self.assertRaises(ValidationError):
                 validators.validate_confusables(dangerous_value)
         for safe_value in (
-                u'paypal',
-                u'google',
-                u'root',
-                u'admin',
-                u'\u041f\u0451\u0442\u0440',
-                u'\u5c71\u672c',
-                3,
+            u"paypal",
+            u"google",
+            u"root",
+            u"admin",
+            u"\u041f\u0451\u0442\u0440",
+            u"\u5c71\u672c",
+            3,
         ):
             validators.validate_confusables(safe_value)
 
@@ -337,19 +371,19 @@ class RegistrationFormTests(RegistrationTestCase):
 
         """
         for dangerous_value in (
-                u'p\u0430yp\u0430l@example.com',
-                u'g\u043e\u043egle@example.com',
-                u'\u03c1ay\u03c1al@example.com',
-                u'paypal@ex\u0430mple.com',
-                u'google@exam\u03c1le.com'
+            u"p\u0430yp\u0430l@example.com",
+            u"g\u043e\u043egle@example.com",
+            u"\u03c1ay\u03c1al@example.com",
+            u"paypal@ex\u0430mple.com",
+            u"google@exam\u03c1le.com",
         ):
             with self.assertRaises(ValidationError):
                 validators.validate_confusables_email(dangerous_value)
-        for safe_value in(
-                u'paypal@example.com',
-                u'google@example.com',
-                u'\u041f\u0451\u0442\u0440@example.com',
-                u'\u5c71\u672c@example.com',
-                u'username',
+        for safe_value in (
+            u"paypal@example.com",
+            u"google@example.com",
+            u"\u041f\u0451\u0442\u0440@example.com",
+            u"\u5c71\u672c@example.com",
+            u"username",
         ):
             validators.validate_confusables_email(safe_value)

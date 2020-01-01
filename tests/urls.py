@@ -15,32 +15,42 @@ from .views import ActivateWithComplexRedirect
 
 
 urlpatterns = [
-    url(r'^$',
+    url(
+        r"^$",
         TemplateView.as_view(
-            template_name='django_registration/activation_complete.html'
+            template_name="django_registration/activation_complete.html"
         ),
-        name='simple_activation_redirect'),
-    url(r'^activate/complete/$',
+        name="simple_activation_redirect",
+    ),
+    url(
+        r"^activate/complete/$",
         TemplateView.as_view(
-            template_name='django_registration/activation_complete.html'
+            template_name="django_registration/activation_complete.html"
         ),
-        name='django_registration_activation_complete'),
+        name="django_registration_activation_complete",
+    ),
     # The activation key can make use of any character from the
     # URL-safe base64 alphabet, plus the colon as a separator.
-    url(r'^activate/(?P<activation_key>[-:\w]+)/$',
+    url(
+        r"^activate/(?P<activation_key>[-:\w]+)/$",
         ActivateWithComplexRedirect.as_view(),
-        name='django_registration_activate'),
-    url(r'^register/$',
-        RegistrationView.as_view(),
-        name='django_registration_register'),
-    url(r'^register/complete/$',
+        name="django_registration_activate",
+    ),
+    url(
+        r"^register/$", RegistrationView.as_view(), name="django_registration_register"
+    ),
+    url(
+        r"^register/complete/$",
         TemplateView.as_view(
-            template_name='django_registration/registration_complete.html'
+            template_name="django_registration/registration_complete.html"
         ),
-        name='django_registration_complete'),
-    url(r'^register/closed/$',
+        name="django_registration_complete",
+    ),
+    url(
+        r"^register/closed/$",
         TemplateView.as_view(
-            template_name='django_registration/registration_closed.html'
+            template_name="django_registration/registration_closed.html"
         ),
-        name='django_registration_disallowed'),
+        name="django_registration_disallowed",
+    ),
 ]

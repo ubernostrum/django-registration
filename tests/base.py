@@ -46,7 +46,7 @@ class _AssertSignalSentContext(object):
     def __exit__(self, exc_type, exc_value, traceback):
         self.signal.disconnect(self._listener)
         if not self.signal_sent:
-            self.test_case.fail('Signal was not sent.')
+            self.test_case.fail("Signal was not sent.")
             return
         if self.required_kwargs is not None:
             missing_kwargs = []
@@ -56,7 +56,7 @@ class _AssertSignalSentContext(object):
             if missing_kwargs:
                 self.test_case.fail(
                     "Signal missing required arguments: "
-                    "%s" % ','.join(missing_kwargs)
+                    "%s" % ",".join(missing_kwargs)
                 )
 
 
@@ -64,31 +64,27 @@ class _AssertSignalNotSentContext(_AssertSignalSentContext):
     def __exit__(self, exc_type, exc_value, traceback):
         self.signal.disconnect(self._listener)
         if self.signal_sent:
-            self.test_case.fail('Signal was unexpectedly sent.')
+            self.test_case.fail("Signal was unexpectedly sent.")
 
 
-@override_settings(
-    ACCOUNT_ACTIVATION_DAYS=7,
-    REGISTRATION_OPEN=True
-)
+@override_settings(ACCOUNT_ACTIVATION_DAYS=7, REGISTRATION_OPEN=True)
 class RegistrationTestCase(TestCase):
     """
     Base class for test cases, defining valid data for registering a
     user account and looking up the account after creation.
 
     """
+
     user_model = User
 
     valid_data = {
-        User.USERNAME_FIELD: 'alice',
-        'email': 'alice@example.com',
-        'password1': 'swordfish',
-        'password2': 'swordfish',
+        User.USERNAME_FIELD: "alice",
+        "email": "alice@example.com",
+        "password1": "swordfish",
+        "password2": "swordfish",
     }
 
-    user_lookup_kwargs = {
-        User.USERNAME_FIELD: 'alice',
-    }
+    user_lookup_kwargs = {User.USERNAME_FIELD: "alice"}
 
     @contextmanager
     def assertSignalSent(self, signal, required_kwargs=None):
@@ -108,12 +104,13 @@ class WorkflowTestCase(RegistrationTestCase):
     to be tested for each one).
 
     """
+
     def test_registration_open(self):
         """
         ``REGISTRATION_OPEN``, when ``True``, permits registration.
 
         """
-        resp = self.client.get(reverse('django_registration_register'))
+        resp = self.client.get(reverse("django_registration_register"))
         self.assertEqual(200, resp.status_code)
 
     @override_settings(REGISTRATION_OPEN=False)
@@ -122,16 +119,13 @@ class WorkflowTestCase(RegistrationTestCase):
         ``REGISTRATION_OPEN``, when ``False``, disallows registration.
 
         """
-        resp = self.client.get(
-            reverse('django_registration_register')
-        )
-        self.assertRedirects(resp, reverse('django_registration_disallowed'))
+        resp = self.client.get(reverse("django_registration_register"))
+        self.assertRedirects(resp, reverse("django_registration_disallowed"))
 
         resp = self.client.post(
-            reverse('django_registration_register'),
-            data=self.valid_data
+            reverse("django_registration_register"), data=self.valid_data
         )
-        self.assertRedirects(resp, reverse('django_registration_disallowed'))
+        self.assertRedirects(resp, reverse("django_registration_disallowed"))
 
     def test_registration_get(self):
         """
@@ -139,16 +133,10 @@ class WorkflowTestCase(RegistrationTestCase):
         template and populates a registration form into the context.
 
         """
-        resp = self.client.get(reverse('django_registration_register'))
+        resp = self.client.get(reverse("django_registration_register"))
         self.assertEqual(200, resp.status_code)
-        self.assertTemplateUsed(
-            resp, 'django_registration/registration_form.html'
-        )
-        self.assertTrue(
-            isinstance(
-                resp.context['form'], RegistrationForm
-            )
-        )
+        self.assertTemplateUsed(resp, "django_registration/registration_form.html")
+        self.assertTrue(isinstance(resp.context["form"], RegistrationForm))
 
     def test_registration(self):
         """
@@ -157,20 +145,15 @@ class WorkflowTestCase(RegistrationTestCase):
         """
         with self.assertSignalSent(signals.user_registered):
             resp = self.client.post(
-                reverse('django_registration_register'),
-                data=self.valid_data
+                reverse("django_registration_register"), data=self.valid_data
             )
 
-        self.assertRedirects(resp, reverse('django_registration_complete'))
+        self.assertRedirects(resp, reverse("django_registration_complete"))
 
         new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
 
-        self.assertTrue(
-            new_user.check_password(
-                self.valid_data['password1']
-            )
-        )
-        self.assertEqual(new_user.email, self.valid_data['email'])
+        self.assertTrue(new_user.check_password(self.valid_data["password1"]))
+        self.assertEqual(new_user.email, self.valid_data["email"])
 
     def test_registration_failure(self):
         """
@@ -178,31 +161,25 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         data = self.valid_data.copy()
-        data.update(password2='notsecret')
+        data.update(password2="notsecret")
 
         with self.assertSignalNotSent(signals.user_registered):
-            resp = self.client.post(
-                reverse('django_registration_register'),
-                data=data
-            )
+            resp = self.client.post(reverse("django_registration_register"), data=data)
 
         self.assertEqual(200, resp.status_code)
-        self.assertFalse(resp.context['form'].is_valid())
-        self.assertTrue(resp.context['form'].has_error('password2'))
+        self.assertFalse(resp.context["form"].is_valid())
+        self.assertTrue(resp.context["form"].has_error("password2"))
 
     def test_registration_signal(self):
         with self.assertSignalSent(signals.user_registered) as cm:
             self.client.post(
-                reverse('django_registration_register'),
-                data=self.valid_data
+                reverse("django_registration_register"), data=self.valid_data
             )
             self.assertEqual(
-                cm.received_kwargs['user'].get_username(),
-                self.valid_data[User.USERNAME_FIELD]
+                cm.received_kwargs["user"].get_username(),
+                self.valid_data[User.USERNAME_FIELD],
             )
-            self.assertTrue(
-                isinstance(cm.received_kwargs['request'], HttpRequest)
-            )
+            self.assertTrue(isinstance(cm.received_kwargs["request"], HttpRequest))
 
 
 class ActivationTestCase(WorkflowTestCase):
@@ -211,6 +188,7 @@ class ActivationTestCase(WorkflowTestCase):
     activation step.
 
     """
+
     # First few methods repeat parent class, but with added checks for
     # is_active status and sending of activation emails.
     def test_registration(self):
@@ -229,7 +207,7 @@ class ActivationTestCase(WorkflowTestCase):
 
         # An activation email was sent.
         self.assertEqual(len(mail.outbox), 1)
-        self.assertTrue('http' in mail.outbox[0].subject)
+        self.assertTrue("http" in mail.outbox[0].subject)
 
     def test_registration_failure(self):
         """
@@ -249,22 +227,15 @@ class ActivationTestCase(WorkflowTestCase):
         be a ``RequestSite`` instance.
 
         """
-        with self.modify_settings(INSTALLED_APPS={
-            'remove': ['django.contrib.sites']
-        }):
+        with self.modify_settings(INSTALLED_APPS={"remove": ["django.contrib.sites"]}):
             with self.assertSignalSent(signals.user_registered):
                 resp = self.client.post(
-                    reverse('django_registration_register'),
-                    data=self.valid_data
+                    reverse("django_registration_register"), data=self.valid_data
                 )
 
             self.assertEqual(302, resp.status_code)
 
             new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
 
-            self.assertTrue(
-                new_user.check_password(
-                    self.valid_data['password1']
-                )
-            )
-            self.assertEqual(new_user.email, self.valid_data['email'])
+            self.assertTrue(new_user.check_password(self.valid_data["password1"]))
+            self.assertEqual(new_user.email, self.valid_data["email"])

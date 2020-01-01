@@ -19,7 +19,7 @@ from django_registration.views import ActivationView as BaseActivationView
 from django_registration.views import RegistrationView as BaseRegistrationView
 
 
-REGISTRATION_SALT = getattr(settings, 'REGISTRATION_SALT', 'registration')
+REGISTRATION_SALT = getattr(settings, "REGISTRATION_SALT", "registration")
 
 
 class RegistrationView(BaseRegistrationView):
@@ -32,16 +32,15 @@ class RegistrationView(BaseRegistrationView):
     TimestampSigner, with HMAC verification on activation.
 
     """
-    email_body_template = 'django_registration/activation_email_body.txt'
-    email_subject_template = 'django_registration/activation_email_subject.txt'
-    success_url = reverse_lazy('django_registration_complete')
+
+    email_body_template = "django_registration/activation_email_body.txt"
+    email_subject_template = "django_registration/activation_email_subject.txt"
+    success_url = reverse_lazy("django_registration_complete")
 
     def register(self, form):
         new_user = self.create_inactive_user(form)
         signals.user_registered.send(
-            sender=self.__class__,
-            user=new_user,
-            request=self.request
+            sender=self.__class__, user=new_user, request=self.request
         )
         return new_user
 
@@ -64,22 +63,19 @@ class RegistrationView(BaseRegistrationView):
         Generate the activation key which will be emailed to the user.
 
         """
-        return signing.dumps(
-            obj=user.get_username(),
-            salt=REGISTRATION_SALT
-        )
+        return signing.dumps(obj=user.get_username(), salt=REGISTRATION_SALT)
 
     def get_email_context(self, activation_key):
         """
         Build the template context used for the activation email.
 
         """
-        scheme = 'https' if self.request.is_secure() else 'http'
+        scheme = "https" if self.request.is_secure() else "http"
         return {
-            'scheme': scheme,
-            'activation_key': activation_key,
-            'expiration_days': settings.ACCOUNT_ACTIVATION_DAYS,
-            'site': get_current_site(self.request)
+            "scheme": scheme,
+            "activation_key": activation_key,
+            "expiration_days": settings.ACCOUNT_ACTIVATION_DAYS,
+            "site": get_current_site(self.request),
         }
 
     def send_activation_email(self, user):
@@ -90,19 +86,19 @@ class RegistrationView(BaseRegistrationView):
         """
         activation_key = self.get_activation_key(user)
         context = self.get_email_context(activation_key)
-        context['user'] = user
+        context["user"] = user
         subject = render_to_string(
             template_name=self.email_subject_template,
             context=context,
-            request=self.request
+            request=self.request,
         )
         # Force subject to a single line to avoid header-injection
         # issues.
-        subject = ''.join(subject.splitlines())
+        subject = "".join(subject.splitlines())
         message = render_to_string(
             template_name=self.email_body_template,
             context=context,
-            request=self.request
+            request=self.request,
         )
         user.email_user(subject, message, settings.DEFAULT_FROM_EMAIL)
 
@@ -114,20 +110,17 @@ class ActivationView(BaseActivationView):
     couldn't be activated.
 
     """
+
     ALREADY_ACTIVATED_MESSAGE = _(
-        u'The account you tried to activate has already been activated.'
+        u"The account you tried to activate has already been activated."
     )
-    BAD_USERNAME_MESSAGE = _(
-        u'The account you attempted to activate is invalid.'
-    )
-    EXPIRED_MESSAGE = _(u'This account has expired.')
-    INVALID_KEY_MESSAGE = _(
-        u'The activation key you provided is invalid.'
-    )
-    success_url = reverse_lazy('django_registration_activation_complete')
+    BAD_USERNAME_MESSAGE = _(u"The account you attempted to activate is invalid.")
+    EXPIRED_MESSAGE = _(u"This account has expired.")
+    INVALID_KEY_MESSAGE = _(u"The activation key you provided is invalid.")
+    success_url = reverse_lazy("django_registration_activation_complete")
 
     def activate(self, *args, **kwargs):
-        username = self.validate_key(kwargs.get('activation_key'))
+        username = self.validate_key(kwargs.get("activation_key"))
         user = self.get_user(username)
         user.is_active = True
         user.save()
@@ -144,19 +137,16 @@ class ActivationView(BaseActivationView):
             username = signing.loads(
                 activation_key,
                 salt=REGISTRATION_SALT,
-                max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400
+                max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400,
             )
             return username
         except signing.SignatureExpired:
-            raise ActivationError(
-                self.EXPIRED_MESSAGE,
-                code='expired'
-            )
+            raise ActivationError(self.EXPIRED_MESSAGE, code="expired")
         except signing.BadSignature:
             raise ActivationError(
                 self.INVALID_KEY_MESSAGE,
-                code='invalid_key',
-                params={'activation_key': activation_key}
+                code="invalid_key",
+                params={"activation_key": activation_key},
             )
 
     def get_user(self, username):
@@ -168,17 +158,11 @@ class ActivationView(BaseActivationView):
         """
         User = get_user_model()
         try:
-            user = User.objects.get(**{
-                User.USERNAME_FIELD: username,
-            })
+            user = User.objects.get(**{User.USERNAME_FIELD: username})
             if user.is_active:
                 raise ActivationError(
-                    self.ALREADY_ACTIVATED_MESSAGE,
-                    code='already_activated'
+                    self.ALREADY_ACTIVATED_MESSAGE, code="already_activated"
                 )
             return user
         except User.DoesNotExist:
-            raise ActivationError(
-                self.BAD_USERNAME_MESSAGE,
-                code='bad_username'
-            )
+            raise ActivationError(self.BAD_USERNAME_MESSAGE, code="bad_username")

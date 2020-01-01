@@ -11,17 +11,23 @@ from . import views
 
 
 urlpatterns = [
-    url(r'^register/$',
+    url(
+        r"^register/$",
         views.RegistrationView.as_view(),
-        name='django_registration_register'),
-    url(r'^register/closed/$',
+        name="django_registration_register",
+    ),
+    url(
+        r"^register/closed/$",
         TemplateView.as_view(
-            template_name='django_registration/registration_closed.html'
+            template_name="django_registration/registration_closed.html"
         ),
-        name='django_registration_disallowed'),
-    url(r'^register/complete/$',
+        name="django_registration_disallowed",
+    ),
+    url(
+        r"^register/complete/$",
         TemplateView.as_view(
-            template_name='django_registration/registration_complete.html'
+            template_name="django_registration/registration_complete.html"
         ),
-        name='django_registration_complete'),
+        name="django_registration_complete",
+    ),
 ]
