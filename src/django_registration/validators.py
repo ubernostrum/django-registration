@@ -11,12 +11,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import EmailValidator, RegexValidator
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import ugettext_lazy as _
-
-
-try:
-    from django.utils import six
-except ImportError:
-    import six
+import six
 
 
 CONFUSABLE = _(u"This name cannot be registered. " "Please choose a different name.")
