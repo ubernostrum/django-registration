@@ -206,3 +206,18 @@ Other validators
       check against.
    :raises django.core.exceptions.ValidationError: if the value is not
       unique.
+
+.. class:: HTML5EmailValidator
+
+   A callable validator class (see `Django's validators documentation
+   <https://docs.djangoproject.com/en/stable/ref/validators/>`_) which
+   enforces the `HTML5 email address format
+   <https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)>`_. The
+   format used by HTML5's `input type="email"` is deliberately more
+   restrictive than what is permitted by the latest email RFCs;
+   specifically, HTML5's validation rule disallows a number of rare
+   and problematic features -- such as embedded comments and
+   quoted-string inclusion of otherwise-illegal characters -- which
+   are technically legal to have in an email address but which now
+   mostly serve to confuse or complicate parsers, rather than to
+   provide actual utility.

@@ -260,6 +260,7 @@ class CaseInsensitiveUnique(object):
         )
 
 
+@deconstructible
 class HTML5EmailValidator(RegexValidator):
     """
     Validator which applies HTML5's email address rules.

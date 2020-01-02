@@ -16,6 +16,16 @@ Within the 3.x release series, there have been several minor changes
 and improvements, documented here along with the version in which they
 occurred.
 
+django-registration 3.1
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* A new validator,
+  :class:`~django_registration.validators.HTML5EmailValidator`, is
+  included and is applied by default to the email field of
+  :class:`~django_registration.forms.RegistrationForm`. The HTML5
+  email address grammar is more restrictive than the RFC grammar, but
+  primarily in disallowing rare and problematic features.
+
 django-registration 3.0.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 

@@ -51,6 +51,22 @@ workflows in mind, but may also be useful in other situations.
       :class:`~django_registration.validators.ReservedNameValidator`
       for notes on why it exists and how to customize its behavior.
 
+   .. note:: **Validation of email addresses**
+
+      django-registration applies an additional validator --
+      :class:`~django_registration.validators.HTML5EmailValidator` --
+      to the email address. This uses `the HTML5 email-validation rule
+      <https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)>`_
+      (as implemented on HTML's `input type="email"`), which is more
+      restrictive than the email RFCs.
+
+      The purpose of this validator is twofold: to match the behavior
+      of HTML5, and to simplify django-registration's other
+      validators. The full RFC grammar for email addresses is
+      enormously complex despite most of its features rarely if ever
+      being used legitimately, so disallowing those features allows
+      other validators to interact with a much simpler format,
+      ensuring performance, reliability and safety.
 
 .. class:: RegistrationFormCaseInsensitive
 
