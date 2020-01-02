@@ -27,12 +27,12 @@ own URL configuration. For example:
 
 .. code-block:: python
 
-   from django.conf.urls import include, url
+   from django.urls import include, path
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
-       url(r'^accounts/', include('django.contrib.auth.urls')),
+       path('accounts/', include('django_registration.backends.one_step.urls')),
+       path('accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
@@ -56,11 +56,11 @@ can also do this in a URLconf. For example:
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/register/',
+       path('accounts/register/',
            RegistrationView.as_view(success_url='/profile/'),
 	   name='django_registration_register'),
-       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
-       url(r'^accounts/', include('django.contrib.auth.urls')),
+       path('accounts/', include('django_registration.backends.one_step.urls')),
+       path('accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
