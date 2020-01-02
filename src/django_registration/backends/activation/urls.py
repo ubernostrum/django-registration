@@ -4,41 +4,39 @@ HMAC activation workflow.
 
 """
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from . import views
 
 
 urlpatterns = [
-    url(
-        r"^activate/complete/$",
+    path(
+        "activate/complete/",
         TemplateView.as_view(
             template_name="django_registration/activation_complete.html"
         ),
         name="django_registration_activation_complete",
     ),
-    # The activation key can make use of any character from the
-    # URL-safe base64 alphabet, plus the colon as a separator.
-    url(
-        r"^activate/(?P<activation_key>[-:\w]+)/$",
+    path(
+        "activate/<str:activation_key>/",
         views.ActivationView.as_view(),
         name="django_registration_activate",
     ),
-    url(
-        r"^register/$",
+    path(
+        "register/",
         views.RegistrationView.as_view(),
         name="django_registration_register",
     ),
-    url(
-        r"^register/complete/$",
+    path(
+        "register/complete/",
         TemplateView.as_view(
             template_name="django_registration/registration_complete.html"
         ),
         name="django_registration_complete",
     ),
-    url(
-        r"^register/closed/$",
+    path(
+        "register/closed/",
         TemplateView.as_view(
             template_name="django_registration/registration_closed.html"
         ),

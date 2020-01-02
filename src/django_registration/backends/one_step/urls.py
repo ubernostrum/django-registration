@@ -4,27 +4,27 @@ workflow.
 
 """
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from . import views
 
 
 urlpatterns = [
-    url(
-        r"^register/$",
+    path(
+        "register/",
         views.RegistrationView.as_view(),
         name="django_registration_register",
     ),
-    url(
-        r"^register/closed/$",
+    path(
+        "register/closed/",
         TemplateView.as_view(
             template_name="django_registration/registration_closed.html"
         ),
         name="django_registration_disallowed",
     ),
-    url(
-        r"^register/complete/$",
+    path(
+        "register/complete/",
         TemplateView.as_view(
             template_name="django_registration/registration_complete.html"
         ),

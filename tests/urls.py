@@ -6,7 +6,7 @@ development environment.
 
 """
 
-from django.conf.urls import url
+from django.urls import path
 from django.views.generic.base import TemplateView
 
 from django_registration.backends.activation.views import RegistrationView
@@ -15,39 +15,35 @@ from .views import ActivateWithComplexRedirect
 
 
 urlpatterns = [
-    url(
-        r"^$",
+    path(
+        "",
         TemplateView.as_view(
             template_name="django_registration/activation_complete.html"
         ),
         name="simple_activation_redirect",
     ),
-    url(
-        r"^activate/complete/$",
+    path(
+        "activate/complete/",
         TemplateView.as_view(
             template_name="django_registration/activation_complete.html"
         ),
         name="django_registration_activation_complete",
     ),
-    # The activation key can make use of any character from the
-    # URL-safe base64 alphabet, plus the colon as a separator.
-    url(
-        r"^activate/(?P<activation_key>[-:\w]+)/$",
+    path(
+        "activate/<str:activation_key>/",
         ActivateWithComplexRedirect.as_view(),
         name="django_registration_activate",
     ),
-    url(
-        r"^register/$", RegistrationView.as_view(), name="django_registration_register"
-    ),
-    url(
-        r"^register/complete/$",
+    path("register/", RegistrationView.as_view(), name="django_registration_register"),
+    path(
+        "register/complete/",
         TemplateView.as_view(
             template_name="django_registration/registration_complete.html"
         ),
         name="django_registration_complete",
     ),
-    url(
-        r"^register/closed/$",
+    path(
+        "register/closed/",
         TemplateView.as_view(
             template_name="django_registration/registration_closed.html"
         ),

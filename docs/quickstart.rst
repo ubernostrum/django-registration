@@ -82,12 +82,12 @@ following to your project's root URLconf:
 
 .. code-block:: python
 
-   from django.conf.urls import include, url
+   from django.urls import include, path
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.activation.urls')),
-       url(r'^accounts/', include('django.contrib.auth.urls')),
+       path('accounts/', include('django_registration.backends.activation.urls')),
+       path('accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
@@ -277,12 +277,12 @@ structure:
 
 .. code-block:: python
 
-   from django.conf.urls import include, url
+   from django.urls import include, path
 
    urlpatterns = [
        # Other URL patterns ...
-       url(r'^accounts/', include('django_registration.backends.one_step.urls')),
-       url(r'^accounts/', include('django.contrib.auth.urls')),
+       path('accounts/', include('django_registration.backends.one_step.urls')),
+       path('accounts/', include('django.contrib.auth.urls')),
        # More URL patterns ...
    ]
 
