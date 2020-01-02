@@ -18,8 +18,8 @@ Normal installation
 The preferred method of installing django-registration is via `pip`,
 the standard Python package-installation tool. If you don't have
 `pip`, instructions are available for `how to obtain and install it
-<https://pip.pypa.io/en/latest/installing.html>`_. If you're using a
-supported version of Python, though, `pip` should have come bundled
+<https://pip.pypa.io/en/latest/installing.html>`_, though if you're
+using a supported version of Python, `pip` should have come bundled
 with your installation of Python.
 
 Once you have `pip`, type::
