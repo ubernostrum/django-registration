@@ -3,6 +3,7 @@ a
 admin
 apps
 auth
+authenticator
 autoconfig
 backend
 backends
@@ -27,6 +28,7 @@ ico
 interoperability
 login
 logout
+lookup
 metaclass
 namespace
 namespacing
@@ -51,6 +53,7 @@ timestamp
 timestamped
 tuple
 txt
+unactivated
 username
 usernames
 Usernames
