@@ -16,7 +16,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from . import validators
 
-
 User = get_user_model()
 
 
@@ -35,6 +34,8 @@ class RegistrationForm(UserCreationForm):
     """
 
     class Meta(UserCreationForm.Meta):
+        model = get_user_model()
+        
         fields = [
             User.USERNAME_FIELD,
             User.get_email_field_name(),
