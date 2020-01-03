@@ -35,7 +35,6 @@ class RegistrationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        
         fields = [
             User.USERNAME_FIELD,
             User.get_email_field_name(),
