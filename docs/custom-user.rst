@@ -38,12 +38,27 @@ made by django-registration are:
   requires an email address in order to send account-activation
   instructions to the user.
 
-Django's :class:`~django.contrib.auth.forms.UserCreationForm` is a
-:class:`~django.forms.ModelForm` with its model hard-coded to
-:class:`django.contrib.auth.models.User`. As a result, you will always
-be required to supply a custom form class when using
-django-registration with a custom user model, if only to specify the
-correct model.
+.. important:: **Custom user models always require a custom form**
+
+   The base :class:`~django_registration.forms.RegistrationForm` class
+   inherits the model attribute of Django's
+   :class:`~django.contribb.auth.forms.UserCreationForm`. This means
+   it will crash, immediately and loudly, with an exception if you try
+   to use it when you've told Django to use a custom user model.
+
+   This is not a bug in django-registration. This is a deliberate
+   design choice: custom user models offer a huge amount of freedom,
+   but that level of freedom also means it's impossible to write a
+   single generic form class that will work with any custom user
+   model. So django-registration places the responsibility for
+   checking compatibility on *you*, the developer.
+
+   The sections below explain how to ensure compatibility with a
+   custom user model, and how you can set up the registration views to
+   use a form class bound to your custom user model. Again, you
+   **must** follow these steps when you have a custom user model, and
+   the fact that django-registration crashes with an error message
+   when you don't is intentional and not a bug.
 
 In the case where your user model is compatible with the default
 behavior of django-registration, (see below) you will be able to

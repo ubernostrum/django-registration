@@ -11,6 +11,19 @@ emails and other sources.
 General
 -------
 
+This doesn't work with custom user models! It crashes as soon as I try to use one!
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+django-registration can work perfectly well with a custom user model,
+but this does require you to do a bit more work. Please thoroughly
+read :ref:`the documentation for how to use custom user models
+<custom-user>` before filing a bug.
+
+Please also note that, as explained in that documentation, by default
+django-registration will crash if you try to use a custom user model
+without following the documentation. This is not a bug; it is done
+deliberately to ensure you read and follow the documentation.
+
 How can I support social-media and other auth schemes, like Facebook or GitHub?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
