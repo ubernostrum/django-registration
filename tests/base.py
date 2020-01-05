@@ -75,16 +75,20 @@ class RegistrationTestCase(TestCase):
 
     """
 
-    user_model = User
+    @property
+    def valid_data(self):
+        User = get_user_model()
+        return {
+            User.USERNAME_FIELD: "alice",
+            "email": "alice@example.com",
+            "password1": "swordfish",
+            "password2": "swordfish",
+        }
 
-    valid_data = {
-        User.USERNAME_FIELD: "alice",
-        "email": "alice@example.com",
-        "password1": "swordfish",
-        "password2": "swordfish",
-    }
-
-    user_lookup_kwargs = {User.USERNAME_FIELD: "alice"}
+    @property
+    def user_lookup_kwargs(self):
+        User = get_user_model()
+        return {User.USERNAME_FIELD: "alice"}
 
     @contextmanager
     def assertSignalSent(self, signal, required_kwargs=None):
@@ -150,7 +154,8 @@ class WorkflowTestCase(RegistrationTestCase):
 
         self.assertRedirects(resp, reverse("django_registration_complete"))
 
-        new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
+        user_model = get_user_model()
+        new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
         self.assertTrue(new_user.check_password(self.valid_data["password1"]))
         self.assertEqual(new_user.email, self.valid_data["email"])
@@ -200,7 +205,8 @@ class ActivationTestCase(WorkflowTestCase):
         with self.assertSignalSent(signals.user_registered):
             super(ActivationTestCase, self).test_registration()
 
-        new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
+        user_model = get_user_model()
+        new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
         # New user must not be active.
         self.assertFalse(new_user.is_active)
@@ -235,7 +241,8 @@ class ActivationTestCase(WorkflowTestCase):
 
             self.assertEqual(302, resp.status_code)
 
-            new_user = self.user_model.objects.get(**self.user_lookup_kwargs)
+            user_model = get_user_model()
+            new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
             self.assertTrue(new_user.check_password(self.valid_data["password1"]))
             self.assertEqual(new_user.email, self.valid_data["email"])

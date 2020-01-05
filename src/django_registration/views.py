@@ -2,8 +2,9 @@
 Base view classes for all registration workflows.
 
 """
-
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.encoding import force_text
@@ -13,6 +14,19 @@ from django.views.generic.edit import FormView
 from . import signals
 from .exceptions import ActivationError
 from .forms import RegistrationForm
+
+
+USER_MODEL_MISMATCH = """
+You are attempting to use the registration view {view} with the
+form class {form}, but the model used by that form ({form_model}) is not
+your Django installation's user model ({user_model}).
+
+Most often this occurs because you are using a custom user model, but
+forgot to specify a custom registration form class for it. Specifying
+a custom registration form class is required when using a custom user
+model. Please see django-registration's documentation on custom user
+models for more details.
+"""
 
 
 class RegistrationView(FormView):
@@ -35,6 +49,36 @@ class RegistrationView(FormView):
         if not self.registration_allowed():
             return HttpResponseRedirect(force_text(self.disallowed_url))
         return super(RegistrationView, self).dispatch(*args, **kwargs)
+
+    def get_form(self, form_class=None):
+        """
+        Returns an instance of the form to be used in this view.
+
+        This is an override of the base version of this method in
+        Django's FormMixin, to immediately and loudly break if the
+        model of this view's form class is not the user model Django
+        has been configured to use.
+
+        Most often this will be the case because Django has been
+        configured to use a custom user model, but the developer has
+        forgotten to also configure an appropriate custom registration
+        form to match it.
+
+        """
+        if form_class is None:
+            form_class = self.get_form_class()
+        form_model = form_class._meta.model
+        user_model = get_user_model()
+        if form_model._meta.label_lower != user_model._meta.label_lower:
+            raise ImproperlyConfigured(
+                USER_MODEL_MISMATCH.format(
+                    view=self.__class__,
+                    form=form_class,
+                    form_model=form_model,
+                    user_model=user_model,
+                )
+            )
+        return form_class(**self.get_form_kwargs())
 
     def get_success_url(self, user=None):
         """

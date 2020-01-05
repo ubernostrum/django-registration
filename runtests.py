@@ -23,6 +23,7 @@ SETTINGS_DICT = {
         "django.contrib.sessions",
         "django.contrib.sites",
         "django_registration",
+        "tests",
     ),
     # Test cases will override this liberally.
     "ROOT_URLCONF": "django_registration.backends.activation.urls",

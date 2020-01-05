@@ -7,6 +7,7 @@ import datetime
 import time
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.core import signing
 from django.http import HttpRequest
 from django.test import modify_settings, override_settings
@@ -34,12 +35,14 @@ class ActivationBackendViewTests(ActivationTestCase):
         Activation of an account functions properly.
 
         """
+        user_model = get_user_model()
+
         resp = self.client.post(
             reverse("django_registration_register"), data=self.valid_data
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data[self.user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
         )
 
         with self.assertSignalSent(signals.user_activated):
@@ -59,12 +62,14 @@ class ActivationBackendViewTests(ActivationTestCase):
         with a valid key) does nothing.
 
         """
+        user_model = get_user_model()
+
         resp = self.client.post(
             reverse("django_registration_register"), data=self.valid_data
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data[self.user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
         )
 
         with self.assertSignalSent(signals.user_activated):
@@ -104,11 +109,13 @@ class ActivationBackendViewTests(ActivationTestCase):
         An invalid activation key fails to activate.
 
         """
+        user_model = get_user_model()
+
         resp = self.client.post(
             reverse("django_registration_register"), data=self.valid_data
         )
 
-        activation_key = self.valid_data[self.user_model.USERNAME_FIELD]
+        activation_key = self.valid_data[user_model.USERNAME_FIELD]
         with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
                 reverse(
@@ -142,6 +149,8 @@ class ActivationBackendViewTests(ActivationTestCase):
         An expired account can't be activated.
 
         """
+        user_model = get_user_model()
+
         self.client.post(reverse("django_registration_register"), data=self.valid_data)
 
         # We need to create an activation key valid for the username,
@@ -155,7 +164,7 @@ class ActivationBackendViewTests(ActivationTestCase):
         # calculate it using a timedelta between the signup date and
         # the UNIX epoch, and patch time.time() temporarily to return
         # a date (ACCOUNT_ACTIVATION_DAYS + 1) days in the past.
-        user = self.user_model.objects.get(**self.user_lookup_kwargs)
+        user = user_model.objects.get(**self.user_lookup_kwargs)
         joined_timestamp = (
             user.date_joined - datetime.datetime.fromtimestamp(0)
         ).total_seconds()
@@ -167,8 +176,7 @@ class ActivationBackendViewTests(ActivationTestCase):
         try:
             time.time = lambda: expired_timestamp
             activation_key = signing.dumps(
-                obj=self.valid_data[self.user_model.USERNAME_FIELD],
-                salt=REGISTRATION_SALT,
+                obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT,
             )
         finally:
             time.time = _old_time
@@ -224,10 +232,12 @@ class ActivationBackendViewTests(ActivationTestCase):
         )
 
     def test_activation_signal(self):
+        user_model = get_user_model()
+
         self.client.post(reverse("django_registration_register"), data=self.valid_data)
 
         activation_key = signing.dumps(
-            obj=self.valid_data[self.user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
         )
 
         with self.assertSignalSent(
@@ -242,6 +252,17 @@ class ActivationBackendViewTests(ActivationTestCase):
             )
             self.assertEqual(
                 cm.received_kwargs["user"].get_username(),
-                self.valid_data[self.user_model.USERNAME_FIELD],
+                self.valid_data[user_model.USERNAME_FIELD],
             )
             self.assertTrue(isinstance(cm.received_kwargs["request"], HttpRequest))
+
+
+@override_settings(AUTH_USER_MODEL="tests.CustomUser")
+@override_settings(ROOT_URLCONF="tests.urls.custom_user_activation")
+class ActivationBackendCustomUserTests(ActivationBackendViewTests):
+    """
+    Runs the activation workflow's test suite, but with a custom user model.
+
+    """
+
+    pass

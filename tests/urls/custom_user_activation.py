@@ -1,27 +1,26 @@
 """
-URLs used in the unit tests for django-registration.
+URLs used to test the activation workflow with a custom user
+model.
 
-You should not attempt to use these URLs in any sort of real or
-development environment.
+You should not use these in any sort of real environment.
 
 """
 
 from django.urls import path
 from django.views.generic.base import TemplateView
 
-from django_registration.backends.activation.views import RegistrationView
+from django_registration.backends.activation import views
+from django_registration.forms import RegistrationForm
 
-from .views import ActivateWithComplexRedirect
+from ..models import CustomUser
+
+
+class CustomUserRegistrationForm(RegistrationForm):
+    class Meta(RegistrationForm.Meta):
+        model = CustomUser
 
 
 urlpatterns = [
-    path(
-        "",
-        TemplateView.as_view(
-            template_name="django_registration/activation_complete.html"
-        ),
-        name="simple_activation_redirect",
-    ),
     path(
         "activate/complete/",
         TemplateView.as_view(
@@ -31,10 +30,14 @@ urlpatterns = [
     ),
     path(
         "activate/<str:activation_key>/",
-        ActivateWithComplexRedirect.as_view(),
+        views.ActivationView.as_view(),
         name="django_registration_activate",
     ),
-    path("register/", RegistrationView.as_view(), name="django_registration_register"),
+    path(
+        "register/",
+        views.RegistrationView.as_view(form_class=CustomUserRegistrationForm),
+        name="django_registration_register",
+    ),
     path(
         "register/complete/",
         TemplateView.as_view(
