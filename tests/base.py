@@ -14,9 +14,6 @@ from django_registration import signals
 from django_registration.forms import RegistrationForm
 
 
-User = get_user_model()
-
-
 # django-registration needs to test that signals are sent at
 # registration and activation. Django -- as of 2.1 -- does not have a
 # test assertion built in to test whether a signal was or was not
@@ -176,6 +173,7 @@ class WorkflowTestCase(RegistrationTestCase):
         self.assertTrue(resp.context["form"].has_error("password2"))
 
     def test_registration_signal(self):
+        User = get_user_model()
         with self.assertSignalSent(signals.user_registered) as cm:
             self.client.post(
                 reverse("django_registration_register"), data=self.valid_data
