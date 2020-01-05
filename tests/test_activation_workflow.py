@@ -6,6 +6,7 @@ Tests for the signed-token activation registration workflow.
 import datetime
 import time
 
+from django.apps import apps
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import signing
@@ -265,4 +266,12 @@ class ActivationBackendCustomUserTests(ActivationBackendViewTests):
 
     """
 
-    pass
+    def test_custom_user_configured(self):
+        """
+        Asserts that the user model in use is the custom user model
+        defined in this test suite.
+
+        """
+        user_model = get_user_model()
+        custom_user = apps.get_model("tests", "CustomUser")
+        assert user_model is custom_user
