@@ -87,7 +87,7 @@ activation workflow):
 
 .. code-block:: python
 
-    from django.conf.urls import include, url
+    from django.urls import include, path
 
     from django_registration.backends.activation.views import RegistrationView
     
@@ -96,13 +96,13 @@ activation workflow):
 
     urlpatterns = [
         # ... other URL patterns here
-        url(r'^accounts/register/$',
+        path('accounts/register/',
             RegistrationView.as_view(
                 form_class=MyCustomUserForm
             ),
             name='django_registration_register',
         ),
-        url(r'^accounts/',
+        path('accounts/',
 	    include('django_registration.backends.activation.urls')
 	),
 	# ... more URL patterns
