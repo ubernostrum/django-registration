@@ -17,8 +17,9 @@ from .forms import RegistrationForm
 
 
 USER_MODEL_MISMATCH = """
-You are attempting to use the registration view {view} with the
-form class {form}, but the model used by that form ({form_model}) is not
+You are attempting to use the registration view {view}
+with the form class {form},
+but the model used by that form ({form_model}) is not
 your Django installation's user model ({user_model}).
 
 Most often this occurs because you are using a custom user model, but
@@ -69,7 +70,7 @@ class RegistrationView(FormView):
             form_class = self.get_form_class()
         form_model = form_class._meta.model
         user_model = get_user_model()
-        if form_model._meta.label_lower != user_model._meta.label_lower:
+        if form_model._meta.label != user_model._meta.label:
             raise ImproperlyConfigured(
                 USER_MODEL_MISMATCH.format(
                     view=self.__class__,

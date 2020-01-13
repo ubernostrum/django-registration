@@ -9,8 +9,10 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import override_settings
 from django.urls import reverse
 
-from django_registration.backends.activation.views import REGISTRATION_SALT
-from django_registration.views import RegistrationView
+from django_registration import forms
+from django_registration import views as base_views
+from django_registration.backends.activation import views as activation_views
+from django_registration.backends.one_step import views as one_step_views
 
 from .base import RegistrationTestCase
 
@@ -36,7 +38,8 @@ class ActivationViewTests(RegistrationTestCase):
         )
 
         activation_key = signing.dumps(
-            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+            obj=self.valid_data[user_model.USERNAME_FIELD],
+            salt=activation_views.REGISTRATION_SALT,
         )
 
         resp = self.client.get(
@@ -63,6 +66,23 @@ class CustomUserTests(RegistrationTestCase):
         ImproperlyConfigured.
 
         """
-        view = RegistrationView()
-        with self.assertRaises(ImproperlyConfigured):
-            view.get_form()
+        for view_class in (
+            base_views.RegistrationView,
+            activation_views.RegistrationView,
+            one_step_views.RegistrationView,
+        ):
+            for form_class in (
+                forms.RegistrationForm,
+                forms.RegistrationFormCaseInsensitive,
+                forms.RegistrationFormTermsOfService,
+                forms.RegistrationFormUniqueEmail,
+            ):
+                view = view_class()
+                message = base_views.USER_MODEL_MISMATCH.format(
+                    view=view.__class__,
+                    form=forms.RegistrationForm,
+                    form_model=form_class._meta.model,
+                    user_model=get_user_model(),
+                )
+                with self.assertRaisesMessage(ImproperlyConfigured, message):
+                    view.get_form()
