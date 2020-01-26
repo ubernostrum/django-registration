@@ -19,12 +19,30 @@ occurred.
 django-registration 3.1
 ~~~~~~~~~~~~~~~~~~~~~~~
 
+* When an attempt was made to use django-registration with a custom
+  user model, but *without* explicitly subclassing
+  :class:`~django_registration.forms.RegistrationForm` to point to
+  that user model, previously the result would be a cryptic exception
+  and error message raised from within Django, complaining about
+  trying to work with the swapped-out user
+  model. :class:`~django_registration.views.RegistrationView` now
+  explicitly raises
+  :exc:`~django.core.exceptions.ImproperlyConfigured` with an
+  informative error message to make it clear what has happened, and
+  directs the developer to the documentation for using custom user
+  models in django-registration.
+
 * A new validator,
   :class:`~django_registration.validators.HTML5EmailValidator`, is
   included and is applied by default to the email field of
   :class:`~django_registration.forms.RegistrationForm`. The HTML5
   email address grammar is more restrictive than the RFC grammar, but
   primarily in disallowing rare and problematic features.
+
+* Support for Python 2 was dropped, as Python 2 is EOL as of
+  2020-01-01. As a result, support for Django 1.11 (EOL April 2020)
+  was also dropped; the minimum supported Django version is now 2.2.
+
 
 django-registration 3.0.1
 ~~~~~~~~~~~~~~~~~~~~~~~~~
