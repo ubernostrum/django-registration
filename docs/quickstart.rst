@@ -311,7 +311,6 @@ reset, etc.).
 Finally, you will need to create following templates:
 
 * `django_registration/registration_form.html`
-* `django_registration/registration_complete.html`
 * `django_registration/registration_disallowed.html`
 
 See :ref:`the documentation above <default-form-template>` for details
