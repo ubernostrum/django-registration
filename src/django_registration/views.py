@@ -49,7 +49,7 @@ class RegistrationView(FormView):
         """
         if not self.registration_allowed():
             return HttpResponseRedirect(force_text(self.disallowed_url))
-        return super(RegistrationView, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
     def get_form(self, form_class=None):
         """
@@ -90,7 +90,7 @@ class RegistrationView(FormView):
         # support passing the user account as an argument; otherwise,
         # the base FormMixin implementation, which accepts no
         # arguments, could be called and end up raising a TypeError.
-        return super(RegistrationView, self).get_success_url()
+        return super().get_success_url()
 
     def form_valid(self, form):
         return HttpResponseRedirect(self.get_success_url(self.register(form)))

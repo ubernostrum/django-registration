@@ -46,7 +46,7 @@ class RegistrationForm(UserCreationForm):
     required_css_class = "required"
 
     def __init__(self, *args, **kwargs):
-        super(RegistrationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         email_field = User.get_email_field_name()
         if hasattr(self, "reserved_names"):
             reserved_names = self.reserved_names
@@ -71,7 +71,7 @@ class RegistrationFormCaseInsensitive(RegistrationForm):
     """
 
     def __init__(self, *args, **kwargs):
-        super(RegistrationFormCaseInsensitive, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields[User.USERNAME_FIELD].validators.append(
             validators.CaseInsensitiveUnique(
                 User, User.USERNAME_FIELD, validators.DUPLICATE_USERNAME
@@ -101,7 +101,7 @@ class RegistrationFormUniqueEmail(RegistrationForm):
     """
 
     def __init__(self, *args, **kwargs):
-        super(RegistrationFormUniqueEmail, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         email_field = User.get_email_field_name()
         self.fields[email_field].validators.append(
             validators.CaseInsensitiveUnique(

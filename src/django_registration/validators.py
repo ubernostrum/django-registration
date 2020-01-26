@@ -206,7 +206,7 @@ DEFAULT_RESERVED_NAMES = (
 
 
 @deconstructible
-class ReservedNameValidator(object):
+class ReservedNameValidator:
     """
     Validator which disallows many reserved names as form field
     values.
@@ -229,7 +229,7 @@ class ReservedNameValidator(object):
 
 
 @deconstructible
-class CaseInsensitiveUnique(object):
+class CaseInsensitiveUnique:
     """
     Validator which performs a case-insensitive uniqueness check.
 

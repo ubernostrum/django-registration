@@ -22,7 +22,7 @@ from django_registration.forms import RegistrationForm
 # Django's base test case class, and will be removed once it's been
 # integrated into Django and django-registration is only supporting
 # versions of Django which include it.
-class _AssertSignalSentContext(object):
+class _AssertSignalSentContext:
     def __init__(self, test_case, signal, required_kwargs=None):
         self.test_case = test_case
         self.signal = signal
@@ -201,7 +201,7 @@ class ActivationTestCase(WorkflowTestCase):
 
         """
         with self.assertSignalSent(signals.user_registered):
-            super(ActivationTestCase, self).test_registration()
+            super().test_registration()
 
         user_model = get_user_model()
         new_user = user_model.objects.get(**self.user_lookup_kwargs)
@@ -219,7 +219,7 @@ class ActivationTestCase(WorkflowTestCase):
 
         """
         with self.assertSignalNotSent(signals.user_registered):
-            super(ActivationTestCase, self).test_registration_failure()
+            super().test_registration_failure()
 
         # Activation email was not sent.
         self.assertEqual(0, len(mail.outbox))
