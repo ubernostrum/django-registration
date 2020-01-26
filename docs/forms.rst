@@ -36,37 +36,44 @@ workflows in mind, but may also be useful in other situations.
       its base :class:`~django.contrib.auth.models.AbstractBaseUser`
       implementation, allowing any word character along with the
       following set of additional characters: `.`, `@`, `+`, and
-      `-`. However, in Django 1.11 on Python 2 this regex uses the
-      :data:`re.ASCII` flag, while on Python 3 it uses the
-      :data:`re.UNICODE` flag. This means that if you're using Django
-      1.11, the set of accepted characters will vary depending on the
-      Python version you use.
+      `-`.
 
       Because it's a subclass of Django's
       :class:`~django.contrib.auth.forms.UserCreationForm`,
       :class:`RegistrationForm` will inherit the base validation
-      defined by Django. It also applies one custom validator:
-      :class:`~django_registration.validators.ReservedNameValidator`. See
-      the documentation for
-      :class:`~django_registration.validators.ReservedNameValidator`
-      for notes on why it exists and how to customize its behavior.
+      defined by Django. It also applies some custom validators to the
+      username:
+      :class:`~django_registration.validators.ReservedNameValidator`,
+      and
+      :func:`~django_registration.validators.validate_confusables`.
 
    .. note:: **Validation of email addresses**
 
-      django-registration applies an additional validator --
-      :class:`~django_registration.validators.HTML5EmailValidator` --
-      to the email address. This uses `the HTML5 email-validation rule
+      django-registration applies two additional validators --
+      :class:`~django_registration.validators.HTML5EmailValidator` and
+      :func:`~django_registration.validators.validate_confusables_email`
+      -- to the email address.
+
+      The HTML5 validator uses `the HTML5 email-validation rule
       <https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)>`_
       (as implemented on HTML's `input type="email"`), which is more
-      restrictive than the email RFCs.
+      restrictive than the email RFCs. The purpose of this validator
+      is twofold: to match the behavior of HTML5, and to simplify
+      django-registration's other validators. The full RFC grammar for
+      email addresses is enormously complex despite most of its
+      features rarely if ever being used legitimately, so disallowing
+      those features allows other validators to interact with a much
+      simpler format, ensuring performance, reliability and safety.
 
-      The purpose of this validator is twofold: to match the behavior
-      of HTML5, and to simplify django-registration's other
-      validators. The full RFC grammar for email addresses is
-      enormously complex despite most of its features rarely if ever
-      being used legitimately, so disallowing those features allows
-      other validators to interact with a much simpler format,
-      ensuring performance, reliability and safety.
+   .. note:: **Custom user models**
+
+      If you are using `a custom user model
+      <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
+      you **must** subclass this form and tell it to use your custom
+      user model instead of Django's default user model. If you do
+      not, django-registration will deliberately crash with an error
+      message reminding you to do this. See :ref:`the custom user
+      compatibility guide <custom-user>` for details.
 
 .. class:: RegistrationFormCaseInsensitive
 
@@ -77,19 +84,16 @@ workflows in mind, but may also be useful in other situations.
 
    .. note:: **Unicode case handling**
 
-     On all versions of Python, this form will normalize the username
-     value to form NFKC, matching Django's default approach to Unicode
-     normalization. On Python 3, it will also case-fold the value
-     (Python 3 provides a native :meth:`~str.casefold()` method on
-     strings).
+     This form will normalize the username value to form NFKC,
+     matching Django's default approach to Unicode normalization. it
+     will then case fold the value, and use a case-insensitive
+     (`iexact`) lookup to determine if a user with the same username
+     already exists; the results of this query may depend on the
+     quality of your database's Unicode implementation, and on
+     configuration details. The results may also be surprising to
+     developers who are primarily used to English/ASCII text, as
+     Unicode's case rules can be quite complex.
 
-     The validator will then use a case-insensitive (`iexact`)
-     lookup to determine if a user with the same username already
-     exists; the results of this query may depend on the quality of
-     your database's Unicode implementation, and on configuration
-     details. The results may also be surprising to developers who are
-     primarily used to English/ASCII text, as Unicode's case rules can
-     be quite complex.
 
 .. class:: RegistrationFormTermsOfService
 
