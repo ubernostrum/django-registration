@@ -17,8 +17,14 @@ to use. There two workflows built in to django-registration:
 * :ref:`The one-step workflow <one-step-workflow>`, in which a user
   signs up and their account is immediately active and logged in.
 
-The guide below covers use of these two workflows. Regardless of which
-one you choose to use, you should add `"django_registration"` to your
+If you want a signup process other than what's provided by these
+built-in workflows, please see the documentation for the base
+:ref:`view <views>` and :ref:`form <forms>` classes, which you can
+subclass to implement your own preferred user registration flow and
+rules. The guide below covers use of the built-in workflows.
+
+Regardless of which registration workflow you choose to use, you
+should add `"django_registration"` to your
 :data:`~django.conf.settings.INSTALLED_APPS` setting.
 
 .. important:: **Django's authentication system must be installed**
