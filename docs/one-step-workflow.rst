@@ -79,7 +79,10 @@ and specifying the custom subclass in your URL patterns.
 Templates
 ---------
 
-The one-step workflow uses only one custom template:
-`django_registration/registration_form.html`. See :ref:`the quick
-start guide <default-form-template>` for details of this template's
-context.
+The one-step workflow uses two templates:
+
+* `django_registration/registration_form.html`.
+* `django_registration/registration_disallowed.html`
+
+See :ref:`the quick start guide <default-form-template>` for details
+of these templates.
