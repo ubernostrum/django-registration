@@ -31,29 +31,8 @@ place the following in your root URLconf:
        # More URL patterns ...
    ]
 
-That also sets up the views from `django.contrib.auth` (login,
-logout, password reset, etc.), though if you want those views at a
-different location, you can use :func:`~django.urls.include` to
-include the URLconf `django.contrib.auth.urls` to place only the
-`django.contrib.auth` views at a specific location in your URL
-hierarchy.
-
-.. note:: **URL patterns for activation**
-
-   Although the actual value used in the activation key is the new
-   user account's username, the URL pattern for
-   :class:`~views.ActivationView` does not need to match all possible legal
-   characters in a username. The activation key that will be sent to
-   the user (and thus matched in the URL) is produced by
-   :func:`django.core.signing.dumps()`, which base64-encodes its
-   output. Thus, the only characters this pattern needs to match are
-   those from `the URL-safe base64 alphabet
-   <http://tools.ietf.org/html/rfc4648#section-5>`_, plus the colon
-   ("`:`") which is used as a separator.
-
-   The default URL pattern for the activation view in
-   `django_registration.backends.activation.urls` handles this for
-   you.
+That also sets up the views from `django.contrib.auth` (login, logout,
+password reset, etc.).
 
 This workflow makes use of up to three settings (click for details on
 each):
@@ -202,15 +181,32 @@ start guide <default-templates>`.
       :raises django_registration.exceptions.ActivationError: if the
          activation key has an invalid signature or is expired.
 
+   .. note:: **URL patterns for activation**
+
+      Although the actual value used in the activation key is the new
+      user account's username, the URL pattern for
+      :class:`~views.ActivationView` does not need to match all
+      possible legal characters in a username. The activation key that
+      will be sent to the user (and thus matched in the URL) is
+      produced by :func:`django.core.signing.dumps()`, which
+      base64-encodes its output. Thus, the only characters this
+      pattern needs to match are those from `the URL-safe base64
+      alphabet <http://tools.ietf.org/html/rfc4648#section-5>`_, plus
+      the colon ("`:`") which is used as a separator.
+
+      The default URL pattern for the activation view in
+      `django_registration.backends.activation.urls` handles this for
+      you.
+
 
 How it works
 ------------
 
 When a user signs up, the activation workflow creates a new user
 instance to represent the account, and sets the `is_active` field to
-`False`. It then sends an email to the address provided during
+:data:`False`. It then sends an email to the address provided during
 signup, containing a link to activate the account. When the user
-clicks the link, the activation view sets `is_active` to `True`,
+clicks the link, the activation view sets `is_active` to :data:`True`,
 after which the user can log in.
 
 The activation key is the username of the new account, signed using
