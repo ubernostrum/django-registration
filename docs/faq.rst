@@ -31,10 +31,10 @@ By using `django-allauth
 <https://pypi.python.org/pypi/django-allauth>`_. No single application
 can or should provide a universal API for every authentication system
 ever developed; django-registration sticks to making it easy to
-implement typical signup workflows using Django's own user model and
-auth system (with some ability to use custom user models), while apps
-like `django-allauth` handle integration with third-party
-authentication services far more effectively.
+implement typical signup workflows using Django's default model-based
+authentication system, while apps like `django-allauth` handle
+integration with third-party authentication services far more
+effectively.
 
 What license is django-registration under?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
