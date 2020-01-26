@@ -102,10 +102,10 @@ enabled.
 Restrictions on user names and email addresses: Unicode
 -------------------------------------------------------
 
-By default, django-registration permits the use of Unicode in
-usernames and email addresses. However, to prevent some types of
-Unicode-related attacks, django-registration will not permit certain
-specific uses of Unicode characters.
+By default, django-registration permits the use of a wide range of
+Unicode in usernames and email addresses. However, to prevent some
+types of Unicode-related attacks, django-registration will not permit
+certain specific uses of Unicode characters.
 
 For example, while the username `'admin'` cannot normally be
 registered (see above), a user might still attempt to register a name
