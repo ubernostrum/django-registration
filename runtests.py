@@ -68,8 +68,7 @@ def run_tests():
     # and other bits:
     import django
 
-    if hasattr(django, "setup"):
-        django.setup()
+    django.setup()
 
     # Now we instantiate a test runner...
     from django.test.utils import get_runner
