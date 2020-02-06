@@ -11,7 +11,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core import signing
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from django_registration import signals
 from django_registration.exceptions import ActivationError

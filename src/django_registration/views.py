@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
@@ -48,7 +48,7 @@ class RegistrationView(FormView):
 
         """
         if not self.registration_allowed():
-            return HttpResponseRedirect(force_text(self.disallowed_url))
+            return HttpResponseRedirect(force_str(self.disallowed_url))
         return super().dispatch(*args, **kwargs)
 
     def get_form(self, form_class=None):
@@ -126,7 +126,7 @@ class ActivationView(TemplateView):
         Return the URL to redirect to after successful redirection.
 
         """
-        return force_text(self.success_url)
+        return force_str(self.success_url)
 
     def get(self, *args, **kwargs):
         """
@@ -148,9 +148,7 @@ class ActivationView(TemplateView):
             signals.user_activated.send(
                 sender=self.__class__, user=activated_user, request=self.request
             )
-            return HttpResponseRedirect(
-                force_text(self.get_success_url(activated_user))
-            )
+            return HttpResponseRedirect(force_str(self.get_success_url(activated_user)))
         context_data = self.get_context_data()
         context_data.update(extra_context)
         return self.render_to_response(context_data)
