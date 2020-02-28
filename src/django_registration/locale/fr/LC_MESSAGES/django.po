@@ -89,3 +89,30 @@ msgstr "profil d'inscription"
 #: .\models.py:172
 msgid "registration profiles"
 msgstr "profils d'inscription"
+
+#: backends/activation/views.py:117
+msgid "The account you attempted to activate is invalid."
+msgstr "Le compte que vous essayez d'activer n'est pas valide."
+
+#: backends/activation/views.py:118
+msgid "This account has expired."
+msgstr "Ce compte a expiré."
+
+#: backends/activation/views.py:119
+msgid "The activation key you provided is invalid."
+msgstr "La clé d'activation fournie n'est pas valide."
+
+#: validators.py:16
+msgid "This name cannot be registered. Please choose a different name."
+msgstr "Ce nom ne peut être enregistré. Veuillez en choisir un différent."
+
+#: validators.py:18
+msgid ""
+"This email address cannot be registered. Please supply a different email "
+"address."
+msgstr ""
+"Cette adresse courriel ne peut être enregistrée. Veuillez en indiquer une autre."
+
+#: validators.py:29
+msgid "This name is reserved and cannot be registered."
+msgstr "Ce nom est réservé et ne peut être enregistré."
