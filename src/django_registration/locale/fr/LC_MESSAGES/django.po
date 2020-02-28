@@ -90,6 +90,10 @@ msgstr "profil d'inscription"
 msgid "registration profiles"
 msgstr "profils d'inscription"
 
+#: backends/activation/views.py:115
+msgid "The account you tried to activate has already been activated."
+msgstr "Le compte que vous essayez d'activer a déjà été activé."
+
 #: backends/activation/views.py:117
 msgid "The account you attempted to activate is invalid."
 msgstr "Le compte que vous essayez d'activer n'est pas valide."
