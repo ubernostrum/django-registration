@@ -244,9 +244,7 @@ class CaseInsensitiveUnique:
         # Only run if the username is a string.
         if not isinstance(value, str):
             return
-        value = unicodedata.normalize("NFKC", value)
-        if hasattr(value, "casefold"):
-            value = value.casefold()  # pragma: no cover
+        value = unicodedata.normalize("NFKC", value).casefold()
         if self.model._default_manager.filter(
             **{"{}__iexact".format(self.field_name): value}
         ).exists():
