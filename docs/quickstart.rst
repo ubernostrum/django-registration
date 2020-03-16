@@ -8,7 +8,7 @@ installed; for details on that, see :ref:`the installation guide
 <install>`.
 
 The next steps will depend on which registration workflow you'd like
-to use. There two workflows built in to django-registration:
+to use. There are two workflows built into django-registration:
 
 * :ref:`The two-step activation workflow <activation-workflow>`, which
   implements a two-step process: a user signs up, then is emailed an
