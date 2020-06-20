@@ -23,7 +23,7 @@ msgstr "nombre de usuario"
 
 #: forms.py:41
 msgid "email address"
-msgstr "dirección de coreo electrónico"
+msgstr "dirección de correo electrónico"
 
 #: forms.py:43
 msgid "password"
@@ -35,7 +35,7 @@ msgstr "contraseña (otra vez)"
 
 #: forms.py:54
 msgid "Usernames can only contain letters, numbers and underscores"
-msgstr "Los nombres de usuarios sólo pueden contener letras, números y guiones bajos"
+msgstr "Los nombres de usuario sólo pueden contener letras, números y guiones bajos"
 
 #: forms.py:59
 msgid "This username is already taken. Please choose another."
@@ -65,7 +65,7 @@ msgid ""
 "Registration using free email addresses is prohibited. Please supply a different "
 "email address."
 msgstr ""
-"El registro usando una dirección de correo electrónico gratis está prohibido.Por "
+"El registro usando una dirección de correo electrónico gratis está prohibido. Por "
 "favor proporciona otra dirección."
 
 #: models.py:188
