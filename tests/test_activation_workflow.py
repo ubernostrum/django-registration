@@ -177,7 +177,8 @@ class ActivationBackendViewTests(ActivationTestCase):
         try:
             time.time = lambda: expired_timestamp
             activation_key = signing.dumps(
-                obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT,
+                obj=self.valid_data[user_model.USERNAME_FIELD],
+                salt=REGISTRATION_SALT,
             )
         finally:
             time.time = _old_time

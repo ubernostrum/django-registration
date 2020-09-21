@@ -218,7 +218,9 @@ class RegistrationFormTests(RegistrationTestCase):
         """
         user_model = get_user_model()
         validator = validators.CaseInsensitiveUnique(
-            user_model, user_model.USERNAME_FIELD, validators.DUPLICATE_USERNAME,
+            user_model,
+            user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         for value in (123456, 1.7, uuid.uuid4()):
             self.assertTrue(validator(value) is None)
@@ -251,10 +253,14 @@ class RegistrationFormTests(RegistrationTestCase):
         """
         user_model = get_user_model()
         validator = validators.CaseInsensitiveUnique(
-            user_model, user_model.USERNAME_FIELD, validators.DUPLICATE_USERNAME,
+            user_model,
+            user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         validator_same = validators.CaseInsensitiveUnique(
-            user_model, user_model.USERNAME_FIELD, validators.DUPLICATE_USERNAME,
+            user_model,
+            user_model.USERNAME_FIELD,
+            validators.DUPLICATE_USERNAME,
         )
         self.assertTrue(validator.__eq__(validator_same))
 
