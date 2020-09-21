@@ -4,12 +4,12 @@
 Installation guide
 ==================
 
-The |release| release of django-registration supports Django 2.2 and
-3.0 on the following Python versions:
+The |release| release of django-registration supports Django 2.2, 3.0,
+and 3.1 on the following Python versions:
 
 * Django 2.2 supports Python 3.5, 3.6, 3.7, and 3.8.
 
-* Django 3.0 supports Python 3.6, 3.7, and 3.8.
+* Django 3.0 and 3.1 support Python 3.6, 3.7, and 3.8.
 
 
 Normal installation
