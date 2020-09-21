@@ -8,7 +8,7 @@ installed; for details on that, see :ref:`the installation guide
 <install>`.
 
 The next steps will depend on which registration workflow you'd like
-to use. There two workflows built in to django-registration:
+to use. There are two workflows built into django-registration:
 
 * :ref:`The two-step activation workflow <activation-workflow>`, which
   implements a two-step process: a user signs up, then is emailed an
@@ -161,7 +161,7 @@ user that an email containing account-activation information has been
 sent.
 
 
-`django_registration/registration_disallowed.html`
+`django_registration/registration_closed.html`
 ``````````````````````````````````````````````````
 
 Used when registration of new user accounts is disabled. This template
@@ -311,7 +311,7 @@ reset, etc.).
 Finally, you will need to create following templates:
 
 * `django_registration/registration_form.html`
-* `django_registration/registration_disallowed.html`
+* `django_registration/registration_closed.html`
 
 See :ref:`the documentation above <default-form-template>` for details
 of these templates.
