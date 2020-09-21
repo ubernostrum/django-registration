@@ -303,6 +303,17 @@ configuration. For example, to place the URLs under the prefix
 Users could then register accounts by visiting the URL
 `/accounts/register/`.
 
+The following URL names are defined by
+`django_registration.backends.one_step.urls`:
+
+* `django_registration_register` is the account-registration view.
+
+* `django_registration_complete` is the post-registration success
+  message.
+
+* `django_registration_disallowed` is a message indicating registration is
+  not currently permitted.
+
 This URLconf will also configure the appropriate URLs for the rest of
 the built-in `django.contrib.auth` views (log in, log out, password
 reset, etc.).
