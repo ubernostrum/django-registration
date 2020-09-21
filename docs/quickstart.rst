@@ -165,8 +165,7 @@ sent.
 ``````````````````````````````````````````````````
 
 Used when registration of new user accounts is disabled. This template
-has no context variables of its own, and should inform the user that
-an email containing account-activation information has been sent.
+has no context variables of its own.
 
 
 `django_registration/activation_failed.html`
