@@ -82,7 +82,7 @@ Templates
 The one-step workflow uses two templates:
 
 * `django_registration/registration_form.html`.
-* `django_registration/registration_disallowed.html`
+* `django_registration/registration_closed.html`
 
 See :ref:`the quick start guide <default-form-template>` for details
 of these templates.
