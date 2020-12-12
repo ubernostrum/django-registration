@@ -10,7 +10,6 @@ from django.urls import reverse_lazy
 from django_registration import signals
 from django_registration.views import RegistrationView as BaseRegistrationView
 
-
 User = get_user_model()
 
 

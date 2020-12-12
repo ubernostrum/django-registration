@@ -15,7 +15,6 @@ from . import signals
 from .exceptions import ActivationError
 from .forms import RegistrationForm
 
-
 USER_MODEL_MISMATCH = """
 You are attempting to use the registration view {view}
 with the form class {form},

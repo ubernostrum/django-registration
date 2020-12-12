@@ -1,7 +1,7 @@
 .. -*-restructuredtext-*-
 
-.. image:: https://travis-ci.org/ubernostrum/django-registration.svg?branch=master
-    :target: https://travis-ci.org/ubernostrum/django-registration
+.. image:: https://github.com/ubernostrum/django-registration/workflows/CI/badge.svg
+   :alt: CI status image
 
 This is a user-registration application for `Django
 <https://www.djangoproject.com/>`_. There are two registration

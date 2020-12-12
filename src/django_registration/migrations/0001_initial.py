@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations
 
-
 # django-registration 2.x included a model-based signup workflow which
 # needed to create a model to store data. In django-registration 3.x,
 # that workflow no longer exists.

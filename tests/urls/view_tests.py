@@ -13,7 +13,6 @@ from django_registration.backends.activation.views import RegistrationView
 
 from ..views import ActivateWithComplexRedirect
 
-
 urlpatterns = [
     path(
         "",

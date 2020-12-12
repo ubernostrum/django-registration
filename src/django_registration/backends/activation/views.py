@@ -18,7 +18,6 @@ from django_registration.exceptions import ActivationError
 from django_registration.views import ActivationView as BaseActivationView
 from django_registration.views import RegistrationView as BaseRegistrationView
 
-
 REGISTRATION_SALT = getattr(settings, "REGISTRATION_SALT", "registration")
 
 

@@ -1,7 +1,6 @@
 import os
 import sys
 
-
 on_rtd = os.environ.get("READTHEDOCS", None) == "True"
 
 extensions = ["sphinx.ext.intersphinx"]
@@ -14,7 +13,6 @@ version = "3.1"
 release = "3.1.1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
-html_static_path = ["_static"]
 htmlhelp_basename = "django-registrationdoc"
 latex_documents = [
     (

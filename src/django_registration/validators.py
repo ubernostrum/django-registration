@@ -12,7 +12,6 @@ from django.core.validators import EmailValidator, RegexValidator
 from django.utils.deconstruct import deconstructible
 from django.utils.translation import gettext_lazy as _
 
-
 CONFUSABLE = _("This name cannot be registered. " "Please choose a different name.")
 CONFUSABLE_EMAIL = _(
     "This email address cannot be registered. "
