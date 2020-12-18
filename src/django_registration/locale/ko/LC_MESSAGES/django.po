@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-18 15:43+0900\n"
+"POT-Creation-Date: 2020-12-18 16:38+0900\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Sam Kim <quroom@naver.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,56 +17,56 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\django_registration\backends\activation\views.py:114
+#: .\backends\activation\views.py:114
 msgid "The account you tried to activate has already been activated."
 msgstr "이미 활성화 된 계정입니다."
 
-#: .\django_registration\backends\activation\views.py:116
+#: .\backends\activation\views.py:116
 msgid "The account you attempted to activate is invalid."
 msgstr "유효하지 않은 계정을 활성화 하려고 했습니다."
 
-#: .\django_registration\backends\activation\views.py:117
+#: .\backends\activation\views.py:117
 msgid "This account has expired."
 msgstr "이 계정은 만료되었습니다."
 
-#: .\django_registration\backends\activation\views.py:118
+#: .\backends\activation\views.py:118
 msgid "The activation key you provided is invalid."
 msgstr "당신이 제공한 활성화 키는 유효하지 않습니다."
 
-#: .\django_registration\forms.py:90
+#: .\forms.py:90
 msgid "I have read and agree to the Terms of Service"
 msgstr "약관을 읽었고 그 내용에 동의합니다."
 
-#: .\django_registration\validators.py:15
+#: .\validators.py:15
 msgid "This name cannot be registered. Please choose a different name."
 msgstr "이 이름은 등록될 수 없습니다. 다른 이름을 사용해주세요."
 
-#: .\django_registration\validators.py:17
+#: .\validators.py:17
 msgid ""
 "This email address cannot be registered. Please supply a different email "
 "address."
 msgstr "이메일이 등록될 수 없습니다. 다른 이메일을 사용해 주세요."
 
-#: .\django_registration\validators.py:21
+#: .\validators.py:21
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
 msgstr "이메일이 이미 사용중입니다. 다른 이메일을 등록해 주세요."
 
-#: .\django_registration\validators.py:23
+#: .\validators.py:23
 msgid "A user with that username already exists."
 msgstr "이미 같은 아이디로 사용자가 등록되어 있습니다."
 
-#: .\django_registration\validators.py:25
+#: .\validators.py:25
 msgid ""
 "Registration using free email addresses is prohibited. Please supply a "
 "different email address."
 msgstr "무료 이메일 계정으로 등록하실 수 없습니다. 다른 이메일을 등록해 주세요"
 
-#: .\django_registration\validators.py:28
+#: .\validators.py:28
 msgid "This name is reserved and cannot be registered."
 msgstr "이 이름은 이미 예약되어 등록될 수 없습니다."
 
-#: .\django_registration\validators.py:29
+#: .\validators.py:29
 msgid "You must agree to the terms to register"
 msgstr "약관에 동의 하셔야만 합니다."
