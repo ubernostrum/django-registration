@@ -79,8 +79,8 @@ the build.
 How secure is django-registration?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Over the decade-plus history of django-registration, there have been
-no security issues reported which required new releases to
+Over the course of django-registration's history so far, there has
+been one security issue reported which required a new release to
 remedy. This doesn't mean, though, that django-registration is
 perfectly secure: much will depend on ensuring best practices in
 deployment and server configuration, and there could always be
