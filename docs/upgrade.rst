@@ -33,7 +33,7 @@ registration, the generated error report would include all fields
 submitted in the HTTP request, some of which are potentially sensitive
 depending on the user-account model and registration workflow in use.
 
-This issue is CVE-XXXX and GitHub security advisory
+This issue is CVE-2021-21416 and GitHub security advisory
 GHSA-58c7-px5v-82hh.
 
 Thanks to Martin Morgenstern for reporting this issue.
