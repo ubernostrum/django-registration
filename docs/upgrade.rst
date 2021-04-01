@@ -16,7 +16,29 @@ Within the 3.x release series, there have been several minor changes
 and improvements, documented here along with the version in which they
 occurred.
 
-django-registration 3.1
+django-registration 3.1.2
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This release fixes a security issue with low severity.
+
+Prior to 3.1.2, django-registration did not apply Django's
+:func:`~django.views.decorators.debug.sensitive_post_parameters`
+decorator to the base
+:class:`~django_registration.views.RegistrationView`. This meant that
+if detailed error reports, such as `Django's error reports emailed to
+site staff
+<https://docs.djangoproject.com/en/3.1/howto/error-reporting/#email-reports>`_,
+were enabled, and a server-side error occurred during account
+registration, the generated error report would include all fields
+submitted in the HTTP request, some of which are potentially sensitive
+depending on the user-account model and registration workflow in use.
+
+This issue is CVE-2021-21416 and GitHub security advisory
+GHSA-58c7-px5v-82hh.
+
+Thanks to Martin Morgenstern for reporting this issue.
+
+Django-registration 3.1
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 * When an attempt was made to use django-registration with a custom

@@ -3,10 +3,14 @@ Tests for django-registration's built-in views.
 
 """
 
+import logging
+import sys
+
 from django.contrib.auth import get_user_model
-from django.core import signing
+from django.contrib.auth.models import AnonymousUser
+from django.core import mail, signing
 from django.core.exceptions import ImproperlyConfigured
-from django.test import override_settings
+from django.test import RequestFactory, override_settings
 from django.urls import reverse
 
 from django_registration import forms
@@ -86,3 +90,69 @@ class CustomUserTests(RegistrationTestCase):
                 )
                 with self.assertRaisesMessage(ImproperlyConfigured, message):
                     view.get_form()
+
+
+class RegistrationError(Exception):
+    """
+    Distinct exception class to simulate an unhandled error in the below
+    tests.
+
+    """
+
+
+class BuggyRegistrationView(base_views.RegistrationView):
+    """
+    Registration view that simulates an unhandled exception.
+
+    """
+
+    def registration_allowed(self):
+        raise RegistrationError("catch me if you can")
+
+
+buggy_view = BuggyRegistrationView.as_view()
+
+
+@override_settings(ADMINS=[("Admin", "admin@localhost")])
+class SensitiveParameterFilterTests(RegistrationTestCase):
+    """
+    Test filtering of sensitive POST parameters in error reports for the
+    registration view.
+
+    """
+
+    logger = logging.getLogger("django")
+    factory = RequestFactory()
+
+    def test_sensitive_post_parameters_are_filtered(self):
+        """
+        When an unexpected exception occurs during a POST request to the
+        registration view, the default email report to ADMINS must not
+        contain the submitted passwords.
+
+        """
+        request = self.factory.post("/raise/", data=self.valid_data)
+        request.user = AnonymousUser()
+        # we cannot use self.assertRaises(...) here because of sys.exc_info()
+        try:
+            buggy_view(request)
+            self.fail("expected exception not thrown")
+        except RegistrationError as error:
+            self.assertEqual(str(error), "catch me if you can")
+            # based on code in Django (tests/view_tests/views.py)
+            self.logger.error(
+                "Internal Server Error: %s" % request.path,
+                exc_info=sys.exc_info(),
+                extra={"status_code": 500, "request": request},
+            )
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox[0]
+        self.assertIn("RegistrationError at /raise/", email.body)
+        self.assertIn("catch me if you can", email.body)
+        self.assertIn("No GET data", email.body)
+        self.assertNotIn("No POST data", email.body)
+        self.assertIn("password1", email.body)
+        self.assertIn("password2", email.body)
+        self.assertNotIn(self.valid_data["password1"], email.body)
+        self.assertNotIn(self.valid_data["password2"], email.body)
+        self.assertNotIn(self.valid_data["email"], email.body)

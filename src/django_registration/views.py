@@ -7,7 +7,9 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ImproperlyConfigured
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str
+from django.views.decorators.debug import sensitive_post_parameters
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
@@ -40,6 +42,7 @@ class RegistrationView(FormView):
     success_url = None
     template_name = "django_registration/registration_form.html"
 
+    @method_decorator(sensitive_post_parameters())
     def dispatch(self, *args, **kwargs):
         """
         Check that user signup is allowed before even bothering to
