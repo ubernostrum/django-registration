@@ -51,8 +51,8 @@ this file, you can view it online at
 What versions of Django and Python are supported?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-As of django-registration |release|, Django 2.2, 3.0, and 3.1 are supported,
-on Python 3.5 (Django 2.2 only), 3.6, 3.7, and 3.8.
+As of django-registration |release|, Django 2.2, 3.1, and 3.2 are supported,
+on Python3.6, 3.7, 3.8, and 3.9.
 
 I found a bug or want to make an improvement!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

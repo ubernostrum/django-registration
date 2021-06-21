@@ -10,6 +10,8 @@ different settings and/or templates to run their tests.
 import os
 import sys
 
+from django.utils.crypto import get_random_string
+
 
 APP_DIR = os.path.abspath(os.path.dirname(__file__))
 
@@ -30,12 +32,14 @@ SETTINGS_DICT = {
     "DATABASES": {
         "default": {"ENGINE": "django.db.backends.sqlite3", "NAME": ":memory:"}
     },
+    "DEFAULT_AUTO_FIELD": "django.db.models.AutoField",
     "MIDDLEWARE": (
         "django.middleware.common.CommonMiddleware",
         "django.middleware.csrf.CsrfViewMiddleware",
         "django.contrib.sessions.middleware.SessionMiddleware",
         "django.contrib.auth.middleware.AuthenticationMiddleware",
     ),
+    "SECRET_KEY": get_random_string(12),
     "SITE_ID": 1,
     "TEMPLATES": [
         {

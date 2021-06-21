@@ -16,6 +16,18 @@ Within the 3.x release series, there have been several minor changes
 and improvements, documented here along with the version in which they
 occurred.
 
+django-registration 3.2
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This release contains no new features or bugfixes. The supported
+Python and Django versions are changed to:
+
+* Django 2.2, 3.1, and 3.2, on Python 3.6, 3.7, 3.8, and 3.9.
+
+Python 3.5 reached the end of its upstream support cycle in September
+2020, and is no longer supported. Django 3.0 reached the end of its
+upstream support cycle in May 2021, and is no longer supported.
+
 django-registration 3.1.2
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
