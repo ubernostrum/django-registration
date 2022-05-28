@@ -13,6 +13,7 @@ blog
 boolean
 bugfixes
 checkbox
+cleanupregistration
 codebase
 confusable
 cryptographic
