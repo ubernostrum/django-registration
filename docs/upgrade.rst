@@ -16,6 +16,14 @@ Within the 3.x release series, there have been several minor changes
 and improvements, documented here along with the version in which they
 occurred.
 
+django-registration 3.3
+~~~~~~~~~~~~~~~~~~~~~~~
+
+This release contains no new features or bugfixes. The supported
+Python and Django versions are changed to:
+
+* Django 3.2 and 4.0, on Python 3.7 (Django 3.2 only), 3.8, 3.9, and 3.10.
+
 django-registration 3.2
 ~~~~~~~~~~~~~~~~~~~~~~~
 
