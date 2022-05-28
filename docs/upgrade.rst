@@ -265,6 +265,16 @@ URL pattern names beginning with `"registration"`. For example:
 with `"django_registration"`. For example:
 `"django_registration_register"`.
 
+Removal of `cleanupregistration` management command
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The "cleanupregistration" management command, and the
+RegistrationProfile.objects.delete_expired_users() and
+RegistrationProfile.objects.expired() methods, were removed
+in django-registration 3.0.
+Deployments which need a way to identify and delete
+expired accounts should determine how they wish to do so
+and implement their own methods for this.
 
 Other changes
 ~~~~~~~~~~~~~
