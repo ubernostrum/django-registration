@@ -173,7 +173,7 @@ rules to usernames and email addresses.
    dangerously-confusable email address.
 
    This validator will reject any email address where either the
-   local-part of the domain is -- when considered in isolation --
+   local-part or the domain is -- when considered in isolation --
    dangerously confusable. A string is dangerously confusable if it is
    a mixed-script value (as defined by Unicode 'Script' property)
    which also contains one or more characters that appear in the
