@@ -34,9 +34,12 @@ class RegistrationForm(UserCreationForm):
     """
 
     class Meta(UserCreationForm.Meta):
-        fields = [
-            User.USERNAME_FIELD,
-            User.get_email_field_name(),
+        model = User
+        fields = [User.USERNAME_FIELD]
+        email_field_name = User.get_email_field_name()
+        if User.USERNAME_FIELD != email_field_name:
+            fields.append(email_field_name)
+        fields += [
             "password1",
             "password2",
         ]

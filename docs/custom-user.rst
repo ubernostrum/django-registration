@@ -18,6 +18,14 @@ order to do so. If you are using a custom user model, please read this
 document thoroughly *before* using django-registration, in order to
 ensure you've taken all the necessary steps to ensure support.
 
+Your customer user model **needs** to define two properties:
+
+1. USERNAME_FIELD
+2. EMAIL_FIELD
+
+These fields can be the same value. See `Django's AbstractUser <https://github.com/django/django/blob/main/django/contrib/auth/models.py#L334>`_
+for an example implementation.
+
 The process for using a custom user model with django-registration can
 be summarized as follows:
 
@@ -166,7 +174,7 @@ do **not** directly edit django-registration's code):
 
     from mycustomuserapp.models import MyCustomUser
 
-    
+
     class MyCustomUserForm(RegistrationForm):
         class Meta(RegistrationForm.Meta):
             model = MyCustomUser
@@ -184,7 +192,7 @@ class you wrote:
     from django.urls import include, path
 
     from django_registration.backends.activation.views import RegistrationView
-    
+
     from mycustomuserapp.forms import MyCustomUserForm
 
 
