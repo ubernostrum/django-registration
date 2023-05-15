@@ -50,7 +50,7 @@ can also do this in a URLconf. For example:
 
 .. code-block:: python
 
-   from django.conf.urls import include, url
+   from django.urls import include, path
 
    from django_registration.backends.one_step.views import RegistrationView
 
