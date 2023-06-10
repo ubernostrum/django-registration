@@ -234,6 +234,10 @@ class ActivationBackendViewTests(ActivationTestCase):
         )
 
     def test_activation_signal(self):
+        """
+        Activating a user account sends the activation signal.
+
+        """
         user_model = get_user_model()
 
         self.client.post(reverse("django_registration_register"), data=self.valid_data)
@@ -244,7 +248,7 @@ class ActivationBackendViewTests(ActivationTestCase):
 
         with self.assertSignalSent(
             signals.user_activated, required_kwargs=["user", "request"]
-        ) as cm:
+        ) as signal_context:
             self.client.get(
                 reverse(
                     "django_registration_activate",
@@ -253,10 +257,12 @@ class ActivationBackendViewTests(ActivationTestCase):
                 )
             )
             self.assertEqual(
-                cm.received_kwargs["user"].get_username(),
+                signal_context.received_kwargs["user"].get_username(),
                 self.valid_data[user_model.USERNAME_FIELD],
             )
-            self.assertTrue(isinstance(cm.received_kwargs["request"], HttpRequest))
+            self.assertTrue(
+                isinstance(signal_context.received_kwargs["request"], HttpRequest)
+            )
 
 
 @override_settings(AUTH_USER_MODEL="tests.CustomUser")

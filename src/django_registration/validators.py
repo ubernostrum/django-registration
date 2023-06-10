@@ -3,6 +3,7 @@ Error messages, data and custom validation code used in
 django-registration's various user-registration form classes.
 
 """
+# pylint: disable=implicit-str-concat
 import re
 import unicodedata
 
@@ -245,7 +246,7 @@ class CaseInsensitiveUnique:
             return
         value = unicodedata.normalize("NFKC", value).casefold()
         if self.model._default_manager.filter(
-            **{"{}__iexact".format(self.field_name): value}
+            **{f"{self.field_name}__iexact": value}
         ).exists():
             raise ValidationError(self.error_message, code="unique")
 
@@ -263,6 +264,8 @@ class HTML5EmailValidator(RegexValidator):
     Validator which applies HTML5's email address rules.
 
     """
+
+    # pylint: disable=too-few-public-methods
 
     message = EmailValidator.message
     regex = re.compile(HTML5_EMAIL_RE)

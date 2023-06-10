@@ -1,0 +1,104 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+authors = [
+  {name = "James Bennett", email = "james@b-list.org"}
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Web Environment",
+  "Framework :: Django",
+  "Framework :: Django :: 3.2",
+  "Framework :: Django :: 4.1",
+  "Framework :: Django :: 4.2",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: BSD License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Utilities",
+]
+name = "django-registration"
+description = "An extensible user-registration application for Django."
+dependencies = [
+  "Django>=3.2,!=4.0.*",
+  "confusable_homoglyphs~=3.0"
+]
+dynamic = ["version"]
+keywords = ["django", "security", "auth", "authentication"]
+license = {text = "BSD-3-Clause"}
+readme = "README.rst"
+requires-python = ">=3.7"
+
+[project.urls]
+documentation = "https://django-registration.readthedocs.io/"
+homepage = "https://github.com/ubernostrum/django-registration"
+
+[project.optional-dependencies]
+docs = [
+  "furo",
+  "sphinx",
+  "sphinx-copybutton",
+  "sphinx-inline-tabs",
+  "sphinx-notfound-page",
+  "sphinxcontrib-django",
+  "sphinxext-opengraph",
+]
+tests = [
+  "coverage",
+  "mock; python_full_version < '3.8.0'",
+  "tomli; python_full_version < '3.11.0a7'",
+]
+
+[tool.bandit]
+skips = ["B101"]
+
+[tool.black]
+target-version = ["py37"]
+
+[tool.check-manifest]
+ignore-bad-ideas = ["*.mo"]
+
+[tool.check-wheel-contents]
+ignore = ["W004"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "def __str__",
+  "raise NotImplementedError",
+]
+fail_under = 100
+
+[tool.interrogate]
+exclude = [
+  "src/django_registration/migrations",
+  "tests/migrations",
+]
+fail-under = 100
+ignore-regex = [".*Meta.*"]
+ignore-init-method = true
+ignore-init-module = true
+ignore-magic = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint]
+disable = [
+  "duplicate-code",
+  "logging-fstring-interpolation",
+  "missing-class-docstring",
+  "missing-module-docstring",
+  "too-many-ancestors",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "django_registration.__version__"}

@@ -9,4 +9,9 @@ from django_registration.backends.activation.views import ActivationView
 
 
 class ActivateWithComplexRedirect(ActivationView):
+    """
+    An activation view with a ``success_url`` more complex than a simple string.
+
+    """
+
     success_url = reverse_lazy("django_registration_activation_complete")

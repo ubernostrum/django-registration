@@ -68,6 +68,7 @@ class RegistrationView(FormView):
         form to match it.
 
         """
+        # pylint: disable=protected-access
         if form_class is None:
             form_class = self.get_form_class()
         form_model = form_class._meta.model
@@ -83,7 +84,7 @@ class RegistrationView(FormView):
             )
         return form_class(**self.get_form_kwargs())
 
-    def get_success_url(self, user=None):
+    def get_success_url(self, user=None):  # pylint: disable=unused-argument
         """
         Return the URL to redirect to after successful redirection.
 
@@ -95,6 +96,10 @@ class RegistrationView(FormView):
         return super().get_success_url()
 
     def form_valid(self, form):
+        """
+        After successful form processing, redirect to the success URL.
+
+        """
         return HttpResponseRedirect(self.get_success_url(self.register(form)))
 
     def registration_allowed(self):
@@ -123,7 +128,7 @@ class ActivationView(TemplateView):
     success_url = None
     template_name = "django_registration/activation_failed.html"
 
-    def get_success_url(self, user=None):
+    def get_success_url(self, user=None):  # pylint: disable=unused-argument
         """
         Return the URL to redirect to after successful redirection.
 
@@ -140,11 +145,11 @@ class ActivationView(TemplateView):
         extra_context = {}
         try:
             activated_user = self.activate(*args, **kwargs)
-        except ActivationError as e:
+        except ActivationError as exc:
             extra_context["activation_error"] = {
-                "message": e.message,
-                "code": e.code,
-                "params": e.params,
+                "message": exc.message,
+                "code": exc.code,
+                "params": exc.params,
             }
         else:
             signals.user_activated.send(

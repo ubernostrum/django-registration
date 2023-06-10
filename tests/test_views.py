@@ -70,6 +70,7 @@ class CustomUserTests(RegistrationTestCase):
         ImproperlyConfigured.
 
         """
+        # pylint: disable=no-member,protected-access
         for view_class in (
             base_views.RegistrationView,
             activation_views.RegistrationView,
@@ -106,7 +107,14 @@ class BuggyRegistrationView(base_views.RegistrationView):
 
     """
 
+    # pylint: disable=abstract-method
+
     def registration_allowed(self):
+        """
+        Raise an exception as early as possible, when django-registration is checking
+        if registration will even be allowed.
+
+        """
         raise RegistrationError("catch me if you can")
 
 
@@ -141,7 +149,7 @@ class SensitiveParameterFilterTests(RegistrationTestCase):
             self.assertEqual(str(error), "catch me if you can")
             # based on code in Django (tests/view_tests/views.py)
             self.logger.error(
-                "Internal Server Error: %s" % request.path,
+                f"Internal Server Error: {request.path}",
                 exc_info=sys.exc_info(),
                 extra={"status_code": 500, "request": request},
             )

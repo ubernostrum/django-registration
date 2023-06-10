@@ -1,0 +1,5 @@
+[flake8]
+extend-ignore = E203, E501, W503
+max-complexity = 13
+max-line-length = 88
+select = C,E,F,W,B,B950

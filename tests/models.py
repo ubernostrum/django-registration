@@ -1,3 +1,7 @@
+"""
+Custom user model for use in tests.
+
+"""
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator
@@ -45,5 +49,8 @@ class CustomUser(AbstractBaseUser):
     objects = UserManager()
 
     def email_user(self, subject, message, from_email=None, **kwargs):
-        """Send an email to this user."""
+        """
+        Send an email to this user.
+
+        """
         send_mail(subject, message, from_email, [self.email], **kwargs)

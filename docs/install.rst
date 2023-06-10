@@ -1,53 +1,67 @@
 .. _install:
 
 
-Installation guide
-==================
+Installation and recommended configuration
+==========================================
 
-The |release| release of django-registration supports Django 3.2 and
-4.0 on Python 3.7 (Django 3.2 only), 3.8, 3.9, and 3.10. Note that
-Django 3.2's support for Python 3.10 was added in Django 3.2.9, so you
-may experience issues with Python 3.10 and earlier Django 3.2
-versions.
+django-registration |release| supports Django 3.2, 4.1, and 4.2 on Python 3.7
+(Django 3.2 only), 3.8, 3.9, 3.10, and 3.11 (Django 4.1 and 4.2 only). Note
+that Django 3.2's support for Python 3.10 was added in Django 3.2.9, so you may
+experience issues with Python 3.10 and earlier Django 3.2 versions.
 
+.. note:: **Django 3.2 and supported Python versions**
 
-Normal installation
--------------------
+   Django 3.2 was released before Python 3.10 had come out, and although it now
+   supports Python 3.10, it did not officially do so until the Django 3.2.9
+   release. You may encounter problems if you try to use Django 3.2.8 or
+   earlier with Python 3.10.
 
-The preferred method of installing django-registration is via `pip`,
-the standard Python package-installation tool. If you don't have
-`pip`, instructions are available for `how to obtain and install it
-<https://pip.pypa.io/en/latest/installing.html>`_, though if you're
-using a supported version of Python, `pip` should have come bundled
-with your installation of Python.
-
-Once you have `pip`, type::
-
-    pip install django-registration
-
-If you don't have a copy of a compatible version of Django, this will
-also automatically install one for you, and will install a third-party
-library required by some of django-registration's validation code.
+   Also, although Django 3.2 continues to officially support Python 3.6,
+   django-registration |release| does not, because the Python core team's
+   support window for Python 3.6 ended in December 2021.
 
 
-Installing from a source checkout
----------------------------------
+Installing django-registration
+------------------------------
 
-If you want to work on django-registration, you can obtain a source
-checkout.
+To install django-registration, run the following command from a command
+prompt/terminal:
 
-The development repository for django-registration is at
-<https://github.com/ubernostrum/django-registration>. If you have `git
-<http://git-scm.com/>`_ installed, you can obtain a copy of the
-repository by typing::
+.. tab:: macOS/Linux/other Unix
 
-    git clone https://github.com/ubernostrum/django-registration.git
+   .. code-block:: shell
 
-From there, you can use git commands to check out the specific
-revision you want, and perform an "editable" install (allowing you to
-change code as you work on it) by typing::
+      python -m pip install django-registration
 
-    pip install -e .
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m pip install django-registration
+
+This will use ``pip``, the standard Python package-installation tool. If you
+are using a supported version of Python, your installation of Python should
+have come with ``pip`` bundled. If ``pip`` does not appear to be present, you
+can try running the following from a command prompt/terminal:
+
+.. tab:: macOS/Linux/other Unix
+
+   .. code-block:: shell
+
+      python -m ensurepip --upgrade
+
+.. tab:: Windows
+
+   .. code-block:: shell
+
+      py -m ensurepip --upgrade
+
+Instructions are also available for `how to obtain and manually install or
+upgrade pip <https://pip.pypa.io/en/latest/installation/>`_.
+
+If you don't already have a supported version of Django installed, using
+``pip`` to install django-registration will also install the latest
+supported version of Django.
 
 
 Next steps

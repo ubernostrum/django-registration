@@ -33,6 +33,8 @@ class RegistrationForm(UserCreationForm):
 
     """
 
+    # pylint: disable=too-few-public-methods
+
     class Meta(UserCreationForm.Meta):
         fields = [
             User.USERNAME_FIELD,

@@ -3,6 +3,7 @@
 Exercise django-registration's built-in form classes.
 
 """
+
 import uuid
 
 from django.contrib.auth import get_user_model
@@ -80,7 +81,7 @@ class RegistrationFormTests(RegistrationTestCase):
         user_data = self.valid_data.copy()
         del user_data["password1"]
         del user_data["password2"]
-        user_data["password"] = "swordfish"
+        user_data["password"] = "swordfish"  # nosec: B105
         user_model = get_user_model()
         existing_user = user_model(**user_data)
         existing_user.save()
@@ -153,6 +154,11 @@ class RegistrationFormTests(RegistrationTestCase):
         custom_reserved_names = ["foo", "bar", "eggs", "spam"]
 
         class CustomReservedNamesForm(forms.RegistrationForm):
+            """
+            Registration form with custom reserved-names list.
+
+            """
+
             reserved_names = custom_reserved_names
 
         user_model = get_user_model()
@@ -178,17 +184,17 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_reserved_name_validator_eq(self):
         """
-        Test ReservedNameValidator __eq__ method.
-        __eq__ is necessary for serializing custom user models that use
-        the validator.
+        Test ReservedNameValidator's __eq__() method.
+
+        __eq__() is necessary for serializing custom user models that use the validator.
 
         """
         validator = validators.ReservedNameValidator()
         validator_same = validators.ReservedNameValidator()
-        self.assertTrue(validator.__eq__(validator_same))
+        self.assertEqual(validator, validator_same)
 
         validator_different = validators.ReservedNameValidator(reserved_names=[])
-        self.assertFalse(validator.__eq__(validator_different))
+        self.assertNotEqual(validator, validator_different)
 
     def test_email_validator(self):
         """
@@ -246,9 +252,9 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_case_insensitive_validator_eq(self):
         """
-        Test CaseInsensitiveUnique __eq__ method.
-        __eq__ is necessary for serializing custom user models that use
-        the validator.
+        Test CaseInsensitiveUnique's __eq__() method.
+
+        __eq__() is necessary for serializing custom user models that use the validator.
 
         """
         user_model = get_user_model()
@@ -262,12 +268,12 @@ class RegistrationFormTests(RegistrationTestCase):
             user_model.USERNAME_FIELD,
             validators.DUPLICATE_USERNAME,
         )
-        self.assertTrue(validator.__eq__(validator_same))
+        self.assertEqual(validator, validator_same)
 
         validator_different = validators.CaseInsensitiveUnique(
             user_model, "not username field", validators.DUPLICATE_USERNAME
         )
-        self.assertFalse(validator.__eq__(validator_different))
+        self.assertNotEqual(validator, validator_different)
 
     def test_case_insensitive_form(self):
         """
@@ -289,7 +295,7 @@ class RegistrationFormTests(RegistrationTestCase):
 
         user_model = get_user_model()
 
-        for name, conflict in test_names:
+        for name, _conflict in test_names:
             creation_data = base_creation_data.copy()
             creation_data[user_model.USERNAME_FIELD] = name
             existing_user = user_model(**creation_data)

@@ -14,26 +14,29 @@ from django_registration import signals
 from django_registration.forms import RegistrationForm
 
 
-# django-registration needs to test that signals are sent at
-# registration and activation. Django -- as of 2.1 -- does not have a
-# test assertion built in to test whether a signal was or was not
-# sent. The code below is from a pull request submitted upstream to
-# Django to add assertSignalSent and assertSignalNotSent assertions to
-# Django's base test case class, and will be removed once it's been
-# integrated into Django and django-registration is only supporting
-# versions of Django which include it.
 class _AssertSignalSentContext:
+    """
+    Context manager for asserting a signal was sent.
+
+    """
+
     def __init__(self, test_case, signal, required_kwargs=None):
         self.test_case = test_case
         self.signal = signal
         self.required_kwargs = required_kwargs
 
     def _listener(self, sender, **kwargs):
+        """
+        Listener function which will capture the sent signal.
+
+        """
+        # pylint: disable=attribute-defined-outside-init
         self.signal_sent = True
         self.received_kwargs = kwargs
         self.sender = sender
 
     def __enter__(self):
+        # pylint: disable=attribute-defined-outside-init
         self.signal_sent = False
         self.received_kwargs = {}
         self.sender = None
@@ -52,12 +55,18 @@ class _AssertSignalSentContext:
                     missing_kwargs.append(k)
             if missing_kwargs:
                 self.test_case.fail(
-                    "Signal missing required arguments: "
-                    "%s" % ",".join(missing_kwargs)
+                    f"Signal missing required arguments: {','.join(missing_kwargs)}"
                 )
 
 
 class _AssertSignalNotSentContext(_AssertSignalSentContext):
+    """
+    Context manager for asserting a signal was not sent.
+
+    """
+
+    # pylint: disable=too-few-public-methods
+
     def __exit__(self, exc_type, exc_value, traceback):
         self.signal.disconnect(self._listener)
         if self.signal_sent:
@@ -72,8 +81,14 @@ class RegistrationTestCase(TestCase):
 
     """
 
+    # pylint: disable=invalid-name
+
     @property
     def valid_data(self):
+        """
+        Return a set of valid data for user registration.
+
+        """
         User = get_user_model()
         return {
             User.USERNAME_FIELD: "alice",
@@ -84,18 +99,30 @@ class RegistrationTestCase(TestCase):
 
     @property
     def user_lookup_kwargs(self):
+        """
+        Return query arguments for querying the user registered by ``valid_data``.
+
+        """
         User = get_user_model()
         return {User.USERNAME_FIELD: "alice"}
 
     @contextmanager
     def assertSignalSent(self, signal, required_kwargs=None):
-        with _AssertSignalSentContext(self, signal, required_kwargs) as cm:
-            yield cm
+        """
+        Assert a signal was sent.
+
+        """
+        with _AssertSignalSentContext(self, signal, required_kwargs) as signal_context:
+            yield signal_context
 
     @contextmanager
     def assertSignalNotSent(self, signal):
-        with _AssertSignalNotSentContext(self, signal) as cm:
-            yield cm
+        """
+        Assert a signal was not sent.
+
+        """
+        with _AssertSignalNotSentContext(self, signal) as signal_context:
+            yield signal_context
 
 
 class WorkflowTestCase(RegistrationTestCase):
@@ -173,6 +200,11 @@ class WorkflowTestCase(RegistrationTestCase):
         self.assertTrue(resp.context["form"].has_error("password2"))
 
     def test_registration_signal(self):
+        """
+        Registering a new user account sends the registration signal.
+
+        """
+        # pylint: disable=invalid-name
         User = get_user_model()
         with self.assertSignalSent(signals.user_registered) as cm:
             self.client.post(

@@ -16,6 +16,13 @@ from ..models import CustomUser
 
 
 class CustomUserRegistrationForm(RegistrationForm):
+    """
+    Registration form for the custom user model.
+
+    """
+
+    # pylint: disable=too-few-public-methods
+
     class Meta(RegistrationForm.Meta):
         model = CustomUser
 

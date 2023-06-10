@@ -37,6 +37,10 @@ class RegistrationView(BaseRegistrationView):
     success_url = reverse_lazy("django_registration_complete")
 
     def register(self, form):
+        """
+        Register the new user account.
+
+        """
         new_user = self.create_inactive_user(form)
         signals.user_registered.send(
             sender=self.__class__, user=new_user, request=self.request
@@ -119,6 +123,10 @@ class ActivationView(BaseActivationView):
     success_url = reverse_lazy("django_registration_activation_complete")
 
     def activate(self, *args, **kwargs):
+        """
+        Attempt to activate the user account.
+
+        """
         username = self.validate_key(kwargs.get("activation_key"))
         user = self.get_user(username)
         user.is_active = True
@@ -132,6 +140,7 @@ class ActivationView(BaseActivationView):
         valid or raising ``ActivationError`` if not.
 
         """
+        # pylint: disable=raise-missing-from
         try:
             username = signing.loads(
                 activation_key,
@@ -155,6 +164,7 @@ class ActivationView(BaseActivationView):
         ``ActivationError`` if it doesn't.
 
         """
+        # pylint: disable=invalid-name,raise-missing-from
         User = get_user_model()
         try:
             user = User.objects.get(**{User.USERNAME_FIELD: username})

@@ -24,6 +24,10 @@ class RegistrationView(BaseRegistrationView):
     success_url = reverse_lazy("django_registration_complete")
 
     def register(self, form):
+        """
+        Register the new user account and immediately log it in.
+
+        """
         new_user = form.save()
         new_user = authenticate(
             **{

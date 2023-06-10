@@ -29,12 +29,12 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
         user_model = get_user_model()
         with self.assertSignalSent(
             signals.user_registered, required_kwargs=["user", "request"]
-        ) as cm:
+        ) as signal_context:
             resp = self.client.post(
                 reverse("django_registration_register"), data=self.valid_data
             )
             self.assertEqual(
-                cm.received_kwargs["user"].get_username(),
+                signal_context.received_kwargs["user"].get_username(),
                 self.valid_data[user_model.USERNAME_FIELD],
             )
 
