@@ -53,7 +53,6 @@ docs = [
 ]
 tests = [
   "coverage",
-  "mock; python_full_version < '3.8.0'",
   "tomli; python_full_version < '3.11.0a7'",
 ]
 
