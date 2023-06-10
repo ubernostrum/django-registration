@@ -288,11 +288,10 @@ def lint_pylint(session: nox.Session) -> None:
     Lint code with Pyling.
 
     """
-    # Pylint requires that all dependencies be importable during the run. This package
-    # does not have any direct dependencies, nor does the normal test suite, but the
-    # full conformance suite does require a few extra libraries, so they're installed
-    # here.
-    session.install("pylint", "pylint-django", "confusable_homoglyphs~=3.0")
+    # Pylint requires that all dependencies be importable during the run, so unlike
+    # other lint tasks we just install the package.
+    session.install(".")
+    session.install("pylint", "pylint-django")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
 
