@@ -44,6 +44,8 @@ django-registration.
    the terms-of-service field is not checked.
 
 
+.. _reserved-names:
+
 Rejecting "reserved" usernames
 ------------------------------
 

@@ -191,6 +191,7 @@ OTHER_SENSITIVE_NAMES = [
     "users",
     "weblog",
     "work",
+    "xrpc",  # Used by Bluesky/AT protocol for domain verification.
 ]
 
 

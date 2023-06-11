@@ -16,6 +16,17 @@ Within the 3.x release series, there have been several minor changes
 and improvements, documented here along with the version in which they
 occurred.
 
+django-registration 3.4
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* The :ref:`reserved names list <reserved-names>` has a new entry: ``"xrpc"``,
+  which is used in domain-onwership verification by Bluesky/AT protocol.
+
+The supported Python and Django versions are changed to:
+
+* Django 3.2, 4.1, and 4.2, on Python 3.7 (Django 3.2 only), 3.8, 3.9, 3.10,
+  and 3.11 (Django 4.1 and 4.2 only).
+
 django-registration 3.3
 ~~~~~~~~~~~~~~~~~~~~~~~
 
