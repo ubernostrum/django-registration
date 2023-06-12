@@ -18,7 +18,7 @@ django-registration 3.4
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 * The :ref:`reserved names list <reserved-names>` has a new entry: ``"xrpc"``,
-  which is used in domain-onwership verification by Bluesky/AT protocol.
+  which is used in domain-ownership verification by Bluesky/AT protocol.
 
 The supported Python and Django versions are changed to:
 
