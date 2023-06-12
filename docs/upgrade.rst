@@ -20,6 +20,17 @@ django-registration 3.4
 * The :ref:`reserved names list <reserved-names>` has a new entry: ``"xrpc"``,
   which is used in domain-ownership verification by Bluesky/AT protocol.
 
+* Validation of the email field in registration forms no longer applies
+  Django's default email validator, instead applying only django-registration's
+  :class:`~django_registration.validators.HTML5EmailValidator` and
+  :func:`~django_registration.validators.validate_confusables_email`. Since
+  django-registration's validators are significantly stricter, this does not
+  actually change the set of email addresses which will be accepted; all it
+  does is prevent a duplicate error message displaying when both the default
+  Django validator and the django-registration validators reject the email
+  address. See `GitHub issue #238
+  <https://github.com/ubernostrum/django-registration/issues/238>`_.
+
 The supported Python and Django versions are changed to:
 
 * Django 3.2, 4.1, and 4.2, on Python 3.7 (Django 3.2 only), 3.8, 3.9, 3.10,

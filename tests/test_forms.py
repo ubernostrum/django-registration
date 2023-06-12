@@ -34,12 +34,11 @@ class RegistrationFormTests(RegistrationTestCase):
         """
         Stricter-than-RFC email validation is applied.
 
-        This test is necessary because of the combination of
-        HTML5EmailValidator and validate_confusables_email() in the
-        default validator set for the email field of RegistrationForm;
-        some technically-valid email addresses which nonetheless
-        usually indicate bad faith or at least mischief are to be
-        rejected before the confusables validator is applied.
+        This test is necessary because of the combination of HTML5EmailValidator and
+        validate_confusables_email() in the default validator set for the email field of
+        RegistrationForm; some technically-valid email addresses which nonetheless
+        usually indicate bad faith or at least mischief are to be rejected before the
+        confusables validator is applied.
 
         """
         user_model = get_user_model()
@@ -69,13 +68,27 @@ class RegistrationFormTests(RegistrationTestCase):
                 in form.errors[user_model.get_email_field_name()]
             )
 
+    def test_email_validated_once(self):
+        """
+        GitHub issue #238: Django's default email validator (and its error message)
+        should not be applied to the email field of the registration form, since our
+        validators are stricter and use the same message (which can cause confusing
+        duplicate errors).
+
+        """
+        user_model = get_user_model()
+        user_data = self.valid_data.copy()
+        user_data["email"] = "invalid_email"
+        form = forms.RegistrationForm(data=user_data)
+        email_field = user_model.get_email_field_name()
+        assert len(form.errors[email_field]) == 1
+
     def test_username_uniqueness(self):
         """
         Username uniqueness is enforced.
 
-        This test is necessary as of 2.1.x to ensure the base
-        UserCreationForm clean() continues to be called from the
-        overridden clean() in RegistrationForm.
+        This test is necessary as of 2.1.x to ensure the base UserCreationForm clean()
+        continues to be called from the overridden clean() in RegistrationForm.
 
         """
         user_data = self.valid_data.copy()
@@ -107,8 +120,7 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_confusable_usernames(self):
         """
-        Usernames containing dangerously confusable use of Unicode are
-        disallowed.
+        Usernames containing dangerously confusable use of Unicode are disallowed.
 
         """
         user_model = get_user_model()
@@ -126,8 +138,7 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_confusable_emails(self):
         """
-        Usernames containing dangerously confusable use of Unicode are
-        disallowed.
+        Usernames containing dangerously confusable use of Unicode are disallowed.
 
         """
         for dangerous_value in (
@@ -172,8 +183,8 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_reserved_name_non_string(self):
         """
-        GitHub issue #82: reserved-name validator should not attempt
-        to validate a non-string 'username'.
+        GitHub issue #82: reserved-name validator should not attempt to validate a
+        non-string 'username'.
 
         """
         validator = validators.ReservedNameValidator()
@@ -310,8 +321,7 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_tos_field(self):
         """
-        The terms-of-service field on RegistrationFormTermsOfService
-        is required.
+        The terms-of-service field on RegistrationFormTermsOfService is required.
 
         """
         form = forms.RegistrationFormTermsOfService(data=self.valid_data.copy())

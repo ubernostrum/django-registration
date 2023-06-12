@@ -166,7 +166,7 @@ usernames and email addresses.
    A custom validator which prohibits the use of dangerously-confusable email
    address.
 
-   This validator will reject any email address where either the local-part of
+   This validator will reject any email address where either the local-part or
    the domain is -- when considered in isolation -- dangerously confusable. A
    string is dangerously confusable if it is a mixed-script value (as defined
    by Unicode 'Script' property) which also contains one or more characters

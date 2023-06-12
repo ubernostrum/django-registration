@@ -58,9 +58,15 @@ class RegistrationForm(UserCreationForm):
             validators.validate_confusables,
         ]
         self.fields[User.USERNAME_FIELD].validators.extend(username_validators)
-        self.fields[email_field].validators.extend(
-            (validators.HTML5EmailValidator(), validators.validate_confusables_email)
-        )
+        # django-registration's email validation is significantly stricter than Django's
+        # default email validation, which means that leaving Django's default validation
+        # on only causes confusion due to duplicate error messages (see GitHub issue
+        # #238). So we apply only the django-registration validators, not the default
+        # Django validator, on the email field.
+        self.fields[email_field].validators = [
+            validators.HTML5EmailValidator(),
+            validators.validate_confusables_email,
+        ]
         self.fields[email_field].required = True
 
 
