@@ -139,7 +139,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         resp = self.client.get(reverse("django_registration_register"))
-        self.assertEqual(200, resp.status_code)
+        assert resp.status_code == 200
 
     @override_settings(REGISTRATION_OPEN=False)
     def test_registration_closed(self):
@@ -162,9 +162,9 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         resp = self.client.get(reverse("django_registration_register"))
-        self.assertEqual(200, resp.status_code)
+        assert resp.status_code == 200
         self.assertTemplateUsed(resp, "django_registration/registration_form.html")
-        self.assertTrue(isinstance(resp.context["form"], RegistrationForm))
+        assert isinstance(resp.context["form"], RegistrationForm)
 
     def test_registration(self):
         """
@@ -181,8 +181,8 @@ class WorkflowTestCase(RegistrationTestCase):
         user_model = get_user_model()
         new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
-        self.assertTrue(new_user.check_password(self.valid_data["password1"]))
-        self.assertEqual(new_user.email, self.valid_data["email"])
+        assert new_user.check_password(self.valid_data["password1"])
+        assert new_user.email == self.valid_data["email"]
 
     def test_registration_failure(self):
         """
@@ -195,9 +195,9 @@ class WorkflowTestCase(RegistrationTestCase):
         with self.assertSignalNotSent(signals.user_registered):
             resp = self.client.post(reverse("django_registration_register"), data=data)
 
-        self.assertEqual(200, resp.status_code)
-        self.assertFalse(resp.context["form"].is_valid())
-        self.assertTrue(resp.context["form"].has_error("password2"))
+        assert resp.status_code == 200
+        assert not resp.context["form"].is_valid()
+        assert resp.context["form"].has_error("password2")
 
     def test_registration_signal(self):
         """
@@ -206,15 +206,15 @@ class WorkflowTestCase(RegistrationTestCase):
         """
         # pylint: disable=invalid-name
         User = get_user_model()
-        with self.assertSignalSent(signals.user_registered) as cm:
+        with self.assertSignalSent(signals.user_registered) as signal_context:
             self.client.post(
                 reverse("django_registration_register"), data=self.valid_data
             )
-            self.assertEqual(
-                cm.received_kwargs["user"].get_username(),
-                self.valid_data[User.USERNAME_FIELD],
+            assert (
+                signal_context.received_kwargs["user"].get_username()
+                == self.valid_data[User.USERNAME_FIELD]
             )
-            self.assertTrue(isinstance(cm.received_kwargs["request"], HttpRequest))
+            assert isinstance(signal_context.received_kwargs["request"], HttpRequest)
 
 
 class ActivationTestCase(WorkflowTestCase):
@@ -239,11 +239,11 @@ class ActivationTestCase(WorkflowTestCase):
         new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
         # New user must not be active.
-        self.assertFalse(new_user.is_active)
+        assert not new_user.is_active
 
         # An activation email was sent.
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertTrue("http" in mail.outbox[0].subject)
+        assert len(mail.outbox) == 1
+        assert "http" in mail.outbox[0].subject
 
     def test_registration_failure(self):
         """
@@ -254,7 +254,7 @@ class ActivationTestCase(WorkflowTestCase):
             super().test_registration_failure()
 
         # Activation email was not sent.
-        self.assertEqual(0, len(mail.outbox))
+        assert 0 == len(mail.outbox)
 
     def test_registration_no_sites(self):
         """
@@ -269,10 +269,10 @@ class ActivationTestCase(WorkflowTestCase):
                     reverse("django_registration_register"), data=self.valid_data
                 )
 
-            self.assertEqual(302, resp.status_code)
+            assert 302 == resp.status_code
 
             user_model = get_user_model()
             new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
-            self.assertTrue(new_user.check_password(self.valid_data["password1"]))
-            self.assertEqual(new_user.email, self.valid_data["email"])
+            assert new_user.check_password(self.valid_data["password1"])
+            assert new_user.email == self.valid_data["email"]

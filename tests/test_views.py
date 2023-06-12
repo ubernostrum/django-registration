@@ -146,21 +146,27 @@ class SensitiveParameterFilterTests(RegistrationTestCase):
             buggy_view(request)
             self.fail("expected exception not thrown")
         except RegistrationError as error:
-            self.assertEqual(str(error), "catch me if you can")
+            assert str(error) == "catch me if you can"
             # based on code in Django (tests/view_tests/views.py)
             self.logger.error(
                 f"Internal Server Error: {request.path}",
                 exc_info=sys.exc_info(),
                 extra={"status_code": 500, "request": request},
             )
-        self.assertEqual(len(mail.outbox), 1)
+        assert len(mail.outbox) == 1
         email = mail.outbox[0]
-        self.assertIn("RegistrationError at /raise/", email.body)
-        self.assertIn("catch me if you can", email.body)
-        self.assertIn("No GET data", email.body)
-        self.assertNotIn("No POST data", email.body)
-        self.assertIn("password1", email.body)
-        self.assertIn("password2", email.body)
-        self.assertNotIn(self.valid_data["password1"], email.body)
-        self.assertNotIn(self.valid_data["password2"], email.body)
-        self.assertNotIn(self.valid_data["email"], email.body)
+        for expected_string in (
+            "RegistrationError at /raise/",
+            "catch me if you can",
+            "No GET data",
+            "password1",
+            "password2",
+        ):
+            assert expected_string in email.body
+        for unexpected_string in (
+            "No POST data",
+            self.valid_data["password1"],
+            self.valid_data["password2"],
+            self.valid_data["email"],
+        ):
+            assert unexpected_string not in email.body

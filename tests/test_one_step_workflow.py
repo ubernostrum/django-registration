@@ -33,23 +33,23 @@ class OneStepWorkflowViewTests(WorkflowTestCase):
             resp = self.client.post(
                 reverse("django_registration_register"), data=self.valid_data
             )
-            self.assertEqual(
-                signal_context.received_kwargs["user"].get_username(),
-                self.valid_data[user_model.USERNAME_FIELD],
+            assert (
+                signal_context.received_kwargs["user"].get_username()
+                == self.valid_data[user_model.USERNAME_FIELD]
             )
 
         self.assertRedirects(resp, reverse("django_registration_complete"))
 
         new_user = user_model.objects.get(**self.user_lookup_kwargs)
-        self.assertTrue(new_user.check_password(self.valid_data["password1"]))
-        self.assertEqual(new_user.email, self.valid_data["email"])
+        assert new_user.check_password(self.valid_data["password1"])
+        assert new_user.email == self.valid_data["email"]
 
         # New user must be active.
-        self.assertTrue(new_user.is_active)
+        assert new_user.is_active
 
         # New user must be logged in.
         resp = self.client.get(reverse("django_registration_register"))
-        self.assertTrue(resp.context["user"].is_authenticated)
+        assert resp.context["user"].is_authenticated
 
 
 @override_settings(AUTH_USER_MODEL="tests.CustomUser")

@@ -94,16 +94,13 @@ class ActivationBackendViewTests(ActivationTestCase):
             )
 
         # Second activation fails.
-        self.assertEqual(200, resp.status_code)
+        assert 200 == resp.status_code
         self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        self.assertEqual(
-            resp.context["activation_error"],
-            {
-                "message": ActivationView.ALREADY_ACTIVATED_MESSAGE,
-                "code": "already_activated",
-                "params": None,
-            },
-        )
+        assert resp.context["activation_error"] == {
+            "message": ActivationView.ALREADY_ACTIVATED_MESSAGE,
+            "code": "already_activated",
+            "params": None,
+        }
 
     def test_bad_key(self):
         """
@@ -127,17 +124,14 @@ class ActivationBackendViewTests(ActivationTestCase):
             )
 
         # Second activation fails.
-        self.assertEqual(200, resp.status_code)
+        assert 200 == resp.status_code
         self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        self.assertTrue("activation_error" in resp.context)
-        self.assertEqual(
-            resp.context["activation_error"],
-            {
-                "message": ActivationView.INVALID_KEY_MESSAGE,
-                "code": "invalid_key",
-                "params": {"activation_key": activation_key},
-            },
-        )
+        assert "activation_error" in resp.context
+        assert resp.context["activation_error"] == {
+            "message": ActivationView.INVALID_KEY_MESSAGE,
+            "code": "invalid_key",
+            "params": {"activation_key": activation_key},
+        }
 
     # The timestamp calculation will error if USE_TZ=True, due to
     # trying to subtract a naive from an aware datetime. Since time
@@ -192,17 +186,14 @@ class ActivationBackendViewTests(ActivationTestCase):
                 )
             )
 
-        self.assertEqual(200, resp.status_code)
+        assert 200 == resp.status_code
         self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        self.assertTrue("activation_error" in resp.context)
-        self.assertEqual(
-            resp.context["activation_error"],
-            {
-                "message": ActivationView.EXPIRED_MESSAGE,
-                "code": "expired",
-                "params": None,
-            },
-        )
+        assert "activation_error" in resp.context
+        assert resp.context["activation_error"] == {
+            "message": ActivationView.EXPIRED_MESSAGE,
+            "code": "expired",
+            "params": None,
+        }
 
     def test_nonexistent_activation(self):
         """
@@ -221,17 +212,14 @@ class ActivationBackendViewTests(ActivationTestCase):
                 )
             )
 
-        self.assertEqual(200, resp.status_code)
+        assert 200 == resp.status_code
         self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        self.assertTrue("activation_error" in resp.context)
-        self.assertEqual(
-            resp.context["activation_error"],
-            {
-                "message": ActivationView.BAD_USERNAME_MESSAGE,
-                "code": "bad_username",
-                "params": None,
-            },
-        )
+        assert "activation_error" in resp.context
+        assert resp.context["activation_error"] == {
+            "message": ActivationView.BAD_USERNAME_MESSAGE,
+            "code": "bad_username",
+            "params": None,
+        }
 
     def test_activation_signal(self):
         """
@@ -256,13 +244,11 @@ class ActivationBackendViewTests(ActivationTestCase):
                     kwargs={"activation_key": activation_key},
                 )
             )
-            self.assertEqual(
-                signal_context.received_kwargs["user"].get_username(),
-                self.valid_data[user_model.USERNAME_FIELD],
+            assert (
+                signal_context.received_kwargs["user"].get_username()
+                == self.valid_data[user_model.USERNAME_FIELD]
             )
-            self.assertTrue(
-                isinstance(signal_context.received_kwargs["request"], HttpRequest)
-            )
+            assert isinstance(signal_context.received_kwargs["request"], HttpRequest)
 
 
 @override_settings(AUTH_USER_MODEL="tests.CustomUser")
