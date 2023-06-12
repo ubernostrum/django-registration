@@ -5,23 +5,21 @@
 Signals used by django-registration
 ===================================
 
-Much of django-registration's customizability comes through the
-ability to write and use different workflows for user
-registration. However, there are many cases where only a small bit of
-additional logic needs to be injected into the registration process,
-and writing a custom workflow to support this represents an
-unnecessary amount of work. A more lightweight customization option is
-provided through two custom signals which the built-in registration
-workflows send, and custom workflows are encouraged to send, at
-specific points during the registration process; functions listening
-for these signals can then add whatever logic is needed.
+Much of django-registration's customizability comes through the ability to
+write and use different workflows for user registration. However, there are
+many cases where only a small bit of additional logic needs to be injected into
+the registration process, and writing a custom workflow to support this
+represents an unnecessary amount of work. A more lightweight customization
+option is provided through two custom signals which the built-in registration
+workflows send, and custom workflows are encouraged to send, at specific points
+during the registration process; functions listening for these signals can then
+add whatever logic is needed.
 
-For general documentation on signals and the Django dispatcher,
-consult `Django's signals documentation
-<http://docs.djangoproject.com/en/stable/topics/signals/>`_. This
-documentation assumes that you are familiar with how signals work and
-the process of writing and connecting functions which will listen for
-signals.
+For general documentation on signals and the Django dispatcher, consult
+`Django's signals documentation
+<http://docs.djangoproject.com/en/stable/topics/signals/>`_. This documentation
+assumes that you are familiar with how signals work and the process of writing
+and connecting functions which will listen for signals.
 
 
 .. data:: user_activated
@@ -30,8 +28,8 @@ signals.
    workflows). Provides the following arguments:
 
    `sender`
-       The :class:`~django_registration.views.ActivationView` subclass used
-       to activate the user.
+       The :class:`~django_registration.views.ActivationView` subclass used to
+       activate the user.
 
    `user`
         A user-model instance representing the activated account.
@@ -41,10 +39,9 @@ signals.
        activated.
 
    This signal is automatically sent for you by the base
-   :class:`~django_registration.views.ActivationView`, so unless
-   you've overridden its
-   :meth:`~django.views.generic.base.TemplateView.get` method in a
-   subclass you should not need to explicitly send it.
+   :class:`~django_registration.views.ActivationView`, so unless you've
+   overridden its :meth:`~django.views.generic.base.TemplateView.get` method in
+   a subclass you should not need to explicitly send it.
 
 
 .. data:: user_registered
@@ -60,14 +57,13 @@ signals.
         A user-model instance representing the new account.
 
    `request`
-        The :class:`~django.http.HttpRequest` in which the new account
-        was registered.
+        The :class:`~django.http.HttpRequest` in which the new account was
+        registered.
 
    This signal is **not** automatically sent for you by the base
-   :class:`~django_registration.views.RegistrationView`. It is sent by
-   the subclasses implemented for the three included registration
-   workflows, but if you write your own subclass of
-   :class:`~django_registration.views.RegistrationView`, you'll need
-   to send this signal as part of the implementation of the
-   :meth:`~django_registration.views.RegistrationView.register`
-   method.
+   :class:`~django_registration.views.RegistrationView`. It is sent by the
+   subclasses implemented for the three included registration workflows, but if
+   you write your own subclass of
+   :class:`~django_registration.views.RegistrationView`, you'll need to send
+   this signal as part of the implementation of the
+   :meth:`~django_registration.views.RegistrationView.register` method.

@@ -3,9 +3,9 @@
 Frequently-asked questions
 ==========================
 
-The following are miscellaneous common questions and answers related
-to installing/using django-registration, culled from bug reports,
-emails and other sources.
+The following are miscellaneous common questions and answers related to
+installing/using django-registration, culled from bug reports, emails and other
+sources.
 
 
 General

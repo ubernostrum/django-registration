@@ -6,29 +6,28 @@ Security guide
 
 .. important:: **Reporting security issues**
 
-   If you believe you have found a security issue in
-   django-registration, please do *not* use the public GitHub issue
-   tracker to report it. Instead, you can `contact the author
-   privately <https://www.b-list.org/contact/>`_ to report the issue.
+   If you believe you have found a security issue in django-registration,
+   please do *not* use the public GitHub issue tracker to report it. Instead,
+   you can `contact the author privately <https://www.b-list.org/contact/>`_ to
+   report the issue.
 
-Anything related to users or user accounts has security implications
-and represents a large source of potential security issues. This
-document is not an exhaustive guide to those implications and issues,
-and makes no guarantees that your particular use of Django or
-django-registration will be safe; instead, it provides a set of
-recommendations, and explanations for why django-registration does
-certain things or recommends particular approaches. Using this
-software responsibly is, ultimately, up to you.
+Anything related to users or user accounts has security implications and
+represents a large source of potential security issues. This document is not an
+exhaustive guide to those implications and issues, and makes no guarantees that
+your particular use of Django or django-registration will be safe; instead, it
+provides a set of recommendations, and explanations for why django-registration
+does certain things or recommends particular approaches. Using this software
+responsibly is, ultimately, up to you.
 
-Before continuing with this document, you should ensure that you've
-read and understood `Django's security documentation
-<https://docs.djangoproject.com/en/stable/#security>`_.  Django
-provides a good overview of common security issues in the general
-field of web development, and an explanation of how it helps to
-protect against them or provides tools to help you do so.
+Before continuing with this document, you should ensure that you've read and
+understood `Django's security documentation
+<https://docs.djangoproject.com/en/stable/#security>`_.  Django provides a good
+overview of common security issues in the general field of web development, and
+an explanation of how it helps to protect against them or provides tools to
+help you do so.
 
-You should also ensure you're following Django's security
-recommendations. You can check for many common issues by running::
+You should also ensure you're following Django's security recommendations. You
+can check for many common issues by running::
 
     python manage.py check --tag security
 
@@ -38,92 +37,85 @@ on your codebase.
 Recommendation: use the two-step activation workflow
 ----------------------------------------------------
 
-Two user-signup workflows are included in django-registration, along
-with support for writing your own. If you choose to use one of the
-included workflows, :ref:`the two-step activation workflow
-<activation-workflow>` is the recommended default.
+Two user-signup workflows are included in django-registration, along with
+support for writing your own. If you choose to use one of the included
+workflows, :ref:`the two-step activation workflow <activation-workflow>` is the
+recommended default.
 
-The activation workflow provides a verification step -- the user must
-click a link sent to the email address they used to register -- which
-can serve as an impediment to automated account creation for malicious
-purposes.
+The activation workflow provides a verification step -- the user must click a
+link sent to the email address they used to register -- which can serve as an
+impediment to automated account creation for malicious purposes.
 
-The activation workflow generates an activation key which consists of
-the new account's username and the timestamp of the signup, verified
-using `Django's cryptographic signing tools
-<https://docs.djangoproject.com/en/1.11/topics/signing/>`_ which in
-turn use `the HMAC implementation from the Python standard library
-<https://docs.python.org/3/library/hmac.html>`_. Thus,
-django-registration is not inventing or building any new cryptography,
-but only using existing/vetted implementations in an approved and
-standard manner.
+The activation workflow generates an activation key which consists of the new
+account's username and the timestamp of the signup, verified using `Django's
+cryptographic signing tools
+<https://docs.djangoproject.com/en/1.11/topics/signing/>`_ which in turn use
+`the HMAC implementation from the Python standard library
+<https://docs.python.org/3/library/hmac.html>`_. Thus, django-registration is
+not inventing or building any new cryptography, but only using existing/vetted
+implementations in an approved and standard manner.
 
-Additionally, the activation workflow takes steps to ensure that its
-use of HMAC does not act as an `oracle
-<https://en.wikipedia.org/wiki/Oracle_attack>`_. Several parts of
-Django use the signing tools, and third-party applications are free to
-use them as well, so django-registration makes use of the ability to
-supply a salt value for the purpose of "namespacing" HMAC usage. Thus
-an activation token generated by django-registration's activation
-workflow should not be usable for attacks against other HMAC-carrying
-values generated by the same installation of Django.
+Additionally, the activation workflow takes steps to ensure that its use of
+HMAC does not act as an `oracle
+<https://en.wikipedia.org/wiki/Oracle_attack>`_. Several parts of Django use
+the signing tools, and third-party applications are free to use them as well,
+so django-registration makes use of the ability to supply a salt value for the
+purpose of "namespacing" HMAC usage. Thus an activation token generated by
+django-registration's activation workflow should not be usable for attacks
+against other HMAC-carrying values generated by the same installation of
+Django.
 
 
 Restrictions on user names: reserved names
 ------------------------------------------
 
-By default, django-registration applies a list of reserved names, and
-does not permit users to create accounts using those names (see
-:class:`~django_registration.validators.ReservedNameValidator`). The
-default list of reserved names includes many names that could cause
-confusion or even inappropriate access. These reserved names fall into
-several categories:
+By default, django-registration applies a list of reserved names, and does not
+permit users to create accounts using those names (see
+:class:`~django_registration.validators.ReservedNameValidator`). The default
+list of reserved names includes many names that could cause confusion or even
+inappropriate access. These reserved names fall into several categories:
 
-* Usernames which could allow a user to impersonate or be seen as a
-  site administrator. For example, `'admin'` or `'administrator'`.
+* Usernames which could allow a user to impersonate or be seen as a site
+  administrator. For example, ``"admin"`` or ``"administrator"``.
 
-* Usernames corresponding to standard/protocol-specific email
-  addresses (relevant for sites where creating an account also creates
-  an email address with that username). For example, `'webmaster'`.
+* Usernames corresponding to standard/protocol-specific email addresses
+  (relevant for sites where creating an account also creates an email address
+  with that username). For example, ``"webmaster"``.
 
-* Usernames corresponding to standard/sensitive subdomain names
-  (relevant for sites where creating an account also creates a
-  subdomain corresponding to the username). For example, `'ftp'` or
-  `'autodiscover'`.
+* Usernames corresponding to standard/sensitive subdomain names (relevant for
+  sites where creating an account also creates a subdomain corresponding to the
+  username). For example, ``"ftp"`` or ``"autodiscover"``.
 
-* Usernames which correspond to sensitive URLs (relevant for sites
-  where user profiles appear at a URL containing the username). For
-  example, `'contact'` or `'buy'`.
+* Usernames which correspond to sensitive URLs (relevant for sites where user
+  profiles appear at a URL containing the username). For example, ``"contact"``
+  or ``"buy"``.
 
-It is strongly recommended that you leave the reserved-name validation
-enabled.
+It is strongly recommended that you leave the reserved-name validation enabled.
 
 
 Restrictions on user names and email addresses: Unicode
 -------------------------------------------------------
 
-By default, django-registration permits the use of a wide range of
-Unicode in usernames and email addresses. However, to prevent some
-types of Unicode-related attacks, django-registration will not permit
-certain specific uses of Unicode characters.
+By default, django-registration permits the use of a wide range of Unicode in
+usernames and email addresses. However, to prevent some types of
+Unicode-related attacks, django-registration will not permit certain specific
+uses of Unicode characters.
 
-For example, while the username `'admin'` cannot normally be
-registered (see above), a user might still attempt to register a name
-that appears visually identical, by substituting a Cyrillic 'a' or
-other similar-appearing character for the first character. This is a
-`homograph attack
+For example, while the username ``"admin"`` cannot normally be registered (see
+above), a user might still attempt to register a name that appears visually
+identical, by substituting a Cyrillic "a or other similar-appearing character
+for the first character. This is a `homograph attack
 <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_.
 
-To prevent homograph attacks, django-registration applies the
-following rule to usernames, and to the local-part and the domain of
-email addresses:
+To prevent homograph attacks, django-registration applies the following rule to
+usernames, and to the local-part and the domain of email addresses:
 
-* If the submitted value is mixed-script (contains characters from
-  multiple different scripts, as in the above example which would mix
-  Cyrillic and Latin characters), and
+* If the submitted value is mixed-script (contains characters from multiple
+  different scripts, as in the above example which would mix Cyrillic and Latin
+  characters), and
 
-* If the submitted value contains characters appearing in the Unicode
-  Visually Confusable Characters file,
+* If the submitted value contains characters appearing in the Unicode Visually
+  Confusable Characters file,
 
 * Then the value will be rejected.
 
@@ -131,9 +123,9 @@ See :func:`~django_registration.validators.validate_confusables` and
 :func:`~django_registration.validators.validate_confusables_email`.
 
 This should not interfere with legitimate use of Unicode, or of
-non-English/non-Latin characters in usernames and email addresses. To
-avoid a common false-positive situation, the local-part and domain of
-an email address are checked independently of each other.
+non-English/non-Latin characters in usernames and email addresses. To avoid a
+common false-positive situation, the local-part and domain of an email address
+are checked independently of each other.
 
 It is strongly recommended that you leave this validation enabled.
 
@@ -141,26 +133,24 @@ It is strongly recommended that you leave this validation enabled.
 Additional steps to secure user accounts
 ----------------------------------------
 
-The scope of django-registration is solely the implementation of
-user-signup workflows, which limits the ways in which
-django-registration alone can protect your users. Other features of
-Django itself, or of other third-party applications, can provide
-significant increases in protection.
+The scope of django-registration is solely the implementation of user-signup
+workflows, which limits the ways in which django-registration alone can protect
+your users. Other features of Django itself, or of other third-party
+applications, can provide significant increases in protection.
 
 In particular, it is recommended that you:
 
-* Prevent the use of common passwords. You can catch some common
-  passwords by enabling Django's
+* Prevent the use of common passwords. You can catch some common passwords by
+  enabling Django's
   :class:`~django.contrib.auth.password_validation.CommonPasswordValidator`,
-  which uses a list of twenty thousand common passwords. A more
-  comprehensive option is the password validator and other utilities
-  from `pwned-passwords-django
-  <https://pwned-passwords-django.readthedocs.io/en/stable/>`_, which
-  checks against a database containing (as of mid-2018) over half a
-  billion passwords found in data breaches.
+  which uses a list of twenty thousand common passwords. A more comprehensive
+  option is the password validator and other utilities from
+  `pwned-passwords-django
+  <https://pwned-passwords-django.readthedocs.io/en/stable/>`_, which checks
+  against a database containing (as of mid-2018) over half a billion passwords
+  found in data breaches.
 
-* Use two-factor authentication via authenticator applications or
-  hardware security keys (*not* SMS). The package `django-two-factor
-  <https://django-two-factor-auth.readthedocs.io/en/stable/>`_
-  provides integration for two-factor authentication into Django's
-  auth framework.
+* Use two-factor authentication via authenticator applications or hardware
+  security keys (*not* SMS). The package `django-two-factor
+  <https://django-two-factor-auth.readthedocs.io/en/stable/>`_ provides
+  integration for two-factor authentication into Django's auth framework.
