@@ -29,10 +29,10 @@ setting.
 .. important:: **Django's authentication system must be installed**
 
    Before proceeding with either of the recommended built-in workflows, you'll
-   need to ensure `django.contrib.auth` has been installed (by adding it to
-   :data:`~django.conf.settings.INSTALLED_APPS` and running `manage.py migrate`
-   to install needed database tables). Also, if you're making use of `a custom
-   user model
+   need to ensure ``django.contrib.auth`` has been installed (by adding it to
+   :data:`~django.conf.settings.INSTALLED_APPS` and running ``manage.py
+   migrate`` to install needed database tables). Also, if you're making use of
+   `a custom user model
    <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#substituting-a-custom-user-model>`_,
    you'll probably want to pause and read :ref:`the custom user compatibility
    guide <custom-user>` before using django-registration.
@@ -75,9 +75,9 @@ Setting up URLs
 Each bundled registration workflow in django-registration includes a Django
 URLconf which sets up URL patterns for :ref:`the views in django-registration
 <views>`. The URLconf for the two-step activation workflow can be found at
-`django_registration.backends.activation.urls`. For example, to place the
-registration URLs under the prefix `/accounts/`, you could add the following to
-your project's root URLconf:
+``django_registration.backends.activation.urls``. For example, to place the
+registration URLs under the prefix ``/accounts/``, you could add the following
+to your project's root URLconf:
 
 .. code-block:: python
 
@@ -90,26 +90,26 @@ your project's root URLconf:
        # More URL patterns ...
    ]
 
-Users would then be able to register by visiting the URL `/accounts/register/`,
-log in (once activated) at `/accounts/login/`, etc.
+Users would then be able to register by visiting the URL
+``/accounts/register/``, log in (once activated) at ``/accounts/login/``, etc.
 
 The sample URL configuration above also sets up the built-in auth views
 included in Django (login, logout, password reset, etc.) via the
-`django.contrib.auth.urls` URLconf.
+``django.contrib.auth.urls`` URLconf.
 
 The following URL names are defined by
-`django_registration.backends.activation.urls`:
+``django_registration.backends.activation.urls``:
 
-* `django_registration_register` is the account-registration view.
+* ``django_registration_register`` is the account-registration view.
 
-* `django_registration_complete` is the post-registration success message.
+* ``django_registration_complete`` is the post-registration success message.
 
-* `django_registration_activate` is the account-activation view.
+* ``django_registration_activate`` is the account-activation view.
 
-* `django_registration_activation_complete` is the post-activation success
+* ``django_registration_activation_complete`` is the post-activation success
   message.
 
-* `django_registration_disallowed` is a message indicating registration is not
+* ``django_registration_disallowed`` is a message indicating registration is not
   currently permitted.
 
 
@@ -120,7 +120,7 @@ Required templates
 
 You will also need to create several templates required by django-registration,
 and possibly additional templates required by views in
-`django.contrib.auth`. The templates required by django-registration are as
+``django.contrib.auth``. The templates required by django-registration are as
 follows; note that, with the exception of the templates used for account
 activation emails, all of these are rendered using a
 :class:`~django.template.RequestContext` and so will also receive any
@@ -136,7 +136,7 @@ additional variables provided by `context processors
 Used to show the form users will fill out to register. By default, has the
 following context:
 
-`form`
+``form``
     The registration form. This will likely be a subclass of
     :class:`~django_registration.forms.RegistrationForm`; consult
     `Django's forms documentation
@@ -164,7 +164,7 @@ context variables of its own.
 
 Used if account activation fails. Has the following context:
 
-`activation_error`
+``activation_error``
     A :class:`dict` containing the information supplied to the
     :exc:`~django_registration.exceptions.ActivationError` which occurred
     during activation. See the documentation for that exception for a
@@ -189,31 +189,31 @@ line of an email must be a single line of text, any output from this template
 will be forcibly condensed to a single line before being used. This template
 has the following context:
 
-`activation_key`
+``activation_key``
     The activation key for the new account, as a string.
 
-`expiration_days`
+``expiration_days``
     The number of days remaining during which the account may be activated, as
     an integer.
 
-`request`
+``request``
     The :class:`~django.http.HttpRequest` object representing the request in
     which the user registered.
 
-`scheme`
+``scheme``
     The protocol scheme used during registration, as a string; will be either
-    `'http'` or `'https'`.
+    ``'http'`` or ``'https'``.
 
-`site`
+``site``
     An object representing the site on which the user registered; depending on
-    whether `django.contrib.sites` is installed, this may be an instance of
+    whether ``django.contrib.sites`` is installed, this may be an instance of
     either :class:`django.contrib.sites.models.Site` (if the sites application
     is installed) or :class:`django.contrib.sites.requests.RequestSite` (if
     not). Consult `the documentation for the Django sites framework
     <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for details
     regarding these objects' interfaces.
 
-`user`
+``user``
     The newly-created user object.
 
 
@@ -224,22 +224,22 @@ Used to generate the body of the activation email. Should display a link the
 user can click to activate the account. This template has the following
 context:
 
-`activation_key`
+``activation_key``
     The activation key for the new account, as a string.
 
-`expiration_days`
+``expiration_days``
     The number of days remaining during which the account may be activated, as
     an integer.
 
-`request`
+``request``
     The :class:`~django.http.HttpRequest` object representing the request in
     which the user registered.
 
-`scheme`
+``scheme``
     The protocol scheme used during registration, as a string; will be either
     `'http'` or `'https'`.
 
-`site`
+``site``
     An object representing the site on which the user registered; depending on
     whether `django.contrib.sites` is installed, this may be an instance of
     either :class:`django.contrib.sites.models.Site` (if the sites application
@@ -248,16 +248,16 @@ context:
     <https://docs.djangoproject.com/en/stable/ref/contrib/sites/>`_ for details
     regarding these objects.
 
-`user`
+``user``
     The newly-created user object.
 
 Note that the templates used to generate the account activation email use the
-extension `.txt`, not `.html`. Due to widespread antipathy toward and
+extension ``.txt``, not ``.html``. Due to widespread antipathy toward and
 interoperability problems with HTML email, django-registration produces
 plain-text email, and so these templates should output plain text rather than
 HTML.
 
-To make use of the views from `django.contrib.auth` (which are set up for you
+To make use of the views from ``django.contrib.auth`` (which are set up for you
 by the example URL configuration above), you will also need to create the
 templates required by those views. Consult `the documentation for Django's
 authentication system <https://docs.djangoproject.com/en/stable/topics/auth/>`_
@@ -287,16 +287,16 @@ your URL structure:
        # More URL patterns ...
    ]
 
-Users could then register accounts by visiting the URL `/accounts/register/`.
+Users could then register accounts by visiting the URL ``/accounts/register/``.
 
 The following URL names are defined by
-`django_registration.backends.one_step.urls`:
+``django_registration.backends.one_step.urls``:
 
-* `django_registration_register` is the account-registration view.
+* ``django_registration_register`` is the account-registration view.
 
-* `django_registration_complete` is the post-registration success message.
+* ``django_registration_complete`` is the post-registration success message.
 
-* `django_registration_disallowed` is a message indicating registration is not
+* ``django_registration_disallowed`` is a message indicating registration is not
   currently permitted.
 
 This URLconf will also configure the appropriate URLs for the rest of the
@@ -311,7 +311,7 @@ Finally, you will need to create following templates:
 See :ref:`the documentation above <default-form-template>` for details of these
 templates.
 
-To make use of the views from `django.contrib.auth` (which are set up for you
+To make use of the views from ``django.contrib.auth`` (which are set up for you
 by the example URL configuration above), you will also need to create the
 templates required by those views. Consult `the documentation for Django's
 authentication system <https://docs.djangoproject.com/en/stable/topics/auth/>`_

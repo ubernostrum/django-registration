@@ -27,14 +27,14 @@ and connecting functions which will listen for signals.
    Sent when a user account is activated (not applicable to all
    workflows). Provides the following arguments:
 
-   `sender`
+   ``sender``
        The :class:`~django_registration.views.ActivationView` subclass used to
        activate the user.
 
-   `user`
+   ``user``
         A user-model instance representing the activated account.
 
-   `request`
+   ``request``
        The :class:`~django.http.HttpRequest` in which the account was
        activated.
 
@@ -49,14 +49,14 @@ and connecting functions which will listen for signals.
    Sent when a new user account is registered. Provides the following
    arguments:
 
-   `sender`
+   ``sender``
        The :class:`~django_registration.views.RegistrationView` subclass used
        to register the account.
 
-   `user`
+   ``user``
         A user-model instance representing the new account.
 
-   `request`
+   ``request``
         The :class:`~django.http.HttpRequest` in which the new account was
         registered.
 

@@ -77,7 +77,7 @@ automatically handled for you.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields are
-optional (i.e., can be `NULL` in your database, or provide a suitable default
+optional (i.e., can be ``NULL`` in your database, or provide a suitable default
 value defined in the model), or specify the correct list of fields to display
 in your :class:`~django_registration.forms.RegistrationForm` subclass.
 
@@ -92,7 +92,7 @@ requirements on your user model:
   :attr:`~django.contrib.auth.models.CustomUser.USERNAME_FIELD` to indicate the
   field used as the username.
 
-* It must define a textual field named `password` for storing the user's
+* It must define a textual field named ``password`` for storing the user's
   password.
 
 Also note that the base :class:`~django_registration.forms.RegistrationForm`
@@ -109,7 +109,7 @@ automatically handled for you.
 
 If your custom user model defines additional fields beyond the minimum
 requirements, you'll either need to ensure that all of those fields are
-optional (i.e., can be `NULL` in your database, or provide a suitable default
+optional (i.e., can be ``NULL`` in your database, or provide a suitable default
 value defined in the model), or specify the correct list of fields to display
 in your :class:`~django_registration.forms.RegistrationForm` subclass.
 
@@ -119,7 +119,7 @@ creating it, you also must either use Django's
 backend
 <https://docs.djangoproject.com/en/stable/topics/auth/customizing/#other-authentication-sources>`_,
 or use an authentication backend which accepts a combination of
-`USERNAME_FIELD` and `password` as sufficient credentials to authenticate a
+``USERNAME_FIELD`` and ``password`` as sufficient credentials to authenticate a
 user.
 
 
@@ -148,7 +148,7 @@ django-registration, you will be able to subclass
 :class:`~django_registration.forms.RegistrationForm`, set it to use your custom
 user model as the model, and then configure the views in django-registration to
 use your form subclass. For example, you might do the following (in a
-`forms.py` module somewhere in your codebase -- do **not** directly edit
+``forms.py`` module somewhere in your codebase -- do **not** directly edit
 django-registration's code):
 
 .. code-block:: python
@@ -203,7 +203,7 @@ One is to subclass the built-in form and view classes of django-registration
 and make the necessary adjustments to achieve compatibility with your user
 model. For example, if you want to use the two-step activation workflow, but
 your user model uses a completely different way of marking accounts
-active/inactive (compared to the the assumed `is_active` field), you might
+active/inactive (compared to the the assumed ``is_active`` field), you might
 write subclasses of that workflow's
 :class:`~django_registration.backends.activation.views.RegistrationView` and
 :class:`~django_registration.backends.activation.views.ActivationView` which

@@ -17,16 +17,16 @@ situations.
    :class:`~django.contrib.auth.forms.UserCreationForm`, and has the following
    fields, all of which are required:
 
-   `username`
+   ``username``
        The username to use for the new account.
 
-   `email`
+   ``email``
       The email address to use for the new account.
 
-   `password1`
+   ``password1``
       The password to use for the new account.
 
-   `password2`
+   ``password2``
       The password to use for the new account, repeated to catch typos.
 
    .. note:: **Validation of usernames**
@@ -34,7 +34,7 @@ situations.
       Django supplies a default regex-based validator for usernames in its base
       :class:`~django.contrib.auth.models.AbstractBaseUser` implementation,
       allowing any word character along with the following set of additional
-      characters: `.`, `@`, `+`, and `-`.
+      characters: ``.``, ``@``, ``+``, and ``-``.
 
       Because it's a subclass of Django's
       :class:`~django.contrib.auth.forms.UserCreationForm`,
@@ -52,7 +52,7 @@ situations.
 
       The HTML5 validator uses `the HTML5 email-validation rule
       <https://html.spec.whatwg.org/multipage/input.html#e-mail-state-(type=email)>`_
-      (as implemented on HTML's `input type="email"`), which is more
+      (as implemented on HTML's ``input type="email"``), which is more
       restrictive than the email RFCs. The purpose of this validator is
       twofold: to match the behavior of HTML5, and to simplify
       django-registration's other validators. The full RFC grammar for email
@@ -82,7 +82,7 @@ situations.
 
      This form will normalize the username value to form NFKC, matching
      Django's default approach to Unicode normalization. it will then case fold
-     the value, and use a case-insensitive (`iexact`) lookup to determine if a
+     the value, and use a case-insensitive (``iexact``) lookup to determine if a
      user with the same username already exists; the results of this query may
      depend on the quality of your database's Unicode implementation, and on
      configuration details. The results may also be surprising to developers
@@ -95,7 +95,7 @@ situations.
    A subclass of :class:`RegistrationForm` which adds one additional, required
    field:
 
-   `tos`
+   ``tos``
        A checkbox indicating agreement to the site's terms of service/user
        agreement.
 

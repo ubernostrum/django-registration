@@ -6,7 +6,7 @@ The one-step workflow
 
 As an alternative to :ref:`the two-step (registration and activation) workflow
 <activation-workflow>`, django-registration bundles a one-step registration
-workflow in `django_registration.backends.one_step`. This workflow consists of
+workflow in ``django_registration.backends.one_step``. This workflow consists of
 as few steps as possible:
 
 1. A user signs up by filling out a registration form.
@@ -21,7 +21,7 @@ Configuration
 -------------
 
 To use this workflow, include the URLconf
-`django_registration.backends.one_step.urls` somewhere in your site's own URL
+``django_registration.backends.one_step.urls`` somewhere in your site's own URL
 configuration. For example:
 
 .. code-block:: python
@@ -39,7 +39,7 @@ To control whether registration of new accounts is allowed, you can specify the
 setting :data:`~django.conf.settings.REGISTRATION_OPEN`.
 
 Upon successful registration, the user will be redirected to the site's home
-page -- the URL `/`. This can be changed by subclassing
+page -- the URL ``/``. This can be changed by subclassing
 :class:`django_registration.backends.one_step.views.RegistrationView` and
 overriding the method
 :meth:`~django_registration.views.RegistrationView.get_success_url` or setting
@@ -66,7 +66,7 @@ do this in a URLconf. For example:
 The default form class used for account registration will be
 :class:`django_registration.forms.RegistrationForm`, although this can be
 overridden by supplying a custom URL pattern for the registration view and
-passing the keyword argument `form_class`, or by subclassing
+passing the keyword argument ``form_class``, or by subclassing
 :class:`django_registration.backends.one_step.views.RegistrationView` and
 either overriding
 :attr:`~django_registration.views.RegistrationView.form_class` or implementing
@@ -79,8 +79,8 @@ Templates
 
 The one-step workflow uses two templates:
 
-* `django_registration/registration_form.html`.
-* `django_registration/registration_closed.html`
+* ``django_registration/registration_form.html``.
+* ``django_registration/registration_closed.html``
 
 See :ref:`the quick start guide <default-form-template>` for details of these
 templates.

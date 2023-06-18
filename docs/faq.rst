@@ -31,7 +31,7 @@ By using `django-allauth <https://pypi.python.org/pypi/django-allauth>`_. No
 single application can or should provide a universal API for every
 authentication system ever developed; django-registration sticks to making it
 easy to implement typical signup workflows using Django's default model-based
-authentication system, while apps like `django-allauth` handle integration with
+authentication system, while apps like ``django-allauth`` handle integration with
 third-party authentication services far more effectively.
 
 What license is django-registration under?
@@ -41,7 +41,7 @@ django-registration is offered under a three-clause BSD-style license; this is
 `an OSI-approved open-source license
 <http://www.opensource.org/licenses/bsd-license.php>`_, and allows you a large
 degree of freedom in modifying and redistributing the code. For the full terms,
-see the file `LICENSE` which came with your copy of django-registration; if you
+see the file ``LICENSE`` which came with your copy of django-registration; if you
 did not receive a copy of this file, you can view it online at
 <https://github.com/ubernostrum/django-registration/blob/master/LICENSE>.
 
@@ -107,7 +107,7 @@ django-registration's tests are run using `nox <https://nox.thea.codes/>`_, but
 typical installation of django-registration (via ``pip install
 django-registration``) will not install the tests.
 
-To run the tests, download the source (`.tar.gz`) distribution of
+To run the tests, download the source (``.tar.gz``) distribution of
 django-registration |release| from `its page on the Python Package Index
 <https://pypi.org/project/django-registration/>`_, unpack it (``tar zxvf
 django-registration-|version|.tar.gz`` on most Unix-like operating systems),
@@ -204,7 +204,7 @@ I don't want to write my own URLconf because I don't want to write patterns for 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You're in luck, then; Django provides a URLconf for this, at
-`django.contrib.auth.urls`.
+``django.contrib.auth.urls``.
 
 I don't like the names you've given to the URL patterns!
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -228,8 +228,8 @@ If you haven't modified the behavior of the
 :meth:`~django_registration.views.RegistrationView.registration_allowed` method
 in :class:`~django_registration.views.RegistrationView`, you can use the
 setting :data:`~django.conf.settings.REGISTRATION_OPEN` to control this; when
-the setting is `True`, or isn't supplied, user registration will be
-permitted. When the setting is `False`, user registration will not be
+the setting is :data:`True`, or isn't supplied, user registration will be
+permitted. When the setting is :data:`False`, user registration will not be
 permitted.
 
 How do I log a user in immediately after registration or activation?
@@ -242,23 +242,14 @@ How do I manually activate a user?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In :ref:`the two-step activation workflow <activation-workflow>`, toggle the
-`is_active` field of the user in the admin.
+``is_active`` field of the user in the admin.
 
 How do I delete expired unactivated accounts?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Perform a query for those accounts, and call the `delete()` method of the
-resulting `QuerySet`. Since django-registration doesn't know in advance what
+Perform a query for those accounts, and call the ``delete()`` method of the
+resulting ``QuerySet``. Since django-registration doesn't know in advance what
 your definition of "expired" will be, it leaves this step to you.
-
-How do I allow Unicode in usernames?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Use Python 3. Django's username validation allows any word character plus some
-additional characters, but the definition of "word character" depends on the
-Python version in use. On Python 2, only ASCII will be permitted; on Python 3,
-usernames containing word characters matched by a regex with the
-:data:`re.UNICODE` flag will be accepted.
 
 How do I tell why an account's activation failed?
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

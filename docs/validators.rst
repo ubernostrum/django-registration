@@ -70,16 +70,16 @@ By default, django-registration treats some usernames as reserved.
    subclasses. This validator is attached to the list of validators for the
    username field, so to remove it (not recommended), subclass
    :class:`~django_registration.forms.RegistrationForm` and override
-   `__init__()` to change the set of validators on the username field.
+   ``__init__()`` to change the set of validators on the username field.
 
    If you want to supply your own custom list of reserved names, you can
    subclass :class:`~django_registration.forms.RegistrationForm` and set the
-   attribute `reserved_names` to the list of values you want to disallow.
+   attribute ``reserved_names`` to the list of values you want to disallow.
 
    The default list of reserved names, if you don't specify one, is
    :data:`~django_registration.validators.DEFAULT_RESERVED_NAMES`. The
    validator will also reject any value beginning with the string
-   `".well-known"` (see `RFC 5785 <https://www.ietf.org/rfc/rfc5785.txt>`_).
+   ``".well-known"`` (see `RFC 5785 <https://www.ietf.org/rfc/rfc5785.txt>`_).
 
    :param list reserved_names: A list of reserved names to forbid.
    :raises django.core.exceptions.ValidationError: if the provided

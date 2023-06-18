@@ -31,7 +31,7 @@ your own custom registration workflows.
 
    .. method:: register(form)
 
-      Implement your registration logic here. `form` will be the
+      Implement your registration logic here. ``form`` will be the
       (already-validated) form filled out by the user during the registration
       process (i.e., a valid instance of
       :class:`~django_registration.forms.RegistrationForm` or a subclass of
@@ -54,7 +54,7 @@ your own custom registration workflows.
       :func:`~django.urls.reverse` helper, or the lazy object produced by
       Django's :func:`~django.urls.reverse_lazy` helper. Default value is the
       result of calling :func:`~django.urls.reverse_lazy` with the URL name
-      `'registration_disallowed'`.
+      ``'registration_disallowed'``.
 
    .. attribute:: form_class
 
@@ -69,13 +69,13 @@ your own custom registration workflows.
       string, the string resulting from calling Django's
       :func:`~django.urls.reverse` helper, or the lazy object produced by
       Django's :func:`~django.urls.reverse_lazy` helper. Can be overridden on a
-      per-request basis (see below). Default value is `None`; subclasses must
-      override and provide this.
+      per-request basis (see below). Default value is :data:`None`; subclasses
+      must override and provide this.
 
    .. attribute:: template_name
 
       The template to use for user registration. Should be a string. Default
-      value is `'django_registration/registration_form.html'`.
+      value is ``'django_registration/registration_form.html'``.
 
    .. method:: get_form_class()
 
@@ -134,13 +134,13 @@ your own custom registration workflows.
       string, the string resulting from calling Django's
       :func:`~django.urls.reverse` helper, or the lazy object produced by
       Django's :func:`~django.urls.reverse_lazy` helper. Can be overridden on a
-      per-request basis (see below). Default value is `None`; subclasses must
-      override and provide this.
+      per-request basis (see below). Default value is :data:`None`; subclasses
+      must override and provide this.
 
    .. attribute:: template_name
 
       The template to use after failed user activation. Should be a
-      string. Default value is `'django_registration/activation_failed.html'`.
+      string. Default value is ``'django_registration/activation_failed.html'``.
 
    .. method:: get_success_url(user)
 

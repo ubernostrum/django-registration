@@ -118,13 +118,13 @@ Module renaming
 ~~~~~~~~~~~~~~~
 
 Prior to 3.x, django-registration installed a Python module named
-`registration`. To avoid silent incompatibilities, and to conform to more
+``registration``. To avoid silent incompatibilities, and to conform to more
 recent best practices, django-registration 3.x now installs a module named
-`django_registration`. Attempts to import from the `registration` module will
+``django_registration``. Attempts to import from the ``registration`` module will
 immediately fail with :exc:`ImportError`.
 
 Many installations will be able to adapt by replacing references to
-`registration` with references to `django_registration`.
+``registration`` with references to ``django_registration``.
 
 
 Removal of model-based workflow
@@ -141,16 +141,16 @@ Renaming of two-step activation workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`The two-step activation workflow <activation-workflow>` was previously
-found at `registration.backends.hmac`; it has been renamed and is now found at
-`registration.backends.activation`.
+found at ``registration.backends.hmac``; it has been renamed and is now found at
+``registration.backends.activation``.
 
 
 Renaming of one-step workflow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :ref:`The one-step workflow <one-step-workflow>` was previously found at
-`registration.backends.simple`; it has been renamed and is now found at
-`registration.backends.one_step`.
+``registration.backends.simple``; it has been renamed and is now found at
+``registration.backends.one_step``.
 
 
 Removal of auth URLs
@@ -163,7 +163,7 @@ Django's auth views to be class-based, as it required detecting the set of auth
 views and choosing a set of URL patterns at runtime.
 
 As a result, auth views are no longer automatically configured for you; if you
-want them, :func:`~django.urls.include` the URLconf `django.contrib.auth.urls`
+want them, :func:`~django.urls.include` the URLconf ``django.contrib.auth.urls``
 at a location of your choosing.
 
 
@@ -171,15 +171,15 @@ Distinguishing activation failure conditions
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prior to 3.x, failures to activate a user account (in workflows which use
-activation) all simply returned `None` in place of the activated account. This
-meant it was not possible to determine, from inspecting the result, what
-exactly caused the failure.
+activation) all simply returned :data:`None` in place of the activated
+account. This meant it was not possible to determine, from inspecting the
+result, what exactly caused the failure.
 
 In django-registration 3.x, activation failures raise an exception --
 :exc:`~django_registration.exceptions.ActivationError` -- with a message and
-code (such as `"expired"`), to indicate the cause of failure. This exception is
+code (such as ``"expired"``), to indicate the cause of failure. This exception is
 caught by :class:`~django_registration.views.ActivationView` and turned into
-the template context variable `activation_error`.
+the template context variable ``activation_error``.
 
 
 Changes to custom user support
@@ -195,7 +195,7 @@ models should now provide, in addition to
 methods. See :ref:`the custom user documentation <custom-user>` for details.
 
 
-Changes to `success_url`
+Changes to ``success_url``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Both the registration and activation views mimic Django's own generic views in
@@ -217,12 +217,12 @@ arguments.
 Also, earlier versions of django-registration allowed
 :attr:`~django_registration.views.RegistrationView.success_url` and
 :meth:`~django_registration.views.RegistrationView.get_success_url` to provide
-either a string URL, or a tuple of `(viewname, args, kwargs)` to pass to
+either a string URL, or a tuple of ``(viewname, args, kwargs)`` to pass to
 Django's :func:`~django.urls.reverse` helper, in order to work around issues
 caused by calling :func:`~django.urls.reverse` at the level of a class
 attribute.
 
-In django-registration 3.x, the `user` argument to
+In django-registration 3.x, the ``user`` argument to
 :meth:`~django_registration.views.RegistrationView.get_success_url` is now
 optional, meaning :class:`~django.views.generic.edit.FormMixin`'s default
 behavior is now compatible with any
@@ -230,8 +230,8 @@ behavior is now compatible with any
 implementation that doesn't require the user object; as a result,
 implementations which don't rely on the user object should either switch to
 specifying :attr:`~django_registration.views.RegistrationView.success_url` as
-an attribute, or change their own signature to `get_success_url(self,
-user=None)`.
+an attribute, or change their own signature to ``get_success_url(self,
+user=None)``.
 
 Also, the ability to supply the 3-tuple of arguments for
 :func:`~django.urls.reverse` has been removed; both
@@ -239,14 +239,14 @@ Also, the ability to supply the 3-tuple of arguments for
 :meth:`~django_registration.views.RegistrationView.get_success_url` now *must*
 be/return either a string, or a lazy object that resolves to a string. To avoid
 class-level calls to :func:`~django.urls.reverse`, use
-`django.urls.reverse_lazy()` instead.
+``django.urls.reverse_lazy()`` instead.
 
 
 Removed "no free email" form
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Earlier versions of django-registration included a form class,
-`RegistrationFormNoFreeEmail`, which attempted to forbid user signups using
+``RegistrationFormNoFreeEmail``, which attempted to forbid user signups using
 common free/throwaway email providers. Since this is a pointless task (the
 number of possible domains of such providers is ever-growing), this form class
 has been removed.
@@ -255,32 +255,32 @@ has been removed.
 Template names
 ~~~~~~~~~~~~~~
 
-Since django-registration's Python module has been renamed from `registration`
-to `django_registration`, its default template folder has also been renamed,
-from `registration` to `django_registration`. Additionally, the following
+Since django-registration's Python module has been renamed from ``registration``
+to ``django_registration``, its default template folder has also been renamed,
+from ``registration`` to ``django_registration``. Additionally, the following
 templates have undergone name changes:
 
 * The default template name for the body of the activation email in the
   two-step activation workflow is now
-  `django_registration/activation_email_body.txt` (previously, it was
-  `registration/activation_email.txt`)
+  ``django_registration/activation_email_body.txt`` (previously, it was
+  ``registration/activation_email.txt``)
 
 * The default template name for
   :class:`~django_registration.views.ActivationView` and its subclasses is now
-  `django_registration/activation_failed.html` (previously, it was
-  `registration/activate.html`).
+  ``django_registration/activation_failed.html`` (previously, it was
+  ``registration/activate.html``).
 
 
 Renaming of URL patterns
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Prior to 3.x, django-registration's included URLconf modules provided URL
-pattern names beginning with `"registration"`. For example:
-`"registration_register"`. In 3.x, these are all renamed to begin with
-`"django_registration"`. For example: `"django_registration_register"`.
+pattern names beginning with ``"registration"``. For example:
+``"registration_register"``. In 3.x, these are all renamed to begin with
+``"django_registration"``. For example: ``"django_registration_register"``.
 
-Removal of `cleanupregistration` management command
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Removal of ``cleanupregistration`` management command
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The "cleanupregistration" management command, and the
 RegistrationProfile.objects.delete_expired_users() and
@@ -292,10 +292,10 @@ own methods for this.
 Other changes
 ~~~~~~~~~~~~~
 
-The URLconf `registration.urls` has been removed; it was an alias for the
+The URLconf ``registration.urls`` has been removed; it was an alias for the
 URLconf of the model-based workflow, which has also been removed.
 
-The compatibility alias `registration.backends.default`, which also pointed to
+The compatibility alias ``registration.backends.default``, which also pointed to
 the model-based workflow, has been removed.
 
 
@@ -315,9 +315,9 @@ usernames. If you need to allow users to register with usernames forbidden by
 this validator, see its documentation for notes on how to customize or disable
 it.
 
-In 2.2, the behavior of the `RegistrationProfile.expired()` method was
+In 2.2, the behavior of the ``RegistrationProfile.expired()`` method was
 clarified to accommodate user expectations; it does *not* return (and thus,
-`RegistrationProfile.delete_expired_users()` does not delete) profiles of users
+``RegistrationProfile.delete_expired_users()`` does not delete) profiles of users
 who had successfully activated.
 
 In django-registration 2.3, the new validators

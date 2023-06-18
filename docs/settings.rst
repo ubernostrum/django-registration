@@ -26,9 +26,9 @@ workflows of django-registration make use of several custom settings.
    A :class:`bool` indicating whether registration of new accounts is currently
    permitted.
 
-   A default of `True` is assumed when this setting is not supplied, so
+   A default of :data:`True` is assumed when this setting is not supplied, so
    specifying it is optional unless you want to temporarily close registration
-   (in which case, set it to `False`).
+   (in which case, set it to :data:`False`).
 
    Used by:
 
@@ -48,7 +48,7 @@ workflows of django-registration make use of several custom settings.
    A :class:`str` used as an additional "salt" in the process of generating
    signed activation keys.
 
-   This setting is optional, and a default of `"registration"` will be used if
+   This setting is optional, and a default of ``"registration"`` will be used if
    not specified. The value of this setting does not need to be kept secret;
    see :ref:`the note about this salt value and security <salt-security>` for
    details.
