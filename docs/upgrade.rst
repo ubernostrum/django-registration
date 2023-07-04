@@ -31,10 +31,9 @@ django-registration 3.4
   address. See `GitHub issue #238
   <https://github.com/ubernostrum/django-registration/issues/238>`_.
 
-The supported Python and Django versions are changed to:
-
-* Django 3.2, 4.1, and 4.2, on Python 3.7 (Django 3.2 only), 3.8, 3.9, 3.10,
-  and 3.11 (Django 4.1 and 4.2 only).
+* The supported Python and Django versions are changed to: Django 3.2, 4.1, and
+  4.2, on Python 3.7 (Django 3.2 only), 3.8, 3.9, 3.10, and 3.11 (Django 4.1
+  and 4.2 only).
 
 django-registration 3.3
 ~~~~~~~~~~~~~~~~~~~~~~~
