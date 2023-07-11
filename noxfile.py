@@ -55,17 +55,13 @@ def clean(paths: typing.Iterable[os.PathLike] = ARTIFACT_PATHS) -> None:
     "python,django",
     [
         # Python/Django testing matrix. Tests Django 3.2, 4.0, 4.1,
-        # 4.2, on Python 3.7 through 3.11, skipping unsupported
-        # combinations: Django 3.2 and 4.0 do not support Python 3.11,
-        # and Django 4.0 and 4.1 do not support Python 3.7.
+        # 4.2, on Python 3.8 through 3.11, skipping unsupported
+        # combinations.
         (python, django)
-        for python in ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        for python in ["3.8", "3.9", "3.10", "3.11"]
         for django in ["3.2", "4.1", "4.2"]
         if (python, django)
         not in [
-            ("3.7", "4.0"),
-            ("3.7", "4.1"),
-            ("3.7", "4.2"),
             ("3.11", "3.2"),
         ]
     ],
