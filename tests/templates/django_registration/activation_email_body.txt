@@ -1,0 +1,7 @@
+{
+  "activation_key": "{{ activation_key }}",
+  "expiration_days": {{ expiration_days }},
+  "scheme": "{{ scheme }}",
+  "site": "{{ site }}",
+  "user": "{{ user.username }}"
+}

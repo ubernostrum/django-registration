@@ -2,12 +2,14 @@
 Base classes for other test cases to inherit from.
 
 """
+import json
 from contextlib import contextmanager
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import mail
 from django.http import HttpRequest
-from django.test import TestCase, override_settings
+from django.test import TestCase, modify_settings, override_settings
 from django.urls import reverse
 
 from django_registration import signals
@@ -241,9 +243,27 @@ class ActivationTestCase(WorkflowTestCase):
         # New user must not be active.
         assert not new_user.is_active
 
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
+    def test_registration_email(self):
+        """
+        The activation email is sent and contains the expected template variables.
+
+        """
+        super().test_registration()
+        user_model = get_user_model()
+        new_user = user_model.objects.get(**self.user_lookup_kwargs)
+
         # An activation email was sent.
         assert len(mail.outbox) == 1
-        assert "http" in mail.outbox[0].subject
+        message = mail.outbox[0]
+
+        subject_json, body_json = json.loads(message.subject), json.loads(message.body)
+        assert subject_json == body_json
+
+        assert len(body_json["activation_key"]) > 1
+        assert body_json["expiration_days"] == settings.ACCOUNT_ACTIVATION_DAYS
+        assert len(body_json["site"]) > 1
+        assert body_json["user"] == new_user.username
 
     def test_registration_failure(self):
         """
@@ -256,6 +276,7 @@ class ActivationTestCase(WorkflowTestCase):
         # Activation email was not sent.
         assert 0 == len(mail.outbox)
 
+    @modify_settings(INSTALLED_APPS={"remove": ["django.contrib.sites"]})
     def test_registration_no_sites(self):
         """
         Registration still functions properly when
@@ -263,16 +284,38 @@ class ActivationTestCase(WorkflowTestCase):
         be a ``RequestSite`` instance.
 
         """
-        with self.modify_settings(INSTALLED_APPS={"remove": ["django.contrib.sites"]}):
-            with self.assertSignalSent(signals.user_registered):
-                resp = self.client.post(
-                    reverse("django_registration_register"), data=self.valid_data
-                )
+        with self.assertSignalSent(signals.user_registered):
+            resp = self.client.post(
+                reverse("django_registration_register"), data=self.valid_data
+            )
 
-            assert 302 == resp.status_code
+        assert 302 == resp.status_code
 
-            user_model = get_user_model()
-            new_user = user_model.objects.get(**self.user_lookup_kwargs)
+        user_model = get_user_model()
+        new_user = user_model.objects.get(**self.user_lookup_kwargs)
 
-            assert new_user.check_password(self.valid_data["password1"])
-            assert new_user.email == self.valid_data["email"]
+        assert new_user.check_password(self.valid_data["password1"])
+        assert new_user.email == self.valid_data["email"]
+
+    @override_settings(ACCOUNT_ACTIVATION_DAYS=7)
+    @modify_settings(INSTALLED_APPS={"remove": ["django.contrib.sites"]})
+    def test_registration_email_no_sites(self):
+        """
+        The activation email is sent and contains the expected template variables.
+
+        """
+        super().test_registration()
+        user_model = get_user_model()
+        new_user = user_model.objects.get(**self.user_lookup_kwargs)
+
+        # An activation email was sent.
+        assert len(mail.outbox) == 1
+        message = mail.outbox[0]
+
+        subject_json, body_json = json.loads(message.subject), json.loads(message.body)
+        assert subject_json == body_json
+
+        assert len(body_json["activation_key"]) > 1
+        assert body_json["expiration_days"] == settings.ACCOUNT_ACTIVATION_DAYS
+        assert len(body_json["site"]) > 1
+        assert body_json["user"] == new_user.username
