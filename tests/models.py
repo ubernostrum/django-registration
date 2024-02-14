@@ -2,6 +2,7 @@
 Custom user model for use in tests.
 
 """
+
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import UserManager
 from django.contrib.auth.validators import UnicodeUsernameValidator

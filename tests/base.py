@@ -2,6 +2,7 @@
 Base classes for other test cases to inherit from.
 
 """
+
 import json
 from contextlib import contextmanager
 

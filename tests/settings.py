@@ -2,6 +2,7 @@
 Minimal Django settings file for test runs.
 
 """
+
 import pathlib
 
 from django.utils.crypto import get_random_string

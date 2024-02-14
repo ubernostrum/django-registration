@@ -4,6 +4,7 @@ Configuration file for the Sphinx documentation builder:
 https://www.sphinx-doc.org/
 
 """
+
 import os
 import sys
 
@@ -22,8 +23,8 @@ source_suffix = ".rst"
 master_doc = "index"
 project = "django-registration"
 copyright = "2007, James Bennett"
-version = "3.4"
-release = "3.4"
+version = "3.5a1"
+release = "3.5a1"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "django-registrationdoc"

@@ -3,6 +3,7 @@ Error messages, data and custom validation code used in
 django-registration's various user-registration form classes.
 
 """
+
 # pylint: disable=implicit-str-concat
 import re
 import unicodedata
