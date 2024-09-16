@@ -32,7 +32,7 @@ class RegistrationView(BaseRegistrationView):
         new_user = form.save()
         new_user = authenticate(
             **{
-                User.USERNAME_FIELD: new_user.get_username(),
+                User.USERNAME_FIELD: getattr(new_user, User.USERNAME_FIELD),
                 "password": form.cleaned_data["password1"],
             }
         )

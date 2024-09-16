@@ -5,15 +5,31 @@ https://www.sphinx-doc.org/
 
 """
 
+# SPDX-License-Identifier: BSD-3-Clause
+
 import os
 import sys
+from importlib.metadata import version as get_version
+
+import django
+from django.conf import settings
+
+settings.configure(
+    INSTALLED_APPS=[
+        "django.contrib.auth",
+        "django.contrib.contenttypes",
+        "django_registration",
+    ],
+    DEBUG=True,
+)
+
+django.setup()
 
 extensions = [
     "notfound.extension",
     "sphinx.ext.autodoc",
     "sphinx.ext.intersphinx",
     "sphinx.ext.viewcode",
-    "sphinxcontrib_django",
     "sphinxext.opengraph",
     "sphinx_copybutton",
     "sphinx_inline_tabs",
@@ -22,9 +38,9 @@ templates_path = ["_templates"]
 source_suffix = ".rst"
 master_doc = "index"
 project = "django-registration"
-copyright = "2007, James Bennett"
-version = "3.5a1"
-release = "3.5a1"
+copyright = "James Bennett and contributors"
+version = get_version("django-registration")
+release = version
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "django-registrationdoc"

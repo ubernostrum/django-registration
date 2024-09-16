@@ -94,10 +94,10 @@ class RegistrationTestCase(TestCase):
         Return a set of valid data for user registration.
 
         """
-        User = get_user_model()
+        UserModel = get_user_model()
         return {
-            User.USERNAME_FIELD: "alice",
-            "email": "alice@example.com",
+            UserModel.USERNAME_FIELD: "alice",
+            UserModel.EMAIL_FIELD: "alice@example.com",
             "password1": "swordfish",
             "password2": "swordfish",
         }

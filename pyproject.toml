@@ -48,7 +48,6 @@ docs = [
   "sphinx-copybutton",
   "sphinx-inline-tabs",
   "sphinx-notfound-page",
-  "sphinxcontrib-django",
   "sphinxext-opengraph",
 ]
 tests = [
@@ -57,6 +56,7 @@ tests = [
 ]
 
 [tool.bandit]
+exclude_dirs = ["src/django_registration/_backports.py"]
 skips = ["B101"]
 
 [tool.black]
@@ -76,8 +76,14 @@ exclude_lines = [
 ]
 fail_under = 100
 
+[tool.coverage.run]
+omit = [
+  "*/_backports.py",
+]
+
 [tool.interrogate]
 exclude = [
+  "src/django_registration/_backports.py",
   "src/django_registration/migrations",
   "tests/migrations",
 ]

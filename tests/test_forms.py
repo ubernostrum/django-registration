@@ -287,7 +287,7 @@ class RegistrationFormTests(RegistrationTestCase):
 
     def test_case_insensitive_form(self):
         """
-        Test the case-insensitive registration form.
+        Test the case-insensitive username validation.
 
         """
         base_creation_data = self.valid_data.copy()
@@ -312,7 +312,7 @@ class RegistrationFormTests(RegistrationTestCase):
             existing_user.save()
             user_data = self.valid_data.copy()
             user_data[user_model.USERNAME_FIELD] = name
-            form = forms.RegistrationFormCaseInsensitive(data=user_data)
+            form = forms.RegistrationForm(data=user_data)
             assert not form.is_valid()
             assert form.has_error(user_model.USERNAME_FIELD)
             assert [str(validators.DUPLICATE_USERNAME)] == form.errors[

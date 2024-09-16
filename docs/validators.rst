@@ -131,6 +131,8 @@ Several constants are provided which are used by this validator:
    :class:`~django_registration.validators.ReservedNameValidator`.
 
 
+.. _homograph-attacks:
+
 Protecting against homograph attacks
 ------------------------------------
 
