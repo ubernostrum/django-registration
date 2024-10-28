@@ -17,6 +17,7 @@ from django.test import modify_settings, override_settings
 from django.urls import reverse
 
 from django_registration import signals
+from django_registration.backends.activation.forms import ActivationForm
 from django_registration.backends.activation.views import (
     REGISTRATION_SALT,
     ActivationView,
@@ -33,9 +34,63 @@ class ActivationBackendViewTests(ActivationTestCase):
 
     """
 
-    def test_activation(self):
+    def test_activation_success_url(self):
         """
-        Activation of an account functions properly.
+        Valid activation redirects to the success URL.
+
+        """
+        user_model = get_user_model()
+        self.client.post(reverse("django_registration_register"), data=self.valid_data)
+        activation_key = signing.dumps(
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+        )
+
+        activation_response = self.client.post(
+            reverse("django_registration_activate"),
+            data={"activation_key": activation_key},
+        )
+        self.assertRedirects(
+            activation_response, reverse("django_registration_activation_complete")
+        )
+
+    def test_activation_success_signal(self):
+        """
+        Valid activation emits the user-activated signal.
+
+        """
+        user_model = get_user_model()
+        self.client.post(reverse("django_registration_register"), data=self.valid_data)
+        activation_key = signing.dumps(
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+        )
+
+        with self.assertSignalSent(signals.user_activated):
+            self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
+            )
+
+    def test_activation_success_sets_is_active(self):
+        """
+        Valid activation marks the account as active.
+
+        """
+        user_model = get_user_model()
+        self.client.post(reverse("django_registration_register"), data=self.valid_data)
+        activation_key = signing.dumps(
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+        )
+        self.client.post(
+            reverse("django_registration_activate"),
+            data={"activation_key": activation_key},
+        )
+
+        user_account = user_model.objects.get(**self.user_lookup_kwargs)
+        assert user_account.is_active
+
+    def test_no_activation_on_get(self):
+        """
+        Account activation only occurs on HTTP POST, not GET.
 
         """
         user_model = get_user_model()
@@ -48,16 +103,52 @@ class ActivationBackendViewTests(ActivationTestCase):
             obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
         )
 
-        with self.assertSignalSent(signals.user_activated):
+        with self.assertSignalNotSent(signals.user_activated):
             resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
+            assert resp.status_code == 200
 
-        self.assertRedirects(resp, reverse("django_registration_activation_complete"))
+        user_account = user_model.objects.get(**self.user_lookup_kwargs)
+        assert not user_account.is_active
+
+    def test_form_populated(self):
+        """
+        HTTP GET with the activation key in the querystring populates the activation
+        form.
+
+        """
+        user_model = get_user_model()
+
+        resp = self.client.post(
+            reverse("django_registration_register"), data=self.valid_data
+        )
+
+        activation_key = signing.dumps(
+            obj=self.valid_data[user_model.USERNAME_FIELD], salt=REGISTRATION_SALT
+        )
+
+        resp = self.client.get(
+            reverse("django_registration_activate"),
+            data={"activation_key": activation_key},
+        )
+        assert resp.context["form"].initial["activation_key"] == activation_key
+
+    def test_form_not_populated(self):
+        """
+        HTTP GET without the activation key in the querystring does not populate the
+        activation form.
+
+        """
+        resp = self.client.post(
+            reverse("django_registration_register"), data=self.valid_data
+        )
+
+        resp = self.client.get(
+            reverse("django_registration_activate"),
+        )
+        assert resp.context["form"].initial == {}
 
     def test_repeat_activation(self):
         """
@@ -76,28 +167,21 @@ class ActivationBackendViewTests(ActivationTestCase):
         )
 
         with self.assertSignalSent(signals.user_activated):
-            resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            resp = self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
         # First activation redirects to success.
         self.assertRedirects(resp, reverse("django_registration_activation_complete"))
 
         with self.assertSignalNotSent(signals.user_activated):
-            resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            resp = self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
 
         # Second activation fails.
         assert 200 == resp.status_code
-        self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
         assert resp.context["activation_error"] == {
             "message": ActivationView.ALREADY_ACTIVATED_MESSAGE,
             "code": "already_activated",
@@ -117,23 +201,17 @@ class ActivationBackendViewTests(ActivationTestCase):
 
         activation_key = self.valid_data[user_model.USERNAME_FIELD]
         with self.assertSignalNotSent(signals.user_activated):
-            resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            resp = self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
 
-        # Second activation fails.
         assert 200 == resp.status_code
-        self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        assert "activation_error" in resp.context
-        assert resp.context["activation_error"] == {
-            "message": ActivationView.INVALID_KEY_MESSAGE,
-            "code": "invalid_key",
-            "params": {"activation_key": activation_key},
-        }
+        self.assertFormError(
+            form=resp.context["form"],
+            field="activation_key",
+            errors=ActivationForm.INVALID_KEY_MESSAGE,
+        )
 
     # The timestamp calculation will error if USE_TZ=True, due to trying to subtract a
     # naive from an aware datetime. Since time zones aren't relevant to the test, we
@@ -178,22 +256,17 @@ class ActivationBackendViewTests(ActivationTestCase):
             time.time = _old_time
 
         with self.assertSignalNotSent(signals.user_activated):
-            resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            resp = self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
 
         assert 200 == resp.status_code
-        self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
-        assert "activation_error" in resp.context
-        assert resp.context["activation_error"] == {
-            "message": ActivationView.EXPIRED_MESSAGE,
-            "code": "expired",
-            "params": None,
-        }
+        self.assertFormError(
+            form=resp.context["form"],
+            field="activation_key",
+            errors=ActivationForm.EXPIRED_MESSAGE,
+        )
 
     def test_nonexistent_activation(self):
         """
@@ -203,16 +276,12 @@ class ActivationBackendViewTests(ActivationTestCase):
         activation_key = signing.dumps(obj="parrot", salt=REGISTRATION_SALT)
 
         with self.assertSignalNotSent(signals.user_activated):
-            resp = self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            resp = self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
 
         assert 200 == resp.status_code
-        self.assertTemplateUsed(resp, "django_registration/activation_failed.html")
         assert "activation_error" in resp.context
         assert resp.context["activation_error"] == {
             "message": ActivationView.BAD_USERNAME_MESSAGE,
@@ -236,12 +305,9 @@ class ActivationBackendViewTests(ActivationTestCase):
         with self.assertSignalSent(
             signals.user_activated, required_kwargs=["user", "request"]
         ) as signal_context:
-            self.client.get(
-                reverse(
-                    "django_registration_activate",
-                    args=(),
-                    kwargs={"activation_key": activation_key},
-                )
+            self.client.post(
+                reverse("django_registration_activate"),
+                data={"activation_key": activation_key},
             )
             assert (
                 signal_context.received_kwargs["user"].get_username()

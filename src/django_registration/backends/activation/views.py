@@ -19,17 +19,37 @@ from django_registration.exceptions import ActivationError
 from django_registration.views import ActivationView as BaseActivationView
 from django_registration.views import RegistrationView as BaseRegistrationView
 
-REGISTRATION_SALT = getattr(settings, "REGISTRATION_SALT", "registration")
+from . import REGISTRATION_SALT
+from .forms import ActivationForm
+
+# pylint: disable=raise-missing-from
 
 
 class RegistrationView(BaseRegistrationView):
     """
-    Register a new (inactive) user account, generate an activation key and email it
-    to the user.
+    A subclass of :class:`django_registration.views.RegistrationView` implementing
+    the signup portion of this workflow.
 
-    This is different from the model-based activation workflow in that the activation
-    key is the username, signed using Django's TimestampSigner, with HMAC verification
-    on activation.
+    Important customization points unique to this class are:
+
+    .. automethod:: create_inactive_user
+
+    .. automethod:: get_activation_key
+
+    .. automethod:: get_email_context
+
+    .. attribute:: email_body_template
+
+       A string specifying the template to use for the body of the activation
+       email. Default is ``"django_registration/activation_email_body.txt"``.
+
+    .. attribute:: email_subject_template
+
+       A string specifying the template to use for the subject of the activation
+       email. Default is ``"django_registration/activation_email_subject.txt"``. Note
+       that, to avoid `header-injection vulnerabilities
+       <https://en.wikipedia.org/wiki/Email_injection>`_, the result of rendering this
+       template will be forced into a single line of text, stripping newline characters.
 
     """
 
@@ -50,8 +70,13 @@ class RegistrationView(BaseRegistrationView):
 
     def create_inactive_user(self, form):
         """
-        Create the inactive user account and send an email containing
-        activation instructions.
+        Creates and returns an inactive user account, and calls
+        :meth:`send_activation_email()` to send the email with the activation key. The
+        argument ``form`` is a valid registration form instance passed from
+        :meth:`~django_registration.views.RegistrationView.register()`.
+
+        :param django_registration.forms.RegistrationForm form: The registration form.
+        :rtype: django.contrib.auth.models.AbstractUser
 
         """
         new_user = form.save(commit=False)
@@ -64,14 +89,21 @@ class RegistrationView(BaseRegistrationView):
 
     def get_activation_key(self, user):
         """
-        Generate the activation key which will be emailed to the user.
+        Generates and returns the activation key which will be emailed to the user.
+
+        :param django.contrib.auth.models.AbstractUser user: The new user account.
+        :rtype: str
 
         """
         return signing.dumps(obj=user.get_username(), salt=REGISTRATION_SALT)
 
     def get_email_context(self, activation_key):
         """
-        Build the template context used for the activation email.
+        Returns a dictionary of values to be used as template context when generating the
+        activation email.
+
+        :param str activation_key: The activation key for the new user account.
+        :rtype: dict
 
         """
         scheme = "https" if self.request.is_secure() else "http"
@@ -84,8 +116,11 @@ class RegistrationView(BaseRegistrationView):
 
     def send_activation_email(self, user):
         """
-        Send the activation email. The activation key is the username, signed using
-        TimestampSigner.
+        Given an inactive user account, generates and sends the activation email for that
+        account.
+
+        :param django.contrib.auth.models.AbstractUser user: The new user account.
+        :rtype: None
 
         """
         activation_key = self.get_activation_key(user)
@@ -108,8 +143,26 @@ class RegistrationView(BaseRegistrationView):
 
 class ActivationView(BaseActivationView):
     """
-    Given a valid activation key, activate the user's account. Otherwise, show an
-    error message stating the account couldn't be activated.
+    A subclass of :class:`django_registration.views.ActivationView` implementing the
+    activation portion of this workflow.
+
+    This view expects to receive the activation key as the querystring parameter
+    ``activation_key`` on the initial HTTP ``GET``; then it will populate that into a
+    form for re-submission in an HTTP ``POST`` request.
+
+    If the activation key is missing, expired, or has an invalid signature, the form
+    will have an error on the ``activation_key`` field.
+
+    If the activation key has a valid non-expired signature, but account activation
+    fails for another reason, the ``activation_error`` dictionary in the template
+    context will contain a ``code`` key with one of the following values:
+
+    ``"already_activated"``
+        Indicates the account has already been activated.
+
+    ``"bad_username"``
+        Indicates the username decoded from the activation key is invalid (does not
+        correspond to any user account).
 
     """
 
@@ -117,44 +170,30 @@ class ActivationView(BaseActivationView):
         "The account you tried to activate has already been activated."
     )
     BAD_USERNAME_MESSAGE = _("The account you attempted to activate is invalid.")
-    EXPIRED_MESSAGE = _("This account has expired.")
-    INVALID_KEY_MESSAGE = _("The activation key you provided is invalid.")
+
+    form_class = ActivationForm
     success_url = reverse_lazy("django_registration_activation_complete")
 
-    def activate(self, *args, **kwargs):
+    def get_activation_data(self, request):
+        """
+        Return the activation key as initial form data.
+
+        """
+        activation_key = request.GET.get("activation_key")
+        if activation_key is not None:
+            return {"activation_key": activation_key}
+        return {}
+
+    def activate(self, form):
         """
         Attempt to activate the user account.
 
         """
-        username = self.validate_key(kwargs.get("activation_key"))
+        username = form.cleaned_data["activation_key"]
         user = self.get_user(username)
         user.is_active = True
         user.save()
         return user
-
-    def validate_key(self, activation_key):
-        """
-        Verify that the activation key is valid and within the permitted activation
-        time window, returning the username if valid or raising ``ActivationError`` if
-        not.
-
-        """
-        # pylint: disable=raise-missing-from
-        try:
-            username = signing.loads(
-                activation_key,
-                salt=REGISTRATION_SALT,
-                max_age=settings.ACCOUNT_ACTIVATION_DAYS * 86400,
-            )
-            return username
-        except signing.SignatureExpired:
-            raise ActivationError(self.EXPIRED_MESSAGE, code="expired")
-        except signing.BadSignature:
-            raise ActivationError(
-                self.INVALID_KEY_MESSAGE,
-                code="invalid_key",
-                params={"activation_key": activation_key},
-            )
 
     def get_user(self, username):
         """
@@ -162,7 +201,7 @@ class ActivationView(BaseActivationView):
         account if it exists, or raising ``ActivationError`` if it doesn't.
 
         """
-        # pylint: disable=invalid-name,raise-missing-from
+        # pylint: disable=invalid-name
         User = get_user_model()
         try:
             user = User.objects.get(**{User.USERNAME_FIELD: username})

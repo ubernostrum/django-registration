@@ -30,7 +30,7 @@ urlpatterns = [
         name="django_registration_activation_complete",
     ),
     path(
-        "activate/<str:activation_key>/",
+        "activate/",
         ActivateWithComplexRedirect.as_view(),
         name="django_registration_activate",
     ),

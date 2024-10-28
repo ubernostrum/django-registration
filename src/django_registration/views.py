@@ -13,7 +13,6 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.utils.encoding import force_str
 from django.views.decorators.debug import sensitive_post_parameters
-from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from . import signals
@@ -33,6 +32,60 @@ on custom user models for more details. """
 class RegistrationView(FormView):
     """
     Base class for user registration views.
+
+    This is a :class:`~django.views.generic.edit.FormView`, so any attributes/methods
+    which can be overridden on ``FormView`` can also be overridden here.
+
+    One custom method here *must* be implemented by subclasses:
+
+    .. automethod:: register
+
+    Useful optional places to override or customize on subclasses are:
+
+    .. automethod:: registration_allowed
+
+    .. attribute:: disallowed_url
+
+       The URL to redirect to when registration is disallowed. Can be a hard-coded
+       string, the string resulting from calling Django's :func:`~django.urls.reverse`
+       helper, or the lazy object produced by Django's :func:`~django.urls.reverse_lazy`
+       helper. Default value is the result of calling :func:`~django.urls.reverse_lazy`
+       with the URL name ``'registration_disallowed'``.
+
+    .. attribute:: form_class
+
+       The form class to use for user registration. Can be overridden on a per-request
+       basis (see below). Should be the actual class object; by default, this class is
+       :class:`django_registration.forms.RegistrationForm`.
+
+    .. attribute:: success_url
+
+       The URL to redirect to after successful registration. Can be a hard-coded string,
+       the string resulting from calling Django's :func:`~django.urls.reverse` helper,
+       or the lazy object produced by Django's :func:`~django.urls.reverse_lazy`
+       helper. Can be overridden on a per-request basis (see below). Default value is
+       :data:`None`; subclasses must override and provide this.
+
+    .. attribute:: template_name
+
+       The template to use for user registration. Should be a string. Default value is
+       ``'django_registration/registration_form.html'``.
+
+    .. method:: get_form_class()
+
+       Select a form class to use on a per-request basis. If not overridden, will use
+       :attr:`~form_class`. Should be the actual class object.
+
+       :rtype: django_registration.forms.RegistrationForm
+
+    .. method:: get_success_url(user)
+
+       Return a URL to redirect to after successful registration, on a per-request or
+       per-user basis. If not overridden, will use :attr:`~success_url`. Should return a
+       value of the same type as :attr:`success_url` (see above).
+
+       :param django.contrib.auth.models.AbstractUser user: The new user account.
+       :rtype: str
 
     """
 
@@ -100,46 +153,120 @@ class RegistrationView(FormView):
 
     def registration_allowed(self):
         """
-        Override this to enable/disable user registration, either globally or on a
-        per-request basis.
+        Indicate whether user registration is allowed, either in general or for this
+        specific request. Default value is the value of the setting
+        ``REGISTRATION_OPEN``.
+
+        :rtype: bool
 
         """
         return getattr(settings, "REGISTRATION_OPEN", True)
 
     def register(self, form):
         """
-        Implement user-registration logic here. Access to both the request and the
-        registration form is available here.
+        Subclasses *must* override this method.
+
+        Implement your registration logic here. ``form`` will be the
+        (already-validated) form filled out by the user during the registration process
+        (i.e., a valid instance of :class:`~django_registration.forms.RegistrationForm`
+        or a subclass of it).
+
+        This method should return the newly-registered user instance, and should send
+        the signal :data:`django_registration.signals.user_registered`. Note that this
+        is not automatically done for you when writing your own custom subclass, so you
+        must send this signal manually.
+
+        :param django_registration.forms.RegistrationForm form: The registration form to use.
+        :rtype: django.contrib.auth.models.AbstractUser
 
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            "Subclasses of RegistrationView must implement register()."
+        )
 
 
-class ActivationView(TemplateView):
+class ActivationView(FormView):
     """
     Base class for user activation views.
+
+    This is a :class:`~django.views.generic.edit.FormView`, so any attributes/methods
+    which can be overridden on ``FormView`` can also be overridden here.
+
+    There are two opportunities to raise errors here: they can be raised as validation
+    errors in the form, or raised via
+    :exc:`~django_registration.exceptions.ActivationError` in your :meth:`activate`
+    method. In the latter case, the exception's ``message``, ``code``, and ``params``
+    will be gathered into a dictionary and injected into the template context as the
+    variable ``activation_error``.
+
+    Two custom methods *must* be implemented by subclasses:
+
+    .. automethod:: activate
+
+    .. automethod:: get_activation_data
+
+    Useful places to override or customize on a subclass are:
+
+    .. attribute:: success_url
+
+       The URL to redirect to after successful activation. Can be a hard-coded string,
+       the string resulting from calling Django's :func:`~django.urls.reverse` helper,
+       or the lazy object produced by Django's :func:`~django.urls.reverse_lazy`
+       helper. Can be overridden on a per-request basis (see below). Default value is
+       :data:`None`; subclasses must override and provide this.
+
+    .. attribute:: template_name
+
+       The template to use on HTTP ``GET`` and on activation failures. Should be a
+       string. Default value is ``'django_registration/activation_form.html'``.
+
+    .. method:: get_success_url(user)
+
+       Return a URL to redirect to after successful activation, on a per-request or
+       per-user basis. If not overridden, will use :attr:`~success_url`. Should return a
+       value of the same type as :attr:`success_url` (see above).
+
+       :param django.contrib.auth.models.AbstractUser user: The activated user account.
+       :rtype: str
 
     """
 
     success_url = None
-    template_name = "django_registration/activation_failed.html"
+    template_name = "django_registration/activation_form.html"
+
+    def get_initial(self):
+        """
+        Return the initial data used for the activation form.
+
+        This is overridden to allow our view to introduce a standard method name
+        specifically for getting activation data.
+
+        """
+        initial = super().get_initial()
+        initial.update(self.get_activation_data(self.request))
+        return initial
 
     def get_success_url(self, user=None):  # pylint: disable=unused-argument
         """
         Return the URL to redirect to after successful redirection.
 
         """
+        # This is overridden solely to allow django-registration to support passing the
+        # user account as an argument; otherwise, the base FormMixin implementation,
+        # which accepts no arguments, could be called and end up raising a TypeError.
         return force_str(self.success_url)
 
-    def get(self, *args, **kwargs):
+    def form_valid(self, form):
         """
-        The base activation logic; subclasses should leave this method alone and
-        implement activate(), which is called from this method.
+        If the form is valid, attempt to activate the user account and redirect to
+        the succeess URL. If an :class:`~django_registration.exceptions.ActivationError`
+        is raised during activation, instead re-render the form and include information
+        about the error in the template context.
 
         """
         extra_context = {}
         try:
-            activated_user = self.activate(*args, **kwargs)
+            activated_user = self.activate(form)
         except ActivationError as exc:
             extra_context["activation_error"] = {
                 "message": exc.message,
@@ -150,14 +277,34 @@ class ActivationView(TemplateView):
             signals.user_activated.send(
                 sender=self.__class__, user=activated_user, request=self.request
             )
-            return HttpResponseRedirect(force_str(self.get_success_url(activated_user)))
+            return HttpResponseRedirect(
+                force_str(self.get_success_url(user=activated_user))
+            )
         context_data = self.get_context_data()
         context_data.update(extra_context)
         return self.render_to_response(context_data)
 
-    def activate(self, *args, **kwargs):
+    def activate(self, form):
         """
-        Implement account-activation logic here.
+        Subclasses *must* override this method.
+
+        Attempt to activate the user account from the given form. Should either return
+        the activated user account, or raise
+        :exc:`~django_registration.exceptions.ActivationError`.
 
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            "Subclasses of ActivationView must implement activate()."
+        )
+
+    def get_activation_data(self, request):
+        """
+        Subclasses *must* override this method.
+
+        Return the initial activation data for populating the activation form (for
+        example, by reading an activation key from a querystring parameter)
+
+        """
+        raise NotImplementedError(
+            "Subclasses of ActivationView must implement get_activation_data()."
+        )
