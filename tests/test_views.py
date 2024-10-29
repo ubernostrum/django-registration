@@ -48,13 +48,11 @@ class ActivationViewTests(RegistrationTestCase):
             salt=activation_views.REGISTRATION_SALT,
         )
 
-        resp = self.client.get(
-            reverse(
-                "django_registration_activate",
-                args=(),
-                kwargs={"activation_key": activation_key},
-            )
+        resp = self.client.post(
+            reverse("django_registration_activate"),
+            data={"activation_key": activation_key},
         )
+
         self.assertRedirects(resp, "/activate/complete/")
 
 

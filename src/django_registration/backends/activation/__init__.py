@@ -11,3 +11,7 @@ source-code distribution, or online at
 https://django-registration.readthedocs.io/
 
 """
+
+from django.conf import settings
+
+REGISTRATION_SALT = getattr(settings, "REGISTRATION_SALT", "registration")

@@ -42,6 +42,7 @@ parsers
 paypal
 pаypаl
 pre
+querystring
 regex
 registrationview
 runtime
