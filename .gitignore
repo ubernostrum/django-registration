@@ -135,3 +135,6 @@ cython_debug/
 # IDEs.
 .idea/
 .vscode/
+
+# PDM local file.
+.pdm-python

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
 
 [project]
 authors = [
-  {name = "James Bennett", email = "james@b-list.org"}
+    {name = "James Bennett"},
 ]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
@@ -18,42 +18,29 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
   "Topic :: Utilities",
 ]
 name = "django-registration"
 description = "An extensible user-registration application for Django."
-dependencies = [
-  "Django>=4.2",
-  "confusable_homoglyphs~=3.0"
-]
-dynamic = ["version"]
 keywords = ["django", "security", "auth", "authentication"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
-requires-python = ">=3.8"
+requires-python = ">=3.9"
+version = "5.1.0a1"
+dependencies = [
+    "Django>=4.2",
+    "confusable-homoglyphs>=3.0",
+]
 
 [project.urls]
-documentation = "https://django-registration.readthedocs.io/"
-homepage = "https://github.com/ubernostrum/django-registration"
+"Documentation" = "https://django-registration.readthedocs.io/"
+"Source Code" = "https://github.com/ubernostrum/django-registration"
 
-[project.optional-dependencies]
-docs = [
-  "furo",
-  "sphinx",
-  "sphinx-copybutton",
-  "sphinx-inline-tabs",
-  "sphinx-notfound-page",
-  "sphinxext-opengraph",
-]
-tests = [
-  "coverage",
-  "tomli; python_full_version < '3.11.0a7'",
-]
 
 [tool.bandit]
 exclude_dirs = ["src/django_registration/_backports.py"]
@@ -105,5 +92,42 @@ disable = [
   "too-many-ancestors",
 ]
 
-[tool.setuptools.dynamic]
-version = {attr = "django_registration.__version__"}
+[tool.pdm]
+distribution = true
+
+[tool.pdm.build]
+source-includes = [
+    ".editorconfig",
+    ".flake8",
+    ".pre-commit-config.yaml",
+    ".readthedocs.yaml",
+    "AUTHORS",
+    "docs/",
+    "noxfile.py",
+    "pdm.lock",
+    "runtests.py",
+    "tests/",
+]
+
+[tool.pdm.dev-dependencies]
+tests = [
+    "coverage",
+    "tomli; python_full_version < '3.11.0a7'",
+    "nox",
+]
+docs = [
+    "furo",
+    "sphinx",
+    "sphinx-copybutton",
+    "sphinx-inline-tabs",
+    "sphinx-notfound-page",
+    "sphinxext-opengraph",
+]
+linters = [
+    "bandit[toml]",
+    "flake8",
+    "flake8-bugbear",
+    "pylint",
+    "pylint-django",
+    "interrogate",
+]

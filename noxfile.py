@@ -23,6 +23,8 @@ import nox
 nox.options.default_venv_backend = "venv"
 nox.options.reuse_existing_virtualenvs = True
 
+os.environ.update({"PDM_IGNORE_SAVED_PYTHON": "1"})
+
 PACKAGE_NAME = "django_registration"
 
 NOXFILE_PATH = pathlib.Path(__file__).parents[0]
@@ -57,13 +59,13 @@ def clean(paths: typing.Iterable[pathlib.Path] = ARTIFACT_PATHS) -> None:
 @nox.parametrize(
     "python,django",
     [
-        # Python/Django testing matrix. Tests Django 4.2, 5.0, 5.1 on Python 3.8 through
+        # Python/Django testing matrix. Tests Django 4.2, 5.0, 5.1 on Python 3.9 through
         # 3.12, skipping unsupported combinations.
         (python, django)
-        for python in ["3.8", "3.9", "3.10", "3.11", "3.12"]
+        for python in ["3.9", "3.10", "3.11", "3.12", "3.13"]
         for django in ["4.2", "5.0", "5.1"]
         if (python, django)
-        not in [("3.8", "5.0"), ("3.9", "5.0"), ("3.8", "5.1"), ("3.9", "5.1")]
+        not in [("3.9", "5.0"), ("3.9", "5.1"), ("3.13", "4.2"), ("3.13", "5.0")]
     ],
 )
 def tests_with_coverage(session: nox.Session, django: str) -> None:
@@ -71,7 +73,8 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     Run the package's unit tests, with coverage report.
 
     """
-    session.install(f"Django~={django}.0", ".[tests]")
+    session.install(f"Django~={django}.0")
+    session.run_always("pdm", "install", "-dG", "tests", external=True)
     python_version = session.run(
         f"{session.bin}/python{session.python}", "--version", silent=True
     ).strip()
@@ -115,18 +118,21 @@ def docs_build(session: nox.Session) -> None:
     Build the package's documentation as HTML.
 
     """
-    session.install(".[docs]")
-    session.chdir("docs")
+    session.run_always("pdm", "install", "-dG", "docs", external=True)
+    build_dir = session.create_tmp()
     session.run(
         f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
-        "-b",
+        "--builder",
         "html",
-        "-d",
-        f"{session.bin}/../tmp/doctrees",
-        ".",
-        f"{session.bin}/../tmp/html",
+        "--write-all",
+        "-c",
+        "docs/",
+        "--doctree-dir",
+        f"{build_dir}/doctrees",
+        "docs/",
+        f"{build_dir}/html",
     )
     clean()
 
@@ -160,19 +166,21 @@ def docs_spellcheck(session: nox.Session) -> None:
     Spell-check the package's documentation.
 
     """
-    session.install("pyenchant", "sphinxcontrib-spelling", ".[docs]")
+    session.run_always("pdm", "install", "-dG", "docs", external=True)
+    session.install("pyenchant", "sphinxcontrib-spelling")
     build_dir = session.create_tmp()
-    session.chdir("docs")
     session.run(
         f"{session.bin}/python{session.python}",
         "-Im",
         "sphinx",
         "-W",  # Promote warnings to errors, so that misspelled words fail the build.
-        "-b",
+        "--builder",
         "spelling",
-        "-d",
+        "-c",
+        "docs/",
+        "--doctree-dir",
         f"{build_dir}/doctrees",
-        ".",
+        "docs/",
         f"{build_dir}/html",
         # On Apple Silicon Macs, this environment variable needs to be set so
         # pyenchant can find the "enchant" C library. See
@@ -281,12 +289,12 @@ def lint_flake8(session: nox.Session) -> None:
 @nox.session(python=["3.12"], tags=["linters"])
 def lint_pylint(session: nox.Session) -> None:
     """
-    Lint code with Pyling.
+    Lint code with Pylint.
 
     """
     # Pylint requires that all dependencies be importable during the run, so unlike
     # other lint tasks we just install the package.
-    session.install(".")
+    session.run_always("pdm", "install", "-dG", "tests", external=True)
     session.install("pylint", "pylint-django")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
