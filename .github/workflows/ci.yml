@@ -27,17 +27,6 @@ jobs:
         python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
 
     steps:
-      - name: Harden Runner
-        uses: step-security/harden-runner@63c24ba6bd7ba022e95695ff85de572c04a18142 # v2.7.0
-        with:
-          disable-sudo: true
-          egress-policy: block
-          allowed-endpoints: >
-            docs.djangoproject.com:443
-            docs.python.org:443
-            files.pythonhosted.org:443
-            github.com:443
-            pypi.org:443
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
