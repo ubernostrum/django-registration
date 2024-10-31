@@ -23,10 +23,7 @@ USER_MODEL_MISMATCH = """You are attempting to use the registration view {view} 
 the form class {form}, but the model used by that form ({form_model}) is not your Django
 installation's user model ({user_model}).
 
-Most often this occurs because you are using a custom user model, but forgot to specify
-a custom registration form class for it. Specifying a custom registration form class is
-required when using a custom user model. Please see django-registration's documentation
-on custom user models for more details. """
+Check your form's Meta declaration to ensure it is using the correct user model."""
 
 
 class RegistrationView(FormView):
@@ -119,7 +116,7 @@ class RegistrationView(FormView):
 
         """
         # pylint: disable=protected-access
-        if form_class is None:
+        if form_class is None:  # pragma: no cover
             form_class = self.get_form_class()
         form_model = form_class._meta.model
         user_model = get_user_model()

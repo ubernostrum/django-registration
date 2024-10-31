@@ -5,10 +5,13 @@
 groups = ["default", "docs", "linters", "tests"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:97400a4008e27ef2661aba45fdc106acd3d952c6baaffdc9decd0427d6fbd233"
+content_hash = "sha256:fa678cf0ace78c496f8d9c8a3572058b80b0abbbab875fa22e8b1690dc709be5"
 
 [[metadata.targets]]
-requires_python = ">=3.9"
+requires_python = ">=3.9,<3.10"
+
+[[metadata.targets]]
+requires_python = ">=3.10"
 
 [[package]]
 name = "alabaster"
@@ -16,9 +19,22 @@ version = "0.7.16"
 requires_python = ">=3.9"
 summary = "A light, configurable Sphinx theme"
 groups = ["docs"]
+marker = "python_version < \"3.10\" and python_version >= \"3.9\""
 files = [
     {file = "alabaster-0.7.16-py3-none-any.whl", hash = "sha256:b46733c07dce03ae4e150330b975c75737fa60f0a7c591b6c8bf4928a28e2c92"},
     {file = "alabaster-0.7.16.tar.gz", hash = "sha256:75a8b99c28a5dad50dd7f8ccdd447a121ddb3892da9e53d1ca5cca3106d58d65"},
+]
+
+[[package]]
+name = "alabaster"
+version = "1.0.0"
+requires_python = ">=3.10"
+summary = "A light, configurable Sphinx theme"
+groups = ["docs"]
+marker = "python_version >= \"3.10\""
+files = [
+    {file = "alabaster-1.0.0-py3-none-any.whl", hash = "sha256:fc6786402dc3fcb2de3cabd5fe455a2db534b371124f1f21de8731783dec828b"},
+    {file = "alabaster-1.0.0.tar.gz", hash = "sha256:c00dca57bca26fa62a6d7d0a9fcce65f3e026e9bfe33e9c538fd3fbb2144fd9e"},
 ]
 
 [[package]]
@@ -260,7 +276,7 @@ files = [
 
 [[package]]
 name = "colorlog"
-version = "6.8.2"
+version = "6.9.0"
 requires_python = ">=3.6"
 summary = "Add colours to the output of Python's logging module."
 groups = ["tests"]
@@ -268,8 +284,8 @@ dependencies = [
     "colorama; sys_platform == \"win32\"",
 ]
 files = [
-    {file = "colorlog-6.8.2-py3-none-any.whl", hash = "sha256:4dcbb62368e2800cb3c5abd348da7e53f6c362dda502ec27c560b2e58a66bd33"},
-    {file = "colorlog-6.8.2.tar.gz", hash = "sha256:3e3e079a41feb5a1b64f978b5ea4f46040a94f11f0e8bbb8261e3dbbeca64d44"},
+    {file = "colorlog-6.9.0-py3-none-any.whl", hash = "sha256:5906e71acd67cb07a71e779c47c4bcb45fb8c2993eebe9e5adcd6a6f1b283eff"},
+    {file = "colorlog-6.9.0.tar.gz", hash = "sha256:bfba54a1b93b94f54e1f4fe48395725a3d92fd2a4af702f6bd70946bdc0c6ac2"},
 ]
 
 [[package]]
@@ -380,6 +396,7 @@ version = "4.2.16"
 requires_python = ">=3.8"
 summary = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 groups = ["default"]
+marker = "python_version < \"3.10\" and python_version >= \"3.9\""
 dependencies = [
     "asgiref<4,>=3.6.0",
     "backports-zoneinfo; python_version < \"3.9\"",
@@ -389,6 +406,23 @@ dependencies = [
 files = [
     {file = "Django-4.2.16-py3-none-any.whl", hash = "sha256:1ddc333a16fc139fd253035a1606bb24261951bbc3a6ca256717fa06cc41a898"},
     {file = "Django-4.2.16.tar.gz", hash = "sha256:6f1616c2786c408ce86ab7e10f792b8f15742f7b7b7460243929cb371e7f1dad"},
+]
+
+[[package]]
+name = "django"
+version = "5.1.2"
+requires_python = ">=3.10"
+summary = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
+groups = ["default"]
+marker = "python_version >= \"3.10\""
+dependencies = [
+    "asgiref<4,>=3.8.1",
+    "sqlparse>=0.3.1",
+    "tzdata; sys_platform == \"win32\"",
+]
+files = [
+    {file = "Django-5.1.2-py3-none-any.whl", hash = "sha256:f11aa87ad8d5617171e3f77e1d5d16f004b79a2cf5d2e1d2b97a6a1f8e9ba5ed"},
+    {file = "Django-5.1.2.tar.gz", hash = "sha256:bd7376f90c99f96b643722eee676498706c9fd7dc759f55ebfaf2c08ebcdf4f0"},
 ]
 
 [[package]]
@@ -489,7 +523,7 @@ version = "8.5.0"
 requires_python = ">=3.8"
 summary = "Read metadata from Python packages"
 groups = ["docs"]
-marker = "python_version < \"3.10\""
+marker = "python_version < \"3.10\" and python_version >= \"3.9\""
 dependencies = [
     "typing-extensions>=3.6.4; python_version < \"3.8\"",
     "zipp>=3.20",
@@ -912,6 +946,7 @@ version = "7.4.7"
 requires_python = ">=3.9"
 summary = "Python documentation generator"
 groups = ["docs"]
+marker = "python_version < \"3.10\" and python_version >= \"3.9\""
 dependencies = [
     "Jinja2>=3.1",
     "Pygments>=2.17",
@@ -935,6 +970,37 @@ dependencies = [
 files = [
     {file = "sphinx-7.4.7-py3-none-any.whl", hash = "sha256:c2419e2135d11f1951cd994d6eb18a1835bd8fdd8429f9ca375dc1f3281bd239"},
     {file = "sphinx-7.4.7.tar.gz", hash = "sha256:242f92a7ea7e6c5b406fdc2615413890ba9f699114a9c09192d7dfead2ee9cfe"},
+]
+
+[[package]]
+name = "sphinx"
+version = "8.1.3"
+requires_python = ">=3.10"
+summary = "Python documentation generator"
+groups = ["docs"]
+marker = "python_version >= \"3.10\""
+dependencies = [
+    "Jinja2>=3.1",
+    "Pygments>=2.17",
+    "alabaster>=0.7.14",
+    "babel>=2.13",
+    "colorama>=0.4.6; sys_platform == \"win32\"",
+    "docutils<0.22,>=0.20",
+    "imagesize>=1.3",
+    "packaging>=23.0",
+    "requests>=2.30.0",
+    "snowballstemmer>=2.2",
+    "sphinxcontrib-applehelp>=1.0.7",
+    "sphinxcontrib-devhelp>=1.0.6",
+    "sphinxcontrib-htmlhelp>=2.0.6",
+    "sphinxcontrib-jsmath>=1.0.1",
+    "sphinxcontrib-qthelp>=1.0.6",
+    "sphinxcontrib-serializinghtml>=1.1.9",
+    "tomli>=2; python_version < \"3.11\"",
+]
+files = [
+    {file = "sphinx-8.1.3-py3-none-any.whl", hash = "sha256:09719015511837b76bf6e03e42eb7595ac8c2e41eeb9c29c5b755c6b677992a2"},
+    {file = "sphinx-8.1.3.tar.gz", hash = "sha256:43c1911eecb0d3e161ad78611bc905d1ad0e523e4ddc202a58a821773dc4c927"},
 ]
 
 [[package]]
@@ -1115,7 +1181,7 @@ version = "2.0.2"
 requires_python = ">=3.8"
 summary = "A lil' TOML parser"
 groups = ["docs", "linters", "tests"]
-marker = "python_version < \"3.11\""
+marker = "python_version < \"3.11\" and python_version >= \"3.9\""
 files = [
     {file = "tomli-2.0.2-py3-none-any.whl", hash = "sha256:2ebe24485c53d303f690b0ec092806a085f07af5a5aa1464f3931eec36caaa38"},
     {file = "tomli-2.0.2.tar.gz", hash = "sha256:d46d457a85337051c36524bc5349dd91b1877838e2979ac5ced3e710ed8a60ed"},
@@ -1138,7 +1204,7 @@ version = "4.12.2"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
 groups = ["default", "linters"]
-marker = "python_version < \"3.11\""
+marker = "python_version < \"3.11\" and python_version >= \"3.9\""
 files = [
     {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
@@ -1190,7 +1256,7 @@ version = "3.20.2"
 requires_python = ">=3.8"
 summary = "Backport of pathlib-compatible object wrapper for zip files"
 groups = ["docs"]
-marker = "python_version < \"3.10\""
+marker = "python_version < \"3.10\" and python_version >= \"3.9\""
 files = [
     {file = "zipp-3.20.2-py3-none-any.whl", hash = "sha256:a817ac80d6cf4b23bf7f2828b7cabf326f15a001bea8b1f9b49631780ba28350"},
     {file = "zipp-3.20.2.tar.gz", hash = "sha256:bc9eb26f4506fda01b81bcde0ca78103b6e62f991b381fec825435c836edbc29"},

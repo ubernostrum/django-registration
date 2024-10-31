@@ -14,7 +14,7 @@ from django.utils.translation import gettext_lazy as _
 
 try:
     from django.contrib.auth.forms import SetPasswordMixin
-except ImportError:  # pragma: no cover
+except ImportError:
     # SetPasswordMixin was added in Django 5.1. For older Django versions, we have a
     # backported copy of it.
     from ._backports import SetPasswordMixin  # pragma: no cover

@@ -4,43 +4,193 @@ name: CI
 on:
   push:
     branches: [trunk]
-    tags: ["*"]
   pull_request:
-    branches: [trunk]
   workflow_dispatch:
 
 env:
   FORCE_COLOR: "1"
-  PIP_DISABLE_VERSION_CHECK: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+  PIP_NO_PYTHON_VERSION_WARNING: "1"
 
-permissions:
-  contents: read
+permissions: {}
 
 jobs:
-  tests:
-    name: nox on ${{ matrix.python-version }}
+  build-package:
+    name: Build and verify package
     runs-on: ubuntu-latest
 
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: hynek/build-and-inspect-python-package@v2
+        id: baipp
+
+    outputs:
+      python-versions: ${{ steps.baipp.outputs.supported_python_classifiers_json_array }}
+
+  tests:
+    name: Tests on Python ${{ matrix.python-version }}
+    needs: build-package
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        python-version: ${{ fromJson(needs.build-package.outputs.python-versions) }}
+
+    steps:
+      - name: Download pre-built packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - run: tar xf dist/*.tar.gz --strip-components=1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+      - name: Install test runner
+        run: |
+          python -VV
+          python -Im site
+          python -Im pip install --upgrade nox
+          python -Im nox --version
+      - name: Run tests
+        run: "python -Im nox --non-interactive --error-on-external-run --tag tests --python ${{ matrix.python-version }}"
+      - name: Upload coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-${{ matrix.python-version }}
+          path: .coverage.*
+          include-hidden-files: true
+          if-no-files-found: ignore
+
+
+  coverage:
+    name: Combine and check coverage
+    needs: tests
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: Set up PDM
-        uses: pdm-project/setup-pdm@v4
+          python-version: "3.12"
+      - uses: actions/download-artifact@v4
         with:
-          python-version: ${{ matrix.python-version }}
-      - name: "Install dependencies"
+          pattern: coverage-data-*
+          merge-multiple: true
+
+      - name: Combine coverage & fail under 100%
+        run: |
+          python -Im pip install --upgrade "coverage[toml]"
+
+          coverage combine
+          coverage html --skip-covered --skip-empty
+
+          # Report and write to summary.
+          coverage report --format=markdown >> $GITHUB_STEP_SUMMARY
+
+          # Report again and fail if under 100%.
+          coverage report --fail-under=100
+
+      - name: Upload HTML report if check failed.
+        uses: actions/upload-artifact@v4
+        with:
+          name: html-report
+          path: htmlcov
+        if: ${{ failure() }}
+
+
+  docs:
+    name: Check documentation
+    needs: build-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pre-built packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - run: tar xf dist/*.tar.gz --strip-components=1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up test runner
         run: |
           python -VV
           python -Im site
-          python -Im pip install --upgrade pip setuptools wheel
           python -Im pip install --upgrade nox
           python -Im nox --version
-      - name: "Run CI suite with nox"
-        run: "python -Im nox --non-interactive --python ${{ matrix.python-version }}"
+      - name: Run documentation checks
+        run: "python -Im nox --non-interactive --error-on-external-run --tag docs"
+
+
+  lint-format:
+    name: Lint code and check formatting
+    needs: build-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pre-built packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - run: tar xf dist/*.tar.gz --strip-components=1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up test runner
+        run: |
+          python -VV
+          python -Im site
+          python -Im pip install --upgrade nox
+          python -Im nox --version
+      - name: Check code formatting
+        run: "python -Im nox --non-interactive --error-on-external-run --tag formatters --python 3.13"
+      - name: Lint code
+        run: "python -Im nox --non-interactive --error-on-external-run --tag linters --python 3.13"
+
+
+  check-package:
+    name: Additional package checks
+    needs: build-package
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download pre-built packages
+        uses: actions/download-artifact@v4
+        with:
+          name: Packages
+          path: dist
+      - run: tar xf dist/*.tar.gz --strip-components=1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Set up test runner
+        run: |
+          python -VV
+          python -Im site
+          python -Im pip install --upgrade nox
+          python -Im nox --version
+      - name: Check package
+        run: "python -Im nox --non-interactive --error-on-external-run --tag packaging --python 3.12"
+
+
+  required-checks-pass:
+    name: Ensure required checks pass for branch protection
+    if: always()
+
+    needs:
+      - check-package
+      - coverage
+      - docs
+      - lint-format
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Decide whether the jobs succeeded or failed
+        uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}

@@ -42,6 +42,29 @@ dependencies = [
 "Source Code" = "https://github.com/ubernostrum/django-registration"
 
 
+[project.optional-dependencies]
+docs = [
+    "furo",
+    "sphinx",
+    "sphinx-copybutton",
+    "sphinx-inline-tabs",
+    "sphinx-notfound-page",
+    "sphinxext-opengraph",
+]
+linters = [
+    "bandit[toml]",
+    "flake8",
+    "flake8-bugbear",
+    "pylint",
+    "pylint-django",
+    "interrogate",
+]
+tests = [
+    "coverage",
+    "nox",
+    "tomli; python_full_version < \"3.11.0a7\"",
+]
+
 [tool.bandit]
 exclude_dirs = ["src/django_registration/_backports.py"]
 skips = ["B101"]
@@ -55,6 +78,9 @@ ignore-bad-ideas = ["*.mo"]
 [tool.check-wheel-contents]
 ignore = ["W004"]
 
+[tool.coverage.paths]
+source = ["src", ".nox/tests_with_coverage*/**/site-packages"]
+
 [tool.coverage.report]
 exclude_lines = [
   "pragma: no cover",
@@ -64,9 +90,12 @@ exclude_lines = [
 fail_under = 100
 
 [tool.coverage.run]
+branch = true
+parallel = true
 omit = [
   "*/_backports.py",
 ]
+source = ["django-registration"]
 
 [tool.interrogate]
 exclude = [
@@ -82,15 +111,6 @@ ignore-magic = true
 
 [tool.isort]
 profile = "black"
-
-[tool.pylint]
-disable = [
-  "duplicate-code",
-  "logging-fstring-interpolation",
-  "missing-class-docstring",
-  "missing-module-docstring",
-  "too-many-ancestors",
-]
 
 [tool.pdm]
 distribution = true
@@ -109,25 +129,11 @@ source-includes = [
     "tests/",
 ]
 
-[tool.pdm.dev-dependencies]
-tests = [
-    "coverage",
-    "tomli; python_full_version < '3.11.0a7'",
-    "nox",
-]
-docs = [
-    "furo",
-    "sphinx",
-    "sphinx-copybutton",
-    "sphinx-inline-tabs",
-    "sphinx-notfound-page",
-    "sphinxext-opengraph",
-]
-linters = [
-    "bandit[toml]",
-    "flake8",
-    "flake8-bugbear",
-    "pylint",
-    "pylint-django",
-    "interrogate",
+[tool.pylint]
+disable = [
+  "duplicate-code",
+  "logging-fstring-interpolation",
+  "missing-class-docstring",
+  "missing-module-docstring",
+  "too-many-ancestors",
 ]
