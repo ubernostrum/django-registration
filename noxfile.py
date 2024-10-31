@@ -309,7 +309,7 @@ def lint_pylint(session: nox.Session) -> None:
     """
     # Pylint requires that all dependencies be importable during the run, so unlike
     # other lint tasks we just install the package.
-    session.install("pylint", "pylint-django")
+    session.install("pylint", "pylint-django", ".[tests]")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
     clean()
