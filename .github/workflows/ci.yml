@@ -174,7 +174,7 @@ jobs:
           python -Im pip install --upgrade nox
           python -Im nox --version
       - name: Check package
-        run: "python -Im nox --non-interactive --error-on-external-run --tag packaging --python 3.12"
+        run: "python -Im nox --non-interactive --error-on-external-run --tag packaging --python 3.13"
 
 
   required-checks-pass:
