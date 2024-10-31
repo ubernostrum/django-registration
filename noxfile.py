@@ -43,6 +43,10 @@ def clean(paths: typing.Iterable[pathlib.Path] = ARTIFACT_PATHS) -> None:
     Clean up after a test run.
 
     """
+    # This cleanup is only useful for the working directory of a local checkout; in CI
+    # we don't need it because CI environments are ephemeral anyway.
+    if IS_CI:
+        return
     [
         shutil.rmtree(path) if path.is_dir() else path.unlink()
         for path in paths
@@ -305,7 +309,6 @@ def lint_pylint(session: nox.Session) -> None:
     """
     # Pylint requires that all dependencies be importable during the run, so unlike
     # other lint tasks we just install the package.
-    session.run_always("pdm", "install", "-dG", "tests", external=True)
     session.install("pylint", "pylint-django")
     session.run(f"python{session.python}", "-Im", "pylint", "--version")
     session.run(f"python{session.python}", "-Im", "pylint", "src/", "tests/")
@@ -363,6 +366,8 @@ def package_manifest(session: nox.Session) -> None:
     control.
 
     """
+    if IS_CI:
+        session.skip("check-manifest already run by earlier CI steps.")
     session.install("check-manifest")
     session.run(
         f"{session.bin}/python{session.python}", "-Im", "check_manifest", "--version"

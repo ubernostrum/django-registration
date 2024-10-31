@@ -74,6 +74,10 @@ spelling_lang = "en_US"
 # Location of word list.
 spelling_word_list_filename = "spelling_wordlist.txt"
 
+# The documentation does not include contributor names, so we skip this because it's
+# flaky about needing to scan commit history.
+spelling_ignore_contributor_names = False
+
 # OGP metadata configuration.
 ogp_enable_meta_description = True
 ogp_site_url = "https://django-registration.readthedocs.io/"
