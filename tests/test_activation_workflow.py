@@ -7,6 +7,7 @@ Tests for the signed-token activation registration workflow.
 
 import datetime
 import time
+from http import HTTPStatus
 
 from django.apps import apps
 from django.conf import settings
@@ -108,7 +109,7 @@ class ActivationBackendViewTests(ActivationTestCase):
                 reverse("django_registration_activate"),
                 data={"activation_key": activation_key},
             )
-            assert resp.status_code == 200
+            assert resp.status_code == HTTPStatus.OK
 
         user_account = user_model.objects.get(**self.user_lookup_kwargs)
         assert not user_account.is_active
@@ -181,7 +182,7 @@ class ActivationBackendViewTests(ActivationTestCase):
             )
 
         # Second activation fails.
-        assert 200 == resp.status_code
+        assert resp.status_code == HTTPStatus.OK
         assert resp.context["activation_error"] == {
             "message": ActivationView.ALREADY_ACTIVATED_MESSAGE,
             "code": "already_activated",
@@ -206,7 +207,7 @@ class ActivationBackendViewTests(ActivationTestCase):
                 data={"activation_key": activation_key},
             )
 
-        assert 200 == resp.status_code
+        assert resp.status_code == HTTPStatus.OK
         self.assertFormError(
             form=resp.context["form"],
             field="activation_key",
@@ -261,7 +262,7 @@ class ActivationBackendViewTests(ActivationTestCase):
                 data={"activation_key": activation_key},
             )
 
-        assert 200 == resp.status_code
+        assert resp.status_code == HTTPStatus.OK
         self.assertFormError(
             form=resp.context["form"],
             field="activation_key",
@@ -281,7 +282,7 @@ class ActivationBackendViewTests(ActivationTestCase):
                 data={"activation_key": activation_key},
             )
 
-        assert 200 == resp.status_code
+        assert resp.status_code == HTTPStatus.OK
         assert "activation_error" in resp.context
         assert resp.context["activation_error"] == {
             "message": ActivationView.BAD_USERNAME_MESSAGE,

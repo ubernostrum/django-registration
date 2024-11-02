@@ -7,6 +7,7 @@ Base classes for other test cases to inherit from.
 
 import json
 from contextlib import contextmanager
+from http import HTTPStatus
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -143,7 +144,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         resp = self.client.get(reverse("django_registration_register"))
-        assert resp.status_code == 200
+        assert resp.status_code == HTTPStatus.OK
 
     @override_settings(REGISTRATION_OPEN=False)
     def test_registration_closed(self):
@@ -166,7 +167,7 @@ class WorkflowTestCase(RegistrationTestCase):
 
         """
         resp = self.client.get(reverse("django_registration_register"))
-        assert resp.status_code == 200
+        assert resp.status_code == HTTPStatus.OK
         self.assertTemplateUsed(resp, "django_registration/registration_form.html")
         assert isinstance(resp.context["form"], RegistrationForm)
 
@@ -199,7 +200,7 @@ class WorkflowTestCase(RegistrationTestCase):
         with self.assertSignalNotSent(signals.user_registered):
             resp = self.client.post(reverse("django_registration_register"), data=data)
 
-        assert resp.status_code == 200
+        assert resp.status_code == HTTPStatus.OK
         assert not resp.context["form"].is_valid()
         assert resp.context["form"].has_error("password2")
 
@@ -289,7 +290,7 @@ class ActivationTestCase(WorkflowTestCase):
                 reverse("django_registration_register"), data=self.valid_data
             )
 
-        assert 302 == resp.status_code
+        assert resp.status_code == HTTPStatus.FOUND
 
         user_model = get_user_model()
         new_user = user_model.objects.get(**self.user_lookup_kwargs)

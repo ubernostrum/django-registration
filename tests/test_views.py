@@ -7,6 +7,7 @@ Tests for django-registration's built-in views.
 
 import logging
 import sys
+from http import HTTPStatus
 
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AnonymousUser
@@ -151,7 +152,10 @@ class SensitiveParameterFilterTests(RegistrationTestCase):
             self.logger.error(
                 f"Internal Server Error: {request.path}",
                 exc_info=sys.exc_info(),
-                extra={"status_code": 500, "request": request},
+                extra={
+                    "status_code": HTTPStatus.INTERNAL_SERVER_ERROR,
+                    "request": request,
+                },
             )
         assert len(mail.outbox) == 1
         email = mail.outbox[0]
