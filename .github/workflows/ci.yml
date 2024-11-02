@@ -60,7 +60,7 @@ jobs:
       - name: Run tests
         run: "python -Im nox --non-interactive --error-on-external-run --tag tests --python ${{ matrix.python-version }}"
       - name: Upload coverage data
-        uses: PaloAltoNetworks/upload-secure-artifact@v1.0.5
+        uses: actions/upload-artifact@v4
         with:
           name: coverage-data-${{ matrix.python-version }}
           path: .coverage.*
@@ -99,7 +99,7 @@ jobs:
           coverage report --fail-under=100
 
       - name: Upload HTML report if check failed.
-        uses: PaloAltoNetworks/upload-secure-artifact@v1.0.5
+        uses: actions/upload-artifact@v4
         with:
           name: html-report
           path: htmlcov
