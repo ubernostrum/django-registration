@@ -76,7 +76,12 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     Run the package's unit tests, with coverage report.
 
     """
-    session.install(f"Django~={django}.0", ".[tests]")
+    session.install(
+        f"Django~={django}.0",
+        ".[tests]",
+        "coverage",
+        'tomli; python_full_version < "3.11.0a7"',
+    )
     python_version = session.run(
         f"{session.bin}/python{session.python}", "--version", silent=True
     ).strip()
@@ -127,13 +132,17 @@ def coverage_report(session: nox.Session) -> None:
 # -----------------------------------------------------------------------------------
 
 
-@nox.session(python=["3.13"], tags=["docs"])
+# The documentation jobs ordinarily would want to use the latest Python version, but
+# currently that's 3.13 and Read The Docs doesn't yet support it. So to ensure the
+# documentation jobs are as closely matched to what would happen on RTD, these jobs stay
+# on 3.12 for now.
+@nox.session(python=["3.12"], tags=["docs"])
 def docs_build(session: nox.Session) -> None:
     """
     Build the package's documentation as HTML.
 
     """
-    session.install(".[docs]")
+    session.install(".", "-r", "docs/requirements.txt")
     build_dir = session.create_tmp()
     session.run(
         f"{session.bin}/python{session.python}",
@@ -152,7 +161,7 @@ def docs_build(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.13"], tags=["docs"])
+@nox.session(python=["3.12"], tags=["docs"])
 def docs_docstrings(session: nox.Session) -> None:
     """
     Enforce the presence of docstrings on all modules, classes, functions, and
@@ -175,13 +184,13 @@ def docs_docstrings(session: nox.Session) -> None:
     clean()
 
 
-@nox.session(python=["3.13"], tags=["docs"])
+@nox.session(python=["3.12"], tags=["docs"])
 def docs_spellcheck(session: nox.Session) -> None:
     """
     Spell-check the package's documentation.
 
     """
-    session.install(".[docs]")
+    session.install(".", "-r", "docs/requirements.txt")
     session.install("pyenchant", "sphinxcontrib-spelling")
     build_dir = session.create_tmp()
     session.run(

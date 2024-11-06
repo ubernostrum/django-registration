@@ -1,0 +1,13 @@
+# These dependencies are not "extras" defined in the pyproject.toml,
+# because they're not something you actually want to install alongside
+# the main package. They're also not "dev dependencies" in the PDM
+# sense of the term, because PDM would constrain them to the oldest
+# Python version the main package supports (3.9), while all our
+# documentation jobs, whether run via nox or via readthedocs, run on
+# Python 3.12.
+furo
+sphinx
+sphinx-copybutton
+sphinx-inline-tabs
+sphinx-notfound-page
+sphinxext-opengraph

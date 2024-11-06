@@ -41,30 +41,6 @@ dependencies = [
 "Documentation" = "https://django-registration.readthedocs.io/"
 "Source Code" = "https://github.com/ubernostrum/django-registration"
 
-
-[project.optional-dependencies]
-docs = [
-    "furo",
-    "sphinx",
-    "sphinx-copybutton",
-    "sphinx-inline-tabs",
-    "sphinx-notfound-page",
-    "sphinxext-opengraph",
-]
-linters = [
-    "bandit[toml]",
-    "flake8",
-    "flake8-bugbear",
-    "pylint",
-    "pylint-django",
-    "interrogate",
-]
-tests = [
-    "coverage",
-    "nox",
-    "tomli; python_full_version < \"3.11.0a7\"",
-]
-
 [tool.bandit]
 exclude_dirs = ["src/django_registration/_backports.py"]
 skips = ["B101"]
@@ -137,3 +113,6 @@ disable = [
   "missing-module-docstring",
   "too-many-ancestors",
 ]
+
+[dependency-groups]
+tests = ["nox"]
