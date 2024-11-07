@@ -147,8 +147,9 @@ class ActivationView(BaseActivationView):
     activation portion of this workflow.
 
     This view expects to receive the activation key as the querystring parameter
-    ``activation_key`` on the initial HTTP ``GET``; then it will populate that into a
-    form for re-submission in an HTTP ``POST`` request.
+    ``activation_key`` on the initial HTTP ``GET``; then it will populate that into an
+    :class:`~django_registration.backends.activation.forms.ActivationForm` for
+    re-submission in an HTTP ``POST`` request.
 
     If the activation key is missing, expired, or has an invalid signature, the form
     will have an error on the ``activation_key`` field.
@@ -158,11 +159,11 @@ class ActivationView(BaseActivationView):
     context will contain a ``code`` key with one of the following values:
 
     ``"already_activated"``
-        Indicates the account has already been activated.
+       Indicates the account has already been activated.
 
     ``"bad_username"``
-        Indicates the username decoded from the activation key is invalid (does not
-        correspond to any user account).
+       Indicates the username decoded from the activation key is invalid (does not
+       correspond to any user account).
 
     """
 

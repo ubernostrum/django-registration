@@ -18,15 +18,15 @@ class ActivationForm(forms.Form):
     """
     Form for the activation step of the two-step activation workflow.
 
-    This form has one field, the (string) activation key, which should be an HMAC-signed
-    value containing the username of the account to activate.
+    This form has one field, the (string) ``activation_key``, which should be an
+    HMAC-signed activation-key value containing the username of the account to activate.
 
     """
 
     EXPIRED_MESSAGE = _("This account has expired.")
     INVALID_KEY_MESSAGE = _("The activation key you provided is invalid.")
 
-    activation_key = forms.CharField(widget=forms.HiddenInput())
+    activation_key = forms.CharField()
 
     def clean_activation_key(self):
         """

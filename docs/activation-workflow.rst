@@ -47,6 +47,13 @@ By default, this workflow uses
 registration; this can be overridden by passing the keyword argument
 ``form_class`` to the registration view.
 
+Forms
+-----
+
+.. currentmodule:: django_registration.backends.activation.forms
+
+.. autoclass:: ActivationForm
+
 
 Views
 -----
@@ -104,9 +111,9 @@ username and timestamp. The username and HMAC will be URL-safe base64 encoded;
 the timestamp will be base62 encoded.
 
 Django's implementation uses the value of the
-:data:`~django.conf.settings.SECRET_KEY` setting as the key for HMAC;
-additionally, it permits the specification of a salt value which can be used to
-"namespace" different uses of HMAC across a Django-powered site.
+:data:`~django.conf.settings.SECRET_KEY` setting as the key for
+HMAC. Additionally, it permits the specification of a salt value which can be
+used to "namespace" different uses of HMAC across a Django-powered site.
 
 .. _salt-security:
 

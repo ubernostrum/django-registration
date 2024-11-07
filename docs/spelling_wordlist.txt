@@ -1,5 +1,5 @@
-а
 a
+аdmin
 admin
 apps
 auth
@@ -13,6 +13,8 @@ Bluesky
 blog
 boolean
 bugfixes
+Changelog
+changelog
 checkbox
 cleanupregistration
 codebase
@@ -20,11 +22,13 @@ confusable
 cryptographic
 customizability
 customizable
+deprecations
 dev
 django
 Facebook
 favicon
 filenames
+gz
 hostnames
 https
 ico
@@ -32,6 +36,7 @@ interoperability
 login
 logout
 lookup
+LTS
 metaclass
 Morgenstern
 namespace
@@ -39,9 +44,8 @@ namespacing
 noreply
 online
 parsers
-paypal
-pаypаl
 pre
+prepopulated
 querystring
 regex
 registrationview

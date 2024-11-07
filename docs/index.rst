@@ -55,7 +55,7 @@ listed below.
    :maxdepth: 1
 
    security
-   upgrade
+   changelog
    faq
 
 .. seealso::

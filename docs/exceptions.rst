@@ -5,16 +5,17 @@
 Exception classes
 =================
 
-django-registration provides two base exception classes to signal errors which
-occur during the signup or activation processes.
+``django-registration`` provides two base exception classes to signal errors
+which occur during the signup or activation processes.
 
 .. exception:: RegistrationError(message, code, params)
 
-   Base exception class for all exceptions raised in django-registration. No
-   code in django-registration will raise this exception directly; it serves
-   solely to provide a distinguishing parent class for other errors. Arguments
-   passed when the exception is raised will be stored and exposed as attributes
-   of the same names on the exception object:
+   Base exception class for all exceptions raised in
+   ``django-registration``. No code in ``django-registration`` will raise this
+   exception directly; it serves solely to provide a distinguishing parent
+   class for other errors. Arguments passed when the exception is raised will
+   be stored and exposed as attributes of the same names on the exception
+   object:
 
    :param str message: A human-readable error message.
    :param str code: A short but unique identifier used by subclasses

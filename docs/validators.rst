@@ -4,15 +4,16 @@
 Validation utilities
 ====================
 
-To ease the process of validating user registration data, django-registration
-includes some validation-related data and utilities.
+To ease the process of validating user registration data,
+``django-registration`` includes some validation-related data and utilities.
 
 
 Error messages
 --------------
 
 Several error messages are available as constants. All of them are marked for
-translation; most have translations already provided in django-registration.
+translation; most have translations already provided in
+``django-registration``.
 
 .. data:: DUPLICATE_EMAIL
 
@@ -46,7 +47,7 @@ translation; most have translations already provided in django-registration.
 Rejecting "reserved" usernames
 ------------------------------
 
-By default, django-registration treats some usernames as reserved.
+By default, ``django-registration`` treats some usernames as reserved.
 
 .. note:: **Why reserved names are reserved**
 
@@ -56,8 +57,8 @@ By default, django-registration treats some usernames as reserved.
    user might register a name which conflicts with an important URL, email
    address or subdomain, and this might give that user control over it.
 
-   django-registration includes a list of reserved names, and rejects them as
-   usernames by default, in order to avoid this issue.
+   ``django-registration`` includes a list of reserved names, and rejects them
+   as usernames by default, in order to avoid this issue.
 
 .. class:: ReservedNameValidator(reserved_names)
 
@@ -141,11 +142,11 @@ while this is useful for serving a worldwide audience, it also creates the
 possibility of `homograph attacks
 <https://en.wikipedia.org/wiki/IDN_homograph_attack>`_ through the use of
 characters which are easily visually confused for each other (for example:
-"pаypаl" containing a Cyrillic "а", visually indistinguishable in many fonts
+"аdmin" containing a Cyrillic "а", visually indistinguishable in many fonts
 from a Latin "а").
 
-To protect against this, django-registration applies some validation rules to
-usernames and email addresses.
+To protect against this, ``django-registration`` applies some validation rules
+to usernames and email addresses.
 
 .. function:: validate_confusables(value)
 
@@ -153,15 +154,15 @@ usernames and email addresses.
    usernames.
 
    This validator will reject any mixed-script value (as defined by Unicode
-   'Script' property) which also contains one or more characters that appear in
+   "Script" property) which also contains one or more characters that appear in
    the Unicode Visually Confusable Characters file.
 
    This validator is enabled by default on the username field of registration
    forms.
 
    :param str value: The username value to validate (non-string
-      usernames will not be checked)
-   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable
+      usernames will not be checked).
+   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable.
 
 .. function:: validate_confusables_email(value)
 
@@ -171,14 +172,14 @@ usernames and email addresses.
    This validator will reject any email address where either the local-part or
    the domain is -- when considered in isolation -- dangerously confusable. A
    string is dangerously confusable if it is a mixed-script value (as defined
-   by Unicode 'Script' property) which also contains one or more characters
+   by Unicode "Script" property) which also contains one or more characters
    that appear in the Unicode Visually Confusable Characters file.
 
    This validator is enabled by default on the email field of registration
    forms.
 
-   :param str value: The email address to validate
-   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable
+   :param str value: The email address to validate.
+   :raises django.core.exceptions.ValidationError: if the value is mixed-script confusable.
 
 
 Other validators
