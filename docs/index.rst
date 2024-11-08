@@ -3,25 +3,44 @@
 django-registration |release|
 =============================
 
-django-registration is an extensible application providing user registration
-functionality for `Django <https://www.djangoproject.com/>`_-powered Web sites.
+``django-registration`` is an extensible application providing user
+registration functionality for `Django <https://www.djangoproject.com/>`_
+sites.
 
-Although nearly all aspects of the registration process are customizable,
-out-of-the-box support is provided for two common use cases:
+It has built-in support for:
 
-* Two-phase registration, consisting of initial signup followed by a
-  confirmation email with instructions for activating the new account.
+* User registration with the default Django user model
 
-* One-phase registration, where a user signs up and is immediately active and
-  logged in.
+* User registration with many custom user models
 
-To get up and running quickly, :ref:`install django-registration <install>`,
-then read :ref:`the quick start guide <quickstart>`, which describes the steps
-necessary to configure django-registration for the built-in workflows. For more
-detailed information, including how to customize the registration process (and
-support for alternate registration systems), read through the documentation
-listed below.
+* Two-step (email an activation link) registration
 
+* One-step (register and be immediately logged in) registration
+
+And is designed to be extensible to support use cases beyond what's
+built in.
+
+For example, to enable one-step registration, you'd add
+``"django_registration"`` to your Django ``INSTALLED_APPS`` setting,
+then add the following to your site's root URLconfig:
+
+.. code-block:: python
+
+   from django.urls import include, path
+
+   urlpatterns = [
+       # Other URL patterns ...
+       path("accounts/", include("django_registration.backends.one_step.urls")),
+       path("accounts/", include("django.contrib.auth.urls")),
+       # More URL patterns ...
+   ]
+
+And create a few templates (see :ref:`the quick start guide <quickstart>` for
+full details).
+
+
+Documentation contents
+----------------------
 
 .. toctree::
    :caption: Installation and configuration
@@ -62,5 +81,5 @@ listed below.
 
    * `Django's authentication documentation
      <https://docs.djangoproject.com/en/stable/topics/auth/>`_. Django's
-     authentication system is used by django-registration's default
+     authentication system is used by ``django-registration``'s default
      configuration.

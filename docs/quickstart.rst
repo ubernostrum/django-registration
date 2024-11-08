@@ -58,8 +58,13 @@ To use the activation workflow, you'll need to:
 Required settings
 ~~~~~~~~~~~~~~~~~
 
-Make sure you've added ``"django_registration"`` to your ``INSTALLED_APPS``
-list. Then add the following new setting to your Django settings file:
+Because this workflow sends the activation code via email, you'll need to
+configure `Django's email-sending functionality
+<https://docs.djangoproject.com/en/5.1/topics/email/>`_.
+
+Also, make sure you've added ``"django_registration"`` to your
+``INSTALLED_APPS`` list. Then add the following new setting to your Django
+settings file:
 
 :data:`~django.conf.settings.ACCOUNT_ACTIVATION_DAYS`
    This is an :class:`int` specifying the number of days users will have to
