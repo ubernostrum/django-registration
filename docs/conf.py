@@ -9,7 +9,6 @@ https://www.sphinx-doc.org/
 
 import os
 import sys
-from importlib.metadata import version as get_version
 
 import django
 from django.conf import settings
@@ -39,8 +38,8 @@ source_suffix = {".rst": "restructuredtext"}
 master_doc = "index"
 project = "django-registration"
 copyright = "James Bennett and contributors"
-version = get_version("django-registration")
-release = version
+version = "5.1.0"
+release = "5.1.0"
 exclude_trees = ["_build"]
 pygments_style = "sphinx"
 htmlhelp_basename = "django-registrationdoc"
