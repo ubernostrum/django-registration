@@ -54,6 +54,23 @@ If you don't already have a supported version of Django installed, using
 supported version of Django.
 
 
+Installing for local development
+--------------------------------
+
+If you want to work on ``django-registration``, you can obtain a source
+checkout.
+
+The development repository for ``django-registration`` is at
+<https://github.com/ubernostrum/django-registration>. If you have `git
+<http://git-scm.com/>`_ installed, you can obtain a copy of the repository by
+typing::
+
+    git clone https://github.com/ubernostrum/django-registration.git
+
+Then follow the instructions in the file ``CONTRIBUTING.rst`` in the root
+directory of the source checkout.
+
+
 Next steps
 ----------
 

@@ -98,6 +98,7 @@ source-includes = [
     ".pre-commit-config.yaml",
     ".readthedocs.yaml",
     "AUTHORS",
+    "CONTRIBUTING.rst",
     "docs/",
     "noxfile.py",
     "pdm.lock",
