@@ -49,25 +49,30 @@ class RegistrationFormTests(RegistrationTestCase):
             "test+test@example.com",
             "test.test@example.com",
             "test_test@example.com",
+            "test@localhost",  # Django's default validator allows this one.
         ):
-            user_data = self.valid_data.copy()
-            user_data["email"] = value
-            form = forms.RegistrationForm(data=user_data)
-            assert form.is_valid()
+            with self.subTest(value=value):
+                user_data = self.valid_data.copy()
+                user_data["email"] = value
+                form = forms.RegistrationForm(data=user_data)
+                assert form.is_valid()
         for value in (
             "@@@example.com",
             "test:test@test@example.com",
             'test"test@example"test@example.com',
+            "test@example",
+            "test@1234",
         ):
-            user_data = self.valid_data.copy()
-            user_data["email"] = value
-            form = forms.RegistrationForm(data=user_data)
-            assert not form.is_valid()
-            assert form.has_error(user_model.get_email_field_name())
-            assert (
-                str(validators.HTML5EmailValidator.message)
-                in form.errors[user_model.get_email_field_name()]
-            )
+            with self.subTest(value=value):
+                user_data = self.valid_data.copy()
+                user_data["email"] = value
+                form = forms.RegistrationForm(data=user_data)
+                assert not form.is_valid()
+                assert form.has_error(user_model.get_email_field_name())
+                assert (
+                    str(validators.HTML5EmailValidator.message)
+                    in form.errors[user_model.get_email_field_name()]
+                )
 
     def test_email_validated_once(self):
         """

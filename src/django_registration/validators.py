@@ -39,7 +39,6 @@ HTML5_EMAIL_RE = (
     r"(?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
 )
 
-
 # Below we construct a large but non-exhaustive list of names which users probably
 # should not be able to register with, due to various risks:
 #
@@ -67,7 +66,6 @@ SPECIAL_HOSTNAMES = [
     "wpad",  # Proxy autodiscovery
 ]
 
-
 PROTOCOL_HOSTNAMES = [
     # Common protocol hostnames.
     "ftp",
@@ -82,7 +80,6 @@ PROTOCOL_HOSTNAMES = [
     "webmail",
     "www",
 ]
-
 
 CA_ADDRESSES = [
     # Email addresses known used by certificate authorities during
@@ -103,7 +100,6 @@ CA_ADDRESSES = [
     "webmaster",
 ]
 
-
 RFC_2142 = [
     # RFC-2142-defined names not already covered.
     "abuse",
@@ -114,7 +110,6 @@ RFC_2142 = [
     "support",
 ]
 
-
 NOREPLY_ADDRESSES = [
     # Common no-reply email addresses.
     "mailer-daemon",
@@ -122,7 +117,6 @@ NOREPLY_ADDRESSES = [
     "noreply",
     "no-reply",
 ]
-
 
 SENSITIVE_FILENAMES = [
     # Sensitive filenames.
@@ -135,7 +129,6 @@ SENSITIVE_FILENAMES = [
     ".htaccess",
     ".htpasswd",
 ]
-
 
 OTHER_SENSITIVE_NAMES = [
     # Other names which could be problems depending on URL/subdomain
@@ -193,7 +186,6 @@ OTHER_SENSITIVE_NAMES = [
     "work",
     "xrpc",  # Used by Bluesky/AT protocol for domain verification.
 ]
-
 
 DEFAULT_RESERVED_NAMES = (
     SPECIAL_HOSTNAMES

@@ -46,7 +46,7 @@ exclude_dirs = ["src/django_registration/_backports.py"]
 skips = ["B101"]
 
 [tool.black]
-target-version = ["py38", "py39", "py310", "py311", "py312"]
+target-version = ["py39", "py310", "py311", "py312", "py313"]
 
 [tool.check-manifest]
 ignore-bad-ideas = ["*.mo"]
@@ -114,6 +114,3 @@ disable = [
   "missing-module-docstring",
   "too-many-ancestors",
 ]
-
-[dependency-groups]
-tests = ["nox"]
