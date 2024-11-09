@@ -31,7 +31,7 @@ keywords = ["django", "security", "auth", "authentication"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
 requires-python = ">=3.9"
-version = "5.1.0"
+version = "5.1.1a0"
 dependencies = [
     "Django>=4.2",
     "confusable-homoglyphs>=3.0",
