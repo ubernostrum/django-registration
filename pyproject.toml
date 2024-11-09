@@ -41,6 +41,9 @@ dependencies = [
 "Documentation" = "https://django-registration.readthedocs.io/"
 "Source Code" = "https://github.com/ubernostrum/django-registration"
 
+[dependency-groups]
+tests = ["nox"]
+
 [tool.bandit]
 exclude_dirs = ["src/django_registration/_backports.py"]
 skips = ["B101"]
