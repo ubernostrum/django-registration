@@ -26,7 +26,7 @@ class ActivationForm(forms.Form):
     EXPIRED_MESSAGE = _("This account has expired.")
     INVALID_KEY_MESSAGE = _("The activation key you provided is invalid.")
 
-    activation_key = forms.CharField()
+    activation_key = forms.CharField(label=_("Activation key"))
 
     def clean_activation_key(self):
         """
