@@ -47,15 +47,15 @@ msgstr "Klucz aktywacyjny"
 
 #: backends/activation/views.py:171
 msgid "The account you tried to activate has already been activated."
-msgstr "Konto, które próbowałeś aktywować, zostało już aktywowane."
+msgstr "Konto, które próbowałeś/aś aktywować, zostało już aktywowane."
 
 #: backends/activation/views.py:173
 msgid "The account you attempted to activate is invalid."
-msgstr "Konto, które próbowałeś aktywować, jest nieprawidłowe."
+msgstr "Konto, które próbowałeś/aś aktywować, jest nieprawidłowe."
 
 #: forms.py:335
 msgid "I have read and agree to the Terms of Service"
-msgstr "Przeczytałem regulamin i akceptuję go"
+msgstr "Przeczytałem/am i zgadzam się z Warunkami korzystania z usługi."
 
 #: validators.py:19
 msgid "This name cannot be registered. Please choose a different name."
