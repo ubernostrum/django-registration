@@ -6,60 +6,78 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.4\n"
+"Project-Id-Version: 5.1.1a0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-19 19:30-0500\n"
+"POT-Creation-Date: 2025-03-01 15:59+0100\n"
 "PO-Revision-Date: 2007-12-15 12:45+0100\n"
-"Last-Translator: Jarek Zgoda <jarek.zgoda@gmail.com>\n"
+"Last-Translator: Rafał Safin <rafal.safin12@gmail.com>\n"
 "Language-Team: Polish <LL@li.org>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: forms.py:38
-msgid "username"
-msgstr "nazwa użytkownika"
+#: _backports.py:57
+msgid "The two password fields didn’t match."
+msgstr "Hasła nie są identyczne."
 
-#: forms.py:41
-msgid "email address"
-msgstr "adres email"
+#: _backports.py:61
+msgid "Password"
+msgstr "Hasło"
 
-#: forms.py:43
-msgid "password"
-msgstr "hasło"
+#: _backports.py:61
+msgid "Password confirmation"
+msgstr "Potwierdzenie hasła"
 
-#: forms.py:45
-msgid "password (again)"
-msgstr "hasło (ponownie)"
+#: _backports.py:74
+msgid "Enter the same password as before, for verification."
+msgstr "Wprowadź to samo hasło co wcześniej, aby je zweryfikować."
 
-#: forms.py:54
-msgid "Usernames can only contain letters, numbers and underscores"
-msgstr ""
-"Nazwa użytkownika może zawierać tylko litery, cyfry i znaki podkreślenia"
+#: backends/activation/forms.py:26
+msgid "This account has expired."
+msgstr "To konto wygasło."
 
-#: forms.py:59
-msgid "This username is already taken. Please choose another."
-msgstr "Ta nazwa użytkownika jest już zajęta. Wybierz inną."
+#: backends/activation/forms.py:27
+msgid "The activation key you provided is invalid."
+msgstr "Podany klucz aktywacyjny jest nieprawidłowy."
 
-#: forms.py:68
-msgid "You must type the same password each time"
-msgstr "Musisz wpisać to samo hasło w obu polach"
+#: backends/activation/forms.py:29
+msgid "Activation key"
+msgstr "Klucz aktywacyjny"
 
-#: forms.py:96
+#: backends/activation/views.py:171
+msgid "The account you tried to activate has already been activated."
+msgstr "Konto, które próbowałeś aktywować, zostało już aktywowane."
+
+#: backends/activation/views.py:173
+msgid "The account you attempted to activate is invalid."
+msgstr "Konto, które próbowałeś aktywować, jest nieprawidłowe."
+
+#: forms.py:335
 msgid "I have read and agree to the Terms of Service"
 msgstr "Przeczytałem regulamin i akceptuję go"
 
-#: forms.py:105
-msgid "You must agree to the terms to register"
-msgstr "Musisz zaakceptować regulamin, aby się zarejestrować"
+#: validators.py:19
+msgid "This name cannot be registered. Please choose a different name."
+msgstr "Ta nazwa użytkownika nie może zostać wybrana. Wybierz inną."
 
-#: forms.py:124
+#: validators.py:21
+msgid ""
+"This email address cannot be registered. Please supply a different email "
+"address."
+msgstr "Ten adres email nie może zostać wybrany. Użyj innego adresu email."
+
+#: validators.py:24
 msgid ""
 "This email address is already in use. Please supply a different email "
 "address."
 msgstr "Ten adres email jest już używany. Użyj innego adresu email."
 
-#: forms.py:149
+#: validators.py:26
+msgid "A user with that username already exists."
+msgstr "Użytkownik o tej nazwie już istnieje."
+
+#: validators.py:28
 msgid ""
 "Registration using free email addresses is prohibited. Please supply a "
 "different email address."
@@ -67,18 +85,10 @@ msgstr ""
 "Nie ma możliwości rejestracji przy użyciu darmowego adresu email. Użyj "
 "innego adresu email."
 
-#: models.py:188
-msgid "user"
-msgstr "użytkownik"
+#: validators.py:31
+msgid "This name is reserved and cannot be registered."
+msgstr "Ta nazwa jest zarezerwowana i nie może zostać zarejestrowana."
 
-#: models.py:189
-msgid "activation key"
-msgstr "klucz aktywacyjny"
-
-#: models.py:194
-msgid "registration profile"
-msgstr "profil rejestracji"
-
-#: models.py:195
-msgid "registration profiles"
-msgstr "profile rejestracji"
+#: validators.py:32
+msgid "You must agree to the terms to register"
+msgstr "Musisz zaakceptować regulamin, aby się zarejestrować"
