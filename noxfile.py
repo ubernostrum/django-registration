@@ -62,13 +62,12 @@ def clean(paths: typing.Iterable[pathlib.Path] = ARTIFACT_PATHS) -> None:
 @nox.parametrize(
     "python,django",
     [
-        # Python/Django testing matrix. Tests Django 4.2, 5.0, 5.1 on Python 3.9 through
-        # 3.12, skipping unsupported combinations.
+        # Python/Django testing matrix. Tests Django 4.2, 5.1, 5.2 on Python 3.9 through
+        # 3.13, skipping unsupported combinations.
         (python, django)
         for python in ["3.9", "3.10", "3.11", "3.12", "3.13"]
-        for django in ["4.2", "5.0", "5.1"]
-        if (python, django)
-        not in [("3.9", "5.0"), ("3.9", "5.1"), ("3.13", "4.2"), ("3.13", "5.0")]
+        for django in ["4.2", "5.1", "5.2"]
+        if (python, django) not in [("3.9", "5.1"), ("3.9", "5.2"), ("3.13", "4.2")]
     ],
 )
 def tests_with_coverage(session: nox.Session, django: str) -> None:
@@ -97,13 +96,12 @@ def tests_with_coverage(session: nox.Session, django: str) -> None:
     session.run(
         f"{session.bin}/python{session.python}",
         "-Wonce::DeprecationWarning",
-        "-Im",
+        "-m",
         "coverage",
         "run",
         "--source",
         PACKAGE_NAME,
         "runtests.py",
-        env={"DJANGO_SETTINGS_MODULE": "tests.settings"},
     )
     clean()
 

@@ -64,6 +64,14 @@ The API stability/deprecation policy for ``django-registration`` is as follows:
 Releases under DjangoVer
 ------------------------
 
+Version 5.2.0
+~~~~~~~~~~~~~
+
+Released April 2025
+
+* Supported Django versions are now 4.2, 5.1, and 5.2.
+
+
 Version 5.1.0
 ~~~~~~~~~~~~~
 
