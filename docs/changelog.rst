@@ -64,6 +64,14 @@ The API stability/deprecation policy for ``django-registration`` is as follows:
 Releases under DjangoVer
 ------------------------
 
+Version 5.2.1
+~~~~~~~~~~~~~
+
+Released April 2025
+
+* Correct a packaging error with 5.2.0.
+
+
 Version 5.2.0
 ~~~~~~~~~~~~~
 
